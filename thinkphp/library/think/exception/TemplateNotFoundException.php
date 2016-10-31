@@ -1,17 +1,33 @@
 <?php
 // +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
+// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
 // +----------------------------------------------------------------------
 // | Copyright (c) 2006-2016 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
+// | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-// [ 应用入口文件 ]
-define('BIND_MODULE','index');
-// 定义应用目录
-define('APP_PATH', __DIR__ . '/../application/');
-// 加载框架引导文件
-require __DIR__ . '/../thinkphp/start.php';
+namespace think\exception;
+
+class TemplateNotFoundException extends \RuntimeException
+{
+    protected $template;
+
+    public function __construct($message, $template = '')
+    {
+        $this->message  = $message;
+        $this->template = $template;
+    }
+
+    /**
+     * 获取模板文件
+     * @access public
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+}
