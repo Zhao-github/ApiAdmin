@@ -3,6 +3,6 @@ namespace app\admin\controller;
 
 class Index extends Base  {
     public function index() {
-        return $this->fetch();
+        return (new PublicShow())->show_404();
     }
 }

@@ -11,11 +11,11 @@ namespace app\admin\controller;
 class PublicShow extends Base {
 
     public function show_404(){
-        $this->fetch('public/404');
+        return $this->fetch('public/404');
     }
 
     public function show_500(){
-        $this->fetch('public/500');
+        return $this->fetch('public/500');
     }
 
     public function showBreadcrumb(){
