@@ -11,6 +11,7 @@ namespace app\admin\controller;
 class PublicShow extends Base {
 
     public function show_404(){
+        $this->assign('title', '页面丢失了！');
         return $this->fetch('public/404');
     }
 
