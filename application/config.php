@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 
 return [
-
+    'PRODUCT_VERSION' => 'V0.9.0', //项目版本
     'PRODUCT_NAME'   => '7d-vision', //产品名称
     'WEBSITE_DOMAIN' => 'http://www.7d-vision.com', //官方网址
     'COMPANY_NAME'   => '七维视觉科技有限公司', //公司名称
