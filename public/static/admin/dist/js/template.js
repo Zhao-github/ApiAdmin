@@ -21,6 +21,7 @@ var formatDate = function ( timestamp ) {
     var s = date.getSeconds();
     return Y+M+D+h+m+s;
 };
+
 (function ($, AdminTemplate) {
 
     "use strict";

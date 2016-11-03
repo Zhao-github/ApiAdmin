@@ -8,8 +8,22 @@
 namespace app\admin\controller;
 
 
-class User extends Base {
+use think\Request;
+
+class User extends Base  {
     public function login(){
-        return $this->fetch();
+        $request = Request::instance();
+        if( $request->isPost() ){
+            $username = $request->post('username');
+            $password = $request->post('password');
+            if( !$username || !$password ){
+                $this->error();
+            }
+            if( $request->post('name') ){
+
+            }
+        }else{
+            return $this->fetch();
+        }
     }
 }
