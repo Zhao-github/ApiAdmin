@@ -28,20 +28,23 @@ class User extends Base {
                 if( $userInfo['status'] ){
 
                     //保存用户信息和登录凭证
-                    S($userInfo['_id'], session_id(), C('ONLINE_TIME'));
-                    session('uid', $userInfo['_id']);
+                    cache($userInfo['id'], session_id(), config('online_time'));
+                    session('uid', $userInfo['id']);
 
                     //获取跳转链接，做到从哪来到哪去
-                    $url = empty(session('loginFrom')) ? U('Index/index') : session('loginFrom');
-                    session('loginFrom', null);
+                    if( $request->has('from', 'get') ){
+                        $url = $request->get('from');
+                    }else{
+                        $url = url('Index/index');
+                    }
 
                     //更新用户数据
                     $userData = D('UserData')->where(['uid' => $userInfo['_id']])->find();
                     $data = [];
                     if( $userData ){
                         $data['loginTimes'] = $userData['loginTimes'] + 1;
-                        $data['lastLoginIp'] = get_client_ip(1);
-                        $data['lastLoginTime'] = NOW_TIME;
+                        $data['lastLoginIp'] = Request::instance()->ip(1);
+                        $data['lastLoginTime'] = time();
                         D('UserData')->where(['uid' => $userInfo['_id']])->save($data);
                     }else{
                         $data['loginTimes'] = 1;
