@@ -17,7 +17,7 @@ class User extends Base  {
             $username = $request->post('username');
             $password = $request->post('password');
             if( !$username || !$password ){
-                $this->error();
+                $this->error('缺少关键数据！');
             }
             if( $request->post('name') ){
 

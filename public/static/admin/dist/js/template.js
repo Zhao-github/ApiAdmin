@@ -30,44 +30,57 @@ var formatDate = function ( timestamp ) {
 
     };
 
-    function emptyList() {
+    var emptyList = function() {
 
-    }
+    };
 
-    function easyList( listObj ) {
+    var easyList = function( listObj ) {
 
-    }
+    };
 
-    function topButton( topObj ) {
+    var topButton = function( topObj ) {
 
-    }
+    };
 
-    function rightButton( rightObj ) {
+    var rightButton = function( rightObj ) {
 
-    }
+    };
 
-    function easyForm( formObj ) {
+    var easyForm = function( formObj ) {
 
-    }
+    };
 
-    function input( inputObj ) {
+    var input = function( inputObj ) {
 
-    }
+    };
 
-    function select( selectObj ) {
+    var select = function( selectObj ) {
 
-    }
+    };
 
-    function button( buttonObj ) {
+    var button = function( buttonObj ) {
 
-    }
+    };
 
-    function breadcrumb(  ) {
+    /**
+     * 面包屑
+     */
+    var breadcrumb = function(  ) {
 
-    }
+    };
 
     AdminTemplate.a = function () {
 
+    };
+
+    AdminTemplate.alertMsg = function( msg ){
+        var dialog = bootbox.dialog({
+            message: '<p class="text-center">'+msg+'</p>',
+            closeButton: false
+        });
+        setTimeout(function(){
+            dialog.modal('hide');
+        }, 3000);
     }
 
 })(jQuery, $.AdminTemplate);
