@@ -32,21 +32,18 @@ class User extends Base {
                 return $this->error('用户名或者密码错误！');
             }else{
                 if( $userInfo['status'] ){
-
                     //保存用户信息和登录凭证
-                    cache($userInfo[$this->primaryKey], session_id(), config('online_time'));
                     session('uid', $userInfo[$this->primaryKey]);
-
+                    cache($userInfo[$this->primaryKey], session_id(), config('online_time'));
                     //获取跳转链接，做到从哪来到哪去
                     if( $request->has('from', 'get') ){
                         $url = $request->get('from');
                     }else{
                         $url = url('Index/index');
                     }
-
                     //更新用户数据
                     $userData = UserData::get(['uid' => $userInfo[$this->primaryKey]]);
-                    if( $userData->uid ){
+                    if( $userData ){
                         $userData->loginTimes += 1;
                         $userData->save();
                     }else{
@@ -55,7 +52,6 @@ class User extends Base {
                         $newUserData->uid = $userInfo[$this->primaryKey];
                         $newUserData->save();
                     }
-
                     return $this->success('登录成功', $url);
                 }else{
                     return $this->error('用户已被封禁，请联系管理员');

@@ -31,7 +31,7 @@
         });
         setTimeout(function(){
             dialog.modal('hide');
-        }, 2000);
+        }, 3000);
     };
 
     $.buildDom = function ( jsonStr ) {
@@ -87,20 +87,21 @@
             query = form.serialize();
             target = form.attr('action');
             $.post(target, query).success(function(data) {
-                if (data.status == 1) {
+                if (data.code == 1) {
                     if (data.url) {
-                        message = data.msg + ' 页面即将自动跳转~';
+                        message = data.msg + ' 页面即将自动跳转...';
                     } else {
                         message = data.msg;
                     }
                     $.alertMsg(message);
+                    var wait = 1000*data.wait;
                     setTimeout(function() {
                         if (data.url) {
                             location.href = data.url;
                         } else {
                             location.reload();
                         }
-                    }, 2000);
+                    }, wait);
                 } else {
                     $.alertMsg(data.msg);
                 }
