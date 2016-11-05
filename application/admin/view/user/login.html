@@ -6,8 +6,6 @@
     <title>7d-vision | 登 录</title>
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <link rel="stylesheet" href="__STATIC__/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/ionicons/2.0.1/css/ionicons.min.css">
     <link rel="stylesheet" href="__ADMIN__/dist/css/AdminLTE.min.css">
     <!--[if lt IE 9]>
     <script src="//cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -17,19 +15,19 @@
 <body class="hold-transition login-page">
 <div class="login-box">
     <div class="login-logo">
-        <a href="../../index2.html"><b>7D</b> VISION</a>
+        <a href="{:config('WEBSITE_DOMAIN')}"><b>7D</b> VISION</a>
     </div>
     <!-- /.login-logo -->
     <div class="login-box-body">
-        <p class="login-box-msg">请登录您的账户</p>
+        <p class="login-box-msg">请填写您的账号名和密码</p>
 
-        <form action="../../index2.html" method="post">
+        <form action="{:url('User/login')}" method="post">
             <div class="form-group has-feedback">
-                <input type="email" class="form-control" placeholder="Email">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <input type="text" class="form-control" name="username" placeholder="Username">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="Password">
+                <input type="password" name="password" class="form-control" placeholder="Password">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
             <div class="row">
@@ -38,8 +36,6 @@
                 </div>
             </div>
         </form>
-
-        <a href="#">I forgot my password</a><br>
     </div>
 </div>
 
@@ -47,8 +43,6 @@
 <script src="__STATIC__/jQuery/2.2.4/jquery.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="__STATIC__/bootstrap/js/bootstrap.min.js"></script>
-<!-- iCheck -->
-<script src="__ADMIN__/plugins/iCheck/icheck.min.js"></script>
 
 </body>
 </html>

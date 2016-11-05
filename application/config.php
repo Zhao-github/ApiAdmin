@@ -14,6 +14,7 @@ return [
     'PRODUCT_NAME'   => '7d-vision', //产品名称
     'WEBSITE_DOMAIN' => 'http://www.7d-vision.com', //官方网址
     'COMPANY_NAME'   => '七维视觉科技有限公司', //公司名称
+    'SQL_PRIMARY_KEY' => 'id',
 
     // +----------------------------------------------------------------------
     // | 应用设置

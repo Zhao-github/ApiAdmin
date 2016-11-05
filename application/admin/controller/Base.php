@@ -10,4 +10,9 @@ use think\Controller;
 
 class Base extends Controller {
 
+    protected $primaryKey;
+
+    public function _initialize(){
+        $this->primaryKey = config('SQL_PRIMARY_KEY');
+    }
 }

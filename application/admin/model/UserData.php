@@ -11,4 +11,14 @@ use think\Model;
 
 class UserData extends Model {
 
+    protected $insert = ['lastLoginTime', 'lastLoginIp'];
+    protected $update = ['lastLoginIp', 'lastLoginTime'];
+
+    protected function setLastLoginIpAttr(){
+        return request()->ip(1);
+    }
+
+    protected function setLastLoginTimeAttr(){
+        return time();
+    }
 }
