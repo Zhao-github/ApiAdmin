@@ -65,4 +65,8 @@ class User extends Base {
             return $this->fetch();
         }
     }
+
+    public function add(){
+
+    }
 }

@@ -21,7 +21,7 @@
     <div class="login-box-body">
         <p class="login-box-msg">请填写您的账号名和密码</p>
 
-        <form action="{:url('User/login')}" method="post">
+        <form action="{:url('User/login')}" id="form-login">
             <div class="form-group has-feedback">
                 <input type="text" class="form-control" name="username" placeholder="Username">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
@@ -32,7 +32,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <button type="submit" class="btn btn-primary btn-block btn-flat">登 录</button>
+                    <span type="submit" target-form="form-login" class="btn btn-primary ajax-post btn-block btn-flat">登 录</span>
                 </div>
             </div>
         </form>
@@ -43,6 +43,10 @@
 <script src="__STATIC__/jQuery/2.2.4/jquery.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="__STATIC__/bootstrap/js/bootstrap.min.js"></script>
+<!-- BootBox -->
+<script src="__ADMIN__/plugins/bootBox/bootbox.min.js"></script>
+
+<script src="__ADMIN__/dist/js/template.js"></script>
 
 </body>
 </html>

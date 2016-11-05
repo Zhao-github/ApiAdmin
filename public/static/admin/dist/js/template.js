@@ -4,83 +4,111 @@
  * You should not use this file in production.
  * This file is for demo purposes only.
  */
-$.AdminTemplate = {};
-/**
- * 格式化时间戳（为了和PHP的date函数统一，这里的时间戳都是10位，不包含毫秒）
- * @param timestamp
- * @returns {string}
- */
-var formatDate = function ( timestamp ) {
-    timestamp *= 1000;
-    var date = new Date(timestamp);
-    var Y = date.getFullYear() + '-';
-    var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-    var D = (date.getDate()+1 < 10 ? '0'+(date.getDate()+1) : date.getDate()+1) + ' ';
-    var h = date.getHours() + ':';
-    var m = date.getMinutes() + ':';
-    var s = date.getSeconds();
-    return Y+M+D+h+m+s;
-};
 
-(function ($, AdminTemplate) {
-
+(function ($) {
     "use strict";
+    $(function() {
+        /**
+         * 格式化时间戳（为了和PHP的date函数统一，这里的时间戳都是10位，不包含毫秒）
+         * @param timestamp
+         * @returns {string}
+         */
+        $.formatDate = function ( timestamp ) {
+            timestamp *= 1000;
+            var date = new Date(timestamp);
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+            var D = (date.getDate()+1 < 10 ? '0'+(date.getDate()+1) : date.getDate()+1) + ' ';
+            var h = date.getHours() + ':';
+            var m = date.getMinutes() + ':';
+            var s = date.getSeconds();
+            return Y+M+D+h+m+s;
+        };
 
-    AdminTemplate.buildDom = function ( jsonStr ) {
+        $.alertMsg = function( msg ){
+            var dialog = bootbox.dialog({
+                message: '<p class="text-center">'+msg+'</p>',
+                closeButton: false
+            });
+            setTimeout(function(){
+                dialog.modal('hide');
+            }, 2000);
+        };
 
-    };
+        $.buildDom = function ( jsonStr ) {
 
-    var emptyList = function() {
+        };
 
-    };
+        var emptyList = function() {
 
-    var easyList = function( listObj ) {
+        };
 
-    };
+        var easyList = function( listObj ) {
 
-    var topButton = function( topObj ) {
+        };
 
-    };
+        var topButton = function( topObj ) {
 
-    var rightButton = function( rightObj ) {
+        };
 
-    };
+        var rightButton = function( rightObj ) {
 
-    var easyForm = function( formObj ) {
+        };
 
-    };
+        var easyForm = function( formObj ) {
 
-    var input = function( inputObj ) {
+        };
 
-    };
+        var input = function( inputObj ) {
 
-    var select = function( selectObj ) {
+        };
 
-    };
+        var select = function( selectObj ) {
 
-    var button = function( buttonObj ) {
+        };
 
-    };
+        var button = function( buttonObj ) {
 
-    /**
-     * 面包屑
-     */
-    var breadcrumb = function(  ) {
+        };
 
-    };
+        /**
+         * 面包屑
+         */
+        var breadcrumb = function(  ) {
 
-    AdminTemplate.a = function () {
+        };
 
-    };
+        //ajax post submit请求
+        $('body').on('click', '.ajax-post', function() {
+            var message,query,form,target;
+            var target_form = $(this).attr('target-form');
 
-    AdminTemplate.alertMsg = function( msg ){
-        var dialog = bootbox.dialog({
-            message: '<p class="text-center">'+msg+'</p>',
-            closeButton: false
+            if ( $(this).attr('type') == 'submit' ) {
+                form = $('#' + target_form);
+                query = form.serialize();
+                target = form.attr('action');
+                $.post(target, query).success(function(data) {
+                    if (data.status == 1) {
+                        if (data.url) {
+                            message = data.msg + ' 页面即将自动跳转~';
+                        } else {
+                            message = data.msg;
+                        }
+                        $.alertMsg(message);
+                        setTimeout(function() {
+                            if (data.url) {
+                                location.href = data.url;
+                            } else {
+                                location.reload();
+                            }
+                        }, 2000);
+                    } else {
+                        $.alertMsg(data.msg);
+                    }
+                });
+            }
+            return false;
         });
-        setTimeout(function(){
-            dialog.modal('hide');
-        }, 3000);
-    }
+    });
 
-})(jQuery, $.AdminTemplate);
+})(jQuery);
