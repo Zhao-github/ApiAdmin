@@ -66,15 +66,15 @@ class Base extends Controller {
                 if( $sidOld != $sidNow ){
                     $this->error("您的账号在别的地方登录了，请重新登录！", url('User/login'));
                 }else{
-                    cache($this->uid, $sidNow, config('online_time'));
-                    $this->userInfo = User::get([ $this->primaryKey => $this->uid ]);
-                    if( $this->userInfo['updateTime'] === 0 ){
-                        $this->error('初次登录请重置用户密码！', url('User/changePassWord'));
-                    }else{
-                        if( empty($this->userInfo['nickName']) ){
-                            $this->error('初次登录请设置用户昵称！', url('User/changeNickname'));
-                        }
-                    }
+//                    cache($this->uid, $sidNow, config('online_time'));
+//                    $this->userInfo = User::get([ $this->primaryKey => $this->uid ]);
+//                    if( $this->userInfo['updateTime'] === 0 ){
+//                        $this->error('初次登录请重置用户密码！', url('User/changePassWord'));
+//                    }else{
+//                        if( empty($this->userInfo['nickName']) ){
+//                            $this->error('初次登录请设置用户昵称！', url('User/changeNickname'));
+//                        }
+//                    }
                 }
             }else{
                 $this->error("登录超时，请重新登录！", url('User/login'));
