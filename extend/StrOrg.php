@@ -4,8 +4,6 @@
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
-namespace extend;
-
 
 class StrOrg {
 

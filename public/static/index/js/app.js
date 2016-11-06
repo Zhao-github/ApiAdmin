@@ -17,7 +17,7 @@
                 $.post(target, query).success(function(data) {
                     if (data.url) {
                         alertMSG.showAlert({
-                            msg:'<p><i class="icon-ok-sign mr10" style="color:#3c3"></i>'+data.info+' 页面即将自动跳转~</p>',
+                            msg:'<p><i class="icon-ok-sign mr10" style="color:#3c3"></i>'+data.msg+' 页面即将自动跳转~</p>',
                             callback: function(){
                                 setTimeout(function(){
                                     window.location.href= data.url;
@@ -26,7 +26,7 @@
                         });
                     } else {
                         alertMSG.showAlert({
-                            msg:'<p>'+data.info+'</p>',
+                            msg:'<p>'+data.msg+'</p>',
                         });
                     }
                 });

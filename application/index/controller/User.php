@@ -7,9 +7,9 @@
 
 namespace app\index\controller;
 
-use extend\StrOrg;
+use think\Controller;
 
-class User extends Base  {
+class User extends Controller {
     public function index(){
         return $this->fetch();
     }
@@ -146,7 +146,7 @@ class User extends Base  {
 
     private function getAuthStr(){
         $ticket = config('AUTH_TICKET');
-        $nonceStr = StrOrg::randString(12,5,'oOLl01');
+        $nonceStr = \StrOrg::randString(12,5,'oOLl01');
         $now = time();
         $hashStr =  sha1("ticket={$ticket}&noncestr={$nonceStr}&timestamp={$now}");
         $urlParam = [
