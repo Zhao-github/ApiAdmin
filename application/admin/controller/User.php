@@ -9,7 +9,6 @@ namespace app\admin\controller;
 
 
 use app\admin\model\UserData;
-use think\Request;
 
 class User extends Base {
 
@@ -18,10 +17,9 @@ class User extends Base {
      * @return mixed|void
      */
     public function login(){
-        $request = Request::instance();
-        if( $request->isPost() ){
-            $username = $request->post('username');
-            $password = $request->post('password');
+        if( $this->request->isPost() ){
+            $username = $this->request->post('username');
+            $password = $this->request->post('password');
             if( !$username || !$password ){
                 return $this->error('缺少关键数据！');
             }
@@ -36,8 +34,8 @@ class User extends Base {
                     session('uid', $userInfo[$this->primaryKey]);
                     cache($userInfo[$this->primaryKey], session_id(), config('online_time'));
                     //获取跳转链接，做到从哪来到哪去
-                    if( $request->has('from', 'get') ){
-                        $url = $request->get('from');
+                    if( $this->request->has('from', 'get') ){
+                        $url = $this->request->get('from');
                     }else{
                         $url = url('Index/index');
                     }
