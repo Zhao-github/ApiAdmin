@@ -1,8 +1,8 @@
 .header { margin-bottom: 20px; }
-.header .navbar { background-color: #000; }
+.header .navbar { background-color: #111; }
 .header .navbar .nav li a { color: #fff; padding: 25px 20px; background: none; }
 
-.navbar-brand { overflow: hidden; padding: 0; height: 70px; line-height: 70px; width: 200px; font-size: 0; }
+.navbar-brand { overflow: hidden; padding: 0; height: 70px; line-height: 70px; width: 300px; font-size: 0; }
 .navbar-brand .brand-img { font-size: 0; }
 .navbar-brand img { display: inline-block; width: 70px; margin-right: 10px; }
 .navbar-brand span { float: left; height: 70px; font-size: 18px; line-height: 70px; color: #fff; }
@@ -47,5 +47,10 @@ body { padding-top: 50px; }
 .table { font-size: 18px; }
 .table thead > tr > th, .table tbody > tr > th, .table tfoot > tr > th, .table thead > tr > td, .table tbody > tr > td, .table tfoot > tr > td { padding: 15px 8px; border-bottom: 1px solid #eee; }
 .table thead > tr > th { border-bottom: 1px solid #ddd; }
+
+.menu-group { padding: 10px; border-bottom: 1px dashed #e2e2e2; }
+.menu-group h4 { margin-top: 0; margin-bottom: 10px; }
+.menu-group .nav-sidebar { margin: 0; }
+.menu-group .nav-sidebar > li > a { padding: 10px; }
 
 
