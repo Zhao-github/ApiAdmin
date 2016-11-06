@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="__INDEX__/img/favicon.ico">
+
+    <title>七维科技-用户中心</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="__INDEX__/lib/bootstrap.min.css" rel="stylesheet">
+    <link href="__INDEX__/css/main.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    {block name="myStyle"}
+    <link href="__INDEX__/css/members.css" rel="stylesheet">
+    {/block}
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]>
+    <script src="__INDEX__/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="__INDEX__/lib/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="__INDEX__/lib/html5shiv.js"></script>
+    <script src="__INDEX__/lib/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header class="header">
+    <nav class="navbar navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="{:url('Index/index')}"><span class="brand-img"><img src="__INDEX__/img/logo.jpg" alt=""></span><span>七维科技－会员中心</span></a>
+            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#">返回七维首页</a></li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <div class="menu-group">
+                <h4 class="display-h4">Go!Pano Studio Pro</h4>
+                <ul class="nav nav-sidebar">
+                    <li class=""><a href="{:url('Help/index')}">应用介绍</a></li>
+                    <li class=""><a href="{:url('Help/pro1')}">使用操作</a></li>
+                </ul>
+            </div>
+            <div class="menu-group">
+                <h4 class="display-h4">Go!Pano Studio Pro 3D</h4>
+                <ul class="nav nav-sidebar">
+                    <li class=""><a href="{:url('Help/pro2')}">应用介绍</a></li>
+                    <li class=""><a href="{:url('Help/pro3')}">使用操作</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            {block name="content"}{/block}
+        </div>
+    </div>
+</div>
+<!-- Bootstrap core JavaScript
+   ================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script src="__INDEX__/lib/jquery.min.js"></script>
+<script src="__INDEX__/lib/bootstrap.min.js"></script>
+<!-- <script src="__INDEX__/lib/docs.min.js"></script> -->
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="__INDEX__/lib/ie10-viewport-bug-workaround.js"></script>
+<script src="__INDEX__/js/alertMSG.js"></script>
+<script src="__INDEX__/js/app.js"></script>
+{block name="myScript"}{/block}
+</body>
+</html>
+

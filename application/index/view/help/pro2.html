@@ -1,0 +1,127 @@
+{extend name="help/base" /}
+{block name="myContent">
+<div class="dir">
+    <h4 class="display-h4">引导页</h4>
+    <p class="p-indent">帮助用户进行先前设定。</p>
+    <p class="p-indent">1、设备设定——为了更好的缝合效果，选择设备类型</p>
+    <div align="center"><img src="http://member.7d-vision.com/img/1.1.png" ></div>
+    <p class="p-indent">2、拍录设定</p>
+    <p class="p-indent">设定拍录保存路径——选择拍录操作后文件保存的地址路径</p>
+    <p class="p-indent">录制码率——普通，高端，最佳的码率规格对应不同比特率，比特率是指每秒传送的比特(bit)数。比特率越高，传送数据速度越快，画质越好。</p>
+    <div align="center"><img src="http://member.7d-vision.com/img/1.2.png" ></div>
+    <p class="p-indent">3、更多设置</p>
+    <p class="p-indent">RTMP地址——推流地址设定，RTMP是实时消息传输协议。</p>
+    <p class="p-indent">输出码率设定——每秒传输的兆数越大越清晰。码率即比特率是指每秒传送的比特(bit)数。比特率越高，传送数据速度越快，同时需要的带宽要求也就增大。</p>
+    <p class="p-indent">输出分辨率设定</p>
+    <p class="p-indent">安全距离设定——通过安全距离调整来微调畸变</p>
+    <div align="center"><img src="http://member.7d-vision.com/img/1.3.png" ></div>
+    <h4 class="display-h4">功能使用</h4>
+    <p class="p-indent">1、多模式预监</p>
+    <table class="table-hover table-bordered p-indent table">
+        <tbody valign="middle">
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.1.1.png"></td>
+            <td><p>平铺模式</p></td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.1.2.png"></td>
+            <td><p>包球/VR模式</p></td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.1.3.png"></td>
+            <td><p>网格模式，单个镜头图像</p></td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="p-indent">2、调节图像</p>
+    <table class="table-hover table-bordered p-indent table">
+        <tbody valign="middle">
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.2.1.png"></td>
+            <td><p>调色—实时手动调节，自动复位(包含：滤镜 饱和度 色调 伽玛值 亮度)</p></td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.2.2.png"></td>
+            <td><p>曝光—实时手动调节，自动复位</p></td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.2.3.png"></td>
+            <td><p>白平衡—实时手动调节，自动复位</p></td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.2.4.png"></td>
+            <td><p>安全距离—安全距离及时反映到预览画面，调节安全距离可改善畸变</p></td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.2.5.png"></td>
+            <td><p>添加logo—显示logo，选择路径，调整logo半径</p></td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="p-indent">3、输出功能</p>
+    <table class="table-hover table-bordered p-indent table">
+        <tbody valign="middle">
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.3.1.png"></td>
+            <td>
+                <p>本地录制——全景视频实时录制。</p>
+                <p>录制前，需在引导页或设置页面中对录制参数进行设置。</p>
+                <p>录制中，显示录制状态，时间信息；可同时进行RTMP推流、SDI 输出、拍照。</p>
+                <p style="color: red;"><b>注意：若正在推流，录制码率与推流码率相同。</b></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.3.2.png"></td>
+            <td>
+                <p>本地拍照——拍摄全景照片，可在录制、RTMP推流、SDI输出同时进行拍照。</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.3.3.png"></td>
+            <td>
+                <p>回看—一键打开软件自带播放器，播放器默认播放最近一次操作内容画面。右侧列表可选择之前的操作内容。</p>
+                <p style="color: red;"><b>	注意：回放的前提是必须停止录制</b></p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.3.4.png"></td>
+            <td>
+                <p>RTMP推流—全景视频实时推流</p>
+                <p>推流前，需在引导页或设置页面中对RTMP参数进行设置。</p>
+                <p>推流中，显示推流信息；可同时进行录制、SDI输出、拍照。</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.3.5.png"></td>
+            <td>
+                <p>SDI输出—全景视频实时输出</p>
+                <p>输出前，需在引导页或设置页面中对SDI参数进行设置。</p>
+                <p>输出中，显示输出信息；可同时进行录制、RTMP推流、拍照。</p>
+                <p style="color: red;"><b>注意：SDI输出质量和RTMP推流质量一致。</b></p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="p-indent">4、其他</p>
+    <table class="table-hover table-bordered p-indent table">
+        <tbody valign="middle">
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.4.1.png"></td>
+            <td>
+                <p>操作日志—用户操作记录</p>
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 15%"><img width="50px" src="http://member.7d-vision.com/img/2.4.2.png"></td>
+            <td>
+                <p>版本信息—版本号，更新信息，官网帮助</p>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <h4 class="display-h4">设置</h4>
+    <p class="p-indent">1、设备选择：为了更好的缝合效果，更改引导页设备选择设定</p>
+    <p class="p-indent">2、拍录设置：更改引导页拍录路径码率设定或增加引导页未设定的数据</p>
+    <p class="p-indent">3、RTMP&SDI参数设置：更改引导页推流地址&输出质量设定或增加引导页未设定的</p>
+</div>
+{/block}

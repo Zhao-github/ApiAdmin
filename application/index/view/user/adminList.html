@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>七维科技-购买列表</title>
+    <link rel="stylesheet" href="//cdn.bootcss.com/semantic-ui/2.2.4/semantic.min.css">
+</head>
+<body>
+<div class="ui container">
+    <h2>   </h2>
+    <table class="ui celled striped red table">
+        <thead>
+            <tr>
+                <th>用户编号</th>
+                <th>购买产品</th>
+                <th>用户姓名</th>
+                <th>用户手机号</th>
+                <th>用户所在地</th>
+                <th>企业名称</th>
+                <th>订单时间</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <volist name="proList" id="vo">
+                <tr>
+                    <td>{$vo['uid']}</td>
+                    <td>{$vo['proName']}</td>
+                    <td>{$vo['name']|default='-'}</td>
+                    <td>{$vo['phone']|default='-'}</td>
+                    <td>{$vo['city']|default='-'}</td>
+                    <td>{$vo['company']|default='-'}</td>
+                    <td>{$vo['addTime']}</td>
+                    <if condition="$vo['status'] eq 0" >
+                        <td><a href="{:url('User/handleOrder', ['code' => 1, '_id' => $vo['_id']])}" class="ui green button">处理订单</a></td>
+                    <else />
+                        <td><a href="{:url('User/handleOrder', ['code' => 0, '_id' => $vo['_id']])}" class="ui red button">撤销状态</a></td>
+                    </if>
+                </tr>
+            </volist>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

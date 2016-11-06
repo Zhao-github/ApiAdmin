@@ -1,0 +1,93 @@
+{extend name="public/base" /}
+{block name="title"}用户中心{/block}
+{block name="myStyle"}
+    <link href="__INDEX__/css/sign.css" rel="stylesheet">
+{/block}
+{block name="myContent"}
+    <div id="bg" style="background-image:url(__INDEX__/img/cover/bg9.jpg);"></div>
+    <div id="bg-mask"></div>
+
+    <div class="container">
+        <a class="btn btn-lg btn-link fw-bold" href="http://www.7d-vision.com">返回七维首页</a>
+        <form class="form-area form-recover" role="form" id="form-recover">
+            <h2 class="form-heading display-h2">找回密码</h2>
+            <div class="por">
+                <input type="text" class="form-control roundCorner-bl-no roundCorner-br-no form-control-phone" id="J-form-phoneNumber" name="user" placeholder="手机号" required autofocus>
+            </div>
+            <div class="row">
+                <div class="col-xs-6 col-sm-6 col-md-6 pr0 por">
+                    <input type="text" class="form-control roundCorner-no  border-r-no  mb-1 form-control-phoneMsg" name="code" id="J-form-phoneMsg" placeholder="验证码" required>
+                </div>
+                <div class="col-xs-6 col-sm-6 col-md-6 pl0 por">
+                    <button class="btn btn-lg btn-default btn-block roundCorner-no fl  mb-1 btn-getPhoneMsg fs12" id="J-btn-getPhoneMsg" type="button">
+                        发送短信验证码
+                    </button>
+                </div>
+            </div>
+            <div class="por">
+                <input type="password" class="form-control form-control-pw roundCorner-no por" id="J-form-pw" name="password" placeholder="设置密码" required>
+            </div>
+            <div class="por">
+                <input type="password" class="form-control form-control-pwConfirm roundCorner-tl-no roundCorner-tr-no por" name="rePassword" id="J-form-pwconfirm"  placeholder="再次输入密码" required>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block ajax-post" target-form="form-recover" href="{:url('User/recover')}" type="submit">重置密码</button>
+            <p class="p10">已是会员？ <a href="{:url('User/index')}">去登陆</a></p>
+            <p class="p10">不是会员？ <a href="{:url('User/register')}">去注册</a></p>
+        </form>
+    </div>
+{/block}
+{block name="myScript"}
+    <script src="__INDEX__/lib/happy-validate/happy.js"></script>
+    <script src="__INDEX__/lib/happy-validate/happy.methods.js"></script>
+    <script src="__INDEX__/js/timeTick.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#form-register').isHappy({
+                fields: {
+                    '#J-form-phoneNumber': {
+                        required: true,
+                        message: '请输入正确的手机号'
+                    },
+                    '#J-form-phoneMsg': {
+                        required: true,
+                        message: '必填'
+                    },
+                    '#J-form-pw': {
+                        required: true,
+                        message: '必填'
+                    },
+                    '#J-form-pwconfirm': {
+                        required: true,
+                        message: '必填'
+                    }
+                }
+            });
+
+            // 发送验证码
+            var timeTick = new TimeTick({
+                el: '#J-btn-getPhoneMsg',
+                time: 60,
+                onClicked: function(){
+                    var phone = $('#J-form-phoneNumber').val();
+                    var result ;
+                    $.ajax({
+                        type: "POST",
+                        url: "{:url('User/getCode')}",
+                        data: "user=" + phone,
+                        async: false,
+                        success: function(msg){
+                            if( msg.status == 200 ){
+                                result = true;
+                            }else{
+                                result = false;
+                            }
+                        }
+                    });
+                    return result;
+                }
+            });
+
+        });
+    </script>
+{/block}

@@ -7,7 +7,16 @@
 namespace app\index\controller;
 
 class Index extends Base {
-    public function index() {
+    protected $uid;
 
+    public function index(){
+//        $proList = D('BuyLog')->where(['uid' => $this->uid])->select();
+        $proList = [];
+        $proNum = count($proList);
+        if( $proNum ){
+            $this->assign('proList', $proList);
+        }
+        $this->assign('proNum', $proNum);
+        return $this->fetch();
     }
 }
