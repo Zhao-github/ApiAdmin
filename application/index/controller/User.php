@@ -112,7 +112,7 @@ class User extends Base  {
                 $this->success('注册成功!', url('User/index'), true);
             }
         }else{
-            $this->display();
+            return $this->fetch();
         }
     }
 
@@ -140,7 +140,7 @@ class User extends Base  {
                 $this->success('密码重置成功!', url('User/index'), true);
             }
         }else{
-            $this->display();
+            return $this->fetch();
         }
     }
 

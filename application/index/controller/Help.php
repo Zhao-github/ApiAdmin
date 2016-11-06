@@ -9,12 +9,15 @@ namespace app\index\controller;
 
 class Help extends Base {
     public function index(){
-        $this->display();
+        return $this->fetch();
     }
     public function pro1(){
-        $this->display();
+        return $this->fetch();
     }
     public function pro2(){
-        $this->display();
+        return $this->fetch();
+    }
+    public function pro3(){
+        return $this->fetch();
     }
 }

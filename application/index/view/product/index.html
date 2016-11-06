@@ -226,9 +226,9 @@
                             <label for="">您的位置</label>
                             <div class="">
                                 <select name="location" id="" class="form-control">
-                                    <volist name="pro" id="vo">
+                                    {volist name="pro" id="vo"}
                                         <option value="{$key}">{$vo}</option>
-                                    </volist>
+                                    {/volist}
                                 </select>
                             </div>
                         </div>

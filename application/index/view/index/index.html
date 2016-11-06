@@ -36,7 +36,7 @@
             </div>
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h3 class="display-h4"><a class="btn btn-danger btn-lg" href="{:url('Product/index')}">去获取Go!Pano系列产品 <i class="icon-angle-right"></i></a></h3>
-                <if condition="$proNum">
+                {if condition="$proNum"}
                     <div class="table-responsive">
                         <table class="table" style="table-layout:fixed;">
                             <thead>
@@ -48,31 +48,31 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <volist name="proList" id="vo">
+                                {volist name="proList" id="vo"}
                                     <tr>
                                         <td>{$vo['proName']}</td>
-                                        <if condition="$vo['status']">
-                                            <if condition="$vo['type'] eq 1">
+                                        {if condition="$vo['status']"}
+                                            {if condition="$vo['type'] eq 1"}
                                                 <td><span>已购买</span></td>
                                                 <td><a href="#" class="btn btn-sm btn-default">立即下载</a></td>
-                                            <elseif condition="$vo['type'] eq 2"/>
+                                            {elseif condition="$vo['type'] eq 2"/}
                                                 <td><span>已下载</span></td>
                                                 <td><a href="{:url('Product/index')}" class="btn btn-sm btn-default">购买正式版</a></td>
-                                            <else />
+                                            {else /}
                                                 <td colspan="2"><span>已经购买</span></td>
-                                            </if>
-                                        <else/>
+                                            {/if}
+                                        {else/}
                                             <td colspan="2"><span>等待审核</span></td>
-                                        </if>
+                                        {/if}
                                         <td>{$vo['addTime'] | date='Y-m-d H:i:s',###}</td>
                                     </tr>
-                                </volist>
+                                {/volist}
                             </tbody>
                         </table>
                     </div>
-                    <else />
+                    {else /}
                     <p class="tc p100"><a href="{:url('Product/index')}">~您还没有购买过任何产品~<br>去获取产品</a></p>
-                </if>
+                {/if}
             </div>
         </div>
     </div>

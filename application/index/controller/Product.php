@@ -10,7 +10,7 @@ namespace app\index\controller;
 class Product extends Base {
     public function index(){
         $this->assign('pro',config('PROVINCE'));
-        $this->display();
+        return $this->fetch();
     }
     public function buy(){
         $data = $this->request->post();
