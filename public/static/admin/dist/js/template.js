@@ -87,6 +87,7 @@
             query = form.serialize();
             target = form.attr('action');
             $.post(target, query).success(function(data) {
+                var wait = 1000*data.wait;
                 if (data.code == 1) {
                     if (data.url) {
                         message = data.msg + ' 页面即将自动跳转...';
@@ -94,7 +95,6 @@
                         message = data.msg;
                     }
                     $.alertMsg(message);
-                    var wait = 1000*data.wait;
                     setTimeout(function() {
                         if (data.url) {
                             location.href = data.url;
@@ -104,6 +104,11 @@
                     }, wait);
                 } else {
                     $.alertMsg(data.msg);
+                    setTimeout(function() {
+                        if (data.url) {
+                            location.href = data.url;
+                        }
+                    }, wait);
                 }
             });
         }
