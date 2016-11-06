@@ -21,13 +21,13 @@ class User extends Base {
             $username = $this->request->post('username');
             $password = $this->request->post('password');
             if( !$username || !$password ){
-                return $this->error('缺少关键数据！');
+                $this->error('缺少关键数据！','');
             }
             $userModel = new \app\admin\model\User();
             $password = $userModel->getPwdHash($password);
             $userInfo = $userModel->where(['username' => $username, 'password' => $password])->find();
             if( empty($userInfo) ){
-                return $this->error('用户名或者密码错误！');
+                $this->error('用户名或者密码错误！','');
             }else{
                 if( $userInfo['status'] ){
                     //保存用户信息和登录凭证
@@ -50,9 +50,9 @@ class User extends Base {
                         $newUserData->uid = $userInfo[$this->primaryKey];
                         $newUserData->save();
                     }
-                    return $this->success('登录成功', $url);
+                    $this->success('登录成功', $url);
                 }else{
-                    return $this->error('用户已被封禁，请联系管理员');
+                    $this->error('用户已被封禁，请联系管理员','');
                 }
             }
         }else{
