@@ -141,6 +141,7 @@ return [
         '__STATIC__'=>'/static',
         '__INDEX__'=>'/static/index',
         '__ADMIN__'=>'/static/admin',
+        '__PLUGIN__'=>'/static/plugin',
     ],
     // 默认跳转页面对应的模板文件
     'dispatch_success_tmpl'  => 'public/jump',
