@@ -80,7 +80,7 @@ class Base extends Controller {
                 $this->error("登录超时，请重新登录！", url('User/login'));
             }
         }else{
-            $this->redirect('Login/index');
+            $this->redirect('User/login');
         }
     }
 }
