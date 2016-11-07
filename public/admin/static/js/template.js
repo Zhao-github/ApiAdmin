@@ -24,6 +24,10 @@
         return Y+M+D+h+m+s;
     };
 
+    /**
+     * 消息弹框
+     * @param msg
+     */
     $.alertMsg = function( msg ){
         var dialog = bootbox.dialog({
             message: '<p class="text-center">'+msg+'</p>',
@@ -34,50 +38,9 @@
         }, 3000);
     };
 
-    $.buildDom = function ( jsonStr ) {
-
-    };
-
-    var emptyList = function() {
-
-    };
-
-    var easyList = function( listObj ) {
-
-    };
-
-    var topButton = function( topObj ) {
-
-    };
-
-    var rightButton = function( rightObj ) {
-
-    };
-
-    var easyForm = function( formObj ) {
-
-    };
-
-    var input = function( inputObj ) {
-
-    };
-
-    var select = function( selectObj ) {
-
-    };
-
-    var button = function( buttonObj ) {
-
-    };
-
     /**
-     * 面包屑
+     * Ajax Post 表单提交
      */
-    var breadcrumb = function(  ) {
-
-    };
-
-    //ajax post submit请求
     $('body').on('click', '.ajax-post', function() {
         var message,query,form,target;
         var target_form = $(this).attr('target-form');
@@ -114,4 +77,23 @@
         }
         return false;
     });
+
 })(jQuery);
+
+function refresh( url ) {
+    var $ = jQuery;
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function(data){
+            if( data.code == 200 ){
+                if( data.data.tempType == 'table' ){
+                    $.getScript('/static/js/template/table.js');
+                }
+            }else{
+                $.alertMsg('请求失败！')
+            }
+        }
+
+    });
+}
