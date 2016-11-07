@@ -1,10 +1,10 @@
 {extend name="public/base" /}
 {block name="title"}用户中心{/block}
 {block name="myStyle"}
-    <link href="__INDEX__/css/sign.css" rel="stylesheet">
+    <link href="__CSS__/sign.css" rel="stylesheet">
 {/block}
 {block name="myContent"}
-    <div id="bg" style="background-image:url(__INDEX__/img/cover/bg9.jpg);"></div>
+    <div id="bg" style="background-image:url(__IMG__/cover/bg9.jpg);"></div>
     <div id="bg-mask"></div>
 
     <div class="container">
@@ -37,9 +37,9 @@
     </div>
 {/block}
 {block name="myScript"}
-    <script src="__INDEX__/lib/happy-validate/happy.js"></script>
-    <script src="__INDEX__/lib/happy-validate/happy.methods.js"></script>
-    <script src="__INDEX__/js/timeTick.js"></script>
+    <script src="__STATIC__/lib/happy-validate/happy.js"></script>
+    <script src="__STATIC__/lib/happy-validate/happy.methods.js"></script>
+    <script src="__JS__/timeTick.js"></script>
 
     <script>
         $(document).ready(function () {

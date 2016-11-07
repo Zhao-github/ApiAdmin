@@ -139,8 +139,9 @@ return [
     // 视图输出字符串内容替换
     'view_replace_str'       => [
         '__STATIC__'=>'/static',
-        '__INDEX__'=>'/static/index',
-        '__ADMIN__'=>'/static/admin',
+        '__CSS__'=>'/static/css',
+        '__JS__'=>'/static/js',
+        '__IMG__'=>'/static/img',
         '__PLUGIN__'=>'/static/plugin',
     ],
     // 默认跳转页面对应的模板文件
