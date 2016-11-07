@@ -43,18 +43,18 @@ class Menu extends Base {
             ],
             'topButton' => [
                 [
-                    'href' => 'Menu/add',
-                    'class'=> 'am-btn-success',
+                    'href' => url('Menu/add'),
+                    'class'=> 'btn-success',
                     'info'=> '新增',
                     'icon' => 'plus',
-                    'ajax' => 0,
+                    'confirm' => 0,
                 ],
                 [
-                    'href' => 'Menu/del',
-                    'class'=> 'am-btn-danger del-all',
+                    'href' => url('Menu/del'),
+                    'class'=> 'btn-danger',
                     'info'=> '删除',
                     'icon' => 'trash',
-                    'ajax' => 1,
+                    'confirm' => 1,
                 ]
             ],
             'rightButton' => [
@@ -92,15 +92,13 @@ class Menu extends Base {
                     'module' => 'label',
                     'rule' => [
                         [
-                            'info' => '显示',
-                            'class' => 'success',
-                            'show' => ['hide', 1]
+                            'info' => '隐藏',
+                            'class' => 'warning'
                         ],
                         [
-                            'info' => '隐藏',
-                            'class' => 'warning',
-                            'show' => ['hide', 0]
-                        ]
+                            'info' => '显示',
+                            'class' => 'success'
+                        ],
                     ]
                 ],
                 'type' => [
@@ -108,13 +106,11 @@ class Menu extends Base {
                     'rule' => [
                         [
                             'info' => '方法类功能',
-                            'class' => 'secondary',
-                            'show' => ['type', 0]
+                            'class' => 'secondary'
                         ],
                         [
                             'info' => '模块类功能',
-                            'class' => 'primary',
-                            'show' => ['type', 1]
+                            'class' => 'primary'
                         ]
                     ]
                 ]

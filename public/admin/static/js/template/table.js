@@ -7,31 +7,63 @@
         if( tableObj.topButton ){
             tableHtml += buildTopButton( tableObj );
         }
+        tableHtml += '<table class="table table-bordered"> <tbody>';
         if( tableObj.header ){
             tableHtml += buildHeader( tableObj );
         }
         if( tableObj.data ){
             tableHtml += buildDataList( tableObj );
         }else{
-            tableHtml += buildEmptyTable();
+            tableHtml += buildEmptyTable( tableObj );
         }
-        tableHtml += '</div></div>';
+        tableHtml += '</tbody></table></div></div>';
         return tableHtml;
     };
     
     function buildHeader( tableObj ) {
-        
+        var headerHtml = '<tr><th style="width: 10px"><input type="checkbox"></th>';
+        $.each(tableObj.header, function (index, value) {
+            headerHtml += '<th>'+ value.info +'</th>';
+        });
+        headerHtml += '</tr>';
+        return headerHtml;
     }
     
     function buildTopButton( tableObj ) {
-        
+        var topHtml = '<div class="btn-group margin-bottom">';
+        if( tableObj.topButton ){
+            $.each(tableObj.topButton, function(index, value) {
+                if( value.confirm ){
+                    value.class += ' confirm';
+                }
+                if( value.icon ){
+                    topHtml += '<button href="'+value.href+'" type="button" class="btn '+value.class+'"><i class="'+value.icon+'"></i> '+value.info+'</button>';
+                }else{
+                    topHtml += '<button href="'+value.href+'" type="button" class="btn '+value.class+'">'+value.info+'</button>';
+                }
+            });
+        }
+        topHtml += '</div>';
+        return topHtml;
     }
 
     function buildDataList( tableObj ) {
-
+        var dataListHtml = '<tr><td><input type="checkbox"></td>';
+        $.each(tableObj.data, function (index, value) {
+            dataListHtml += '<td></td>';
+        });
+        dataListHtml += '</tr>';
+        return dataListHtml;
     }
     
-    function buildEmptyTable() {
-        
+    function buildEmptyTable( tableObj ) {
+        var emptyHtml = '<tr>';
+        var spanNum = tableObj.header.length + 1;
+        emptyHtml += '<td colspan="'+spanNum+'" class="builder-data-empty">';
+        emptyHtml += '<div class="am-text-center no-data" >';
+        emptyHtml += '<i class="fa fa-cogs"></i> 暂时没有数据<br>';
+        emptyHtml += '<small> 本系统由<b> 七维视觉科技有限公司 </b>开发维护</small>';
+        emptyHtml += '</div></td></tr>';
+        return emptyHtml;
     }
 })(jQuery);
