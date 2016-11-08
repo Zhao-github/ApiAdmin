@@ -57,18 +57,18 @@ class Menu extends Base {
                 [
                     'info' => '编辑',
                     'href' => url('Menu/edit'),
-                    'class'=> 'success',
+                    'class'=> 'btn-warning',
                     'param'=> [$this->primaryKey],
-                    'icon' => 'check',
+                    'icon' => 'fa fa-pencil',
                     'confirm' => 0,
                     'show' => ''
                 ],
                 [
                     'info' => '删除',
                     'href' => url('Menu/del'),
-                    'class'=> 'danger',
+                    'class'=> 'btn-danger',
                     'param'=> [$this->primaryKey],
-                    'icon' => 'trash',
+                    'icon' => 'fa fa-trash',
                     'confirm' => 1,
                     'show' => ''
                 ]
@@ -109,17 +109,7 @@ class Menu extends Base {
                     ]
                 ]
             ],
-            'data' => [
-                [
-                    'id' => 1,
-                    'name' => '测试',
-                    'url' => 'ssssss',
-                    'type' => 1,
-                    'hide' => 1,
-                    'level' => 3,
-                    'sort' => 4
-                ]
-            ]
+            'data' => [] //这个数据应该是从数据库中查出来
         ];
         $this->result($table,200);
     }

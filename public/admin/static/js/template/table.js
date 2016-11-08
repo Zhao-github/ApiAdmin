@@ -47,14 +47,7 @@
         var topHtml = '<div class="btn-group margin-bottom">';
         if( tableObj.topButton ){
             $.each(tableObj.topButton, function(index, value) {
-                if( value.confirm ){
-                    value.class += ' confirm';
-                }
-                if( value.icon ){
-                    topHtml += '<button href="'+value.href+'" type="button" class="btn '+value.class+'"><i class="'+value.icon+'"></i> '+value.info+'</button>';
-                }else{
-                    topHtml += '<button href="'+value.href+'" type="button" class="btn '+value.class+'">'+value.info+'</button>';
-                }
+                topHtml += createButton(value);
             });
         }
         topHtml += '</div>';
@@ -67,16 +60,21 @@
      * @returns {string}
      */
     function buildDataList( tableObj ) {
+        var paramStr;
         var dataListHtml = '<tr><td><input type="checkbox"></td>';
         $.each(tableObj.data, function (dataIndex, dataValue) {
             $.each(tableObj.header, function (fieldIndex, fieldValue) {
                 var fieldName = fieldValue.field;
                 if( fieldName == 'action' ){
-
+                    dataListHtml += '<td><div class="btn-group">';
+                    $.each(tableObj.rightButton, function(buttonIndex, buttonValue) {
+                        dataListHtml += createButton(buttonValue, dataValue);
+                    });
+                    dataListHtml += '</div></td>';
                 }else{
                     if( tableObj.typeRule[fieldName] ){
                         var rule = tableObj.typeRule[fieldName];
-                        var styleList ,detailInfo, paramStr;
+                        var styleList ,detailInfo;
                         switch (rule.module){
                             case 'label':
                                 if( rule.rule[dataValue[fieldName]] ){
@@ -105,6 +103,22 @@
         });
         dataListHtml += '</tr>';
         return dataListHtml;
+    }
+
+    function createButton( buttonValue, dataValue ) {
+        var paramStr = '', buttonStr = '';
+        if( buttonValue.confirm ){
+            buttonValue.class += ' confirm';
+        }
+        if( dataValue ){
+            paramStr = prepareParamStr( buttonValue, dataValue );
+        }
+        if( buttonValue.icon ){
+            buttonStr = '<button url="'+buttonValue.href+'" data="'+paramStr+'" type="button" class="btn '+buttonValue.class+'"><i class="'+buttonValue.icon+'"></i> '+buttonValue.info+'</button>';
+        }else{
+            buttonStr = '<button url="'+buttonValue.href+'" data="'+paramStr+'" type="button" class="btn '+buttonValue.class+'">'+buttonValue.info+'</button>';
+        }
+        return buttonStr;
     }
 
     function prepareInfo( styleList, dataValue, fieldName ) {
