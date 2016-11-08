@@ -88,10 +88,15 @@ function refresh( url ) {
         success: function(data){
             if( data.code == 200 ){
                 if( data.data.tempType == 'table' ){
-                    $.getScript('/static/js/template/table.js', function (){
+                    if( $.buildTable ){
                         $('#content').html($.buildTable(data.data));
                         $('#tableBox').hide().fadeIn(800);
-                    });
+                    }else{
+                        $.getScript('/static/js/template/table.js', function (){
+                            $('#content').html($.buildTable(data.data));
+                            $('#tableBox').hide().fadeIn(800);
+                        });
+                    }
                 }
             }else{
                 $.alertMsg('请求失败！')
