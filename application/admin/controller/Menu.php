@@ -115,7 +115,14 @@ class Menu extends Base {
     }
 
     public function add(){
+        $form = [
+            'formAttr' => [
+                'action' => '',
+                'id' => '',
 
+            ],
+        ];
+        $this->result($form, ReturnCode::GET_TEMPLATE_SUCCESS);
     }
 
     public function edit(){
