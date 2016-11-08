@@ -111,7 +111,7 @@ class Menu extends Base {
             ],
             'data' => [] //这个数据应该是从数据库中查出来
         ];
-        $this->result($table,200);
+        $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
     }
 
     public function add(){
