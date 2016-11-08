@@ -2,6 +2,7 @@
  * Created by 7d-vision on 2016/11/7.
  */
 (function ($) {
+
     $.buildTable = function ( tableObj ) {
         var tableHtml = '<div class="box" id="tableBox"><div class="box-body">';
         if( tableObj.rightButton && tableObj.rightButton.length ){
@@ -67,11 +68,64 @@
      */
     function buildDataList( tableObj ) {
         var dataListHtml = '<tr><td><input type="checkbox"></td>';
-        $.each(tableObj.data, function (index, value) {
-            dataListHtml += '<td></td>';
+        $.each(tableObj.data, function (dataIndex, dataValue) {
+            $.each(tableObj.header, function (fieldIndex, fieldValue) {
+                var fieldName = fieldValue.field;
+                if( fieldName == 'action' ){
+
+                }else{
+                    if( tableObj.typeRule[fieldName] ){
+                        var rule = tableObj.typeRule[fieldName];
+                        var styleList ,detailInfo, paramStr;
+                        switch (rule.module){
+                            case 'label':
+                                if( rule.rule[dataValue[fieldName]] ){
+                                    styleList = rule.rule[dataValue[fieldName]];
+                                    detailInfo = prepareInfo( styleList, dataValue, fieldName);
+                                    dataListHtml += '<td><span class="'+styleList['class']+'">'+detailInfo+'</span></td>';
+                                }else{
+                                    dataListHtml += '<td style="color:red;">' + dataValue[fieldName] + '</td>';
+                                }
+                                break;
+                            case 'a':
+                                styleList = rule.rule;
+                                detailInfo = prepareInfo( styleList, dataValue, fieldName);
+                                paramStr = prepareParamStr( styleList, dataValue );
+                                dataListHtml += '<td><a url="'+styleList['href']+'" data="'+paramStr+'">' + detailInfo + '</a></td>';
+                                break;
+                            case 'date':
+                                dataListHtml += '<td>' + $.formatDate(dataValue[fieldName]) + '</td>';
+                                break;
+                        }
+                    }else{
+                        dataListHtml += '<td>' + dataValue[fieldName] + '</td>';
+                    }
+                }
+            });
         });
         dataListHtml += '</tr>';
         return dataListHtml;
+    }
+
+    function prepareInfo( styleList, dataValue, fieldName ) {
+        var detailInfo;
+        if( styleList['info'] && styleList['info'].length ){
+            detailInfo = styleList['info'];
+        }else{
+            detailInfo = dataValue[fieldName];
+        }
+        return detailInfo;
+    }
+
+    function prepareParamStr( styleList, dataValue ) {
+        var paramStr = '';
+        if( styleList['param'].length ){
+            $.each(styleList['param'], function (paramIndex, paramValue) {
+                paramStr += paramValue + '=' + dataValue[paramValue] + '&';
+            });
+            paramStr = paramStr.substring(0, paramStr.length-1);
+        }
+        return paramStr;
     }
 
     /**

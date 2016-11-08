@@ -27,6 +27,9 @@
         .am-text-center {
             text-align: center !important;
         }
+        a{
+            cursor:pointer;
+        }
     </style>
     {block name="myStyle"}{/block}
     <!--[if lt IE 9]>
@@ -614,18 +617,23 @@
                 success: function(data){
                     if( data.code == 200 ){
                         if( data.data.tempType == 'table' ){
-                            if( $.buildTable ){
-                                $('#content').html($.buildTable(data.data));
-                                $('#tableBox').hide().fadeIn(800);
-                            }else{
+//                            if( $.buildTable ){
+//                                $('#content').html($.buildTable(data.data));
+//                                $('#tableBox').hide().fadeIn(800);
+//                            }else{
                                 $.getScript('__JS__/template/table.js', function (){
                                     $('#content').html($.buildTable(data.data));
                                     $('#tableBox').hide().fadeIn(800);
                                 });
-                            }
+//                            }
                         }
                     }else{
-                        $.alertMsg('请求失败！')
+                        $.alertMsg(data.msg);
+                        setTimeout(function() {
+                            if (data.url) {
+                                location.href = data.url;
+                            }
+                        }, 1000*data.wait);
                     }
                 }
             });

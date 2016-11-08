@@ -55,19 +55,19 @@ class Menu extends Base {
             ],
             'rightButton' => [
                 [
-                    'desc' => '编辑',
-                    'href' => 'Menu/edit',
+                    'info' => '编辑',
+                    'href' => url('Menu/edit'),
                     'class'=> 'success',
-                    'param'=> $this->primaryKey,
+                    'param'=> [$this->primaryKey],
                     'icon' => 'check',
                     'confirm' => 0,
                     'show' => ''
                 ],
                 [
-                    'desc' => '删除',
-                    'href' => 'Menu/del',
+                    'info' => '删除',
+                    'href' => url('Menu/del'),
                     'class'=> 'danger',
-                    'param'=> $this->primaryKey,
+                    'param'=> [$this->primaryKey],
                     'icon' => 'trash',
                     'confirm' => 1,
                     'show' => ''
@@ -75,13 +75,11 @@ class Menu extends Base {
             ],
             'typeRule' => [
                 'name' => [
-                    [
-                        'module' => 'a',
-                        'rule' => [
-                            'info' => '',
-                            'href' => 'Menu/add',
-                            'param'=> $this->primaryKey,
-                        ]
+                    'module' => 'a',
+                    'rule' => [
+                        'info' => '',
+                        'href' => url('Menu/add'),
+                        'param'=> [$this->primaryKey],
                     ]
                 ],
                 'hide' => [
@@ -89,11 +87,11 @@ class Menu extends Base {
                     'rule' => [
                         [
                             'info' => '隐藏',
-                            'class' => 'warning'
+                            'class' => 'label label-warning'
                         ],
                         [
                             'info' => '显示',
-                            'class' => 'success'
+                            'class' => 'label label-success'
                         ],
                     ]
                 ],
@@ -102,16 +100,26 @@ class Menu extends Base {
                     'rule' => [
                         [
                             'info' => '方法类功能',
-                            'class' => 'secondary'
+                            'class' => 'label label-info'
                         ],
                         [
                             'info' => '模块类功能',
-                            'class' => 'primary'
+                            'class' => 'label label-primary'
                         ]
                     ]
                 ]
             ],
-            'data' => []
+            'data' => [
+                [
+                    'id' => 1,
+                    'name' => '测试',
+                    'url' => 'ssssss',
+                    'type' => 1,
+                    'hide' => 1,
+                    'level' => 3,
+                    'sort' => 4
+                ]
+            ]
         ];
         $this->result($table,200);
     }
