@@ -607,8 +607,7 @@
     <script src="__PLUGIN__/vue/vue.min.js"></script>
     <script src="__JS__/template.js"></script>
     <script>
-        function refresh( url ) {
-            var $ = jQuery;
+        function refresh(url) {
             $.ajax({
                 type: "GET",
                 url: url,
@@ -629,7 +628,6 @@
                         $.alertMsg('请求失败！')
                     }
                 }
-
             });
         }
     </script>
