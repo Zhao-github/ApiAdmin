@@ -2,7 +2,14 @@
  * Created by 7d-vision on 2016/11/7.
  */
 (function ($) {
-
+    /**
+     * 创建表格HTML字符串
+     * 1、严重依赖Bootstrap的样式
+     * 2、严格的Json数据格式
+     * 3、如果有右侧操作按钮的话会默认自动加入{field:"action",info:"操作"}所以字段名不支持使用action，action是关键字
+     * @param tableObj
+     * @returns {string}
+     */
     $.buildTable = function ( tableObj ) {
         var tableHtml = '<div class="box" id="tableBox"><div class="box-body">';
         if( tableObj.rightButton && tableObj.rightButton.length ){
@@ -105,6 +112,12 @@
         return dataListHtml;
     }
 
+    /**
+     * 创建按钮
+     * @param buttonValue 按钮属性对象
+     * @param dataValue 当前行数据对象
+     * @returns {string}
+     */
     function createButton( buttonValue, dataValue ) {
         var paramStr = '', buttonStr = '';
         if( buttonValue.confirm ){
@@ -121,6 +134,13 @@
         return buttonStr;
     }
 
+    /**
+     * 预处理显示信息
+     * @param styleList 当前字段对应的规则对象
+     * @param dataValue 当前行数据对象
+     * @param fieldName 需要处理的数据的字段名
+     * @returns {*}
+     */
     function prepareInfo( styleList, dataValue, fieldName ) {
         var detailInfo;
         if( styleList['info'] && styleList['info'].length ){
@@ -131,6 +151,12 @@
         return detailInfo;
     }
 
+    /**
+     * 预处理参数信息
+     * @param styleList 当前字段对应的规则对象
+     * @param dataValue 当前行数据对象
+     * @returns {string}
+     */
     function prepareParamStr( styleList, dataValue ) {
         var paramStr = '';
         if( styleList['param'].length ){
