@@ -3,7 +3,7 @@
  */
 (function ($) {
     $.buildTable = function ( tableObj ) {
-        var tableHtml = '<div class="box"><div class="box-body">';
+        var tableHtml = '<div class="box" id="tableBox"><div class="box-body">';
         if( tableObj.rightButton && tableObj.rightButton.length ){
             tableObj.header.push({field:"action",info:"操作"});
         }
@@ -22,7 +22,12 @@
         tableHtml += '</tbody></table></div></div>';
         return tableHtml;
     };
-    
+
+    /**
+     * 创建表格头部分
+     * @param tableObj
+     * @returns {string}
+     */
     function buildHeader( tableObj ) {
         var headerHtml = '<tr><th style="width: 10px"><input type="checkbox"></th>';
         $.each(tableObj.header, function (index, value) {
@@ -31,7 +36,12 @@
         headerHtml += '</tr>';
         return headerHtml;
     }
-    
+
+    /**
+     * 创建顶部功能按钮
+     * @param tableObj
+     * @returns {string}
+     */
     function buildTopButton( tableObj ) {
         var topHtml = '<div class="btn-group margin-bottom">';
         if( tableObj.topButton ){
@@ -50,6 +60,11 @@
         return topHtml;
     }
 
+    /**
+     * 创建数据部分
+     * @param tableObj
+     * @returns {string}
+     */
     function buildDataList( tableObj ) {
         var dataListHtml = '<tr><td><input type="checkbox"></td>';
         $.each(tableObj.data, function (index, value) {
@@ -58,7 +73,12 @@
         dataListHtml += '</tr>';
         return dataListHtml;
     }
-    
+
+    /**
+     * 创建空数据表
+     * @param tableObj
+     * @returns {string}
+     */
     function buildEmptyTable( tableObj ) {
         var emptyHtml = '<tr>';
         var spanNum = tableObj.header.length + 1;

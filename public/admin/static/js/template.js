@@ -90,6 +90,7 @@ function refresh( url ) {
                 if( data.data.tempType == 'table' ){
                     $.getScript('/static/js/template/table.js', function (){
                         $('#content').html($.buildTable(data.data));
+                        $('#tableBox').hide().fadeIn(800);
                     });
                 }
             }else{
