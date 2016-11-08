@@ -79,29 +79,3 @@
     });
 
 })(jQuery);
-
-function refresh( url ) {
-    var $ = jQuery;
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function(data){
-            if( data.code == 200 ){
-                if( data.data.tempType == 'table' ){
-                    if( $.buildTable ){
-                        $('#content').html($.buildTable(data.data));
-                        $('#tableBox').hide().fadeIn(800);
-                    }else{
-                        $.getScript('/static/js/template/table.js', function (){
-                            $('#content').html($.buildTable(data.data));
-                            $('#tableBox').hide().fadeIn(800);
-                        });
-                    }
-                }
-            }else{
-                $.alertMsg('请求失败！')
-            }
-        }
-
-    });
-}
