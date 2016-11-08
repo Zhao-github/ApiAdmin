@@ -88,7 +88,9 @@ function refresh( url ) {
         success: function(data){
             if( data.code == 200 ){
                 if( data.data.tempType == 'table' ){
-                    $.getScript('/static/js/template/table.js');
+                    $.getScript('/static/js/template/table.js', function (){
+                        $('#content').html($.buildTable(data.data));
+                    });
                 }
             }else{
                 $.alertMsg('请求失败！')

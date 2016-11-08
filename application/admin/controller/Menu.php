@@ -35,10 +35,6 @@ class Menu extends Base {
                 [
                     'field' => 'sort',
                     'info' => '排序'
-                ],
-                [
-                    'field' => 'action',
-                    'info' => '操作'
                 ]
             ],
             'topButton' => [
@@ -46,14 +42,14 @@ class Menu extends Base {
                     'href' => url('Menu/add'),
                     'class'=> 'btn-success',
                     'info'=> '新增',
-                    'icon' => 'plus',
+                    'icon' => 'fa fa-plus',
                     'confirm' => 0,
                 ],
                 [
                     'href' => url('Menu/del'),
                     'class'=> 'btn-danger',
                     'info'=> '删除',
-                    'icon' => 'trash',
+                    'icon' => 'fa fa-trash',
                     'confirm' => 1,
                 ]
             ],

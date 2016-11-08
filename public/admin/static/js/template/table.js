@@ -4,14 +4,17 @@
 (function ($) {
     $.buildTable = function ( tableObj ) {
         var tableHtml = '<div class="box"><div class="box-body">';
-        if( tableObj.topButton ){
+        if( tableObj.rightButton && tableObj.rightButton.length ){
+            tableObj.header.push({field:"action",info:"操作"});
+        }
+        if( tableObj.topButton && tableObj.topButton.length ){
             tableHtml += buildTopButton( tableObj );
         }
         tableHtml += '<table class="table table-bordered"> <tbody>';
-        if( tableObj.header ){
+        if( tableObj.header && tableObj.header.length ){
             tableHtml += buildHeader( tableObj );
         }
-        if( tableObj.data ){
+        if( tableObj.data && tableObj.data.length ){
             tableHtml += buildDataList( tableObj );
         }else{
             tableHtml += buildEmptyTable( tableObj );
