@@ -47,7 +47,7 @@ class Menu extends Base {
                 ],
                 [
                     'href' => url('Menu/del'),
-                    'class'=> 'btn-danger',
+                    'class'=> 'btn-danger ajax-delete',
                     'info'=> '删除',
                     'icon' => 'fa fa-trash',
                     'confirm' => 1,
@@ -66,7 +66,7 @@ class Menu extends Base {
                 [
                     'info' => '删除',
                     'href' => url('Menu/del'),
-                    'class'=> 'btn-danger',
+                    'class'=> 'btn-danger ajax-delete',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-trash',
                     'confirm' => 1,
@@ -239,7 +239,7 @@ class Menu extends Base {
     }
 
     public function del(){
-
+        $this->error('失败');
     }
 
 }

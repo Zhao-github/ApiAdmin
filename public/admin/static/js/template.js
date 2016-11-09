@@ -28,27 +28,130 @@
     /**
      * 消息弹框
      * @param msg
+     * @param wait 等待时间（毫秒）
      */
-    $.alertMsg = function( msg ){
+    $.alertMsg = function( msg, wait = 2800 ){
         var dialog = bootbox.dialog({
             message: '<p class="text-center">'+msg+'</p>',
             closeButton: false
         });
         setTimeout(function(){
             dialog.modal('hide');
-        }, 3000);
+        }, wait);
     };
 
     /**
-     * Ajax Post 表单提交
+     * 刷新数据，允许带参数刷新
+     * @param url
+     * @param urlData
+     */
+    $.refresh = function ( url, urlData = '' ) {
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: urlData,
+            success: function(data){
+                if( data.code == 200 ){
+                    if( data.data.tempType == 'table' ){
+                        if( $.buildTable ){
+                            $('#content').html($.buildTable(data.data));
+                            $('#tableBox').hide().fadeIn(800);
+                        }else{
+                            $.getScript(JS_PATH + '/template/table.js', function (){
+                                $('#content').html($.buildTable(data.data));
+                                $('#tableBox').hide().fadeIn(800);
+                            });
+                        }
+                    }
+                    if( data.data.tempType == 'add' ){
+                        if( $.buildAddForm ){
+                            $('#content').html($.buildAddForm(data.data));
+                            $('#formBox').hide().fadeIn(800);
+                        }else{
+                            $.getScript(JS_PATH + '/template/form.js', function (){
+                                $('#content').html($.buildAddForm(data.data));
+                                $('#formBox').hide().fadeIn(800);
+                            });
+                        }
+                    }
+                    if( data.data.tempType == 'edit' ){
+                        if( $.buildEditForm ){
+                            $('#content').html($.buildEditForm(data.data));
+                            $('#formBox').hide().fadeIn(800);
+                        }else{
+                            $.getScript(JS_PATH + '/template/form.js', function (){
+                                $('#content').html($.buildEditForm(data.data));
+                                $('#formBox').hide().fadeIn(800);
+                            });
+                        }
+                    }
+                }else{
+                    $.alertMsg(data.msg);
+                    setTimeout(function() {
+                        if (data.url) {
+                            location.href = data.url;
+                        }
+                    }, 1000*data.wait);
+                }
+            }
+        });
+    };
+
+    /**
+     * Ajax Post 表单提交(增)
      */
     bodyDom.on('click', '.ajax-post', function() {
+        var message,query,form,target;
+        var target_form = $(this).attr('target-form');
+        var isRedirect = $(this).hasClass('redirect');
+        form = $('#' + target_form);
+        query = form.serialize();
+        target = form.attr('action');
+        $.post(target, query).success(function(data) {
+            var wait = 1000*data.wait;
+            if (data.code == 1) {
+                if (data.url) {
+                    message = data.msg + ' 页面即将自动跳转...';
+                } else {
+                    message = data.msg;
+                }
+                $.alertMsg(message);
+                if( isRedirect ){
+                    setTimeout(function() {
+                        if (data.url) {
+                            location.href = data.url;
+                        } else {
+                            location.reload();
+                        }
+                    }, wait);
+                }else{
+                    setTimeout(function() {
+                        if (data.url) {
+                            $.refresh(data.url);
+                        }
+                    }, wait);
+                }
+            } else {
+                $.alertMsg(data.msg);
+            }
+        });
+        return false;
+    });
+
+    /**
+     * Ajax Put 表单提交(改)
+     */
+    bodyDom.on('click', '.ajax-put', function() {
         var message,query,form,target;
         var target_form = $(this).attr('target-form');
         form = $('#' + target_form);
         query = form.serialize();
         target = form.attr('action');
-        $.post(target, query).success(function(data) {
+        $.ajax({
+            type: "PUT",
+            url: target,
+            data: query
+        }).done(function( data ) {
             var wait = 1000*data.wait;
             if (data.code == 1) {
                 if (data.url) {
@@ -76,60 +179,61 @@
         return false;
     });
 
+    /**
+     * Ajax Delete 请求(删) *
+     */
+    bodyDom.on('click', '.ajax-delete', function() {
+        var url = $(this).attr('url'), urlData = '';
+        if( $(this).attr('data') ){
+            urlData = $(this).attr('data');
+        }
+        if( $(this).hasClass('confirm') ){
+            bootbox.confirm({
+                title: "温馨提醒：",
+                message: "您确定要这么做么？",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> 取消'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> 确定'
+                    }
+                },
+                callback: function (result) {
+                    if( result ){
+                        $.ajax({
+                            type: "DELETE",
+                            url: url,
+                            data: urlData
+                        }).done(function( data ) {
+                            var wait = 1000*data.wait;
+                            if (data.code == 1) {
+                                $.alertMsg(data.msg);
+                                setTimeout(function() {
+                                    if (data.url) {
+                                        $.refresh(data.url);
+                                    }
+                                }, wait);
+                            } else {
+                                $.alertMsg(data.msg);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        return false;
+    });
+
+    /**
+     * Ajax 刷新页面 *
+     */
     bodyDom.on('click', '.refresh', function() {
         var url = $(this).attr('url'), urlData = '';
         if( $(this).attr('data') ){
             urlData = $(this).attr('data');
         }
-        $.ajax({
-            type: "GET",
-            url: url,
-            data: urlData,
-            success: function(data){
-                if( data.code == 200 ){
-                    if( data.data.tempType == 'table' ){
-                        if( $.buildTable ){
-                            $('#content').html($.buildTable(data.data));
-                            $('#tableBox').hide().fadeIn(800);
-                        }else{
-                            $.getScript(JS_PATH + '/template/table.js', function (){
-                                $('#content').html($.buildTable(data.data));
-                                $('#tableBox').hide().fadeIn(800);
-                            });
-                        }
-                    }
-                    if( data.data.tempType == 'add' ){
-                        // if( $.buildAddForm ){
-                        //     $('#content').html($.buildAddForm(data.data));
-                        //     $('#formBox').hide().fadeIn(800);
-                        // }else{
-                            $.getScript(JS_PATH + '/template/form.js', function (){
-                                $('#content').html($.buildAddForm(data.data));
-                                $('#formBox').hide().fadeIn(800);
-                            });
-                        // }
-                    }
-                    if( data.data.tempType == 'edit' ){
-                        if( $.buildEditForm ){
-                            $('#content').html($.buildEditForm(data.data));
-                            $('#formBox').hide().fadeIn(800);
-                        }else{
-                            $.getScript(JS_PATH + '/template/form.js', function (){
-                                $('#content').html($.buildEditForm(data.data));
-                                $('#formBox').hide().fadeIn(800);
-                            });
-                        }
-                    }
-                }else{
-                    $.alertMsg(data.msg);
-                    setTimeout(function() {
-                        if (data.url) {
-                            location.href = data.url;
-                        }
-                    }, 1000*data.wait);
-                }
-            }
-        });
+        $.refresh(url, urlData);
     });
 
 })(jQuery);
