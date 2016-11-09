@@ -66,7 +66,7 @@ class Base extends Controller {
                 if( $sidOld != $sidNow ){
                     $this->error("您的账号在别的地方登录了，请重新登录！", url('User/login'));
                 }else{
-//                    cache($this->uid, $sidNow, config('online_time'));
+                    cache($this->uid, $sidNow, config('online_time'));
 //                    $this->userInfo = User::get([ $this->primaryKey => $this->uid ]);
 //                    if( $this->userInfo['updateTime'] === 0 ){
 //                        $this->error('初次登录请重置用户密码！', url('User/changePassWord'));

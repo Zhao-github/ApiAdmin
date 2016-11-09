@@ -115,14 +115,111 @@ class Menu extends Base {
     }
 
     public function add(){
-        $form = [
-            'formAttr' => [
-                'action' => '',
-                'id' => '',
+        if( $this->request->isPost() ){
 
-            ],
-        ];
-        $this->result($form, ReturnCode::GET_TEMPLATE_SUCCESS);
+        }else{
+            $form = [
+                'tempType' => 'add',
+                'formAttr' => [
+                    'target' => '',
+                    'formId' => '',
+                    'backUrl' => '',
+                ],
+                'formList' => [
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => '菜单名称：',
+                        'attr' => [
+                            'name' => 'name',
+                            'value' => '',
+                            'placeholder' => ''
+                        ]
+                    ],
+                    [
+                        'module' => 'select',
+                        'description' => '',
+                        'info' => '父级菜单：',
+                        'attr' => [
+                            'name' => 'fid',
+                            'value' => '',
+                            'options' => []
+                        ]
+                    ],
+                    [
+                        'module' => 'select',
+                        'description' => '',
+                        'info' => '菜单等级：',
+                        'attr' => [
+                            'name' => 'level',
+                            'value' => '',
+                            'options' => []
+                        ]
+                    ],
+                    [
+                        'module' => 'radio',
+                        'description' => '',
+                        'info' => '菜单类型：',
+                        'attr' => [
+                            'name' => 'type',
+                            'value' => '',
+                            'options' => []
+                        ]
+                    ],
+                    [
+                        'module' => 'radio',
+                        'description' => '',
+                        'info' => '是否显示：「该配置只对模块类功能生效」',
+                        'attr' => [
+                            'name' => 'hide',
+                            'value' => '',
+                            'options' => []
+                        ]
+                    ],
+                    [
+                        'module' => 'radio',
+                        'description' => '',
+                        'info' => '是否推荐：「该配置只对模块类功能生效」',
+                        'attr' => [
+                            'name' => 'recommend',
+                            'value' => '',
+                            'options' => []
+                        ]
+                    ],
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => '菜单图标：「该配置只对模块类功能生效」',
+                        'attr' => [
+                            'name' => 'icon',
+                            'value' => '',
+                            'placeholder' => ''
+                        ]
+                    ],
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => '菜单URL：「该配置只对无模块类功能子菜单的菜单生效」[具体格式为：控制器/方法名]',
+                        'attr' => [
+                            'name' => 'url',
+                            'value' => '',
+                            'placeholder' => ''
+                        ]
+                    ],
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => '排序：「数字越小顺序越靠前」',
+                        'attr' => [
+                            'name' => 'order',
+                            'value' => '',
+                            'placeholder' => ''
+                        ]
+                    ]
+                ]
+            ];
+            $this->result($form, ReturnCode::GET_TEMPLATE_SUCCESS);
+        }
     }
 
     public function edit(){

@@ -7,6 +7,7 @@
 
 (function ($) {
     "use strict";
+    var bodyDom = $('body');
     /**
      * 格式化时间戳（为了和PHP的date函数统一，这里的时间戳都是10位，不包含毫秒）
      * @param timestamp
@@ -41,81 +42,94 @@
     /**
      * Ajax Post 表单提交
      */
-    $('body').on('click', '.ajax-post', function() {
+    bodyDom.on('click', '.ajax-post', function() {
         var message,query,form,target;
         var target_form = $(this).attr('target-form');
-
-        if ( $(this).attr('type') == 'submit' ) {
-            form = $('#' + target_form);
-            query = form.serialize();
-            target = form.attr('action');
-            $.post(target, query).success(function(data) {
-                var wait = 1000*data.wait;
-                if (data.code == 1) {
-                    if (data.url) {
-                        message = data.msg + ' 页面即将自动跳转...';
-                    } else {
-                        message = data.msg;
-                    }
-                    $.alertMsg(message);
-                    setTimeout(function() {
-                        if (data.url) {
-                            location.href = data.url;
-                        } else {
-                            location.reload();
-                        }
-                    }, wait);
+        form = $('#' + target_form);
+        query = form.serialize();
+        target = form.attr('action');
+        $.post(target, query).success(function(data) {
+            var wait = 1000*data.wait;
+            if (data.code == 1) {
+                if (data.url) {
+                    message = data.msg + ' 页面即将自动跳转...';
                 } else {
-                    $.alertMsg(data.msg);
-                    setTimeout(function() {
-                        if (data.url) {
-                            location.href = data.url;
-                        }
-                    }, wait);
+                    message = data.msg;
                 }
-            });
-        }
-        return false;
-    });
-
-})(jQuery);
-
-var refresh = function(url) {
-    $.ajax({
-        type: "GET",
-        url: url,
-        success: function(data){
-            if( data.code == 200 ){
-                if( data.data.tempType == 'table' ){
-                    if( $.buildTable ){
-                        $('#content').html($.buildTable(data.data));
-                        $('#tableBox').hide().fadeIn(800);
-                    }else{
-                        $.getScript(JS_PATH + '/template/table.js', function (){
-                            $('#content').html($.buildTable(data.data));
-                            $('#tableBox').hide().fadeIn(800);
-                        });
+                $.alertMsg(message);
+                setTimeout(function() {
+                    if (data.url) {
+                        location.href = data.url;
+                    } else {
+                        location.reload();
                     }
-                }
-                if( data.data.tempType == 'form' ){
-                    if( $.buildForm ){
-                        $('#content').html($.buildForm(data.data));
-                        $('#tableBox').hide().fadeIn(800);
-                    }else{
-                        $.getScript(JS_PATH + '/template/form.js', function (){
-                            $('#content').html($.buildForm(data.data));
-                            $('#formBox').hide().fadeIn(800);
-                        });
-                    }
-                }
-            }else{
+                }, wait);
+            } else {
                 $.alertMsg(data.msg);
                 setTimeout(function() {
                     if (data.url) {
                         location.href = data.url;
                     }
-                }, 1000*data.wait);
+                }, wait);
             }
-        }
+        });
+        return false;
     });
-};
+
+    bodyDom.on('click', '.refresh', function() {
+        var url = $(this).attr('url'), urlData = '';
+        if( $(this).attr('data') ){
+            urlData = $(this).attr('data');
+        }
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: urlData,
+            success: function(data){
+                if( data.code == 200 ){
+                    if( data.data.tempType == 'table' ){
+                        if( $.buildTable ){
+                            $('#content').html($.buildTable(data.data));
+                            $('#tableBox').hide().fadeIn(800);
+                        }else{
+                            $.getScript(JS_PATH + '/template/table.js', function (){
+                                $('#content').html($.buildTable(data.data));
+                                $('#tableBox').hide().fadeIn(800);
+                            });
+                        }
+                    }
+                    if( data.data.tempType == 'add' ){
+                        if( $.buildAddForm ){
+                            $('#content').html($.buildAddForm(data.data));
+                            $('#formBox').hide().fadeIn(800);
+                        }else{
+                            $.getScript(JS_PATH + '/template/form.js', function (){
+                                $('#content').html($.buildAddForm(data.data));
+                                $('#formBox').hide().fadeIn(800);
+                            });
+                        }
+                    }
+                    if( data.data.tempType == 'edit' ){
+                        if( $.buildEditForm ){
+                            $('#content').html($.buildEditForm(data.data));
+                            $('#formBox').hide().fadeIn(800);
+                        }else{
+                            $.getScript(JS_PATH + '/template/form.js', function (){
+                                $('#content').html($.buildEditForm(data.data));
+                                $('#formBox').hide().fadeIn(800);
+                            });
+                        }
+                    }
+                }else{
+                    $.alertMsg(data.msg);
+                    setTimeout(function() {
+                        if (data.url) {
+                            location.href = data.url;
+                        }
+                    }, 1000*data.wait);
+                }
+            }
+        });
+    });
+
+})(jQuery);

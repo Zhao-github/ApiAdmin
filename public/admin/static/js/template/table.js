@@ -122,6 +122,8 @@
         var paramStr = '', buttonStr = '';
         if( buttonValue.confirm ){
             buttonValue.class += ' confirm';
+        }else{
+            buttonValue.class += ' refresh';
         }
         if( dataValue ){
             paramStr = prepareParamStr( buttonValue, dataValue );
