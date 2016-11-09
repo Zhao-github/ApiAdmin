@@ -57,10 +57,10 @@
     function buildInput( inputObj ) {
         var formHtml = '<div><div class="col-xs-8 form-group"><label>'+ inputObj.info +'</label>';
         var placeholder = '', value = '';
-        if( inputObj.attr.placeholder && inputObj.attr.placeholder.length ){
+        if( inputObj.attr.placeholder){
             placeholder = 'placeholder="'+ inputObj.attr.placeholder +'"';
         }
-        if( inputObj.attr.value && inputObj.attr.value.length ){
+        if( inputObj.attr.value){
             value = 'value="'+ inputObj.attr.value +'"';
         }
         formHtml += '<input type="text" class="form-control" '+ placeholder +' '+ value +' name="'+ inputObj.attr.name +'"></div>';
@@ -90,7 +90,7 @@
             });
         }
         formHtml += '</div>';
-        if( radioObj.description && radioObj.description.length ){
+        if( radioObj.description ){
             formHtml += ' <div class="col-xs-4 form-group" style="margin-top: 30px"><span class="label label-info">'+ radioObj.description +'</span></div>';
         }
         formHtml += '</div></div>';
