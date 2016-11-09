@@ -67,9 +67,9 @@
      * @returns {string}
      */
     function buildDataList( tableObj ) {
-        var paramStr;
-        var dataListHtml = '<tr><td><input type="checkbox"></td>';
+        var paramStr, dataListHtml = '';
         $.each(tableObj.data, function (dataIndex, dataValue) {
+            dataListHtml += '<tr><td><input type="checkbox"></td>';
             $.each(tableObj.header, function (fieldIndex, fieldValue) {
                 var fieldName = fieldValue.field;
                 if( fieldName == 'action' ){
@@ -107,8 +107,8 @@
                     }
                 }
             });
+            dataListHtml += '</tr>';
         });
-        dataListHtml += '</tr>';
         return dataListHtml;
     }
 
