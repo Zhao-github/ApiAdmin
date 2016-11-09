@@ -101,6 +101,14 @@
                             case 'date':
                                 dataListHtml += '<td>' + $.formatDate(dataValue[fieldName]) + '</td>';
                                 break;
+                            case 'icon':
+                                if( rule.rule[dataValue[fieldName]] ){
+                                    styleList = rule.rule[dataValue[fieldName]];
+                                    dataListHtml += '<td><i class="'+styleList['class']+'"></i></td>';
+                                }else{
+                                    dataListHtml += '<td style="color:red;">' + dataValue[fieldName] + '</td>';
+                                }
+                                break;
                         }
                     }else{
                         dataListHtml += '<td>' + dataValue[fieldName] + '</td>';
