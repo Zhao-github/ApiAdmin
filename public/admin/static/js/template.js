@@ -79,3 +79,43 @@
     });
 
 })(jQuery);
+
+var refresh = function(url) {
+    $.ajax({
+        type: "GET",
+        url: url,
+        success: function(data){
+            if( data.code == 200 ){
+                if( data.data.tempType == 'table' ){
+                    if( $.buildTable ){
+                        $('#content').html($.buildTable(data.data));
+                        $('#tableBox').hide().fadeIn(800);
+                    }else{
+                        $.getScript(JS_PATH + '/template/table.js', function (){
+                            $('#content').html($.buildTable(data.data));
+                            $('#tableBox').hide().fadeIn(800);
+                        });
+                    }
+                }
+                if( data.data.tempType == 'form' ){
+                    if( $.buildForm ){
+                        $('#content').html($.buildForm(data.data));
+                        $('#tableBox').hide().fadeIn(800);
+                    }else{
+                        $.getScript(JS_PATH + '/template/form.js', function (){
+                            $('#content').html($.buildForm(data.data));
+                            $('#formBox').hide().fadeIn(800);
+                        });
+                    }
+                }
+            }else{
+                $.alertMsg(data.msg);
+                setTimeout(function() {
+                    if (data.url) {
+                        location.href = data.url;
+                    }
+                }, 1000*data.wait);
+            }
+        }
+    });
+};

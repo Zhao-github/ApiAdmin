@@ -11,7 +11,7 @@
      * @returns {string}
      */
     $.buildTable = function ( tableObj ) {
-        var tableHtml = '<div class="box" id="tableBox"><div class="box-body">';
+        var tableHtml = '<div class="box box-primary" id="tableBox"><div class="box-body">';
         if( tableObj.rightButton && tableObj.rightButton.length ){
             tableObj.header.push({field:"action",info:"操作"});
         }

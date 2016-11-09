@@ -600,48 +600,14 @@
     <!-- AdminLTE for demo purposes -->
     <script src="__JS__/demo.js"></script>
     <script src="__PLUGIN__/vue/vue.min.js"></script>
-    <script src="__JS__/template.js"></script>
     <script>
-        function refresh(url) {
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: function(data){
-                    if( data.code == 200 ){
-                        if( data.data.tempType == 'table' ){
-                            if( $.buildTable ){
-                                $('#content').html($.buildTable(data.data));
-                                $('#tableBox').hide().fadeIn(800);
-                            }else{
-                                $.getScript('__JS__/template/table.js', function (){
-                                    $('#content').html($.buildTable(data.data));
-                                    $('#tableBox').hide().fadeIn(800);
-                                });
-                            }
-                        }
-                        if( data.data.tempType == 'form' ){
-                            if( $.buildForm ){
-                                $('#content').html($.buildForm(data.data));
-                                $('#tableBox').hide().fadeIn(800);
-                            }else{
-                                $.getScript('__JS__/template/form.js', function (){
-                                    $('#content').html($.buildForm(data.data));
-                                    $('#formBox').hide().fadeIn(800);
-                                });
-                            }
-                        }
-                    }else{
-                        $.alertMsg(data.msg);
-                        setTimeout(function() {
-                            if (data.url) {
-                                location.href = data.url;
-                            }
-                        }, 1000*data.wait);
-                    }
-                }
-            });
-        }
+        var JS_PATH = '__JS__';
+        var CSS_PATH = '__CSS__';
+        var STATIC_PATH = '__STATIC__';
+        var IMG_PATH = '__IMG__';
+        var PLUGIN_PATH = '__PLUGIN__';
     </script>
+    <script src="__JS__/template.js"></script>
     {block name="myScript"}{/block}
 </body>
 </html>
