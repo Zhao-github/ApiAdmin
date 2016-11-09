@@ -45,6 +45,9 @@
                 case 'hidden':
                     formHtml += buildHidden(value);
                     break;
+                case 'checkbox':
+                    formHtml += buildCheckbox(value);
+                    break;
             }
         });
         formHtml += '</div><div class="box-footer">';
@@ -53,6 +56,27 @@
         return formHtml;
     }
 
+    function buildCheckbox( checkboxObj ) {
+        var formHtml = '<div>';
+        formHtml += '<div class="col-xs-8 form-group"><label>'+ checkboxObj.info +'</label>';
+        formHtml += '<div class="input-group radio">';
+        if( checkboxObj.attr ){
+            $.each(checkboxObj.attr, function (index, value) {
+                if( value.value ){
+                    formHtml += '<input type="checkbox" checked name="'+ value.name +'"> '+ value.desc +'　';
+                }else{
+                    formHtml += '<input type="checkbox" name="'+ value.name +'"> '+ value.desc +'　';
+                }
+            });
+        }
+        formHtml += '</div>';
+        if( checkboxObj.description ){
+            formHtml += ' <div class="col-xs-4 form-group" style="margin-top: 30px"><span class="label label-info">'+ checkboxObj.description +'</span></div>';
+        }
+        formHtml += '</div></div>';
+        return formHtml;
+    }
+    
     /**
      * 创建文本框
      * @param inputObj

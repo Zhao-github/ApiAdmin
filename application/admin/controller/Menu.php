@@ -23,12 +23,24 @@ class Menu extends Base {
                     'info' => '菜单URL'
                 ],
                 [
-                    'field' => 'type',
-                    'info' => '菜单类型'
-                ],
-                [
                     'field' => 'level',
                     'info' => '等级'
+                ],
+                [
+                    'field' => 'post',
+                    'info' => 'Post'
+                ],
+                [
+                    'field' => 'get',
+                    'info' => 'Get'
+                ],
+                [
+                    'field' => 'put',
+                    'info' => 'Put'
+                ],
+                [
+                    'field' => 'delete',
+                    'info' => 'Delete'
                 ],
                 [
                     'field' => 'hide',
@@ -98,21 +110,60 @@ class Menu extends Base {
                         ]
                     ]
                 ],
-                'type' => [
-                    'module' => 'label',
+                'post' => [
+                    'module' => 'icon',
                     'rule' => [
                         [
-                            'info' => '方法类功能',
-                            'class' => 'label label-info'
+                            'info' => '',
+                            'class' => 'fa fa-close'
                         ],
                         [
-                            'info' => '模块类功能',
-                            'class' => 'label label-primary'
+                            'info' => '',
+                            'class' => 'fa fa-check'
+                        ]
+                    ]
+                ],
+                'get' => [
+                    'module' => 'icon',
+                    'rule' => [
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-close'
+                        ],
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-check'
+                        ]
+                    ]
+                ],
+                'put' => [
+                    'module' => 'icon',
+                    'rule' => [
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-close'
+                        ],
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-check'
+                        ]
+                    ]
+                ],
+                'delete' => [
+                    'module' => 'icon',
+                    'rule' => [
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-close'
+                        ],
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-check'
                         ]
                     ]
                 ]
             ],
-            'data' => $data //这个数据应该是从数据库中查出来
+            'data' => $data
         ];
         $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
     }
@@ -177,15 +228,29 @@ class Menu extends Base {
                         ]
                     ],
                     [
-                        'module' => 'radio',
+                        'module' => 'checkbox',
                         'description' => '',
-                        'info' => '菜单类型：',
+                        'info' => '访客权限：',
                         'attr' => [
-                            'name' => 'type',
-                            'value' => '',
-                            'options' => [
-                                '模块类功能',
-                                '方法类功能'
+                            [
+                                'name' => 'auth[get]',
+                                'desc' => 'GET',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[put]',
+                                'desc' => 'PUT',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[post]',
+                                'desc' => 'POST',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[delete]',
+                                'desc' => 'DELETE',
+                                'value' => ''
                             ]
                         ]
                     ],
@@ -199,19 +264,6 @@ class Menu extends Base {
                             'options' => [
                                 '显示菜单',
                                 '隐藏菜单',
-                            ]
-                        ]
-                    ],
-                    [
-                        'module' => 'radio',
-                        'description' => '',
-                        'info' => '是否推荐：「该配置只对模块类功能生效」',
-                        'attr' => [
-                            'name' => 'recommend',
-                            'value' => '',
-                            'options' => [
-                                '普通模块',
-                                '推荐模块'
                             ]
                         ]
                     ],
@@ -321,15 +373,29 @@ class Menu extends Base {
                         ]
                     ],
                     [
-                        'module' => 'radio',
+                        'module' => 'checkbox',
                         'description' => '',
-                        'info' => '菜单类型：',
+                        'info' => '访客权限：',
                         'attr' => [
-                            'name' => 'type',
-                            'value' => $detail['type'],
-                            'options' => [
-                                '模块类功能',
-                                '方法类功能'
+                            [
+                                'name' => 'auth[get]',
+                                'desc' => 'GET',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[put]',
+                                'desc' => 'PUT',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[post]',
+                                'desc' => 'POST',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[delete]',
+                                'desc' => 'DELETE',
+                                'value' => ''
                             ]
                         ]
                     ],
@@ -343,19 +409,6 @@ class Menu extends Base {
                             'options' => [
                                 '显示菜单',
                                 '隐藏菜单',
-                            ]
-                        ]
-                    ],
-                    [
-                        'module' => 'radio',
-                        'description' => '',
-                        'info' => '是否推荐：「该配置只对模块类功能生效」',
-                        'attr' => [
-                            'name' => 'recommend',
-                            'value' => $detail['recommend'],
-                            'options' => [
-                                '普通模块',
-                                '推荐模块'
                             ]
                         ]
                     ],
