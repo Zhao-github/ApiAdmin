@@ -82,6 +82,7 @@ class Menu extends Base {
                         'info' => '',
                         'href' => url('Menu/add'),
                         'param'=> [$this->primaryKey],
+                        'class' => 'refresh'
                     ]
                 ],
                 'hide' => [
@@ -133,6 +134,7 @@ class Menu extends Base {
             }
         }else{
             $data = \app\admin\model\Menu::where([])->column('name',$this->primaryKey);
+            $defaultFather = $this->request->get($this->primaryKey);
             $form = [
                 'tempType' => 'add',
                 'formAttr' => [
@@ -157,7 +159,7 @@ class Menu extends Base {
                         'info' => '父级菜单：',
                         'attr' => [
                             'name' => 'fid',
-                            'value' => '',
+                            'value' => $defaultFather,
                             'options' => $data
                         ]
                     ],
