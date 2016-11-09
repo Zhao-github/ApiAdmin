@@ -1,5 +1,6 @@
 <?php
 namespace app\admin\controller;
+use think\Validate;
 
 /**
  * 菜单管理控制器
@@ -122,7 +123,7 @@ class Menu extends Base {
                 [
                     'name' => 'require',
                 ],[
-                    'name.require' => '名称必须',
+                    'name.require' => '菜单名称不能为空',
                 ]
             )->save($this->request->post());
             if(false === $result){
@@ -250,17 +251,17 @@ class Menu extends Base {
 
     public function edit(){
         if( $this->request->isPut() ){
-            $menuModel = new \app\admin\model\Menu();
-            $result = $menuModel->allowField(true)->validate(
-                [
-                    'name' => 'require',
-                ],[
-                    'name.require' => '名称必须',
-                ]
-            )->update($this->request->put());
-            if(false === $result){
-                $this->error($menuModel->getError());
+            $data = $this->request->put();
+            $validate = new Validate([
+                'name' => 'require',
+            ],[
+                'name.require' => '菜单名称不能为空',
+            ]);
+            if(!$validate->check($data)){
+                $this->error($validate->getError());
             }else{
+                $menuModel = new \app\admin\model\Menu();
+                $menuModel->allowField(true)->update($data);
                 $this->success('操作成功！', url('Menu/index'));
             }
         }else{
@@ -269,8 +270,8 @@ class Menu extends Base {
             $form = [
                 'tempType' => 'edit',
                 'formAttr' => [
-                    'target' => url('Menu/add'),
-                    'formId' => 'add-menu-form',
+                    'target' => url('Menu/edit'),
+                    'formId' => 'edit-menu-form',
                     'backUrl' => url('Menu/index'),
                 ],
                 'formList' => [
@@ -281,6 +282,16 @@ class Menu extends Base {
                         'attr' => [
                             'name' => 'name',
                             'value' => $detail['name'],
+                            'placeholder' => ''
+                        ]
+                    ],
+                    [
+                        'module' => 'hidden',
+                        'description' => '',
+                        'info' => '',
+                        'attr' => [
+                            'name' => 'id',
+                            'value' => $detail['id'],
                             'placeholder' => ''
                         ]
                     ],

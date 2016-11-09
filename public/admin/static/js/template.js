@@ -30,7 +30,8 @@
      * @param msg
      * @param wait 等待时间（毫秒）
      */
-    $.alertMsg = function( msg, wait = 2800 ){
+    $.alertMsg = function( msg, wait ){
+        wait = wait ? wait : 2800;
         var dialog = bootbox.dialog({
             message: '<p class="text-center">'+msg+'</p>',
             closeButton: false
@@ -45,7 +46,8 @@
      * @param url
      * @param urlData
      */
-    $.refresh = function ( url, urlData = '' ) {
+    $.refresh = function ( url, urlData ) {
+        urlData = urlData ? urlData : '';
         $.ajax({
             type: "GET",
             url: url,
@@ -98,7 +100,7 @@
     };
 
     /**
-     * Ajax Post 表单提交(增)
+     * Ajax Post 表单提交(增) *
      */
     bodyDom.on('click', '.ajax-post', function() {
         var message,query,form,target;
@@ -139,7 +141,7 @@
     });
 
     /**
-     * Ajax Put 表单提交(改)
+     * Ajax Put 表单提交(改) *
      */
     bodyDom.on('click', '.ajax-put', function() {
         var message,query,form,target;
@@ -162,18 +164,11 @@
                 $.alertMsg(message);
                 setTimeout(function() {
                     if (data.url) {
-                        location.href = data.url;
-                    } else {
-                        location.reload();
+                        $.refresh(data.url);
                     }
                 }, wait);
             } else {
                 $.alertMsg(data.msg);
-                setTimeout(function() {
-                    if (data.url) {
-                        location.href = data.url;
-                    }
-                }, wait);
             }
         });
         return false;

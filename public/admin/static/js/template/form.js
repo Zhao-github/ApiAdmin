@@ -8,7 +8,7 @@
      * @returns {string}
      */
     $.buildAddForm = function ( formObj ) {
-        return buildForm(formObj, 'box-success');
+        return buildForm(formObj, 'box-success', 'ajax-post');
     };
 
     /**
@@ -17,16 +17,17 @@
      * @returns {string}
      */
     $.buildEditForm = function ( formObj ) {
-        return buildForm(formObj, 'box-warning');
+        return buildForm(formObj, 'box-warning', 'ajax-put');
     };
 
     /**
      * 根据规则创建表单
      * @param formObj 表单数据对象
      * @param boxType box样式
+     * @param method 数据提交方式
      * @returns {string}
      */
-    function buildForm( formObj, boxType ) {
+    function buildForm( formObj, boxType, method ) {
         var formHtml = '<div class="box '+ boxType +'" id="formBox"><div class="box-body">';
         formHtml += '<div class="box-header with-border"><h3 class="box-title">新增菜单</h3></div>';
         formHtml += '<form id="'+ formObj.formAttr.formId +'" action="'+ formObj.formAttr.target +'"><div class="box-body">';
@@ -41,10 +42,13 @@
                 case 'radio':
                     formHtml += buildRadio(value);
                     break;
+                case 'hidden':
+                    formHtml += buildHidden(value);
+                    break;
             }
         });
         formHtml += '</div><div class="box-footer">';
-        formHtml += '<button type="submit" target-form="'+ formObj.formAttr.formId +'" class="btn btn-primary ajax-post">确认提交</button>';
+        formHtml += '<button type="submit" target-form="'+ formObj.formAttr.formId +'" class="btn btn-primary '+ method +'">确认提交</button>';
         formHtml += ' <a class="btn btn-default refresh" url="'+ formObj.formAttr.backUrl +'" >放弃返回</a></div></form></div></div>';
         return formHtml;
     }
@@ -95,6 +99,15 @@
         }
         formHtml += '</div></div>';
         return formHtml;
+    }
+
+    /**
+     * 创建隐藏表单
+     * @param hiddenObj
+     * @returns {string}
+     */
+    function buildHidden( hiddenObj ) {
+        return '<input type="hidden" class="form-control" value="'+ hiddenObj.attr.value +'" name="'+ hiddenObj.attr.name +'">';
     }
     
     function buildTextarea( textareaObj ) {
