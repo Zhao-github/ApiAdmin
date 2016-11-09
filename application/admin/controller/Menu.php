@@ -396,7 +396,18 @@ class Menu extends Base {
     }
 
     public function del(){
-        $this->error('失败');
+        if( $this->request->isDelete() ){
+            $key = $this->request->delete($this->primaryKey);
+            $childNum = \app\admin\model\Menu::where(['fid' => $key])->count();
+            if( $childNum ){
+                $this->error('当前菜单存在子菜单，删除失败！');
+            }
+            $delNum = \app\admin\model\Menu::destroy($key);
+            if( $delNum ){
+                $this->success('操作成功！', url('Menu/index'));
+            }
+        }
+        $this->error('操作失败！');
     }
 
 }
