@@ -1,32 +1,78 @@
 {extend name="public/base" /}
 {block name="content"}
-        <div class="box box-warning">
-            <div class="box-header with-border">
-                <h3 class="box-title">General Elements</h3>
+<div class="box box-success">
+    <div class="box-header with-border">
+        <h3 class="box-title">新增菜单</h3>
+    </div>
+    <form id="form-login">
+        <div class="box-body">
+            <div>
+                <div class="col-xs-8 form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                </div>
+                <div class="col-xs-4 form-group" style="margin-top: 30px">
+                    <span class="label label-info">Info</span>
+                </div>
             </div>
-            <div class="box-body">
-                <form role="form">
-                    <div class="form-group col-xs-8">
-                        <label>Text</label>
-                        <input type="text" class="form-control" placeholder="Enter ...">
-                    </div>
-                    <div class="form-group has-success col-xs-8">
-                        <label>Text</label>
-                        <input type="text" class="form-control" placeholder="Enter ...">
-                    </div>
-                    <!-- textarea -->
-                    <div class="form-group col-xs-8">
-                        <label>Textarea</label>
-                        <textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>
-                    </div>
-                    <div class="form-group col-xs-8">
-                        <label>Textarea Disabled</label>
-                        <textarea class="form-control" rows="3" placeholder="Enter ..." disabled></textarea>
-                    </div>
-                </form>
+            <div>
+                <div class="col-xs-8 form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <select class="form-control">
+                        <option>option 1</option>
+                        <option>option 2</option>
+                        <option>option 3</option>
+                        <option>option 4</option>
+                        <option>option 5</option>
+                    </select>
+                </div>
+                <div class="col-xs-4 form-group" style="margin-top: 30px">
+                    <span class="label label-info">Info</span>
+                </div>
             </div>
-            <!-- /.box-body -->
+            <div>
+                <div class="col-xs-8 form-group">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <div class="input-group">
+                        <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                        <input type="text" class="form-control">
+                        <span class="input-group-addon"><i class="fa fa-ambulance"></i></span>
+                    </div>
+                </div>
+                <div class="col-xs-4 form-group" style="margin-top: 30px">
+                    <span class="label label-info">Info</span>
+                </div>
+            </div>
+            <div>
+                <div class="form-group col-xs-8">
+                    <label for="exampleInputEmail1">Email address</label>
+                    <div class="input-group radio">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                            Option one is this and that—be sure to include why it's great　
+                        </label>
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                            Option one is this and that—be sure to include why it's great　
+                        </label>
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
+                            Option one is this and that—be sure to include why it's great　
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-4 form-group" style="margin-top: 30px">
+                    <span class="label label-info">Info</span>
+                </div>
+            </div>
         </div>
+        <div class="box-footer">
+            <button type="submit" target-form="form-login" class="btn btn-primary ajax-post">确认提交</button>
+            <a class="btn btn-default refe" url="{:url('Menu/index')}" >放弃返回</a>
+        </div>
+    </form>
+</div>
+
 {/block}
 {block name="myScript"}
 

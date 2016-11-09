@@ -99,15 +99,15 @@
                         }
                     }
                     if( data.data.tempType == 'add' ){
-                        if( $.buildAddForm ){
-                            $('#content').html($.buildAddForm(data.data));
-                            $('#formBox').hide().fadeIn(800);
-                        }else{
+                        // if( $.buildAddForm ){
+                        //     $('#content').html($.buildAddForm(data.data));
+                        //     $('#formBox').hide().fadeIn(800);
+                        // }else{
                             $.getScript(JS_PATH + '/template/form.js', function (){
                                 $('#content').html($.buildAddForm(data.data));
                                 $('#formBox').hide().fadeIn(800);
                             });
-                        }
+                        // }
                     }
                     if( data.data.tempType == 'edit' ){
                         if( $.buildEditForm ){

@@ -121,9 +121,9 @@ class Menu extends Base {
             $form = [
                 'tempType' => 'add',
                 'formAttr' => [
-                    'target' => '',
-                    'formId' => '',
-                    'backUrl' => '',
+                    'target' => url('Menu/add'),
+                    'formId' => 'add-menu-form',
+                    'backUrl' => url('Menu/index'),
                 ],
                 'formList' => [
                     [
@@ -153,7 +153,10 @@ class Menu extends Base {
                         'attr' => [
                             'name' => 'level',
                             'value' => '',
-                            'options' => []
+                            'options' => [
+                                '普通认证',
+                                'Log记录'
+                            ]
                         ]
                     ],
                     [
@@ -163,7 +166,10 @@ class Menu extends Base {
                         'attr' => [
                             'name' => 'type',
                             'value' => '',
-                            'options' => []
+                            'options' => [
+                                '模块类功能',
+                                '方法类功能'
+                            ]
                         ]
                     ],
                     [
@@ -173,7 +179,10 @@ class Menu extends Base {
                         'attr' => [
                             'name' => 'hide',
                             'value' => '',
-                            'options' => []
+                            'options' => [
+                                '显示菜单',
+                                '隐藏菜单',
+                            ]
                         ]
                     ],
                     [
@@ -183,7 +192,10 @@ class Menu extends Base {
                         'attr' => [
                             'name' => 'recommend',
                             'value' => '',
-                            'options' => []
+                            'options' => [
+                                '普通模块',
+                                '推荐模块'
+                            ]
                         ]
                     ],
                     [
