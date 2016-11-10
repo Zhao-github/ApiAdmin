@@ -64,19 +64,19 @@ class User extends Base {
                 [
                     'info' => '启用',
                     'href' => url('User/open'),
-                    'class'=> 'btn-success',
+                    'class'=> 'btn-success ajax-put-url',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-check',
-                    'confirm' => 0,
+                    'confirm' => 1,
                     'show' => ['status', 0]
                 ],
                 [
                     'info' => '禁用',
                     'href' => url('User/close'),
-                    'class'=> 'btn-warning',
+                    'class'=> 'btn-warning ajax-put-url',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-close',
-                    'confirm' => 0,
+                    'confirm' => 1,
                     'show' => ['status', 1]
                 ],
                 [

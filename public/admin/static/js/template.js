@@ -221,6 +221,52 @@
     });
 
     /**
+     * Ajax put by url 请求(改) *
+     */
+    bodyDom.on('click', '.ajax-put-url', function() {
+        var url = $(this).attr('url'), urlData = '';
+        if( $(this).attr('data') ){
+            urlData = $(this).attr('data');
+        }
+        if( $(this).hasClass('confirm') ){
+            bootbox.confirm({
+                title: "温馨提醒：",
+                message: "您确定要这么做么？",
+                buttons: {
+                    cancel: {
+                        label: '<i class="fa fa-times"></i> 取消'
+                    },
+                    confirm: {
+                        label: '<i class="fa fa-check"></i> 确定'
+                    }
+                },
+                callback: function (result) {
+                    if( result ){
+                        $.ajax({
+                            type: "PUT",
+                            url: url,
+                            data: urlData
+                        }).done(function( data ) {
+                            var wait = 1000*data.wait;
+                            if (data.code == 1) {
+                                $.alertMsg(data.msg);
+                                setTimeout(function() {
+                                    if (data.url) {
+                                        $.refresh(data.url);
+                                    }
+                                }, wait);
+                            } else {
+                                $.alertMsg(data.msg);
+                            }
+                        });
+                    }
+                }
+            });
+        }
+        return false;
+    });
+
+    /**
      * Ajax 刷新页面 *
      */
     bodyDom.on('click', '.refresh', function() {
