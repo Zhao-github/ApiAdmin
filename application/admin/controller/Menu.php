@@ -201,7 +201,20 @@ class Menu extends Base {
                 $this->success('操作成功！', url('Menu/index'));
             }
         }else{
-            $data = \app\admin\model\Menu::where([])->column('name',$this->primaryKey);
+            $dataObj = \app\admin\model\Menu::all(function($query){
+                $query->order('sort', 'asc');
+            });
+            foreach ($dataObj as $value){
+                $data[] = $value->toArray();
+            }
+            $data = formatTree(listToTree($data));
+            foreach( $data as &$value ){
+                $value['name'] = $value['showName'];
+                unset($value['showName']);
+                unset($value['namePrefix']);
+                unset($value['lv']);
+            }
+            $data = array_column($data, 'name', $this->primaryKey);
             $defaultFather = $this->request->get($this->primaryKey);
             $form = [
                 'tempType' => 'add',
@@ -336,7 +349,20 @@ class Menu extends Base {
                 $this->success('操作成功！', url('Menu/index'));
             }
         }else{
-            $data = \app\admin\model\Menu::where([])->column('name',$this->primaryKey);
+            $dataObj = \app\admin\model\Menu::all(function($query){
+                $query->order('sort', 'asc');
+            });
+            foreach ($dataObj as $value){
+                $data[] = $value->toArray();
+            }
+            $data = formatTree(listToTree($data));
+            foreach( $data as &$value ){
+                $value['name'] = $value['showName'];
+                unset($value['showName']);
+                unset($value['namePrefix']);
+                unset($value['lv']);
+            }
+            $data = array_column($data, 'name', $this->primaryKey);
             $detail = \app\admin\model\Menu::get($this->request->get($this->primaryKey))->toArray();
             $form = [
                 'tempType' => 'edit',
