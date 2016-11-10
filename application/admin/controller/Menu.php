@@ -11,6 +11,12 @@ class Menu extends Base {
 
     public function index(){
         $data = \app\admin\model\Menu::all();
+        foreach ( $data as &$value ){
+            $value['post'] = intval(boolval($value['auth'] & \Permission::AUTH_POST));
+            $value['get'] = intval(boolval($value['auth'] & \Permission::AUTH_GET));
+            $value['put'] = intval(boolval($value['auth'] & \Permission::AUTH_PUT));
+            $value['delete'] = intval(boolval($value['auth'] & \Permission::AUTH_DELETE));
+        }
         $table = [
             'tempType' => 'table',
             'header' => [
@@ -27,16 +33,16 @@ class Menu extends Base {
                     'info' => '等级'
                 ],
                 [
-                    'field' => 'post',
-                    'info' => 'Post'
-                ],
-                [
                     'field' => 'get',
                     'info' => 'Get'
                 ],
                 [
                     'field' => 'put',
                     'info' => 'Put'
+                ],
+                [
+                    'field' => 'post',
+                    'info' => 'Post'
                 ],
                 [
                     'field' => 'delete',
@@ -380,22 +386,22 @@ class Menu extends Base {
                             [
                                 'name' => 'auth[get]',
                                 'desc' => 'GET',
-                                'value' => ''
+                                'value' => $detail['auth'] & \Permission::AUTH_GET
                             ],
                             [
                                 'name' => 'auth[put]',
                                 'desc' => 'PUT',
-                                'value' => ''
+                                'value' => $detail['auth'] & \Permission::AUTH_PUT
                             ],
                             [
                                 'name' => 'auth[post]',
                                 'desc' => 'POST',
-                                'value' => ''
+                                'value' => $detail['auth'] & \Permission::AUTH_POST
                             ],
                             [
                                 'name' => 'auth[delete]',
                                 'desc' => 'DELETE',
-                                'value' => ''
+                                'value' => $detail['auth'] & \Permission::AUTH_DELETE
                             ]
                         ]
                     ],
