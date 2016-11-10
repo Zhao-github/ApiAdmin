@@ -341,7 +341,7 @@
                             {else /}
                                 <li>
                                     <a url="{:url($menuValue['url'])}" class="refresh">
-                                        <i class="fa fa-cogs"></i> <span class="menuFather">系统维护</span>
+                                        <i class="fa {$menuValue['icon']}"></i> <span class="menuFather">{$menuValue['name']}</span>
                                     </a>
                                 </li>
                             {/if}
