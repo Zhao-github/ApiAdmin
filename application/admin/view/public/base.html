@@ -325,50 +325,16 @@
                     <li class="header">主菜单</li>
                     <li class="treeview">
                         <a href="javascript:void(0);">
-                            <i class="fa fa-cogs"></i> <span>系统维护</span>
+                            <i class="fa fa-cogs"></i> <span class="menuFather">系统维护</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li class="active"><a url="{:url('Menu/index')}" class="refresh"><i class="fa fa-circle-o"></i> 菜单管理</a></li>
-                            <li><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 用户管理</a></li>
-                            <li><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 权限管理</a></li>
-                            <li><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 操作日志</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="javascript:void(0);">
-                            <i class="fa fa-dashboard"></i> <span>网站内容管理</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 新闻发布</a></li>
-                            <li><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 软件说明</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="javascript:void(0);">
-                            <i class="fa fa-diamond"></i> <span>订单管理</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 订单列表</a></li>
-                        </ul>
-                    </li>
-                    <li class="treeview">
-                        <a href="javascript:void(0);">
-                            <i class="fa fa-comments"></i> <span>反馈管理</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li><a href="invoice.html"><i class="fa fa-circle-o"></i> 反馈列表</a></li>
+                            <li class="menuChild"><a url="{:url('Menu/index')}" class="refresh"><i class="fa fa-circle-o"></i> 菜单管理</a></li>
+                            <li class="menuChild"><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 用户管理</a></li>
+                            <li class="menuChild"><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 权限管理</a></li>
+                            <li class="menuChild"><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 操作日志</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -379,10 +345,8 @@
             <!-- 头部（面包屑导航） -->
             <section class="content-header" id="content-header">
                 <h1>{$title}</h1>
-                <ol class="breadcrumb">
-                    <li><i class="fa fa-dashboard"></i>　Home</li>
-                    <li>Examples</li>
-                    <li class="active">404 error</li>
+                <ol class="breadcrumb" id="breadcrumb">
+                    <li><i class="fa fa-dashboard"></i>　首页</li>
                 </ol>
             </section>
             <section class="content" id="content">
@@ -609,6 +573,20 @@
         var STATIC_PATH = '__STATIC__';
         var IMG_PATH = '__IMG__';
         var PLUGIN_PATH = '__PLUGIN__';
+
+        /**
+         * 自动适配面包屑导航
+         */
+        $('body').on('click', '.menuChild', function() {
+            $('.menuChild').removeClass('active');
+            $(this).addClass('active');
+            var parentName = $.trim($(this).parent().prev().text());
+            var ownName = $(this).children('a').text();
+            var breadcrumb = $('#breadcrumb');
+            breadcrumb.html('<li><i class="fa fa-dashboard"></i>　首页</li>');
+            breadcrumb.append('<li>'+ parentName +'</li><li>'+ ownName +'</li>');
+            breadcrumb.prev().text(ownName);
+        });
     </script>
     <script src="__JS__/template.js"></script>
     {block name="myScript"}{/block}
