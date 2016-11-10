@@ -56,6 +56,11 @@
         return formHtml;
     }
 
+    /**
+     * 创建多选框
+     * @param checkboxObj
+     * @returns {string}
+     */
     function buildCheckbox( checkboxObj ) {
         var formHtml = '<div>';
         formHtml += '<div class="col-xs-8 form-group"><label>'+ checkboxObj.info +'</label>';
