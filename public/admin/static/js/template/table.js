@@ -130,7 +130,7 @@
      * @returns {string}
      */
     function createButton( buttonValue, dataValue ) {
-        var paramStr = '', buttonStr = '';
+        var paramStr = '', buttonStr = '', iconStr = '';
         if( buttonValue.confirm ){
             buttonValue.class += ' confirm';
         }else{
@@ -140,9 +140,14 @@
             paramStr = prepareParamStr( buttonValue, dataValue );
         }
         if( buttonValue.icon ){
-            buttonStr = '<button url="'+buttonValue.href+'" data="'+paramStr+'" type="button" class="btn '+buttonValue.class+'"><i class="'+buttonValue.icon+'"></i> '+buttonValue.info+'</button>';
+            iconStr = '<i class="'+buttonValue.icon+'"></i>';
+        }
+        if( buttonValue.show ){
+            if( dataValue[buttonValue.show[0]] == buttonValue.show[1] ){
+                buttonStr = '<button url="'+buttonValue.href+'" data="'+paramStr+'" type="button" class="btn '+buttonValue.class+'">'+ iconStr + ' ' +buttonValue.info+'</button>';
+            }
         }else{
-            buttonStr = '<button url="'+buttonValue.href+'" data="'+paramStr+'" type="button" class="btn '+buttonValue.class+'">'+buttonValue.info+'</button>';
+            buttonStr = '<button url="'+buttonValue.href+'" data="'+paramStr+'" type="button" class="btn '+buttonValue.class+'">'+ iconStr + ' ' +buttonValue.info+'</button>';
         }
         return buttonStr;
     }

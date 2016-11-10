@@ -18,6 +18,10 @@ class UserData extends Model {
         return request()->ip(1);
     }
 
+    protected function getLastLoginIpAttr( $value ){
+        return long2ip($value);
+    }
+
     protected function setLastLoginTimeAttr(){
         return time();
     }

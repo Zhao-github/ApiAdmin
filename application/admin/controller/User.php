@@ -12,6 +12,113 @@ use app\admin\model\UserData;
 
 class User extends Base {
 
+    public function index(){
+        $data = [];
+        $dataObj = \app\admin\model\User::all();
+        foreach ( $dataObj as $value ){
+            $userInfo = $value->toArray();
+            $userData = UserData::get(['uid' => $userInfo[$this->primaryKey]])->toArray();
+            $userInfo['loginTimes'] = $userData['loginTimes'];
+            $userInfo['lastLoginTime'] = $userData['lastLoginTime'];
+            $userInfo['lastLoginIp'] = $userData['lastLoginIp'];
+            $data[] = $userInfo;
+        }
+        $table = [
+            'tempType' => 'table',
+            'header' => [
+                [
+                    'field' => 'username',
+                    'info' => '用户账号'
+                ],
+                [
+                    'field' => 'nickname',
+                    'info' => '用户昵称'
+                ],
+                [
+                    'field' => 'loginTimes',
+                    'info' => '登录次数'
+                ],
+                [
+                    'field' => 'lastLoginTime',
+                    'info' => '最后登录时间'
+                ],
+                [
+                    'field' => 'lastLoginIp',
+                    'info' => '最后登录IP'
+                ],
+                [
+                    'field' => 'status',
+                    'info' => '状态'
+                ]
+            ],
+            'topButton' => [
+                [
+                    'href' => url('User/add'),
+                    'class'=> 'btn-success',
+                    'info'=> '新增',
+                    'icon' => 'fa fa-plus',
+                    'confirm' => 0,
+                ]
+            ],
+            'rightButton' => [
+                [
+                    'info' => '启用',
+                    'href' => url('User/open'),
+                    'class'=> 'btn-success',
+                    'param'=> [$this->primaryKey],
+                    'icon' => 'fa fa-check',
+                    'confirm' => 0,
+                    'show' => ['status', 0]
+                ],
+                [
+                    'info' => '禁用',
+                    'href' => url('User/close'),
+                    'class'=> 'btn-warning',
+                    'param'=> [$this->primaryKey],
+                    'icon' => 'fa fa-close',
+                    'confirm' => 0,
+                    'show' => ['status', 1]
+                ],
+                [
+                    'info' => '授权',
+                    'href' => url('User/group'),
+                    'class'=> 'btn-default',
+                    'param'=> [$this->primaryKey],
+                    'icon' => 'fa fa-lock',
+                    'confirm' => 0,
+                ],
+                [
+                    'info' => '删除',
+                    'href' => url('User/del'),
+                    'class'=> 'btn-danger ajax-delete',
+                    'param'=> [$this->primaryKey],
+                    'icon' => 'fa fa-trash',
+                    'confirm' => 1,
+                ]
+            ],
+            'typeRule' => [
+                'lastLoginTime' => [
+                    'module' => 'date',
+                ],
+                'status' => [
+                    'module' => 'label',
+                    'rule' => [
+                        [
+                            'info' => '禁用',
+                            'class' => 'label label-danger'
+                        ],
+                        [
+                            'info' => '启用',
+                            'class' => 'label label-success'
+                        ]
+                    ]
+                ]
+            ],
+            'data' => $data
+        ];
+        $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
+    }
+
     /**
      * 用户登录函数
      * @return mixed|void
