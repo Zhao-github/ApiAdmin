@@ -1,5 +1,6 @@
 <?php
 namespace app\admin\controller;
+use think\Validate;
 
 /**
  * 菜单管理控制器
@@ -22,12 +23,24 @@ class Menu extends Base {
                     'info' => '菜单URL'
                 ],
                 [
-                    'field' => 'type',
-                    'info' => '菜单类型'
-                ],
-                [
                     'field' => 'level',
                     'info' => '等级'
+                ],
+                [
+                    'field' => 'post',
+                    'info' => 'Post'
+                ],
+                [
+                    'field' => 'get',
+                    'info' => 'Get'
+                ],
+                [
+                    'field' => 'put',
+                    'info' => 'Put'
+                ],
+                [
+                    'field' => 'delete',
+                    'info' => 'Delete'
                 ],
                 [
                     'field' => 'hide',
@@ -81,6 +94,7 @@ class Menu extends Base {
                         'info' => '',
                         'href' => url('Menu/add'),
                         'param'=> [$this->primaryKey],
+                        'class' => 'refresh'
                     ]
                 ],
                 'hide' => [
@@ -96,21 +110,60 @@ class Menu extends Base {
                         ]
                     ]
                 ],
-                'type' => [
-                    'module' => 'label',
+                'post' => [
+                    'module' => 'icon',
                     'rule' => [
                         [
-                            'info' => '方法类功能',
-                            'class' => 'label label-info'
+                            'info' => '',
+                            'class' => 'fa fa-close'
                         ],
                         [
-                            'info' => '模块类功能',
-                            'class' => 'label label-primary'
+                            'info' => '',
+                            'class' => 'fa fa-check'
+                        ]
+                    ]
+                ],
+                'get' => [
+                    'module' => 'icon',
+                    'rule' => [
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-close'
+                        ],
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-check'
+                        ]
+                    ]
+                ],
+                'put' => [
+                    'module' => 'icon',
+                    'rule' => [
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-close'
+                        ],
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-check'
+                        ]
+                    ]
+                ],
+                'delete' => [
+                    'module' => 'icon',
+                    'rule' => [
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-close'
+                        ],
+                        [
+                            'info' => '',
+                            'class' => 'fa fa-check'
                         ]
                     ]
                 ]
             ],
-            'data' => $data //这个数据应该是从数据库中查出来
+            'data' => $data
         ];
         $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
     }
@@ -122,7 +175,7 @@ class Menu extends Base {
                 [
                     'name' => 'require',
                 ],[
-                    'name.require' => '名称必须',
+                    'name.require' => '菜单名称不能为空',
                 ]
             )->save($this->request->post());
             if(false === $result){
@@ -132,6 +185,7 @@ class Menu extends Base {
             }
         }else{
             $data = \app\admin\model\Menu::where([])->column('name',$this->primaryKey);
+            $defaultFather = $this->request->get($this->primaryKey);
             $form = [
                 'tempType' => 'add',
                 'formAttr' => [
@@ -156,7 +210,7 @@ class Menu extends Base {
                         'info' => '父级菜单：',
                         'attr' => [
                             'name' => 'fid',
-                            'value' => '',
+                            'value' => $defaultFather,
                             'options' => $data
                         ]
                     ],
@@ -174,15 +228,29 @@ class Menu extends Base {
                         ]
                     ],
                     [
-                        'module' => 'radio',
+                        'module' => 'checkbox',
                         'description' => '',
-                        'info' => '菜单类型：',
+                        'info' => '访客权限：',
                         'attr' => [
-                            'name' => 'type',
-                            'value' => '',
-                            'options' => [
-                                '模块类功能',
-                                '方法类功能'
+                            [
+                                'name' => 'auth[get]',
+                                'desc' => 'GET',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[put]',
+                                'desc' => 'PUT',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[post]',
+                                'desc' => 'POST',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[delete]',
+                                'desc' => 'DELETE',
+                                'value' => ''
                             ]
                         ]
                     ],
@@ -196,19 +264,6 @@ class Menu extends Base {
                             'options' => [
                                 '显示菜单',
                                 '隐藏菜单',
-                            ]
-                        ]
-                    ],
-                    [
-                        'module' => 'radio',
-                        'description' => '',
-                        'info' => '是否推荐：「该配置只对模块类功能生效」',
-                        'attr' => [
-                            'name' => 'recommend',
-                            'value' => '',
-                            'options' => [
-                                '普通模块',
-                                '推荐模块'
                             ]
                         ]
                     ],
@@ -250,17 +305,17 @@ class Menu extends Base {
 
     public function edit(){
         if( $this->request->isPut() ){
-            $menuModel = new \app\admin\model\Menu();
-            $result = $menuModel->allowField(true)->validate(
-                [
-                    'name' => 'require',
-                ],[
-                    'name.require' => '名称必须',
-                ]
-            )->update($this->request->put());
-            if(false === $result){
-                $this->error($menuModel->getError());
+            $data = $this->request->put();
+            $validate = new Validate([
+                'name' => 'require',
+            ],[
+                'name.require' => '菜单名称不能为空',
+            ]);
+            if(!$validate->check($data)){
+                $this->error($validate->getError());
             }else{
+                $menuModel = new \app\admin\model\Menu();
+                $menuModel->allowField(true)->update($data);
                 $this->success('操作成功！', url('Menu/index'));
             }
         }else{
@@ -269,8 +324,8 @@ class Menu extends Base {
             $form = [
                 'tempType' => 'edit',
                 'formAttr' => [
-                    'target' => url('Menu/add'),
-                    'formId' => 'add-menu-form',
+                    'target' => url('Menu/edit'),
+                    'formId' => 'edit-menu-form',
                     'backUrl' => url('Menu/index'),
                 ],
                 'formList' => [
@@ -281,6 +336,16 @@ class Menu extends Base {
                         'attr' => [
                             'name' => 'name',
                             'value' => $detail['name'],
+                            'placeholder' => ''
+                        ]
+                    ],
+                    [
+                        'module' => 'hidden',
+                        'description' => '',
+                        'info' => '',
+                        'attr' => [
+                            'name' => 'id',
+                            'value' => $detail['id'],
                             'placeholder' => ''
                         ]
                     ],
@@ -308,15 +373,29 @@ class Menu extends Base {
                         ]
                     ],
                     [
-                        'module' => 'radio',
+                        'module' => 'checkbox',
                         'description' => '',
-                        'info' => '菜单类型：',
+                        'info' => '访客权限：',
                         'attr' => [
-                            'name' => 'type',
-                            'value' => $detail['type'],
-                            'options' => [
-                                '模块类功能',
-                                '方法类功能'
+                            [
+                                'name' => 'auth[get]',
+                                'desc' => 'GET',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[put]',
+                                'desc' => 'PUT',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[post]',
+                                'desc' => 'POST',
+                                'value' => ''
+                            ],
+                            [
+                                'name' => 'auth[delete]',
+                                'desc' => 'DELETE',
+                                'value' => ''
                             ]
                         ]
                     ],
@@ -330,19 +409,6 @@ class Menu extends Base {
                             'options' => [
                                 '显示菜单',
                                 '隐藏菜单',
-                            ]
-                        ]
-                    ],
-                    [
-                        'module' => 'radio',
-                        'description' => '',
-                        'info' => '是否推荐：「该配置只对模块类功能生效」',
-                        'attr' => [
-                            'name' => 'recommend',
-                            'value' => $detail['recommend'],
-                            'options' => [
-                                '普通模块',
-                                '推荐模块'
                             ]
                         ]
                     ],
@@ -383,7 +449,18 @@ class Menu extends Base {
     }
 
     public function del(){
-        $this->error('失败');
+        if( $this->request->isDelete() ){
+            $key = $this->request->delete($this->primaryKey);
+            $childNum = \app\admin\model\Menu::where(['fid' => $key])->count();
+            if( $childNum ){
+                $this->error('当前菜单存在子菜单，删除失败！');
+            }
+            $delNum = \app\admin\model\Menu::destroy($key);
+            if( $delNum ){
+                $this->success('操作成功！', url('Menu/index'));
+            }
+        }
+        $this->error('操作失败！');
     }
 
 }

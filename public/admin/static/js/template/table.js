@@ -81,7 +81,7 @@
                 }else{
                     if( tableObj.typeRule[fieldName] ){
                         var rule = tableObj.typeRule[fieldName];
-                        var styleList ,detailInfo;
+                        var styleList ,detailInfo, classAttr = '';
                         switch (rule.module){
                             case 'label':
                                 if( rule.rule[dataValue[fieldName]] ){
@@ -96,10 +96,21 @@
                                 styleList = rule.rule;
                                 detailInfo = prepareInfo( styleList, dataValue, fieldName);
                                 paramStr = prepareParamStr( styleList, dataValue );
-                                dataListHtml += '<td><a url="'+styleList['href']+'" data="'+paramStr+'">' + detailInfo + '</a></td>';
+                                if( styleList['class'] ){
+                                    classAttr = 'class="'+ styleList['class'] +'"';
+                                }
+                                dataListHtml += '<td><a '+ classAttr +' url="'+styleList['href']+'" data="'+paramStr+'">' + detailInfo + '</a></td>';
                                 break;
                             case 'date':
                                 dataListHtml += '<td>' + $.formatDate(dataValue[fieldName]) + '</td>';
+                                break;
+                            case 'icon':
+                                if( rule.rule[dataValue[fieldName]] ){
+                                    styleList = rule.rule[dataValue[fieldName]];
+                                    dataListHtml += '<td><i class="'+styleList['class']+'"></i></td>';
+                                }else{
+                                    dataListHtml += '<td style="color:red;">' + dataValue[fieldName] + '</td>';
+                                }
                                 break;
                         }
                     }else{
