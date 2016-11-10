@@ -59,13 +59,13 @@
     function buildCheckbox( checkboxObj ) {
         var formHtml = '<div>';
         formHtml += '<div class="col-xs-8 form-group"><label>'+ checkboxObj.info +'</label>';
-        formHtml += '<div class="input-group radio">';
+        formHtml += '<div class="input-group radio" style="margin-bottom: 0px">';
         if( checkboxObj.attr ){
             $.each(checkboxObj.attr, function (index, value) {
                 if( value.value ){
-                    formHtml += '<input type="checkbox" checked name="'+ value.name +'"> '+ value.desc +'　';
+                    formHtml += '<label style="padding-left: 0px;padding-right: 20px"><input type="checkbox" checked name="'+ value.name +'"> '+ value.desc +'</label>';
                 }else{
-                    formHtml += '<input type="checkbox" name="'+ value.name +'"> '+ value.desc +'　';
+                    formHtml += '<label style="padding-left: 0px;padding-right: 20px"><input type="checkbox" name="'+ value.name +'"> '+ value.desc +'</label>';
                 }
             });
         }
