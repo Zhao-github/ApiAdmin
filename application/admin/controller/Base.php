@@ -49,9 +49,11 @@ class Base extends Controller {
     private function iniSystem(){
         $this->url = $this->request->controller().'/'.$this->request->action();
         if( !in_array($this->url, $this->superUrl) ){
-            $this->menuInfo = Menu::where(['url' => $this->url])->find()->toArray();
-            if( empty($this->menuInfo) ){
+            $menuInfo = Menu::where(['url' => $this->url])->find();
+            if( is_null($menuInfo) ){
                 $this->error( '目录：'.$this->url.'不存在！' );
+            }else{
+                $this->menuInfo =  $menuInfo->toArray();
             }
             $this->checkLogin();
 //            $this->checkRule();
