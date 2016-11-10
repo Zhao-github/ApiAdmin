@@ -6,7 +6,8 @@
  */
 
 namespace app\admin\controller;
-use app\admin\model\User;
+
+use app\admin\model\Menu;
 use think\Controller;
 
 class Base extends Controller {
@@ -14,6 +15,9 @@ class Base extends Controller {
     public $primaryKey;
     public $uid;
     public $userInfo;
+    public $url;
+    public $menuInfo;
+
     private $superUrl = [
         'User/login'
     ];
@@ -43,13 +47,12 @@ class Base extends Controller {
      * 系统初始化函数（登陆状态检测，权限检测，初始化菜单）
      */
     private function iniSystem(){
-        $url = $this->request->controller().'/'.$this->request->action();
-        if( !in_array($url, $this->superUrl) ){
-//            $this->allMenu = D('Menu')->order('sort asc')->select();
-//            $this->menuInfo = D('Menu')->where(['url' => $this->url])->find();
-//            if( empty($this->menuInfo) ){
-//                $this->error( 'Menu'.L('_SELECT_NOT_EXIST_') );
-//            }
+        $this->url = $this->request->controller().'/'.$this->request->action();
+        if( !in_array($this->url, $this->superUrl) ){
+            $this->menuInfo = Menu::where(['url' => $this->url])->find()->toArray();
+            if( empty($this->menuInfo) ){
+                $this->error( '目录：'.$this->url.'不存在！' );
+            }
             $this->checkLogin();
 //            $this->checkRule();
         }

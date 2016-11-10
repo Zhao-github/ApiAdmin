@@ -29,7 +29,7 @@
      */
     function buildForm( formObj, boxType, method ) {
         var formHtml = '<div class="box '+ boxType +'" id="formBox"><div class="box-body">';
-        formHtml += '<div class="box-header with-border"><h3 class="box-title">新增菜单</h3></div>';
+        formHtml += '<div class="box-header with-border"><h3 class="box-title">'+formObj.formTitle+'</h3></div>';
         formHtml += '<form id="'+ formObj.formAttr.formId +'" action="'+ formObj.formAttr.target +'"><div class="box-body">';
         $.each(formObj.formList, function (index, value) {
             switch (value.module){

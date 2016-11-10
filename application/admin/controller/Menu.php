@@ -217,6 +217,7 @@ class Menu extends Base {
             $data = array_column($data, 'name', $this->primaryKey);
             $defaultFather = $this->request->get($this->primaryKey);
             $form = [
+                'formTitle' => $this->menuInfo['name'],
                 'tempType' => 'add',
                 'formAttr' => [
                     'target' => url('Menu/add'),
@@ -365,6 +366,7 @@ class Menu extends Base {
             $data = array_column($data, 'name', $this->primaryKey);
             $detail = \app\admin\model\Menu::get($this->request->get($this->primaryKey))->toArray();
             $form = [
+                'formTitle' => $this->menuInfo['name'],
                 'tempType' => 'edit',
                 'formAttr' => [
                     'target' => url('Menu/edit'),
