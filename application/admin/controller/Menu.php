@@ -10,8 +10,19 @@ use think\Validate;
 class Menu extends Base {
 
     public function index(){
-        $data = \app\admin\model\Menu::all();
-        foreach ( $data as &$value ){
+        $data = [];
+        $dataObj = \app\admin\model\Menu::all(function($query){
+            $query->order('sort', 'asc');
+        });
+        foreach ($dataObj as $value){
+            $data[] = $value->toArray();
+        }
+        $data = formatTree(listToTree($data));
+        foreach( $data as &$value ){
+            $value['name'] = $value['showName'];
+            unset($value['showName']);
+            unset($value['namePrefix']);
+            unset($value['lv']);
             $value['post'] = intval(boolval($value['auth'] & \Permission::AUTH_POST));
             $value['get'] = intval(boolval($value['auth'] & \Permission::AUTH_GET));
             $value['put'] = intval(boolval($value['auth'] & \Permission::AUTH_PUT));
