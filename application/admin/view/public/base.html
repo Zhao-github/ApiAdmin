@@ -13,8 +13,7 @@
     <link rel="icon" href="__IMG__/favicon.ico">
     <style>
         body{
-            font-size: 1.6rem;
-            font-family: "Segoe UI","Lucida Grande",Helvetica,Arial,"Microsoft YaHei",FreeSans,Arimo,"Droid Sans","wenquanyi micro hei","Hiragino Sans GB","Hiragino Sans GB W3",FontAwesome,sans-serif;
+            font-family: "Microsoft YaHei",FontAwesome,sans-serif;
         }
         .builder-data-empty {
             margin-bottom: 20px;
@@ -323,20 +322,31 @@
                 </form>
                 <ul class="sidebar-menu">
                     <li class="header">主菜单</li>
-                    <li class="treeview">
-                        <a href="javascript:void(0);">
-                            <i class="fa fa-cogs"></i> <span class="menuFather">系统维护</span>
-                            <span class="pull-right-container">
-                                <i class="fa fa-angle-left pull-right"></i>
-                            </span>
-                        </a>
-                        <ul class="treeview-menu">
-                            <li class="menuChild"><a url="{:url('Menu/index')}" class="refresh"><i class="fa fa-circle-o"></i> 菜单管理</a></li>
-                            <li class="menuChild"><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 用户管理</a></li>
-                            <li class="menuChild"><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 权限管理</a></li>
-                            <li class="menuChild"><a href="javascript:void(0);"><i class="fa fa-circle-o"></i> 操作日志</a></li>
-                        </ul>
-                    </li>
+                    {volist name="menuData" id="menuValue"}
+                        {if condition="!empty($menuValue['url']) OR (isset($menuValue['_child']) AND count($menuValue['_child']))"}
+                            {if condition="isset($menuValue['_child']) AND count($menuValue['_child'])"}
+                                <li class="treeview">
+                                    <a href="javascript:void(0);">
+                                        <i class="fa {$menuValue['icon']}"></i> <span class="menuFather">{$menuValue['name']}</span>
+                                        <span class="pull-right-container">
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        {volist name="menuValue['_child']" id="childValue"}
+                                            <li class="menuChild"><a url="{:url($childValue['url'])}" class="refresh"><i class="fa {$childValue['icon']}"></i> {$childValue['name']}</a></li>
+                                        {/volist}
+                                    </ul>
+                                </li>
+                            {else /}
+                                <li>
+                                    <a url="{:url($menuValue['url'])}" class="refresh">
+                                        <i class="fa fa-cogs"></i> <span class="menuFather">系统维护</span>
+                                    </a>
+                                </li>
+                            {/if}
+                        {/if}
+                    {/volist}
                 </ul>
             </section>
         </aside>
