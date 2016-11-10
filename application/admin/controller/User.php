@@ -119,152 +119,31 @@ class User extends Base {
         $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
     }
 
-    public function group(){
-        if( $this->request->isPost() ){
-            $menuModel = new \app\admin\model\Menu();
-            $result = $menuModel->allowField(true)->validate(
-                [
-                    'name' => 'require',
-                ],[
-                    'name.require' => '菜单名称不能为空',
-                ]
-            )->save($this->request->post());
-            if(false === $result){
-                $this->error($menuModel->getError());
+    public function open(){
+        if( $this->request->isPut() ){
+            $id = $this->request->put($this->primaryKey);
+            $userObj = \app\admin\model\User::get([$this->primaryKey => $id]);
+            if( is_null($userObj) ){
+                $this->error('用户不存在','');
             }else{
-                $this->success('操作成功！', url('Menu/index'));
+                $userObj->status = 1;
+                $userObj->save();
+                $this->success('操作成功', url($this->url));
             }
-        }else {
-            $dataObj = \app\admin\model\Menu::all(function ($query) {
-                $query->order('sort', 'asc');
-            });
-            foreach ($dataObj as $value) {
-                $data[] = $value->toArray();
+        }
+    }
+
+    public function close(){
+        if( $this->request->isPut() ){
+            $id = $this->request->put($this->primaryKey);
+            $userObj = \app\admin\model\User::get([$this->primaryKey => $id]);
+            if( is_null($userObj) ){
+                $this->error('用户不存在','');
+            }else{
+                $userObj->status = 0;
+                $userObj->save();
+                $this->success('操作成功', url($this->url));
             }
-            $data = formatTree(listToTree($data));
-            foreach ($data as &$value) {
-                $value['name'] = $value['showName'];
-                unset($value['showName']);
-                unset($value['namePrefix']);
-                unset($value['lv']);
-            }
-            $data = array_column($data, 'name', $this->primaryKey);
-            $defaultFather = $this->request->get($this->primaryKey);
-            $form = [
-                'formTitle' => $this->menuInfo['name'],
-                'tempType' => 'add',
-                'formAttr' => [
-                    'target' => url('Menu/add'),
-                    'formId' => 'add-menu-form',
-                    'backUrl' => url('Menu/index'),
-                ],
-                'formList' => [
-                    [
-                        'module' => 'text',
-                        'description' => '',
-                        'info' => '菜单名称：',
-                        'attr' => [
-                            'name' => 'name',
-                            'value' => '',
-                            'placeholder' => ''
-                        ]
-                    ],
-                    [
-                        'module' => 'select',
-                        'description' => '',
-                        'info' => '父级菜单：',
-                        'attr' => [
-                            'name' => 'fid',
-                            'value' => $defaultFather,
-                            'options' => $data
-                        ]
-                    ],
-                    [
-                        'module' => 'select',
-                        'description' => '',
-                        'info' => '菜单等级：',
-                        'attr' => [
-                            'name' => 'level',
-                            'value' => '',
-                            'options' => [
-                                '普通认证',
-                                'Log记录'
-                            ]
-                        ]
-                    ],
-                    [
-                        'module' => 'checkbox',
-                        'description' => '',
-                        'info' => '访客权限：',
-                        'attr' => [
-                            [
-                                'name' => 'auth[get]',
-                                'desc' => 'GET',
-                                'value' => ''
-                            ],
-                            [
-                                'name' => 'auth[put]',
-                                'desc' => 'PUT',
-                                'value' => ''
-                            ],
-                            [
-                                'name' => 'auth[post]',
-                                'desc' => 'POST',
-                                'value' => ''
-                            ],
-                            [
-                                'name' => 'auth[delete]',
-                                'desc' => 'DELETE',
-                                'value' => ''
-                            ]
-                        ]
-                    ],
-                    [
-                        'module' => 'radio',
-                        'description' => '',
-                        'info' => '是否显示：「该配置只对模块类功能生效」',
-                        'attr' => [
-                            'name' => 'hide',
-                            'value' => '',
-                            'options' => [
-                                '显示菜单',
-                                '隐藏菜单',
-                            ]
-                        ]
-                    ],
-                    [
-                        'module' => 'text',
-                        'description' => '',
-                        'info' => '菜单图标：「该配置只对模块类功能生效」',
-                        'attr' => [
-                            'name' => 'icon',
-                            'value' => '',
-                            'placeholder' => ''
-                        ]
-                    ],
-                    [
-                        'module' => 'text',
-                        'description' => '',
-                        'info' => '菜单URL：「该配置只对无模块类功能子菜单的菜单生效」[具体格式为：控制器/方法名]',
-                        'attr' => [
-                            'name' => 'url',
-                            'value' => '',
-                            'placeholder' => ''
-                        ]
-                    ],
-                    [
-                        'module' => 'text',
-                        'description' => '',
-                        'info' => '排序：「数字越小顺序越靠前」',
-                        'attr' => [
-                            'name' => 'sort',
-                            'value' => '0',
-                            'placeholder' => ''
-                        ]
-                    ]
-                ]
-            ];
-            $this->result($form, ReturnCode::GET_TEMPLATE_SUCCESS);
         }
     }
 
