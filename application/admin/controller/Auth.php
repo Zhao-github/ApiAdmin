@@ -11,6 +11,8 @@ namespace app\admin\controller;
 use app\admin\model\AuthGroup;
 use app\admin\model\AuthGroupAccess;
 use app\admin\model\AuthRule;
+use app\admin\model\User;
+use app\admin\model\UserData;
 use think\Validate;
 
 class Auth extends Base {
@@ -375,6 +377,82 @@ class Auth extends Base {
                 ]
             ];
             $this->result($form, ReturnCode::GET_TEMPLATE_SUCCESS);
+        }
+    }
+
+    /**
+     * 权限组用户维护
+     */
+    public function userAuth(){
+        if( $this->request->isDelete() ){
+            $key = $this->request->delete($this->primaryKey);
+            AuthGroupAccess::destroy([$this->primaryKey => $key]);
+            $this->success('操作成功', url('Auth/index'));
+        }else{
+            $data = [];
+            $dataArrObj = AuthGroupAccess::where(['group_id' => $this->request->get($this->primaryKey)])->select();
+            if( !empty($dataArrObj) ){
+                foreach ( $dataArrObj as $dataObj ){
+                    $userObj = User::get([$this->primaryKey => $dataObj->uid]);
+                    $userDataObj = UserData::get(['uid' => $dataObj->uid]);
+                    $_data['id'] = $dataObj->id;
+                    $_data['username'] = $userObj->username;
+                    $_data['nickname'] = $userObj->nickname;
+                    if( !is_null($userDataObj) ){
+                        $userDataObj->toArray();
+                        $_data['loginTimes'] = $userDataObj['loginTimes'];
+                        $_data['lastLoginTime'] = $userDataObj['lastLoginTime'];
+                        $_data['lastLoginIp'] = $userDataObj['lastLoginIp'];
+                    }else{
+                        $_data['loginTimes'] = 0;
+                        $_data['lastLoginTime'] = 0;
+                        $_data['lastLoginIp'] = 0;
+                    }
+                    $data[] = $_data;
+                }
+            }
+            $table = [
+                'tempType' => 'table',
+                'header' => [
+                    [
+                        'field' => 'username',
+                        'info' => '用户账号'
+                    ],
+                    [
+                        'field' => 'nickname',
+                        'info' => '用户昵称'
+                    ],
+                    [
+                        'field' => 'loginTimes',
+                        'info' => '登录次数'
+                    ],
+                    [
+                        'field' => 'lastLoginTime',
+                        'info' => '最后登录时间'
+                    ],
+                    [
+                        'field' => 'lastLoginIp',
+                        'info' => '最后登录IP'
+                    ]
+                ],
+                'rightButton' => [
+                    [
+                        'info' => '删除',
+                        'href' => url('Auth/userAuth'),
+                        'class'=> 'btn-danger ajax-delete',
+                        'param'=> [$this->primaryKey],
+                        'icon' => 'fa fa-trash',
+                        'confirm' => 1,
+                    ]
+                ],
+                'typeRule' => [
+                    'lastLoginTime' => [
+                        'module' => 'date',
+                    ]
+                ],
+                'data' => $data
+            ];
+            $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
         }
     }
 

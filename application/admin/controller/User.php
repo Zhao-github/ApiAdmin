@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 
 
+use app\admin\model\AuthGroupAccess;
 use app\admin\model\UserData;
 
 class User extends Base {
@@ -270,6 +271,7 @@ class User extends Base {
                 $delNum = \app\admin\model\User::destroy($key);
                 if( $delNum ){
                     UserData::destroy(['uid' => $key]);
+                    AuthGroupAccess::destroy(['uid' => $key]);
                     $this->success('操作成功！', url('User/index'));
                 }
             }else{
