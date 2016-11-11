@@ -197,7 +197,7 @@
         emptyHtml += '<td colspan="'+spanNum+'" class="builder-data-empty">';
         emptyHtml += '<div class="am-text-center no-data" >';
         emptyHtml += '<i class="fa fa-cogs"></i> 暂时没有数据<br>';
-        emptyHtml += '<small> 本系统由<b> 七维视觉科技有限公司 </b>开发维护</small>';
+        emptyHtml += '<small> 本系统由<b> '+ COMPANY_NAME +' </b>开发维护</small>';
         emptyHtml += '</div></td></tr>';
         return emptyHtml;
     }

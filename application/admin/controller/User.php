@@ -17,10 +17,17 @@ class User extends Base {
         $dataObj = \app\admin\model\User::all();
         foreach ( $dataObj as $value ){
             $userInfo = $value->toArray();
-            $userData = UserData::get(['uid' => $userInfo[$this->primaryKey]])->toArray();
-            $userInfo['loginTimes'] = $userData['loginTimes'];
-            $userInfo['lastLoginTime'] = $userData['lastLoginTime'];
-            $userInfo['lastLoginIp'] = $userData['lastLoginIp'];
+            $userData = UserData::get(['uid' => $userInfo[$this->primaryKey]]);
+            if( !is_null($userData) ){
+                $userData->toArray();
+                $userInfo['loginTimes'] = $userData['loginTimes'];
+                $userInfo['lastLoginTime'] = $userData['lastLoginTime'];
+                $userInfo['lastLoginIp'] = $userData['lastLoginIp'];
+            }else{
+                $userInfo['loginTimes'] = 0;
+                $userInfo['lastLoginTime'] = 0;
+                $userInfo['lastLoginIp'] = 0;
+            }
             $data[] = $userInfo;
         }
         $table = [
@@ -128,7 +135,7 @@ class User extends Base {
             }else{
                 $userObj->status = 1;
                 $userObj->save();
-                $this->success('操作成功', url($this->url));
+                $this->success('操作成功', url('User/index'));
             }
         }
     }
@@ -142,7 +149,7 @@ class User extends Base {
             }else{
                 $userObj->status = 0;
                 $userObj->save();
-                $this->success('操作成功', url($this->url));
+                $this->success('操作成功', url('User/index'));
             }
         }
     }
@@ -196,6 +203,63 @@ class User extends Base {
     }
 
     public function add(){
-
+        if( $this->request->isPost() ){
+            $menuModel = new \app\admin\model\User();
+            $result = $menuModel->allowField(true)->validate(
+                [
+                    'username' => 'require',
+                ],[
+                    'username.require' => '用户名不能为空',
+                ]
+            )->save($this->request->post());
+            if(false === $result){
+                $this->error($menuModel->getError());
+            }else{
+                $this->success('操作成功！', url('User/index'));
+            }
+        }else{
+            $form = [
+                'formTitle' => $this->menuInfo['name'],
+                'tempType' => 'add',
+                'formAttr' => [
+                    'target' => url('User/add'),
+                    'formId' => 'add-user-form',
+                    'backUrl' => url('User/index'),
+                ],
+                'formList' => [
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => '用户名称：',
+                        'attr' => [
+                            'name' => 'username',
+                            'value' => '',
+                            'placeholder' => ''
+                        ]
+                    ],
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => '用户昵称：',
+                        'attr' => [
+                            'name' => 'nickname',
+                            'value' => '',
+                            'placeholder' => ''
+                        ]
+                    ],
+                    [
+                        'module' => 'password',
+                        'description' => '',
+                        'info' => '用户密码[默认：123123]：',
+                        'attr' => [
+                            'name' => 'password',
+                            'value' => '123123',
+                            'placeholder' => ''
+                        ]
+                    ]
+                ]
+            ];
+            $this->result($form, ReturnCode::GET_TEMPLATE_SUCCESS);
+        }
     }
 }

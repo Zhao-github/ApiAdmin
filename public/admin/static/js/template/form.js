@@ -48,11 +48,36 @@
                 case 'checkbox':
                     formHtml += buildCheckbox(value);
                     break;
+                case 'password':
+                    formHtml += buildPassword(value);
+                    break;
             }
         });
         formHtml += '</div><div class="box-footer">';
         formHtml += '<button type="submit" target-form="'+ formObj.formAttr.formId +'" class="btn btn-primary '+ method +'">确认提交</button>';
         formHtml += ' <a class="btn btn-default refresh" url="'+ formObj.formAttr.backUrl +'" >放弃返回</a></div></form></div></div>';
+        return formHtml;
+    }
+
+    /**
+     * 创建文本框
+     * @param inputObj
+     * @returns {string}
+     */
+    function buildPassword( inputObj ) {
+        var formHtml = '<div><div class="col-xs-8 form-group"><label>'+ inputObj.info +'</label>';
+        var placeholder = '', value = '';
+        if( inputObj.attr.placeholder){
+            placeholder = 'placeholder="'+ inputObj.attr.placeholder +'"';
+        }
+        if( inputObj.attr.value){
+            value = 'value="'+ inputObj.attr.value +'"';
+        }
+        formHtml += '<input type="password" class="form-control" '+ placeholder +' '+ value +' name="'+ inputObj.attr.name +'"></div>';
+        if( inputObj.description && inputObj.description.length ){
+            formHtml += ' <div class="col-xs-4 form-group" style="margin-top: 30px"><span class="label label-info">'+ inputObj.description +'</span></div>';
+        }
+        formHtml += '</div>';
         return formHtml;
     }
 
