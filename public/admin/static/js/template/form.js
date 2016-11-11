@@ -51,6 +51,9 @@
                 case 'password':
                     formHtml += buildPassword(value);
                     break;
+                case 'textarea':
+                    formHtml += buildTextarea(value);
+                    break;
             }
         });
         formHtml += '</div><div class="box-footer">';
@@ -163,9 +166,27 @@
     function buildHidden( hiddenObj ) {
         return '<input type="hidden" class="form-control" value="'+ hiddenObj.attr.value +'" name="'+ hiddenObj.attr.name +'">';
     }
-    
+
+    /**
+     * 创建文本域
+     * @param textareaObj
+     * @returns {string}
+     */
     function buildTextarea( textareaObj ) {
-        
+        var formHtml = '<div><div class="col-xs-8 form-group"><label>'+ textareaObj.info +'</label>';
+        var placeholder = '', value = '';
+        if( textareaObj.attr.placeholder){
+            placeholder = 'placeholder="'+ textareaObj.attr.placeholder +'"';
+        }
+        if( textareaObj.attr.value){
+            value = textareaObj.attr.value;
+        }
+        formHtml += '<textarea rows="5" class="form-control" '+ placeholder +' name="'+ textareaObj.attr.name +'">'+ value +'</textarea></div>';
+        if( textareaObj.description && textareaObj.description.length ){
+            formHtml += ' <div class="col-xs-4 form-group" style="margin-top: 30px"><span class="label label-info">'+ textareaObj.description +'</span></div>';
+        }
+        formHtml += '</div>';
+        return formHtml;
     }
 
     /**
