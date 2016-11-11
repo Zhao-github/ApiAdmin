@@ -10,6 +10,38 @@
 // +----------------------------------------------------------------------
 
 /**
+ * 判断是否是系统管理员
+ * @param mixed $uid
+ * @return bool
+ */
+function isAdministrator( $uid = '' ){
+    $uid = empty($uid) ? session('uid') : $uid;
+    if( is_array(config('USER_ADMINISTRATOR')) ){
+        if( is_array( $uid ) ){
+            $m = array_intersect( config('USER_ADMINISTRATOR'), $uid );
+            if( count($m) ){
+                return TRUE;
+            }
+        }else{
+            if( in_array( $uid, config('USER_ADMINISTRATOR') ) ){
+                return TRUE;
+            }
+        }
+    }else{
+        if( is_array( $uid ) ){
+            if( in_array(config('USER_ADMINISTRATOR'),$uid) ){
+                return TRUE;
+            }
+        }else{
+            if( $uid == config('USER_ADMINISTRATOR')){
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
+
+/**
  * CURL post数据
  * @param $url
  * @param $data

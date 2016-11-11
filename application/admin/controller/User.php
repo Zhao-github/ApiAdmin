@@ -204,8 +204,8 @@ class User extends Base {
 
     public function add(){
         if( $this->request->isPost() ){
-            $menuModel = new \app\admin\model\User();
-            $result = $menuModel->allowField(true)->validate(
+            $userModel = new \app\admin\model\User();
+            $result = $userModel->allowField(true)->validate(
                 [
                     'username' => 'require',
                 ],[
@@ -213,7 +213,7 @@ class User extends Base {
                 ]
             )->save($this->request->post());
             if(false === $result){
-                $this->error($menuModel->getError());
+                $this->error($userModel->getError());
             }else{
                 $this->success('操作成功！', url('User/index'));
             }
@@ -261,5 +261,21 @@ class User extends Base {
             ];
             $this->result($form, ReturnCode::GET_TEMPLATE_SUCCESS);
         }
+    }
+
+    public function del(){
+        if( $this->request->isDelete() ){
+            $key = $this->request->delete($this->primaryKey);
+            if(!isAdministrator($key)){
+                $delNum = \app\admin\model\User::destroy($key);
+                if( $delNum ){
+                    UserData::destroy(['uid' => $key]);
+                    $this->success('操作成功！', url('User/index'));
+                }
+            }else{
+                $this->error('管理员不能被删除！');
+            }
+        }
+        $this->error('操作失败！');
     }
 }
