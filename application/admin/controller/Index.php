@@ -16,6 +16,7 @@ class Index extends Base  {
         $data = listToTree($data);
         $this->assign('title', '首页');
         $this->assign('menuData', $data);
+        $this->assign('userInfo', $this->userInfo);
         return $this->fetch();
     }
 }

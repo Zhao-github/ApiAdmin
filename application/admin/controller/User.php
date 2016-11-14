@@ -203,6 +203,12 @@ class User extends Base {
         }
     }
 
+    public function logout(){
+        cache(session('uid'), null);
+        session('uid', null);
+        $this->success('登出成功',url('User/login'));
+    }
+
     public function add(){
         if( $this->request->isPost() ){
             $userModel = new \app\admin\model\User();

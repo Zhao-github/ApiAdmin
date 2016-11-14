@@ -50,6 +50,36 @@
                 <a href="javascript:void(0);" class="sidebar-toggle" data-toggle="offcanvas" role="button">
                     <span class="sr-only">Toggle navigation</span>
                 </a>
+                <div class="navbar-custom-menu">
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown user user-menu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <img src="__IMG__/logo.jpg" class="user-image" alt="User Image">
+                                <span class="hidden-xs">{$userInfo['username']}</span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header">
+                                    <img src="__IMG__/logo.jpg" class="img-circle" alt="User Image">
+
+                                    <p>
+                                        {$userInfo['username']} - {$userInfo['nickname']}
+                                        <small>注册时间：{$userInfo['regTime'] | date='Y-m-d',###}</small>
+                                    </p>
+                                </li>
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a href="#" class="btn btn-default btn-flat">修改信息</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a href="{:url('User/logout')}" class="btn btn-default btn-flat">退出登录</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </nav>
         </header>
         <!-- 左侧导航栏 -->
@@ -61,7 +91,7 @@
                         <img src="__IMG__/logo.jpg" class="img-circle" alt="头像">
                     </div>
                     <div class="pull-left info">
-                        <p>系统管理员</p>
+                        <p>{$userInfo['nickname']}</p>
                         <a href="javascript:void(0);"><i class="fa fa-circle text-success"></i> Online</a>
                     </div>
                 </div>

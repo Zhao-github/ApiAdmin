@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 
 use app\admin\model\Menu;
+use app\admin\model\User;
 use think\Controller;
 
 class Base extends Controller {
@@ -19,7 +20,8 @@ class Base extends Controller {
     public $menuInfo;
 
     private $superUrl = [
-        'User/login'
+        'User/login',
+        'User/logout'
     ];
 
     public function _initialize(){
@@ -72,7 +74,7 @@ class Base extends Controller {
                     $this->error("您的账号在别的地方登录了，请重新登录！", url('User/login'));
                 }else{
                     cache($this->uid, $sidNow, config('online_time'));
-//                    $this->userInfo = User::get([ $this->primaryKey => $this->uid ]);
+                    $this->userInfo = User::get([ $this->primaryKey => $this->uid ])->toArray();
 //                    if( $this->userInfo['updateTime'] === 0 ){
 //                        $this->error('初次登录请重置用户密码！', url('User/changePassWord'));
 //                    }else{
