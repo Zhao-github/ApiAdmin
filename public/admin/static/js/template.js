@@ -117,7 +117,7 @@
                 } else {
                     message = data.msg;
                 }
-                $.alertMsg(message);
+                $.alertMsg(message, wait);
                 if( isRedirect ){
                     setTimeout(function() {
                         if (data.url) {
@@ -134,7 +134,7 @@
                     }, wait);
                 }
             } else {
-                $.alertMsg(data.msg);
+                $.alertMsg(data.msg, wait);
             }
         });
         return false;
@@ -161,14 +161,14 @@
                 } else {
                     message = data.msg;
                 }
-                $.alertMsg(message);
+                $.alertMsg(message, wait);
                 setTimeout(function() {
                     if (data.url) {
                         $.refresh(data.url);
                     }
                 }, wait);
             } else {
-                $.alertMsg(data.msg);
+                $.alertMsg(data.msg, wait);
             }
         });
         return false;
@@ -203,14 +203,14 @@
                         }).done(function( data ) {
                             var wait = 1000*data.wait;
                             if (data.code == 1) {
-                                $.alertMsg(data.msg);
+                                $.alertMsg(data.msg, wait);
                                 setTimeout(function() {
                                     if (data.url) {
                                         $.refresh(data.url);
                                     }
                                 }, wait);
                             } else {
-                                $.alertMsg(data.msg);
+                                $.alertMsg(data.msg, wait);
                             }
                         });
                     }
@@ -249,14 +249,14 @@
                         }).done(function( data ) {
                             var wait = 1000*data.wait;
                             if (data.code == 1) {
-                                $.alertMsg(data.msg);
+                                $.alertMsg(data.msg, wait);
                                 setTimeout(function() {
                                     if (data.url) {
                                         $.refresh(data.url);
                                     }
                                 }, wait);
                             } else {
-                                $.alertMsg(data.msg);
+                                $.alertMsg(data.msg, wait);
                             }
                         });
                     }
@@ -294,14 +294,14 @@
                 } else {
                     message = data.msg;
                 }
-                $.alertMsg(message);
+                $.alertMsg(message, wait);
                 setTimeout(function() {
                     if (data.url) {
                         $.refresh(data.url);
                     }
                 }, wait);
             } else {
-                $.alertMsg(data.msg);
+                $.alertMsg(data.msg, wait);
             }
         });
     })
