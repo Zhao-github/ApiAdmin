@@ -48,11 +48,16 @@
      */
     $.refresh = function ( url, urlData ) {
         urlData = urlData ? urlData : '';
+        var loadingBox = bootbox.dialog({
+            message: '<div class="text-center"><i class="fa fa-spin fa-spinner"></i> Loading...</div>',
+            closeButton: false
+        });
         $.ajax({
             type: "GET",
             url: url,
             data: urlData,
             success: function(data){
+                loadingBox.modal('hide');
                 if( data.code == 200 ){
                     if( data.data.tempType == 'table' ){
                         if( $.buildTable ){
