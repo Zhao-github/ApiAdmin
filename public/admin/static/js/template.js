@@ -278,15 +278,32 @@
     });
 
     bodyDom.on('click', '.auth', function () {
-
-        var reg = new RegExp("(^|&)id=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
-        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
-        if (r != null) {
-            var id = unescape(r[2]);
-        }
-        console.log(id);
-
-        console.log($(this).parent().parent().children().eq(2).html());
+        var tdDom = $(this).parent().parent().children();
+        var urlName = tdDom.eq(2).html();
+        var url = $(this).attr('url');
+        var message;
+        $.ajax({
+            type: "PUT",
+            url: url,
+            data: {urlName:urlName, get:Number(tdDom.find('[name=get]').is(':checked')), post:Number(tdDom.find('[name=post]').is(':checked')), put:Number(tdDom.find('[name=put]').is(':checked')), delete:Number(tdDom.find('[name=delete]').is(':checked'))}
+        }).done(function( data ) {
+            var wait = 1000*data.wait;
+            if (data.code == 1) {
+                if (data.url) {
+                    message = data.msg + ' 页面即将自动跳转...';
+                } else {
+                    message = data.msg;
+                }
+                $.alertMsg(message);
+                setTimeout(function() {
+                    if (data.url) {
+                        $.refresh(data.url);
+                    }
+                }, wait);
+            } else {
+                $.alertMsg(data.msg);
+            }
+        });
     })
 
 })(jQuery);

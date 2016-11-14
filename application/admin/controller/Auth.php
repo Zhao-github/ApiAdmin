@@ -464,76 +464,116 @@ class Auth extends Base {
         if( !$authList ){
             $authList = $this->refreshAuth();
         }
-        $table = [
-            'tempType' => 'table',
-            'header' => [
-                [
-                    'field' => 'showName',
-                    'info' => '权限名称'
-                ],
-                [
-                    'field' => 'url',
-                    'info' => 'URL标识'
-                ],
-                [
-                    'field' => 'token',
-                    'info' => '真实URL'
-                ],
-                [
-                    'field' => 'get',
-                    'info' => 'Get'
-                ],
-                [
-                    'field' => 'put',
-                    'info' => 'Put'
-                ],
-                [
-                    'field' => 'post',
-                    'info' => 'Post'
-                ],
-                [
-                    'field' => 'delete',
-                    'info' => 'Delete'
-                ]
-            ],
-            'typeRule' => [
-                'access' => [
-                    'module' => 'a',
-                    'rule' => [
-                        'info' => '访问授权',
-                        'href' => url('Auth/access'),
-                        'param'=> [$this->primaryKey],
-                        'class' => 'refresh'
+        if( $this->request->isPut() ){
+            $gid = session('authGid');
+            if( !$gid ){
+                $this->error('组ID丢失！');
+            }
+            $url = $this->request->put('urlName');
+            $getAuth = $this->request->put('get');
+            $putAuth = $this->request->put('put');
+            $deleteAuth = $this->request->put('delete');
+            $postAuth = $this->request->put('post');
+            $auth = \Permission::AUTH_GET * $getAuth + \Permission::AUTH_DELETE * $deleteAuth + \Permission::AUTH_POST * $postAuth + \Permission::AUTH_PUT * $putAuth;
+            $authDetail = AuthRule::get( ['group_id' => $gid, 'url' => $url] );
+            if( $authDetail ){
+                $authDetail->auth = $auth;
+                $authDetail->save();
+            }else{
+                $newAuthDetail = new AuthRule();
+                $newAuthDetail->url = $url;
+                $newAuthDetail->group_id = $gid;
+                $newAuthDetail->auth = $auth;
+                $newAuthDetail->save();
+            }
+            $this->success('更新成功！', url('Auth/access'), '', 1);
+        }else{
+            $gid = $this->request->get('id')?$this->request->get('id'):session('authGid');
+            if( !$gid ){
+                $this->result('', ReturnCode::GET_TEMPLATE_ERROR, '组ID丢失！');
+            }else{
+                session('authGid', $gid);
+            }
+            $authRuleArr = AuthRule::where(['group_id' => $gid])->select();
+            if( $authRuleArr ){
+                $authRule = [];
+                foreach ( $authRuleArr as $value ){
+                    $authRule[$value->url] = $value->auth;
+                }
+                foreach ( $authList as &$authValue ){
+                    $authRuleValue = isset($authRule[$authValue['url']])?$authRule[$authValue['url']]:0;
+                    $authValue['get'] = \Permission::AUTH_GET & $authRuleValue;
+                    $authValue['post'] = \Permission::AUTH_POST & $authRuleValue;
+                    $authValue['put'] = \Permission::AUTH_PUT & $authRuleValue;
+                    $authValue['delete'] = \Permission::AUTH_DELETE & $authRuleValue;
+                }
+            }
+            $table = [
+                'tempType' => 'table',
+                'header' => [
+                    [
+                        'field' => 'showName',
+                        'info' => '权限名称'
+                    ],
+                    [
+                        'field' => 'url',
+                        'info' => 'URL标识'
+                    ],
+                    [
+                        'field' => 'token',
+                        'info' => '真实URL'
+                    ],
+                    [
+                        'field' => 'get',
+                        'info' => 'Get'
+                    ],
+                    [
+                        'field' => 'put',
+                        'info' => 'Put'
+                    ],
+                    [
+                        'field' => 'post',
+                        'info' => 'Post'
+                    ],
+                    [
+                        'field' => 'delete',
+                        'info' => 'Delete'
                     ]
                 ],
-                'post' => [
-                    'module' => 'auth',
-                    'rule' => [
-                        'value' => ''
+                'typeRule' => [
+                    'post' => [
+                        'module' => 'auth',
+                        'rule' => [
+                            'value' => '',
+                            'url' => url('Auth/access')
+                        ]
+                    ],
+                    'get' => [
+                        'module' => 'auth',
+                        'rule' => [
+                            'value' => '',
+                            'url' => url('Auth/access')
+                        ]
+                    ],
+                    'put' => [
+                        'module' => 'auth',
+                        'rule' => [
+                            'value' => '',
+                            'url' => url('Auth/access')
+                        ]
+                    ],
+                    'delete' => [
+                        'module' => 'auth',
+                        'rule' => [
+                            'value' => '',
+                            'url' => url('Auth/access')
+                        ]
                     ]
                 ],
-                'get' => [
-                    'module' => 'auth',
-                    'rule' => [
-                        'value' => ''
-                    ]
-                ],
-                'put' => [
-                    'module' => 'auth',
-                    'rule' => [
-                        'value' => ''
-                    ]
-                ],
-                'delete' => [
-                    'module' => 'auth',
-                    'rule' => [
-                        'value' => ''
-                    ]
-                ]
-            ],
-            'data' => $authList
-        ];
-        $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
+                'data' => $authList
+            ];
+            $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
+        }
     }
 
     /**

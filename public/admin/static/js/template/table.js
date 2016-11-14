@@ -114,10 +114,10 @@
                                 break;
                             case 'auth':
                                 if( dataValue['url'] ){
-                                    if( dataValue[fieldName] == 0 ){
-                                        dataListHtml += '<td><input class="auth" type="checkbox" name="'+fieldName+'" ></td>';
+                                    if( dataValue[fieldName] && dataValue[fieldName] != 0 ){
+                                        dataListHtml += '<td><input class="auth" checked type="checkbox" url="'+ rule.rule['url'] +'" name="'+fieldName+'" ></td>';
                                     }else{
-                                        dataListHtml += '<td><input class="auth" checked type="checkbox" name="'+fieldName+'" ></td>';
+                                        dataListHtml += '<td><input class="auth" type="checkbox" url="'+ rule.rule['url'] +'" name="'+fieldName+'" ></td>';
                                     }
                                 }
                         }
