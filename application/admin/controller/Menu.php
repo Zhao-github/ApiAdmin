@@ -15,14 +15,22 @@ class Menu extends Base {
             $query->order('sort', 'asc');
         });
         foreach ($dataObj as $value){
-            $data[] = $value->toArray();
+            $dataArr = $value->toArray();
+            if( $dataArr['url'] ){
+                $dataArr['token'] = url($dataArr['url']);
+            }else{
+                $dataArr['token'] = '';
+            }
+            $data[] = $dataArr;
         }
         $data = formatTree(listToTree($data));
+        (new Auth())->refreshAuth($data);
         foreach( $data as &$value ){
             $value['name'] = $value['showName'];
             unset($value['showName']);
             unset($value['namePrefix']);
             unset($value['lv']);
+            unset($value['token']);
             $value['post'] = intval(boolval($value['auth'] & \Permission::AUTH_POST));
             $value['get'] = intval(boolval($value['auth'] & \Permission::AUTH_GET));
             $value['put'] = intval(boolval($value['auth'] & \Permission::AUTH_PUT));

@@ -16,7 +16,7 @@ class Menu extends Model {
         'type'       =>  'integer',
         'sort'       =>  'integer',
         'hide'       =>  'integer',
-        'auth'  =>  'integer',
+        'auth'       =>  'integer',
         'level'      =>  'integer',
     ];
 

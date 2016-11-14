@@ -456,5 +456,110 @@ class Auth extends Base {
         }
     }
 
+    /**
+     * 加载权限因子
+     */
+    public function access(){
+        $authList = cache('AuthRule');
+        if( !$authList ){
+            $authList = $this->refreshAuth();
+        }
+        $table = [
+            'tempType' => 'table',
+            'header' => [
+                [
+                    'field' => 'showName',
+                    'info' => '权限名称'
+                ],
+                [
+                    'field' => 'url',
+                    'info' => 'URL标识'
+                ],
+                [
+                    'field' => 'token',
+                    'info' => '真实URL'
+                ],
+                [
+                    'field' => 'get',
+                    'info' => 'Get'
+                ],
+                [
+                    'field' => 'put',
+                    'info' => 'Put'
+                ],
+                [
+                    'field' => 'post',
+                    'info' => 'Post'
+                ],
+                [
+                    'field' => 'delete',
+                    'info' => 'Delete'
+                ]
+            ],
+            'typeRule' => [
+                'access' => [
+                    'module' => 'a',
+                    'rule' => [
+                        'info' => '访问授权',
+                        'href' => url('Auth/access'),
+                        'param'=> [$this->primaryKey],
+                        'class' => 'refresh'
+                    ]
+                ],
+                'post' => [
+                    'module' => 'auth',
+                    'rule' => [
+                        'value' => ''
+                    ]
+                ],
+                'get' => [
+                    'module' => 'auth',
+                    'rule' => [
+                        'value' => ''
+                    ]
+                ],
+                'put' => [
+                    'module' => 'auth',
+                    'rule' => [
+                        'value' => ''
+                    ]
+                ],
+                'delete' => [
+                    'module' => 'auth',
+                    'rule' => [
+                        'value' => ''
+                    ]
+                ]
+            ],
+            'data' => $authList
+        ];
+        $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
+    }
+
+    /**
+     * 刷新权限因子缓存
+     * @param array $menu
+     * @return array
+     */
+    public function refreshAuth( $menu = [] ){
+        if( empty($menu) ){
+            $menuObj = \app\admin\model\Menu::all(function($query){
+                $query->order('sort', 'asc');
+            });
+            foreach ($menuObj as $value){
+                $menuArr = $value->toArray();
+                if( $menuArr['url'] ){
+                    $menuArr['token'] = url($menuArr['url']);
+                }else{
+                    $menuArr['token'] = '';
+                }
+                $menu[] = $menuArr;
+            }
+            $menu = formatTree(listToTree($menu));
+        }
+        cache('AuthRule', $menu);
+        return $menu;
+    }
+
 
 }
