@@ -277,6 +277,9 @@
         $.refresh(url, urlData);
     });
 
+    /**
+     * 转为权限修改定制的Ajax请求
+     */
     bodyDom.on('click', '.auth', function () {
         var tdDom = $(this).parent().parent().children();
         var urlName = tdDom.eq(2).html();
