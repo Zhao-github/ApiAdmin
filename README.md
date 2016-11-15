@@ -11,6 +11,23 @@
 > 希望有人用它，希望更多的人用它。
 > 希望它能帮助到你，希望它能帮助到更多的你。
 
+## 项目简介
+
+**体验地址**
+
+[http://admin.our-dream.cn/](http://admin.our-dream.cn/)
+
+**项目构成**
+
+- ThinkPHP V5
+- AdminLTE v2.3.7
+- fastClick
+- jQuery v3.1.1
+- bootstrap v3.3.6
+- bootBox v4.4.0
+- slimscroll v1.3.8
+- ...
+
 **功能简介**
 
  1. 拥有高可用的菜单系统。
@@ -22,6 +39,12 @@
  7. 拥有强大的数据统计系统。（未完成）
  8. 拥有完善的技术服务及其技术支持渠道。（未完成）
  9. 拥有丰富的应用场景解决方案。（未完成）
+
+**页面截图**
+
+![输入图片说明](http://git.oschina.net/uploads/images/2016/1115/153057_5fb85494_110856.png "在这里输入图片标题")
+![输入图片说明](http://git.oschina.net/uploads/images/2016/1115/153108_43ba4095_110856.png "在这里输入图片标题")
+![输入图片说明](http://git.oschina.net/uploads/images/2016/1115/153119_801a9feb_110856.png "在这里输入图片标题")
 
 **项目特性**
 
