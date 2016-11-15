@@ -45,29 +45,45 @@ class Base extends Controller {
         return (new PublicShow())->show_404();
     }
 
+    /**
+     * 过滤没有权限和隐藏的菜单
+     * @param $temp
+     * @return mixed
+     */
     protected function _prepareTemplate( $temp ){
-        $authList = (new \Permission())->getAuthList($this->uid);
-        switch ( $temp['tempType'] ){
-            case 'table':
-                foreach ( $temp['topButton'] as $key => $value ){
-                    if( !isset($authList[$value['href']]) || !$authList[$value['href']] ){
-                        unset($temp['topButton'][$key]);
-                    }else{
-                        $temp['topButton'][$key]['href'] = url($value['href']);
+        if( isAdministrator() ){
+            $MenuInfo = Menu::where([])->column('hide','url');
+            $authList = (new \Permission())->getAuthList($this->uid);
+            switch ( $temp['tempType'] ){
+                case 'table':
+                    foreach ( $temp['topButton'] as $key => $value ){
+                        if( !isset($authList[$value['href']]) || !$authList[$value['href']] ){
+                            unset($temp['topButton'][$key]);
+                        }else{
+                            if( !isset($MenuInfo[$value['href']]) || $MenuInfo[$value['href']] ){
+                                unset($temp['topButton'][$key]);
+                            }else{
+                                $temp['topButton'][$key]['href'] = url($value['href']);
+                            }
+                        }
                     }
-                }
-                $temp['topButton'] = array_values($temp['topButton']);
-                foreach ( $temp['rightButton'] as $k => $v ){
-                    if( !isset($authList[$v['href']]) || !$authList[$v['href']] ){
-                        unset($temp['rightButton'][$k]);
-                    }else{
-                        $temp['rightButton'][$k]['href'] = url($v['href']);
+                    $temp['topButton'] = array_values($temp['topButton']);
+                    foreach ( $temp['rightButton'] as $k => $v ){
+                        if( !isset($authList[$v['href']]) || !$authList[$v['href']] ){
+                            unset($temp['rightButton'][$k]);
+                        }else{
+                            if( !isset($MenuInfo[$v['href']]) || $MenuInfo[$v['href']] ){
+                                unset($temp['rightButton'][$k]);
+                            }else{
+                                $temp['rightButton'][$k]['href'] = url($v['href']);
+                            }
+                        }
                     }
-                }
-                $temp['rightButton'] = array_values($temp['rightButton']);
-                break;
-            case 'form':
-                break;
+                    $temp['rightButton'] = array_values($temp['rightButton']);
+                    break;
+                case 'form':
+                    break;
+            }
         }
         return $temp;
     }
