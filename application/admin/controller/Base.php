@@ -93,7 +93,7 @@ class Base extends Controller {
 
     private function checkRule(){
         $check = (new \Permission())->check($this->url, $this->uid);
-        if( !$check ){
+        if( !$check && !isAdministrator() ){
             $this->error('权限认证失败！', '');
         }
     }

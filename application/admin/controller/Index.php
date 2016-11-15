@@ -8,9 +8,16 @@ class Index extends Base  {
         $dataObj = Menu::all(function($query){
             $query->order('sort', 'asc');
         });
+        $authList = (new \Permission())->getAuthList($this->uid);
         foreach ($dataObj as $value){
             if( !$value->hide ){
-                $data[] = $value->toArray();
+                if( isAdministrator() ){
+                    $data[] = $value->toArray();
+                }else{
+                    if( (isset($authList[$value->url]) && $authList[$value->url]) || empty($value->url) ){
+                        $data[] = $value->toArray();
+                    }
+                }
             }
         }
         $data = listToTree($data);
