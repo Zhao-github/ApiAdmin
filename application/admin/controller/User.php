@@ -145,13 +145,17 @@ class User extends Base {
     public function close(){
         if( $this->request->isPut() ){
             $id = $this->request->put($this->primaryKey);
-            $userObj = \app\admin\model\User::get([$this->primaryKey => $id]);
-            if( is_null($userObj) ){
-                $this->error('用户不存在','');
+            if(!isAdministrator($id)){
+                $userObj = \app\admin\model\User::get([$this->primaryKey => $id]);
+                if( is_null($userObj) ){
+                    $this->error('用户不存在','');
+                }else{
+                    $userObj->status = 0;
+                    $userObj->save();
+                    $this->success('操作成功', url('User/index'));
+                }
             }else{
-                $userObj->status = 0;
-                $userObj->save();
-                $this->success('操作成功', url('User/index'));
+                $this->error('管理员不能被禁用','');
             }
         }
     }
