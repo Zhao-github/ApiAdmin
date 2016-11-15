@@ -78,14 +78,14 @@ class Menu extends Base {
             ],
             'topButton' => [
                 [
-                    'href' => url('Menu/add'),
+                    'href' => 'Menu/add',
                     'class'=> 'btn-success',
                     'info'=> '新增',
                     'icon' => 'fa fa-plus',
                     'confirm' => 0,
                 ],
                 [
-                    'href' => url('Menu/del'),
+                    'href' => 'Menu/del',
                     'class'=> 'btn-danger ajax-delete',
                     'info'=> '删除',
                     'icon' => 'fa fa-trash',
@@ -95,7 +95,7 @@ class Menu extends Base {
             'rightButton' => [
                 [
                     'info' => '编辑',
-                    'href' => url('Menu/edit'),
+                    'href' => 'Menu/edit',
                     'class'=> 'btn-warning',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-pencil',
@@ -104,7 +104,7 @@ class Menu extends Base {
                 ],
                 [
                     'info' => '删除',
-                    'href' => url('Menu/del'),
+                    'href' => 'Menu/del',
                     'class'=> 'btn-danger ajax-delete',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-trash',
@@ -190,6 +190,7 @@ class Menu extends Base {
             ],
             'data' => $data
         ];
+        $table = $this->_prepareTemplate($table);
         $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
     }
 

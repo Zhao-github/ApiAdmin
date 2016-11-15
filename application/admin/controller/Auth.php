@@ -53,7 +53,7 @@ class Auth extends Base {
             ],
             'topButton' => [
                 [
-                    'href' => url('Auth/add'),
+                    'href' => 'Auth/add',
                     'class'=> 'btn-success',
                     'info'=> '新增',
                     'icon' => 'fa fa-plus',
@@ -63,7 +63,7 @@ class Auth extends Base {
             'rightButton' => [
                 [
                     'info' => '编辑',
-                    'href' => url('Auth/edit'),
+                    'href' => 'Auth/edit',
                     'class'=> 'btn-info',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-pencil',
@@ -72,7 +72,7 @@ class Auth extends Base {
                 ],
                 [
                     'info' => '启用',
-                    'href' => url('Auth/open'),
+                    'href' => 'Auth/open',
                     'class'=> 'btn-success ajax-put-url',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-check',
@@ -81,7 +81,7 @@ class Auth extends Base {
                 ],
                 [
                     'info' => '禁用',
-                    'href' => url('Auth/close'),
+                    'href' => 'Auth/close',
                     'class'=> 'btn-warning ajax-put-url',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-close',
@@ -90,7 +90,7 @@ class Auth extends Base {
                 ],
                 [
                     'info' => '删除',
-                    'href' => url('Auth/del'),
+                    'href' => 'Auth/del',
                     'class'=> 'btn-danger ajax-delete',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-trash',
@@ -145,6 +145,7 @@ class Auth extends Base {
             ],
             'data' => $data
         ];
+        $table = $this->_prepareTemplate($table);
         $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
     }
 

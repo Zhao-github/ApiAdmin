@@ -45,6 +45,33 @@ class Base extends Controller {
         return (new PublicShow())->show_404();
     }
 
+    protected function _prepareTemplate( $temp ){
+        $authList = (new \Permission())->getAuthList($this->uid);
+        switch ( $temp['tempType'] ){
+            case 'table':
+                foreach ( $temp['topButton'] as $key => $value ){
+                    if( !isset($authList[$value['href']]) || !$authList[$value['href']] ){
+                        unset($temp['topButton'][$key]);
+                    }else{
+                        $temp['topButton'][$key]['href'] = url($value['href']);
+                    }
+                }
+                $temp['topButton'] = array_values($temp['topButton']);
+                foreach ( $temp['rightButton'] as $k => $v ){
+                    if( !isset($authList[$v['href']]) || !$authList[$v['href']] ){
+                        unset($temp['rightButton'][$k]);
+                    }else{
+                        $temp['rightButton'][$k]['href'] = url($v['href']);
+                    }
+                }
+                $temp['rightButton'] = array_values($temp['rightButton']);
+                break;
+            case 'form':
+                break;
+        }
+        return $temp;
+    }
+
     /**
      * 系统初始化函数（登陆状态检测，权限检测，初始化菜单）
      */
@@ -91,6 +118,9 @@ class Base extends Controller {
         }
     }
 
+    /**
+     * 权限检测&权限验证
+     */
     private function checkRule(){
         $check = (new \Permission())->check($this->url, $this->uid);
         if( !$check && !isAdministrator() ){

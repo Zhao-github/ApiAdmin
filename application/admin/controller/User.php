@@ -61,7 +61,7 @@ class User extends Base {
             ],
             'topButton' => [
                 [
-                    'href' => url('User/add'),
+                    'href' => 'User/add',
                     'class'=> 'btn-success',
                     'info'=> '新增',
                     'icon' => 'fa fa-plus',
@@ -71,7 +71,7 @@ class User extends Base {
             'rightButton' => [
                 [
                     'info' => '启用',
-                    'href' => url('User/open'),
+                    'href' => 'User/open',
                     'class'=> 'btn-success ajax-put-url',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-check',
@@ -80,7 +80,7 @@ class User extends Base {
                 ],
                 [
                     'info' => '禁用',
-                    'href' => url('User/close'),
+                    'href' => 'User/close',
                     'class'=> 'btn-warning ajax-put-url',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-close',
@@ -89,7 +89,7 @@ class User extends Base {
                 ],
                 [
                     'info' => '授权',
-                    'href' => url('Auth/group'),
+                    'href' => 'Auth/group',
                     'class'=> 'btn-default',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-lock',
@@ -97,7 +97,7 @@ class User extends Base {
                 ],
                 [
                     'info' => '删除',
-                    'href' => url('User/del'),
+                    'href' => 'User/del',
                     'class'=> 'btn-danger ajax-delete',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-trash',
@@ -124,6 +124,7 @@ class User extends Base {
             ],
             'data' => $data
         ];
+        $table = $this->_prepareTemplate($table);
         $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
     }
 
