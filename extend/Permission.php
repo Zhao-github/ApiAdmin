@@ -34,23 +34,18 @@ class Permission {
     protected $_config = [
         'AUTH_ON'             => true,                    //认证开关
         'AUTH_TYPE'           => 0,                       //认证方式，0为时时认证；1为登录认证[Cache缓存]；2为登录认证[SESSION缓存]。
-        'AUTH_GROUP'          => 'AuthGroup',             //用户组数据表名
-        'AUTH_GROUP_ACCESS'   => 'AuthGroupAccess',       //用户组明细表
-        'AUTH_RULE'           => 'AuthRule',              //权限规则表
-        'AUTH_USER'           => 'User'                   //用户信息表
+        'AUTH_GROUP'          => 'auth_group',             //用户组数据表名
+        'AUTH_GROUP_ACCESS'   => 'auth_group_access',       //用户组明细表
+        'AUTH_RULE'           => 'auth_rule',              //权限规则表
+        'AUTH_USER'           => 'user'                   //用户信息表
     ];
 
     public function __construct() {
-        $options = [
-            'AUTH_ON'           => config('AUTH_ON'),
-            'AUTH_TYPE'         => config('AUTH_TYPE'),
-            'AUTH_GROUP'        => config('AUTH_GROUP'),
-            'AUTH_GROUP_ACCESS' => config('AUTH_GROUP_ACCESS'),
-            'AUTH_RULE'         => config('AUTH_RULE'),
-            'AUTH_USER'         => config('AUTH_USER')
-        ];
-        if ( $options ) {
-            $this->_config = array_merge($this->_config, $options);
+        foreach ( $this->_config as $key => $value ){
+            $confValue = config($key);
+            if( !is_null($confValue) ){
+                $this->_config[$key] = $confValue;
+            }
         }
     }
 
@@ -91,7 +86,7 @@ class Permission {
                 $action = 0;
                 break;
         }
-
+        $authList[$name] = isset($authList[$name])?$authList[$name]:0;
         return $authList[$name] & $action;
 
     }
@@ -107,16 +102,22 @@ class Permission {
             return $groups[$uid];
         }
         $userGroups = \think\Db::table($this->_config['AUTH_GROUP_ACCESS'])->where(['uid' => $uid])->select();
-        foreach( $userGroups as &$value ){
-            $groupInfo = \think\Db::table($this->_config['AUTH_GROUP'])->where(['id' => $value['groupId']])->find()->toArray();
-            if( $groupInfo['status'] != 1 ){
-                unset($value);
-            }else{
-                $value = $groupInfo;
+        if( !empty($userGroups) ){
+            $groups[$uid] = [];
+            foreach( $userGroups as $value ){
+                $groupInfo = \think\Db::table($this->_config['AUTH_GROUP'])->where(['id' => $value['group_id']])->find();
+                if( !is_null($groupInfo) ){
+                    if( $groupInfo['status'] != 1 ){
+                        continue;
+                    }else{
+                        $groups[$uid][] = $value['group_id'];
+                    }
+                }
             }
+            return $groups[$uid];
+        }else{
+            return [];
         }
-        $groups[$uid]=$userGroups?$userGroups:[];
-        return $groups[$uid];
     }
 
     /**
@@ -125,7 +126,6 @@ class Permission {
      * @return array
      */
     public function getAuthList( $uid ) {
-
         static $_authList = [];
         if (isset($_authList[$uid])) {
             return $_authList[$uid];
@@ -140,25 +140,23 @@ class Permission {
             }
         }
 
-
         $groups = $this->getGroups($uid);
-        $ids = [];
-        foreach ($groups as $g) {
-            $ids = array_merge($ids, explode(',', trim($g['rules'], ',')));
-        }
-        $ids = array_unique($ids);
-        if ( empty($ids) ) {
+        if ( empty($groups) ) {
             $_authList[$uid] = [];
             return [];
         }
 
         $authList = [];
-        foreach ($ids as $IValue){
-            $tmp = explode(':',$IValue);
-            if( isset($authList[$tmp[0]]) ){
-                $authList[$tmp[0]] = $authList[1] | $authList[1];
-            }else{
-                $authList[$tmp[0]] = $authList[1];
+        foreach ($groups as $g) {
+            $groupRule = \think\Db::table($this->_config['AUTH_RULE'])->where(['group_id' => $g])->select();
+            if( !empty($groupRule) ){
+                foreach ( $groupRule as $groupValue ){
+                    if( isset($authList[$groupValue['url']]) ){
+                        $authList[$groupValue['url']] = $authList[$groupValue['url']] | $groupValue['auth'];
+                    }else{
+                        $authList[$groupValue['url']] = $groupValue['auth'];
+                    }
+                }
             }
         }
 

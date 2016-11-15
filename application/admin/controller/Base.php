@@ -53,12 +53,12 @@ class Base extends Controller {
         if( !in_array($this->url, $this->superUrl) ){
             $menuInfo = Menu::where(['url' => $this->url])->find();
             if( is_null($menuInfo) ){
-                $this->error( '目录：'.$this->url.'不存在！' );
+                $this->error( '目录：'.$this->url.'不存在！', '' );
             }else{
                 $this->menuInfo =  $menuInfo->toArray();
             }
             $this->checkLogin();
-//            $this->checkRule();
+            $this->checkRule();
         }
     }
 
@@ -88,6 +88,13 @@ class Base extends Controller {
             }
         }else{
             $this->redirect('User/login');
+        }
+    }
+
+    private function checkRule(){
+        $check = (new \Permission())->check($this->url, $this->uid);
+        if( !$check ){
+            $this->error('权限认证失败！', '');
         }
     }
 }
