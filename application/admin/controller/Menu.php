@@ -297,7 +297,7 @@ class Menu extends Base {
                     [
                         'module' => 'radio',
                         'description' => '',
-                        'info' => '是否显示：「该配置只对模块类功能生效」',
+                        'info' => '是否显示：',
                         'attr' => [
                             'name' => 'hide',
                             'value' => '',
@@ -310,7 +310,7 @@ class Menu extends Base {
                     [
                         'module' => 'text',
                         'description' => '',
-                        'info' => '菜单图标：「该配置只对模块类功能生效」',
+                        'info' => '菜单图标：',
                         'attr' => [
                             'name' => 'icon',
                             'value' => '',
@@ -320,7 +320,7 @@ class Menu extends Base {
                     [
                         'module' => 'text',
                         'description' => '',
-                        'info' => '菜单URL：「该配置只对无模块类功能子菜单的菜单生效」[具体格式为：控制器/方法名]',
+                        'info' => '菜单URL：[具体格式为：控制器/方法名]',
                         'attr' => [
                             'name' => 'url',
                             'value' => '',
@@ -456,7 +456,7 @@ class Menu extends Base {
                     [
                         'module' => 'radio',
                         'description' => '',
-                        'info' => '是否显示：「该配置只对模块类功能生效」',
+                        'info' => '是否显示：',
                         'attr' => [
                             'name' => 'hide',
                             'value' => $detail['hide'],
@@ -469,7 +469,7 @@ class Menu extends Base {
                     [
                         'module' => 'text',
                         'description' => '',
-                        'info' => '菜单图标：「该配置只对模块类功能生效」',
+                        'info' => '菜单图标：',
                         'attr' => [
                             'name' => 'icon',
                             'value' => $detail['icon'],
@@ -479,7 +479,7 @@ class Menu extends Base {
                     [
                         'module' => 'text',
                         'description' => '',
-                        'info' => '菜单URL：「该配置只对无模块类功能子菜单的菜单生效」[具体格式为：控制器/方法名]',
+                        'info' => '菜单URL：[具体格式为：控制器/方法名]',
                         'attr' => [
                             'name' => 'url',
                             'value' => $detail['url'],
