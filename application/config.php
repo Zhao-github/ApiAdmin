@@ -10,10 +10,10 @@
 // +----------------------------------------------------------------------
 
 return [
-    'PRODUCT_VERSION' => 'V0.9.0', //项目版本
-    'PRODUCT_NAME'   => '7d-vision', //产品名称
-    'WEBSITE_DOMAIN' => 'http://www.7d-vision.com', //官方网址
-    'COMPANY_NAME'   => '北京七维视觉科技有限公司', //公司名称
+    'PRODUCT_VERSION' => 'V1.0.0', //项目版本
+    'PRODUCT_NAME'   => 'ApiAdmin', //产品名称
+    'WEBSITE_DOMAIN' => 'http://www.our-dream.cn', //官方网址
+    'COMPANY_NAME'   => 'XXXXXXXX有限公司', //公司名称
     'SQL_PRIMARY_KEY' => 'id',
     'USER_ADMINISTRATOR' => 4,
 
