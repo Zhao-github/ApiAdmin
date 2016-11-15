@@ -114,14 +114,17 @@
      */
     function buildInput( inputObj ) {
         var formHtml = '<div><div class="col-xs-8 form-group"><label>'+ inputObj.info +'</label>';
-        var placeholder = '', value = '';
+        var placeholder = '', value = '', disabled = '';
         if( inputObj.attr.placeholder){
             placeholder = 'placeholder="'+ inputObj.attr.placeholder +'"';
         }
         if( inputObj.attr.value){
             value = 'value="'+ inputObj.attr.value +'"';
         }
-        formHtml += '<input type="text" class="form-control" '+ placeholder +' '+ value +' name="'+ inputObj.attr.name +'"></div>';
+        if( inputObj.attr.disabled ){
+            disabled = 'disabled';
+        }
+        formHtml += '<input type="text" class="form-control" '+ placeholder +' '+ disabled +' '+ value +' name="'+ inputObj.attr.name +'"></div>';
         if( inputObj.description && inputObj.description.length ){
             formHtml += ' <div class="col-xs-4 form-group" style="margin-top: 30px"><span class="label label-info">'+ inputObj.description +'</span></div>';
         }

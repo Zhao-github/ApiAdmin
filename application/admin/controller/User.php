@@ -242,7 +242,7 @@ class User extends Base {
                     [
                         'module' => 'text',
                         'description' => '',
-                        'info' => '用户名称：',
+                        'info' => '账户名：',
                         'attr' => [
                             'name' => 'username',
                             'value' => '',
@@ -290,5 +290,79 @@ class User extends Base {
             }
         }
         $this->error('操作失败！');
+    }
+
+    public function edit(){
+        if( $this->request->isPut() ){
+            if( $this->request->put('password') != $this->request->put('repassword') ){
+                $this->error('两次密码输入不一致！', '');
+            }
+            if( empty($this->request->put('nickname')) ){
+                $this->error('昵称不能为空', '');
+            }
+            $userModel = new \app\admin\model\User();
+            $userDetail = $userModel->where([$this->primaryKey => $this->uid])->find();
+            if( !empty($this->request->put('password')) ){
+                $userDetail->password = $this->request->put('password');
+            }
+            $userDetail->nickname = $this->request->put('nickname');
+            $userDetail->save();
+            $this->success('操作成功！', url('User/index'));
+
+        }else{
+            $form = [
+                'formTitle' => $this->menuInfo['name'],
+                'tempType' => 'edit',
+                'formAttr' => [
+                    'target' => url('User/edit'),
+                    'formId' => 'edit-user-form',
+                    'backUrl' => url('User/index'),
+                ],
+                'formList' => [
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => '账户名：',
+                        'attr' => [
+                            'name' => 'username',
+                            'value' => $this->userInfo['username'],
+                            'placeholder' => '',
+                            'disabled' => true
+                        ]
+                    ],
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => '用户昵称：',
+                        'attr' => [
+                            'name' => 'nickname',
+                            'value' => $this->userInfo['nickname'],
+                            'placeholder' => $this->userInfo['nickname']
+                        ]
+                    ],
+                    [
+                        'module' => 'password',
+                        'description' => '',
+                        'info' => '新密码：',
+                        'attr' => [
+                            'name' => 'password',
+                            'value' => '',
+                            'placeholder' => ''
+                        ]
+                    ],
+                    [
+                        'module' => 'password',
+                        'description' => '',
+                        'info' => '确认密码：',
+                        'attr' => [
+                            'name' => 'repassword',
+                            'value' => '',
+                            'placeholder' => ''
+                        ]
+                    ]
+                ]
+            ];
+            $this->result($form, ReturnCode::GET_TEMPLATE_SUCCESS);
+        }
     }
 }
