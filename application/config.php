@@ -12,8 +12,8 @@
 return [
     'PRODUCT_VERSION' => 'V1.0.0', //项目版本
     'PRODUCT_NAME'   => 'ApiAdmin', //产品名称
-    'WEBSITE_DOMAIN' => 'http://www.our-dream.cn', //官方网址
-    'COMPANY_NAME'   => 'XXXXXXXX有限公司', //公司名称
+    'WEBSITE_DOMAIN' => 'http://zxblog.our-dream.cn', //官方网址
+    'COMPANY_NAME'   => 'ApiAdmin开发维护团队', //公司名称
     'SQL_PRIMARY_KEY' => 'id',
     'USER_ADMINISTRATOR' => 4,
 
