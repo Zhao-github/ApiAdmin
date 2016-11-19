@@ -21,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-            {volist name="check_env" id="item"}
+            {volist name="checkEnv" id="item"}
                 <tr>
                     <td>{$item['title']}</td>
                     <td>{$item['limit']}</td>
@@ -40,7 +40,7 @@
             </tr>
             </thead>
             <tbody>
-            {volist name="check_dirfile" id="item"}
+            {volist name="checkDirFile" id="item"}
                 <tr>
                     <td>{$item['path']}</td>
                     <td>可写</td>
@@ -58,7 +58,7 @@
             </tr>
             </thead>
             <tbody>
-            {volist name="check_func_and_ext" id="item"}
+            {volist name="checkFuncAndExt" id="item"}
                 <tr>
                     <td>{$item['name']}</td>
                     <td><i class="{$item['icon']}"></i> {$item['title']}</td>

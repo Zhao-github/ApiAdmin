@@ -26,13 +26,13 @@ class Index extends Controller {
                 session('error', false);
 
                 //环境检测
-                $this->assign('check_env', check_env());
+                $this->assign('checkEnv', checkEnv());
 
                 //目录文件读写检测
-                $this->assign('check_dirfile', check_dirfile());
+                $this->assign('checkDirFile', checkDirFile());
 
                 //函数及扩展库检测
-                $this->assign('check_func_and_ext', check_func_and_ext());
+                $this->assign('checkFuncAndExt', checkFuncAndExt());
 
                 return $this->fetch();
             }

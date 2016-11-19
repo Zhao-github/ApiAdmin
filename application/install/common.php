@@ -12,7 +12,7 @@
  * @return array 系统环境数据
  * @author jry <598821125@qq.com>
  */
-function check_env(){
+function checkEnv(){
     $items = [
         'os' => [
             'title'   => '操作系统',
@@ -64,7 +64,7 @@ function check_env(){
  * @return array 检测数据
  * @author jry <598821125@qq.com>
  */
-function check_dirfile(){
+function checkDirFile(){
     $items = [
         '0' => [
             'type'  => 'file',
@@ -117,7 +117,7 @@ function check_dirfile(){
  * 函数检测
  * @return array 检测数据
  */
-function check_func_and_ext(){
+function checkFuncAndExt(){
     $items = [
         [
             'type'    => 'ext',
