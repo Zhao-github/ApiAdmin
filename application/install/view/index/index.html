@@ -16,8 +16,8 @@
         <p>本服务条款一旦发生变更, {:config('COMPANY_NAME')}将在官网上公布修改内容。修改后的服务条款一旦在网站公布即有效代替原来的服务条款。您可随时登陆官网查阅最新版服务条款。如果您选择接受本条款，即表示您同意接受协议各项条件的约束。如果您不同意本服务条款，则不能获得使用本服务的权利。您若有违反本条款规定，{:config('COMPANY_NAME')}有权随时中止或终止您对{:config('PRODUCT_NAME')}产品的使用资格并保留追究相关法律责任的权利。</p>
         <p>在理解、同意、并遵守本协议的全部条款后，方可开始使用{:config('PRODUCT_NAME')}产品。您也可能与{:config('COMPANY_NAME')}直接签订另一书面协议，以补充或者取代本协议的全部或者任何部分。</p>
         <p>{:config('COMPANY_NAME')}拥有{:config('PRODUCT_NAME')}的全部知识产权，包括商标和著作权。虽然在大部分情况下您都可以自由的进行修改、复制、下载、安装、使用或者以其他方式受益于本软件的功能或者知识产权。但是{:config('COMPANY_NAME')}还是希望您能在底部保留我们的链接和版权声明！</p>
-        <button type="button" class="btn btn-primary btn-block">同意安装协议</button>
-        <button type="button" class="btn btn-default btn-block">不同意</button>
+        <a type="button" href="{:url('step2')}" class="btn btn-primary btn-block">同意安装协议</a>
+        <a type="button" href="{:config('WEBSITE_DOMAIN')}" class="btn btn-default btn-block">不同意</a>
     </div>
 </div>
 {/block}
