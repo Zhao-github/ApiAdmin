@@ -1,0 +1,20 @@
+{extend name="public/base" /}
+{block name="title"}系统安装Step4{/block}
+{block name="nav"}
+<li><a href="javascript:;">安装协议</a></li>
+<li><a href="javascript:;">参数设置</a></li>
+<li><a href="javascript:;">环境检测</a></li>
+<li class="active"><a href="javascript:;">开始安装</a></li>
+<li><a href="javascript:;">安装完成</a></li>
+{/block}
+{block name="main"}
+<div class="panel panel-default">
+    <div class="panel-heading">恭喜您，{:config('PRODUCT_NAME')} 安装完成！</div>
+    <div class="panel-body" style="font-size: 14px">
+        <div class="alert alert-success" role="alert">
+            <h4 align="center">{:config('PRODUCT_NAME')}提示您：您的系统已经成功安装，为了系统安全，请删除Install模块！</h4>
+        </div>
+        <a class="btn btn-primary btn-block" target="_blank" href="http://{:$_SERVER['HTTP_HOST']}">进入系统</a>
+    </div>
+</div>
+{/block}

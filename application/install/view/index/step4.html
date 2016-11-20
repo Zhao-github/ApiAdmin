@@ -8,6 +8,16 @@
 <li><a href="javascript:;">安装完成</a></li>
 {/block}
 {block name="main"}
+<style>
+    .install-database {
+        height: 500px;
+        max-height: 500px;
+        overflow-y: scroll;
+    }
+    .install-database p{
+        padding: 15px;
+    }
+</style>
 <div class="panel panel-default">
     <div class="panel-heading">{:config('PRODUCT_NAME')} 开始安装</div>
     <div class="panel-body" style="font-size: 14px">
@@ -18,14 +28,12 @@
             function showMsg(msg, classname){
                 var li = document.createElement('p');
                 li.innerHTML = msg;
-                classname && li.setAttribute('class', classname);
+                classname && li.setAttribute('class', 'bg-' + classname);
                 list.appendChild(li);
                 document.scrollTop += 30;
             }
         </script>
-        <button class="am-radius am-btn am-btn-warning am-disabled">正在安装，请稍后...</button>
-        <a type="button" href="{:url('step4')}" class="btn btn-primary btn-block">下一步</a>
-        <a type="button" href="{:url('step2')}" class="btn btn-default btn-block">上一步</a>
+        <button class="btn btn-warning btn-block" disabled>正在安装，请稍后...</button>
     </div>
 </div>
 {/block}

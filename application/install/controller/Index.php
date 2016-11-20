@@ -96,11 +96,11 @@ class Index extends Controller {
             $this->error('环境检测没有通过，请调整环境后重试！', url('step3'));
         }else{
             $step = session('step');
-//            if( $step != 3){
-//                $this->error("请按顺序安装", url('index'));
-//            }else{
-                session('step', 4);
+            if( $step != 3){
+                $this->error("请按顺序安装", url('index'));
+            }else{
                 session('error', false);
+                echo $this->fetch();
                 $dbConfig = session('dbConfig');
                 $cacheConfig = session('cacheConfig');
                 $adminConfig = session('adminConfig');
@@ -140,9 +140,18 @@ class Index extends Controller {
                     $this->writeConfig($cacheConfig, 'cache', $extraConfPath);
                 }
                 $this->writeConfig($baseConfig, 'base', $extraConfPath);
-                return $this->fetch();
+                if(session('error')){
+                    $this->error('安装出错', url('index'));
+                }else{
+                    session('step', 4);
+                    $this->redirect('complete');
+                }
             }
-//        }
+        }
+    }
+
+    public function complete(){
+        return $this->fetch();
     }
 
     /**
@@ -154,7 +163,7 @@ class Index extends Controller {
      */
     private function writeConfig($config, $type, $path){
         if(is_array($config)){
-            showMsg('开始写入'.$type.'配置文件');
+            showMsg('开始写入配置文件...', 'info');
             //读取配置内容
             $conf = file_get_contents(APP_PATH . $this->request->module(). DS . 'data'. DS .$type.'.tpl');
             //替换配置项
@@ -163,9 +172,9 @@ class Index extends Controller {
             }
             //写入应用配置文件
             if(file_put_contents($path.$type.'.php', $conf)){
-                showMsg('配置文件'.$type.'写入成功', 'bg-success');
+                showMsg('写入配置文件'.$type.'...成功', 'success');
             }else{
-                showMsg('配置文件'.$type.'写入失败！', 'bg-danger');
+                showMsg('写入配置文件'.$type.'...失败！', 'danger');
                 session('error', true);
             }
             return true;
@@ -184,7 +193,7 @@ class Index extends Controller {
         $sql = explode(";\n", $sql);
 
         //开始安装
-        showMsg('开始安装数据库...');
+        showMsg('开始安装数据库...', 'info');
         foreach ($sql as $value) {
             $value = trim($value);
             if (empty($value)) continue;
@@ -193,9 +202,9 @@ class Index extends Controller {
                 $value = str_replace(" `{$name}", " `{$prefix}{$name}", $value);
                 $msg  = "创建数据表{$name}";
                 if (false !== $db->exec($value)) {
-                    showMsg($msg . '...成功');
+                    showMsg($msg . '...成功', 'success');
                 } else {
-                    showMsg($msg . '...失败！', 'error');
+                    showMsg($msg . '...失败！', 'danger');
                     session('error', true);
                 }
             } else {
