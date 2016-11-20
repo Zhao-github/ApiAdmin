@@ -51,8 +51,8 @@ class Base extends Controller {
      * @return mixed
      */
     protected function _prepareTemplate( $temp ){
+        $MenuInfo = Menu::where([])->column('hide','url');
         if( !isAdministrator() ){
-            $MenuInfo = Menu::where([])->column('hide','url');
             $authList = (new \Permission())->getAuthList($this->uid);
             switch ( $temp['tempType'] ){
                 case 'table':
@@ -78,6 +78,21 @@ class Base extends Controller {
                                 $temp['rightButton'][$k]['href'] = url($v['href']);
                             }
                         }
+                    }
+                    $temp['rightButton'] = array_values($temp['rightButton']);
+                    break;
+                case 'form':
+                    break;
+            }
+        }else{
+            switch ( $temp['tempType'] ){
+                case 'table':
+                    foreach ( $temp['topButton'] as $key => $value ){
+                        $temp['topButton'][$key]['href'] = url($value['href']);
+                    }
+                    $temp['topButton'] = array_values($temp['topButton']);
+                    foreach ( $temp['rightButton'] as $k => $v ){
+                        $temp['rightButton'][$k]['href'] = url($v['href']);
                     }
                     $temp['rightButton'] = array_values($temp['rightButton']);
                     break;
