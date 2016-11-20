@@ -51,7 +51,7 @@ class Base extends Controller {
      * @return mixed
      */
     protected function _prepareTemplate( $temp ){
-        if( isAdministrator() ){
+        if( !isAdministrator() ){
             $MenuInfo = Menu::where([])->column('hide','url');
             $authList = (new \Permission())->getAuthList($this->uid);
             switch ( $temp['tempType'] ){
@@ -113,9 +113,9 @@ class Base extends Controller {
             $sidNow = session_id();
             $sidOld = cache($this->uid);
             if( isset($sidOld) && !empty($sidOld) ){
-                //if( $sidOld != $sidNow ){
-                //    $this->error("您的账号在别的地方登录了，请重新登录！", url('User/login'));
-                //}else{
+                if( $sidOld != $sidNow ){
+                    $this->error("您的账号在别的地方登录了，请重新登录！", url('User/login'));
+                }else{
                     cache($this->uid, $sidNow, config('online_time'));
                     $this->userInfo = User::get([ $this->primaryKey => $this->uid ])->toArray();
 //                    if( $this->userInfo['updateTime'] === 0 ){
@@ -125,7 +125,7 @@ class Base extends Controller {
 //                            $this->error('初次登录请设置用户昵称！', url('User/changeNickname'));
 //                        }
 //                    }
-                //}
+                }
             }else{
                 $this->error("登录超时，请重新登录！", url('User/login'));
             }
