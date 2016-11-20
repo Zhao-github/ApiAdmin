@@ -1,0 +1,111 @@
+{extend name="public/base" /}
+{block name="title"}系统安装Step3{/block}
+{block name="nav"}
+<li><a href="javascript:;">安装协议</a></li>
+<li><a href="javascript:;">参数设置</a></li>
+<li class="active"><a href="javascript:;">环境检测</a></li>
+<li><a href="javascript:;">开始安装</a></li>
+<li><a href="javascript:;">安装完成</a></li>
+{/block}
+{block name="main"}
+<div class="panel panel-default">
+    <div class="panel-heading">{:config('PRODUCT_NAME')} 环境检测</div>
+    <div class="panel-body" style="font-size: 14px">
+        <table class="table table-hover">
+            <caption><h4>运行环境检查</h4></caption>
+            <thead>
+            <tr>
+                <th>项目</th>
+                <th>所需配置</th>
+                <th>当前配置</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="checkEnv" id="item"}
+                <tr>
+                    <td>{$item['title']}</td>
+                    <td>{$item['limit']}</td>
+                    <td><i class="{$item['icon']}"></i> {$item['current']}</td>
+                </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <table class="table table-hover">
+            <caption><h4>目录、文件权限检查</h4></caption>
+            <thead>
+            <tr>
+                <th>目录/文件</th>
+                <th>所需状态</th>
+                <th>当前状态</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="checkDirFile" id="item"}
+                <tr>
+                    <td>{$item['path']}</td>
+                    <td>可写</td>
+                    <td><i class="{$item['icon']}"></i> {$item['title']}</td>
+                </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <table class="table table-hover">
+            <caption><h4>数据库依赖检测</h4></caption>
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>检查结果</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="checkDB" id="item"}
+            <tr>
+                <td>{$item['name']}</td>
+                <td><i class="{$item['icon']}"></i> {$item['title']}</td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        {if condition="isset($checkCache)"}
+        <table class="table table-hover">
+            <caption><h4>缓存依赖检测</h4></caption>
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>检查结果</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="checkCache" id="item"}
+            <tr>
+                <td>{$item['name']}</td>
+                <td><i class="{$item['icon']}"></i> {$item['title']}</td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+        {/if}
+        <table class="table table-hover">
+            <caption><h4>函数及扩展依赖性检查</h4></caption>
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>检查结果</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="checkOther" id="item"}
+                <tr>
+                    <td>{$item['name']}</td>
+                    <td><i class="{$item['icon']}"></i> {$item['title']}</td>
+                </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <form action="{:url('step3')}" id="form-setup">
+        <a type="button" target-form="form-setup" class="ajax-post redirect btn btn-primary btn-block">下一步</a>
+        <a type="button" href="{:url('step2')}" class="btn btn-default btn-block">上一步</a>
+        </form>
+    </div>
+</div>
+{/block}

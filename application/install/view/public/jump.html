@@ -1,0 +1,63 @@
+{__NOLAYOUT__}
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>ApiAdmin - 跳转提示</title>
+    <script src="__PLUGIN__/jQuery/3.1.1/jquery.min.js"></script>
+    <link href="//cdn.bootcss.com/semantic-ui/2.2.6/semantic.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/semantic-ui/2.2.6/semantic.js"></script>
+    <link rel="icon" href="__IMG__/favicon.ico">
+</head>
+<body>
+
+<div class="ui card" style="text-align:center;width:40%;position: fixed;top: 20%;left: 30%">
+    <?php switch ($code) {?>
+    <?php case 1:?>
+    <div class="ui green inverted segment" style="margin: 0px;">
+        <i class="ui smile icon massive"></i>
+    </div>
+    <?php break;?>
+    <?php case 0:?>
+    <div class="ui red inverted segment" style="margin: 0px;">
+        <i class="ui frown icon massive"></i>
+    </div>
+    <?php break;?>
+    <?php } ?>
+    <div class="content" style="line-height: 2em">
+        <?php if(isset($msg)) {?>
+        <span class="header"><?php echo(strip_tags($msg));?></span>
+        <?php }else{?>
+        <span class="header"><?php echo($error); ?></span>
+        <?php }?>
+        <div class="meta">
+            将在<span id="left"><?php echo($wait); ?></span>S后自动跳转
+        </div>
+    </div>
+    <span style="display: none" id="href"><?php echo($url); ?></span>
+    <div class="ui bottom attached indicating progress" id="amanege-bar">
+        <div class="bar"></div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+    (function(){
+        var wait = 0,left = $('#left').text();
+        var href = $('#href').text();
+        var each = 100/left;
+        var interval = setInterval(function(){
+            wait = wait + each;
+            left = left - 1;
+            if(wait > 100) {
+                location.href = href;
+                clearInterval(interval);
+                return ;
+            }
+            $('#left').text(left);
+            $('#amanege-bar').progress({
+                percent: wait
+            });
+        }, 1000);
+    })();
+</script>
+</html>
