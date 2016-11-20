@@ -18,8 +18,8 @@ class User extends Model {
         return $this->getPwdHash($value);
     }
 
-    public function getPwdHash( $pwd ){
-        $hashKey = config('auth_key');
+    public function getPwdHash( $pwd, $authKey = '' ){
+        $hashKey = empty($authKey)?config('base')['auth_key']:$authKey;
         $newPwd = $pwd.$hashKey;
         return md5(sha1($newPwd).$hashKey);
     }

@@ -15,25 +15,26 @@
  * @return bool
  */
 function isAdministrator( $uid = '' ){
+    $adminConf = config('base')['USER_ADMINISTRATOR'];
     $uid = empty($uid) ? session('uid') : $uid;
-    if( is_array(config('USER_ADMINISTRATOR')) ){
+    if( is_array($adminConf) ){
         if( is_array( $uid ) ){
-            $m = array_intersect( config('USER_ADMINISTRATOR'), $uid );
+            $m = array_intersect( $adminConf, $uid );
             if( count($m) ){
                 return TRUE;
             }
         }else{
-            if( in_array( $uid, config('USER_ADMINISTRATOR') ) ){
+            if( in_array( $uid, $adminConf ) ){
                 return TRUE;
             }
         }
     }else{
         if( is_array( $uid ) ){
-            if( in_array(config('USER_ADMINISTRATOR'),$uid) ){
+            if( in_array($adminConf,$uid) ){
                 return TRUE;
             }
         }else{
-            if( $uid == config('USER_ADMINISTRATOR')){
+            if( $uid == $adminConf){
                 return TRUE;
             }
         }

@@ -66,15 +66,21 @@ function checkEnv(){
  */
 function checkDirFile(){
     $items = [
-        '0' => [
+        [
             'type'  => 'file',
-            'path'  => ROOT_PATH . 'application/database.php',
+            'path'  => APP_PATH . 'database.php',
             'title' => '可写',
             'icon'  => 'fa fa-check text-success',
         ],
-        '2' => [
+        [
             'type'  => 'dir',
             'path'  => RUNTIME_PATH,
+            'title' => '可写',
+            'icon'  => 'fa fa-check text-success',
+        ],
+        [
+            'type'  => 'dir',
+            'path'  => APP_PATH . 'extra' . DS,
             'title' => '可写',
             'icon'  => 'fa fa-check text-success',
         ]
@@ -290,38 +296,12 @@ function baseCheck($items){
 }
 
 /**
- * 写入配置文件
- * @param $config
- * @param $type string 配置类型
- * @return bool
- */
-function write_config($config, $type){
-    if(is_array($config)){
-        show_msg('开始写入'.$type.'配置文件');
-        //读取配置内容
-        $conf = file_get_contents(MODULE_PATH . 'Data/'.$type.'.tpl');
-        //替换配置项
-        foreach ($config as $name => $value) {
-            $conf = str_replace("[{$name}]", $value, $conf);
-        }
-        //写入应用配置文件
-        if(file_put_contents(APP_PATH . 'Common/Conf/'.$type.'.php', $conf)){
-            show_msg('配置文件'.$type.'写入成功', 'bg-success');
-        }else{
-            show_msg('配置文件'.$type.'写入失败！', 'bg-danger');
-            session('error', true);
-        }
-        return true;
-    }
-}
-
-/**
  * @param $msg
  * @param string $class
  */
-function show_msg($msg, $class = ''){
+function showMsg($msg, $class = ''){
     usleep(20000);
-    echo "<script type=\"text/javascript\">showmsg(\"{$msg}\", \"{$class}\")</script>";
+    echo "<script type=\"text/javascript\">showMsg(\"{$msg}\", \"{$class}\")</script>";
     ob_flush();
     flush();
 }
