@@ -5,6 +5,17 @@ use app\admin\model\User;
 use think\Controller;
 
 class Index extends Controller {
+
+    protected function _initialize() {
+        $noVerify = ['index', 'complete'];
+        if (in_array($this->request->action(), $noVerify)) {
+            return true;
+        }
+        if (is_file(APP_PATH . 'extra' . DS . 'install.lock')) {
+            $this->error('已经成功安装了本系统，请不要重复安装!', 'http://'.$_SERVER['HTTP_HOST']);
+        }
+    }
+
     public function index(){
         session('step', 1);
         session('error', false);
@@ -144,13 +155,19 @@ class Index extends Controller {
                     $this->error('安装出错', url('index'));
                 }else{
                     session('step', 4);
-                    $this->redirect('complete');
+                    $str = "<meta http-equiv='Refresh' content='0;URL=".url('complete')."'>";
+                    exit($str);
                 }
             }
         }
     }
 
     public function complete(){
+        if(session('step') !== 4){
+            $this->error('请正确安装系统', url('index'));
+        }
+        file_put_contents(APP_PATH .'extra' . DS . 'install.lock', 'lock');
+        session(null);
         return $this->fetch();
     }
 
