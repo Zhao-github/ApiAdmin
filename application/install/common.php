@@ -18,31 +18,31 @@ function checkEnv(){
             'title'   => '操作系统',
             'limit'   => '不限制',
             'current' => PHP_OS,
-            'icon'    => 'fa fa-check',
+            'icon'    => 'fa fa-check text-success',
         ],
         'php' => [
             'title'   => 'PHP版本',
             'limit'   => '5.6+',
             'current' => PHP_VERSION,
-            'icon'    => 'fa fa-check',
+            'icon'    => 'fa fa-check text-success',
         ],
         'upload' => [
             'title'   => '附件上传',
             'limit'   => '不限制',
             'current' => ini_get('file_uploads') ? ini_get('upload_max_filesize'):'未知',
-            'icon'    => 'fa fa-check',
+            'icon'    => 'fa fa-check text-success',
         ],
         'disk' => [
             'title'   => '磁盘空间',
             'limit'   => '100M+',
             'current' => '未知',
-            'icon'    => 'fa fa-check',
+            'icon'    => 'fa fa-check text-success',
         ],
     ];
 
     //PHP环境检测
     if($items['php']['current'] < 5.6){
-        $items['php']['icon'] = 'fa fa-close';
+        $items['php']['icon'] = 'fa fa-close text-danger';
         session('error', true);
     }
 
@@ -51,7 +51,7 @@ function checkEnv(){
         $disk_size = floor(disk_free_space('./') / (1024*1024)).'M';
         $items['disk']['current'] = $disk_size.'B';
         if($disk_size < 100){
-            $items['disk']['icon'] = 'fa fa-close';
+            $items['disk']['icon'] = 'fa fa-close text-danger';
             session('error', true);
         }
     }
@@ -70,13 +70,13 @@ function checkDirFile(){
             'type'  => 'file',
             'path'  => ROOT_PATH . 'application/database.php',
             'title' => '可写',
-            'icon'  => 'fa fa-check',
+            'icon'  => 'fa fa-check text-success',
         ],
         '2' => [
             'type'  => 'dir',
             'path'  => RUNTIME_PATH,
             'title' => '可写',
-            'icon'  => 'fa fa-check',
+            'icon'  => 'fa fa-check text-success',
         ]
     ];
 
@@ -86,11 +86,11 @@ function checkDirFile(){
             if(!is_writable($path)){
                 if(is_dir($path)) {
                     $val['title'] = '不可写';
-                    $val['icon'] = 'fa fa-close';
+                    $val['icon'] = 'fa fa-close text-danger';
                     session('error', true);
                 }else{
                     $val['title'] = '不存在';
-                    $val['icon'] = 'fa fa-close';
+                    $val['icon'] = 'fa fa-close text-danger';
                     session('error', true);
                 }
             }
@@ -98,13 +98,13 @@ function checkDirFile(){
             if(file_exists($path)){
                 if(!is_writable($path)){
                     $val['title'] = '不可写';
-                    $val['icon'] = 'fa fa-close';
+                    $val['icon'] = 'fa fa-close text-danger';
                     session('error', true);
                 }
             }else{
                 if(!is_writable(dirname($path))){
                     $val['title'] = '不存在';
-                    $val['icon'] = 'fa fa-close';
+                    $val['icon'] = 'fa fa-close text-danger';
                     session('error', true);
                 }
             }
