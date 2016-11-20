@@ -2,6 +2,7 @@
 namespace app\install\controller;
 
 use think\Controller;
+use think\Db;
 
 class Index extends Controller {
     public function index(){
@@ -37,7 +38,7 @@ class Index extends Controller {
                     $data['cache']['ip'] = '127.0.0.1';
                 }
                 if( empty($data['cache']['port']) ){
-                    $data['cache']['ip'] = 6379;
+                    $data['cache']['port'] = 6379;
                 }
             }
             if( empty($data['admin']['name']) ){
@@ -54,7 +55,7 @@ class Index extends Controller {
             $this->success('参数正确开始安装', url('step3'));
         }else{
             $step = session('step');
-            if($step != 1){
+            if($step != 1 && $step != 4){
                 $this->error("请按顺序安装", url('index'));
             }else{
                 session('error', false);
@@ -68,12 +69,10 @@ class Index extends Controller {
         if( $step != 2){
             $this->error("请按顺序安装", url('index'));
         }else{
-//            session('step', 3);
+            session('step', 3);
             session('error', false);
             $dbConfig = session('dbConfig');
             $cacheConfig = session('cacheConfig');
-            $adminConfig = session('adminConfig');
-            $isCover = session('isCover');
             //环境检测
             $this->assign('checkEnv', checkEnv());
             //目录文件读写检测
@@ -84,7 +83,7 @@ class Index extends Controller {
             }else{
                 $this->assign('checkDB', checkMongoDB());
             }
-            if( $cacheConfig['type'] != 0 ){
+            if( $cacheConfig['type'] == 1 ){
                 $this->assign('checkCache', checkRedis());
             }
             $this->assign('checkOther', checkOther());
@@ -102,15 +101,28 @@ class Index extends Controller {
             }else{
                 session('step', 4);
                 session('error', false);
+                $dbConfig = session('dbConfig');
+                $cacheConfig = session('cacheConfig');
+                $adminConfig = session('adminConfig');
+                $isCover = session('isCover');
 
-                //环境检测
-                $this->assign('checkEnv', checkEnv());
-
-                //目录文件读写检测
-                $this->assign('checkDirFile', checkDirFile());
-
-                //函数及扩展库检测
-                $this->assign('checkFuncAndExt', checkFuncAndExt());
+                //检测数据库连接
+                if( $dbConfig['DB_TYPE'] == 0 ){
+                    $dsn = "mysql:dbname={$dbConfig['DB_NAME']};host={$dbConfig['DB_HOST']};port={$dbConfig['DB_PORT']}";
+                    try {
+                        new \PDO($dsn, $dbConfig['DB_USER'], $dbConfig['DB_PWD']);
+                    } catch (\PDOException $e) {
+                        $this->error($e->getMessage(), url('step2'));
+                    }
+                }
+                //检测Redis链接状态
+                if( $cacheConfig['type'] == 1 ){
+                    try {
+                        (new \Redis())->connect($cacheConfig['ip'],$cacheConfig['port']);
+                    } catch (\RedisException $e) {
+                        $this->error($e->getMessage(), url('step2'));
+                    }
+                }
 
                 return $this->fetch();
             }
