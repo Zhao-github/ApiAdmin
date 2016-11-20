@@ -77,7 +77,7 @@ class Index extends Controller {
 
     public function step3(){
         $step = session('step');
-        if( $step != 2){
+        if( $step != 2 && $step != 3 ){
             $this->error("请按顺序安装", url('index'));
         }else{
             session('step', 3);
@@ -110,6 +110,7 @@ class Index extends Controller {
             if( $step != 3){
                 $this->error("请按顺序安装", url('index'));
             }else{
+                session('step', 4);
                 session('error', false);
                 echo $this->fetch();
                 $dbConfig = session('dbConfig');
@@ -154,7 +155,6 @@ class Index extends Controller {
                 if(session('error')){
                     $this->error('安装出错', url('index'));
                 }else{
-                    session('step', 4);
                     $str = "<meta http-equiv='Refresh' content='0;URL=".url('complete')."'>";
                     exit($str);
                 }

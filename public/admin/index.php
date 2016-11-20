@@ -9,9 +9,13 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-// [ 应用入口文件 ]
-define('BIND_MODULE','admin');
 // 定义应用目录
 define('APP_PATH', __DIR__ . '/../../application/');
+// [ 应用入口文件 ]
+if(file_exists(APP_PATH .'extra' . DIRECTORY_SEPARATOR . 'install.lock') === false){
+    define('BIND_MODULE','install');
+}else{
+    define('BIND_MODULE','admin');
+}
 // 加载框架引导文件
 require __DIR__ . '/../../thinkphp/start.php';
