@@ -114,77 +114,146 @@ function checkDirFile(){
 }
 
 /**
- * 函数检测
+ * MySQL数据库依赖检测
  * @return array 检测数据
  */
-function checkFuncAndExt(){
+function checkMySQL(){
     $items = [
         [
             'type'    => 'ext',
             'name'    => 'pdo',
             'title'   => '支持',
             'current' =>  extension_loaded('pdo'),
-            'icon'    => 'fa fa-check',
+            'icon'    => 'fa fa-check text-success',
             'isMust'  => true
         ],
         [
             'type'    => 'ext',
-            'name'    => 'mongoDB（不必须）',
+            'name'    => 'pdo_mysql',
+            'title'   => '支持',
+            'current' =>  extension_loaded('pdo_mysql'),
+            'icon'    => 'fa fa-check text-success',
+            'isMust'  => true
+        ]
+    ];
+    return baseCheck($items);
+}
+
+/**
+ * MongoDB数据库依赖检测
+ * @return array 检测数据
+ */
+function checkMongoDB(){
+    $items = [
+        [
+            'type'    => 'ext',
+            'name'    => 'mongoDB',
             'title'   => '支持',
             'current' =>  extension_loaded('mongo'),
-            'icon'    => 'fa fa-check',
-            'isMust'  => false
-        ],
-        [
-            'type'    => 'ext',
-            'name'    => 'Redis（不必须）',
-            'title'   => '支持',
-            'current' =>  extension_loaded('redis'),
-            'icon'    => 'fa fa-check',
-            'isMust'  => false
-        ],
-        [
-            'type'    => 'func',
-            'name'    => 'file_get_contents',
-            'title'   => '支持',
-            'icon'    => 'fa fa-check',
+            'icon'    => 'fa fa-check text-success',
             'isMust'  => true
         ],
         [
-            'type'    => 'func',
-            'name'    => 'mb_strlen',
+            'type'    => 'ext',
+            'name'    => 'ZipArchive',
             'title'   => '支持',
-            'icon'    => 'fa fa-check',
+            'current' =>  class_exists('ZipArchive'),
+            'icon'    => 'fa fa-check text-success',
             'isMust'  => true
         ],
         [
             'type'    => 'func',
             'name'    => 'shell_exec',
             'title'   => '支持',
-            'icon'    => 'fa fa-check',
+            'icon'    => 'fa fa-check text-success',
             'isMust'  => true
         ],
         [
             'type'    => 'com',
-            'name'    => 'mongodump（不必须）',
+            'name'    => 'zip',
             'title'   => '支持',
-            'icon'    => 'fa fa-check',
-            'isMust'  => false
+            'icon'    => 'fa fa-check text-success',
+            'isMust'  => true
         ],
         [
             'type'    => 'com',
-            'name'    => 'mongorestore（不必须）',
+            'name'    => 'mongodump',
             'title'   => '支持',
-            'icon'    => 'fa fa-check',
-            'isMust'  => false
+            'icon'    => 'fa fa-check text-success',
+            'isMust'  => true
+        ],
+        [
+            'type'    => 'com',
+            'name'    => 'mongorestore',
+            'title'   => '支持',
+            'icon'    => 'fa fa-check text-success',
+            'isMust'  => true
         ]
     ];
+    return baseCheck($items);
+}
+
+/**
+ * Redis缓存依赖检测
+ * @return array 检测数据
+ */
+function checkRedis(){
+    $items = [
+        [
+            'type'    => 'ext',
+            'name'    => 'Redis',
+            'title'   => '支持',
+            'current' =>  extension_loaded('redis'),
+            'icon'    => 'fa fa-check text-success',
+            'isMust'  => true
+        ]
+    ];
+    return baseCheck($items);
+}
+
+/**
+ * 其他公共部分检测
+ * @return mixed
+ */
+function checkOther(){
+    $items = [
+        [
+            'type'    => 'func',
+            'name'    => 'file_get_contents',
+            'title'   => '支持',
+            'icon'    => 'fa fa-check text-success',
+            'isMust'  => true
+        ],
+        [
+            'type'    => 'func',
+            'name'    => 'mb_strlen',
+            'title'   => '支持',
+            'icon'    => 'fa fa-check text-success',
+            'isMust'  => true
+        ],
+        [
+            'type'    => 'func',
+            'name'    => 'curl_init',
+            'title'   => '支持',
+            'icon'    => 'fa fa-check text-success',
+            'isMust'  => true
+        ],
+    ];
+    return baseCheck($items);
+}
+
+/**
+ * 基础函数检测
+ * @param $items
+ * @return mixed
+ */
+function baseCheck($items){
     foreach($items as &$val){
         switch($val['type']){
             case 'ext':
                 if(!$val['current']){
                     $val['title'] = '不支持';
-                    $val['icon'] = 'fa fa-close';
+                    $val['icon'] = 'fa fa-close text-danger';
                     if( $val['isMust'] ){
                         session('error', true);
                     }
@@ -193,7 +262,7 @@ function checkFuncAndExt(){
             case 'func':
                 if(!function_exists($val['name'])){
                     $val['title'] = '不支持';
-                    $val['icon'] = 'fa fa-close';
+                    $val['icon'] = 'fa fa-close text-danger';
                     if( $val['isMust'] ){
                         session('error', true);
                     }
@@ -201,17 +270,22 @@ function checkFuncAndExt(){
                 break;
             case 'com':
                 $com = 'which '.$val['name'];
-                if(shell_exec($com) == null){
+                if( !function_exists('shell_exec') ){
                     $val['title'] = '不支持';
-                    $val['icon'] = 'fa fa-close';
-                    if( $val['isMust'] ){
-                        session('error', true);
+                    $val['icon'] = 'fa fa-close text-danger';
+                    session('error', true);
+                }else{
+                    if(shell_exec($com) == null){
+                        $val['title'] = '不支持';
+                        $val['icon'] = 'fa fa-close text-danger';
+                        if( $val['isMust'] ){
+                            session('error', true);
+                        }
                     }
                 }
                 break;
         }
     }
-
     return $items;
 }
 
