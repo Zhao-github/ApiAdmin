@@ -4,7 +4,7 @@
 
 首先自我介绍下吧，我是一个PHP程序员，一个刚刚干了两年左右的小菜鸟。我第一份工作是做微信开发的，这也是我入行以来第一次做的商业上线项目，虽然我只是充当了其中一个不是太重要的角色，但是感谢它让我第一次接触了API，也让我第一次对于API产生了浓厚的兴趣。之后的一段时间内甚至疯狂的收集过各种免费的API接口！然而一直只是在用API，却没有为API贡献过些什么。
 
-开源框架用了很多，开源代码看了很多，github、git@osc、Stack Overflow这些优秀的平台帮助了我很多，所以，我觉得是时候为开源做点什么。2015年初，我遇到了PhalApi，一个非常有生命力的API项目，是PHP语言写的，当时的它还是一个宝宝，在项目组的细心呵护下茁壮成长，很荣幸的是，我也是项目组成员之一，然而在它的成长中，我输送的营养简直不值一提~也感谢创始人 [@dogstar][3] 对我的信任，一直没有把我踢出项目组。PhalApi有个QQ群，我再次荣幸的成为项目群中最早的一批群成员，在群中我会经常看到有初学者因为各种较为具体的需求而没有相对应的解决方案。那么开发出来的API如何去管理呢？所以 **ApiAdmin** 来了~
+开源框架用了很多，开源代码看了很多，github、git@osc、Stack Overflow这些优秀的平台帮助了我很多，所以，我觉得是时候为开源做点什么。2015年初，我遇到了PhalApi，一个非常有生命力的API项目，是PHP语言写的，当时的它还是一个宝宝，在项目组的细心呵护下茁壮成长，很荣幸的是，我也是项目组成员之一，然而在它的成长中，我输送的营养简直不值一提~也感谢创始人 [@dogstar][1] 对我的信任，一直没有把我踢出项目组。既然API这么火，既然未来的互联网世界中API占了很重要的地位，既然越来越多的人开始开发API，那么无状态的API如何去管理呢？因此**ApiAdmin** 来了~
 
 ## 愿 景
 
@@ -16,6 +16,12 @@
 **体验地址**
 
 [http://admin.our-dream.cn/](http://admin.our-dream.cn/)
+
+**源码地址**
+[http://git.oschina.net/xiaoxunzhao/ApiAdmin](http://git.oschina.net/xiaoxunzhao/ApiAdmin)
+
+**下载地址**
+[http://git.oschina.net/xiaoxunzhao/ApiAdmin/releases](http://git.oschina.net/xiaoxunzhao/ApiAdmin)
 
 **项目构成**
 
@@ -56,6 +62,4 @@
 
 **开源，我们在路上！**
 
-  [1]: http://www.thinkphp.cn/
-  [2]: http://www.phalapi.net/
-  [3]: http://my.oschina.net/dogstar/blog
+[1]: http://my.oschina.net/dogstar/blog
