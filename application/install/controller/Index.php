@@ -3,6 +3,7 @@ namespace app\install\controller;
 
 use app\admin\model\User;
 use think\Controller;
+use think\Log;
 
 class Index extends Controller {
 
@@ -139,6 +140,7 @@ class Index extends Controller {
                     $this->executeSQL($db, $dbConfig['DB_PREFIX']);
                     $adminSql = "INSERT INTO `{$dbConfig['DB_PREFIX']}user` (`username`, `nickname`, `password`, `regTime`, `regIp`, `status`) ".
                         "VALUES ('{$adminConfig['name']}','系统管理员','{$adminPass}',".time().",{$regIp},1);";
+                    Log::write($adminSql,'log');
                     $db->exec($adminSql);
                     $baseConfig['ADMIN_ID'] = $db->lastInsertId();
                 }
@@ -153,7 +155,7 @@ class Index extends Controller {
                 }
                 $this->writeConfig($baseConfig, 'base', $extraConfPath);
                 if(session('error')){
-                    $this->error('安装出错', url('index'));
+                    $this->error('安装出错，错误细节请查看Log！', url('index'));
                 }else{
                     $str = "<meta http-equiv='Refresh' content='0;URL=".url('complete')."'>";
                     exit($str);
@@ -214,20 +216,60 @@ class Index extends Controller {
         foreach ($sql as $value) {
             $value = trim($value);
             if (empty($value)) continue;
-            if (substr($value, 0, 12) == 'CREATE TABLE') {
-                $name = preg_replace('/^CREATE TABLE `(\w+)` .*/s', "\\1", $value);
-                $value = str_replace(" `{$name}", " `{$prefix}{$name}", $value);
+            if( strpos($value, 'CREATE TABLE') !== false ){
+                $name = preg_replace('/^CREATE TABLE `(\w+)` .*/s', '\1', $value);
+                $value = str_replace("CREATE TABLE `{$name}`", "CREATE TABLE `{$prefix}{$name}`", $value);
                 $msg  = "创建数据表{$name}";
                 if (false !== $db->exec($value)) {
+                    Log::record($value,'log');
                     showMsg($msg . '...成功', 'success');
                 } else {
+                    Log::record($value,'error');
                     showMsg($msg . '...失败！', 'danger');
                     session('error', true);
                 }
-            } else {
+            }elseif ( strpos($value, 'DROP TABLE') !== false ){
+                $name = preg_replace('/.*DROP TABLE IF EXISTS `(\w+)` .*/s', '\1', $value);
+                $value = str_replace(" `{$name}", " `{$prefix}{$name}", $value);
+                $msg  = "删除数据表{$name}";
+                if (false !== $db->exec($value)) {
+                    Log::record($value,'log');
+                    showMsg($msg . '...成功', 'success');
+                } else {
+                    Log::record($value,'error');
+                    showMsg($msg . '...失败！', 'danger');
+                    session('error', true);
+                }
+            }elseif ( strpos($value, 'LOCK TABLES') !== false ){
+                $name = preg_replace('/^LOCK TABLES `(\w+)` .*/s', '\1', $value);
+                $value = str_replace(" `{$name}", " `{$prefix}{$name}", $value);
+                $msg  = "锁定数据表{$name}";
+                if (false !== $db->exec($value)) {
+                    Log::record($value,'log');
+                    showMsg($msg . '...成功', 'success');
+                } else {
+                    Log::record($value,'error');
+                    showMsg($msg . '...失败！', 'danger');
+                    session('error', true);
+                }
+            }elseif ( strpos($value, 'INSERT INTO') !== false ){
+                $name = preg_replace('/^INSERT INTO `(\w+)` .*/s', '\1', $value);
+                $value = str_replace(" `{$name}", " `{$prefix}{$name}", $value);
+                $msg  = "初始化表{$name}数据";
+                if (false !== $db->exec($value)) {
+                    Log::record($value,'log');
+                    showMsg($msg . '...成功', 'success');
+                } else {
+                    Log::record($value,'error');
+                    showMsg($msg . '...失败！', 'danger');
+                    session('error', true);
+                }
+            }else{
+                Log::record($value,'debug');
                 $db->exec($value);
             }
         }
+        Log::save();
     }
 
 }
