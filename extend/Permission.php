@@ -101,11 +101,11 @@ class Permission {
         if ( isset($groups[$uid]) ) {
             return $groups[$uid];
         }
-        $userGroups = \think\Db::table($this->_config['AUTH_GROUP_ACCESS'])->where(['uid' => $uid])->select();
+        $userGroups = \think\Db::table(config('database')['prefix'].$this->_config['AUTH_GROUP_ACCESS'])->where(['uid' => $uid])->select();
         if( !empty($userGroups) ){
             $groups[$uid] = [];
             foreach( $userGroups as $value ){
-                $groupInfo = \think\Db::table($this->_config['AUTH_GROUP'])->where(['id' => $value['group_id']])->find();
+                $groupInfo = \think\Db::table(config('database')['prefix'].$this->_config['AUTH_GROUP'])->where(['id' => $value['group_id']])->find();
                 if( !is_null($groupInfo) ){
                     if( $groupInfo['status'] != 1 ){
                         continue;
@@ -148,7 +148,7 @@ class Permission {
 
         $authList = [];
         foreach ($groups as $g) {
-            $groupRule = \think\Db::table($this->_config['AUTH_RULE'])->where(['group_id' => $g])->select();
+            $groupRule = \think\Db::table(config('database')['prefix'].$this->_config['AUTH_RULE'])->where(['group_id' => $g])->select();
             if( !empty($groupRule) ){
                 foreach ( $groupRule as $groupValue ){
                     if( isset($authList[$groupValue['url']]) ){

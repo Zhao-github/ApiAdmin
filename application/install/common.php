@@ -68,7 +68,7 @@ function checkDirFile(){
     $items = [
         [
             'type'  => 'file',
-            'path'  => APP_PATH . 'database.php',
+            'path'  => realpath(APP_PATH) .DS. 'database.php',
             'title' => '可写',
             'icon'  => 'fa fa-check text-success',
         ],
@@ -80,7 +80,7 @@ function checkDirFile(){
         ],
         [
             'type'  => 'dir',
-            'path'  => APP_PATH . 'extra' . DS,
+            'path'  => realpath(APP_PATH) .DS. 'extra' . DS,
             'title' => '可写',
             'icon'  => 'fa fa-check text-success',
         ]

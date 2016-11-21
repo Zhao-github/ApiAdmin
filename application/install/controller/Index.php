@@ -229,9 +229,9 @@ class Index extends Controller {
                     session('error', true);
                 }
             }elseif ( strpos($value, 'DROP TABLE') !== false ){
-                $name = preg_replace('/.*DROP TABLE IF EXISTS `(\w+)` .*/s', '\1', $value);
-                $value = str_replace(" `{$name}", " `{$prefix}{$name}", $value);
-                $msg  = "删除数据表{$name}";
+                preg_match('/DROP TABLE IF EXISTS `(.*)`.*?/s', $value, $name);
+                $value = str_replace("DROP TABLE IF EXISTS `{$name[1]}`", "DROP TABLE IF EXISTS `{$prefix}{$name[1]}`", $value);
+                $msg  = "删除数据表{$name[1]}";
                 if (false !== $db->exec($value)) {
                     Log::record($value,'log');
                     showMsg($msg . '...成功', 'success');
@@ -242,7 +242,7 @@ class Index extends Controller {
                 }
             }elseif ( strpos($value, 'LOCK TABLES') !== false ){
                 $name = preg_replace('/^LOCK TABLES `(\w+)` .*/s', '\1', $value);
-                $value = str_replace(" `{$name}", " `{$prefix}{$name}", $value);
+                $value = str_replace("LOCK TABLES `{$name}", "LOCK TABLES `{$prefix}{$name}", $value);
                 $msg  = "锁定数据表{$name}";
                 if (false !== $db->exec($value)) {
                     Log::record($value,'log');
@@ -254,7 +254,7 @@ class Index extends Controller {
                 }
             }elseif ( strpos($value, 'INSERT INTO') !== false ){
                 $name = preg_replace('/^INSERT INTO `(\w+)` .*/s', '\1', $value);
-                $value = str_replace(" `{$name}", " `{$prefix}{$name}", $value);
+                $value = str_replace("INSERT INTO `{$name}`", "INSERT INTO `{$prefix}{$name}`", $value);
                 $msg  = "初始化表{$name}数据";
                 if (false !== $db->exec($value)) {
                     Log::record($value,'log');
