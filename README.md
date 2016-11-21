@@ -14,7 +14,6 @@
 ## 项目简介
 
 **体验地址**
-
 [http://admin.our-dream.cn/](http://admin.our-dream.cn/)
 
 **源码地址**
@@ -24,7 +23,6 @@
 [http://git.oschina.net/xiaoxunzhao/ApiAdmin/releases](http://git.oschina.net/xiaoxunzhao/ApiAdmin)
 
 **项目构成**
-
 - ThinkPHP v5.0.2
 - AdminLTE v2.3.7
 - fastClick
@@ -35,7 +33,6 @@
 - ...
 
 **功能简介**
-
  1. 拥有高可用的菜单系统。
  2. 拥有强大的权限管理系统。
  2. 页面实现纯JS加载。
@@ -48,13 +45,11 @@
  9. 拥有丰富的应用场景解决方案。（未完成）
 
 **页面截图**
-
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/1115/153057_5fb85494_110856.png "在这里输入图片标题")
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/1115/153108_43ba4095_110856.png "在这里输入图片标题")
 ![输入图片说明](http://git.oschina.net/uploads/images/2016/1115/153745_ef999653_110856.png "在这里输入图片标题")
 
 **项目特性**
-
 - 开放源码
 - 保持生机
 - 不断更新
