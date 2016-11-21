@@ -100,6 +100,16 @@
                         }
                     }, 1000*data.wait);
                 }
+            },
+            statusCode: {
+                404: function() {
+                    loadingBox.modal('hide');
+                    $.alertMsg('页面未找到');
+                },
+                500: function () {
+                    loadingBox.modal('hide');
+                    $.alertMsg('服务器内部错误，请联系管理员！');
+                }
             }
         });
     };
@@ -157,7 +167,15 @@
         $.ajax({
             type: "PUT",
             url: target,
-            data: query
+            data: query,
+            statusCode: {
+                404: function() {
+                    $.alertMsg('页面未找到');
+                },
+                500: function () {
+                    $.alertMsg('服务器内部错误，请联系管理员！');
+                }
+            }
         }).done(function( data ) {
             var wait = 1000*data.wait;
             if (data.code == 1) {
@@ -204,7 +222,15 @@
                         $.ajax({
                             type: "DELETE",
                             url: url,
-                            data: urlData
+                            data: urlData,
+                            statusCode: {
+                                404: function () {
+                                    $.alertMsg('页面未找到');
+                                },
+                                500: function () {
+                                    $.alertMsg('服务器内部错误，请联系管理员！');
+                                }
+                            }
                         }).done(function( data ) {
                             var wait = 1000*data.wait;
                             if (data.code == 1) {
@@ -250,7 +276,15 @@
                         $.ajax({
                             type: "PUT",
                             url: url,
-                            data: urlData
+                            data: urlData,
+                            statusCode: {
+                                404: function () {
+                                    $.alertMsg('页面未找到');
+                                },
+                                500: function () {
+                                    $.alertMsg('服务器内部错误，请联系管理员！');
+                                }
+                            }
                         }).done(function( data ) {
                             var wait = 1000*data.wait;
                             if (data.code == 1) {
