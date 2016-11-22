@@ -121,6 +121,8 @@ class Request
     protected $input;
     // 请求缓存
     protected $cache;
+    // 缓存是否检查
+    protected $isCheckCache;
 
     /**
      * 架构函数
@@ -607,7 +609,7 @@ class Request
      * @param string|array  $filter 过滤方法
      * @return mixed
      */
-    public function param($name = '', $default = null, $filter = null)
+    public function param($name = '', $default = null, $filter = '')
     {
         if (empty($this->param)) {
             $method = $this->method(true);
@@ -644,7 +646,7 @@ class Request
      * @param string|array  $filter 过滤方法
      * @return mixed
      */
-    public function route($name = '', $default = null, $filter = null)
+    public function route($name = '', $default = null, $filter = '')
     {
         if (is_array($name)) {
             $this->param        = [];
@@ -661,7 +663,7 @@ class Request
      * @param string|array  $filter 过滤方法
      * @return mixed
      */
-    public function get($name = '', $default = null, $filter = null)
+    public function get($name = '', $default = null, $filter = '')
     {
         if (empty($this->get)) {
             $this->get = $_GET;
@@ -681,7 +683,7 @@ class Request
      * @param string|array  $filter 过滤方法
      * @return mixed
      */
-    public function post($name = '', $default = null, $filter = null)
+    public function post($name = '', $default = null, $filter = '')
     {
         if (empty($this->post)) {
             $this->post = $_POST;
@@ -701,7 +703,7 @@ class Request
      * @param string|array      $filter 过滤方法
      * @return mixed
      */
-    public function put($name = '', $default = null, $filter = null)
+    public function put($name = '', $default = null, $filter = '')
     {
         if (is_null($this->put)) {
             $content = $this->input;
@@ -727,7 +729,7 @@ class Request
      * @param string|array      $filter 过滤方法
      * @return mixed
      */
-    public function delete($name = '', $default = null, $filter = null)
+    public function delete($name = '', $default = null, $filter = '')
     {
         return $this->put($name, $default, $filter);
     }
@@ -740,7 +742,7 @@ class Request
      * @param string|array      $filter 过滤方法
      * @return mixed
      */
-    public function patch($name = '', $default = null, $filter = null)
+    public function patch($name = '', $default = null, $filter = '')
     {
         return $this->put($name, $default, $filter);
     }
@@ -752,7 +754,7 @@ class Request
      * @param string|array  $filter 过滤方法
      * @return mixed
      */
-    public function request($name = '', $default = null, $filter = null)
+    public function request($name = '', $default = null, $filter = '')
     {
         if (empty($this->request)) {
             $this->request = $_REQUEST;
@@ -772,7 +774,7 @@ class Request
      * @param string|array  $filter 过滤方法
      * @return mixed
      */
-    public function session($name = '', $default = null, $filter = null)
+    public function session($name = '', $default = null, $filter = '')
     {
         if (empty($this->session)) {
             $this->session = Session::get();
@@ -791,7 +793,7 @@ class Request
      * @param string|array  $filter 过滤方法
      * @return mixed
      */
-    public function cookie($name = '', $default = null, $filter = null)
+    public function cookie($name = '', $default = null, $filter = '')
     {
         if (empty($this->cookie)) {
             $this->cookie = $_COOKIE;
@@ -810,7 +812,7 @@ class Request
      * @param string|array  $filter 过滤方法
      * @return mixed
      */
-    public function server($name = '', $default = null, $filter = null)
+    public function server($name = '', $default = null, $filter = '')
     {
         if (empty($this->server)) {
             $this->server = $_SERVER;
@@ -888,7 +890,7 @@ class Request
      * @param string|array  $filter 过滤方法
      * @return mixed
      */
-    public function env($name = '', $default = null, $filter = null)
+    public function env($name = '', $default = null, $filter = '')
     {
         if (empty($this->env)) {
             $this->env = $_ENV;
@@ -947,7 +949,7 @@ class Request
      * @param string|array  $filter 过滤函数
      * @return mixed
      */
-    public function input($data = [], $name = '', $default = null, $filter = null)
+    public function input($data = [], $name = '', $default = null, $filter = '')
     {
         if (false === $name) {
             // 获取原始数据
@@ -976,13 +978,17 @@ class Request
         }
 
         // 解析过滤器
-        $filter = $filter ?: $this->filter;
-
-        if (is_string($filter)) {
-            $filter = explode(',', $filter);
+        if (is_null($filter)) {
+            $filter = [];
         } else {
-            $filter = (array) $filter;
+            $filter = $filter ?: $this->filter;
+            if (is_string($filter)) {
+                $filter = explode(',', $filter);
+            } else {
+                $filter = (array) $filter;
+            }
         }
+
         $filter[] = $default;
         if (is_array($data)) {
             array_walk_recursive($data, [$this, 'filterValue'], $filter);
@@ -1471,15 +1477,34 @@ class Request
     }
 
     /**
-     * 读取或者设置缓存
+     * 设置当前地址的请求缓存
      * @access public
      * @param string $key 缓存标识，支持变量规则 ，例如 item/:name/:id
      * @param mixed  $expire 缓存有效期
-     * @return mixed
+     * @return void
      */
     public function cache($key, $expire = null)
     {
-        if ($this->isGet()) {
+        if (false !== $key && $this->isGet() && !$this->isCheckCache) {
+            // 标记请求缓存检查
+            $this->isCheckCache = true;
+            if (false === $expire) {
+                // 关闭当前缓存
+                return;
+            }
+            if ($key instanceof \Closure) {
+                $key = call_user_func_array($key, [$this]);
+            } elseif (true === $key) {
+                // 自动缓存功能
+                $key = '__URL__';
+            } elseif (strpos($key, '|')) {
+                list($key, $fun) = explode('|', $key);
+            }
+            // 特殊规则替换
+            if (false !== strpos($key, '__')) {
+                $key = str_replace(['__MODULE__', '__CONTROLLER__', '__ACTION__', '__URL__'], [$this->module, $this->controller, $this->action, md5($this->url())], $key);
+            }
+
             if (false !== strpos($key, ':')) {
                 $param = $this->param();
                 foreach ($param as $item => $val) {
@@ -1487,9 +1512,6 @@ class Request
                         $key = str_replace(':' . $item, $val, $key);
                     }
                 }
-            } elseif ('__URL__' == $key) {
-                // 当前URL地址作为缓存标识
-                $key = md5($this->url());
             } elseif (strpos($key, ']')) {
                 if ('[' . $this->ext() . ']' == $key) {
                     // 缓存某个后缀的请求
@@ -1497,6 +1519,9 @@ class Request
                 } else {
                     return;
                 }
+            }
+            if (isset($fun)) {
+                $key = $fun($key);
             }
 
             if (strtotime($this->server('HTTP_IF_MODIFIED_SINCE')) + $expire > $_SERVER['REQUEST_TIME']) {
@@ -1514,7 +1539,7 @@ class Request
     }
 
     /**
-     * 读取缓存设置
+     * 读取请求缓存设置
      * @access public
      * @return array
      */

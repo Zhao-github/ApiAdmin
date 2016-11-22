@@ -101,6 +101,8 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
     protected $failException = false;
     // 全局查询范围
     protected $useGlobalScope = true;
+    // 是否采用批量验证
+    protected $batchValidate = false;
 
     /**
      * 初始化过的模型.
@@ -741,7 +743,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
             // 数据批量验证
             $validate = $this->validate;
             foreach ($dataSet as $data) {
-                if (!$this->validate($validate)->validateData($data)) {
+                if (!$this->validateData($data, $validate)) {
                     return false;
                 }
             }
@@ -854,9 +856,10 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * @access public
      * @param array|string|bool $rule 验证规则 true表示自动读取验证器类
      * @param array             $msg 提示信息
+     * @param bool              $batch 批量验证
      * @return $this
      */
-    public function validate($rule = true, $msg = [])
+    public function validate($rule = true, $msg = [], $batch = false)
     {
         if (is_array($rule)) {
             $this->validate = [
@@ -866,6 +869,7 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
         } else {
             $this->validate = true === $rule ? $this->name : $rule;
         }
+        $this->batchValidate = $batch;
         return $this;
     }
 
@@ -885,12 +889,15 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
      * 自动验证数据
      * @access protected
      * @param array $data 验证数据
+     * @param mixed $rule 验证规则
+     * @param bool  $batch 批量验证
      * @return bool
      */
-    protected function validateData($data)
+    protected function validateData($data, $rule = null, $batch = null)
     {
-        if (!empty($this->validate)) {
-            $info = $this->validate;
+        $info = is_null($rule) ? $this->validate : $rule;
+
+        if (!empty($info)) {
             if (is_array($info)) {
                 $validate = Loader::validate();
                 $validate->rule($info['rule']);
@@ -905,7 +912,9 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
                     $validate->scene($scene);
                 }
             }
-            if (!$validate->check($data)) {
+            $batch = is_null($batch) ? $this->batchValidate : $batch;
+
+            if (!$validate->batch($batch)->check($data)) {
                 $this->error = $validate->getError();
                 if ($this->failException) {
                     throw new ValidateException($this->error);
@@ -1356,17 +1365,8 @@ abstract class Model implements \JsonSerializable, \ArrayAccess
 
     public static function __callStatic($method, $params)
     {
-        $query = self::getDb();
+        $query = (new static())->db();
         return call_user_func_array([$query, $method], $params);
-    }
-
-    protected static function getDb()
-    {
-        $model = get_called_class();
-        if (!isset(self::$links[$model])) {
-            self::$links[$model] = (new static())->db();
-        }
-        return self::$links[$model];
     }
 
     /**
