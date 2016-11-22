@@ -8,7 +8,6 @@
 namespace app\admin\controller;
 
 
-class KeyManager
-{
+class KeyManager extends Base {
 
 }
