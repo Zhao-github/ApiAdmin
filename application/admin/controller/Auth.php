@@ -308,12 +308,12 @@ class Auth extends Base {
     public function del(){
         if( $this->request->isDelete() ){
             $key = $this->request->delete($this->primaryKey);
-            $authAccessNum = AuthGroupAccess::where(['group_id' => $key])->count();
+            $authAccessNum = AuthGroupAccess::where(['groupId' => $key])->count();
             if( $authAccessNum ){
                 $this->error('当前用户组存在用户不能删除！');
             }
             AuthGroup::destroy([$this->primaryKey => $key]);
-            AuthRule::destroy(['group_id' => $key]);
+            AuthRule::destroy(['groupId' => $key]);
             $this->success('操作成功', url('Auth/index'));
         }
     }
@@ -327,7 +327,7 @@ class Auth extends Base {
             if( is_null($authAccessObj) ){
                 $authAccessObj = new AuthGroupAccess();
             }
-            $authAccessObj->group_id = $this->request->put('group_id');
+            $authAccessObj->groupId = $this->request->put('groupId');
             $authAccessObj->uid = $this->request->put('uid');
             $authAccessObj->save();
             $this->success('操作成功', url('User/index'));
@@ -336,7 +336,7 @@ class Auth extends Base {
             $authGroupArr = [];
             $authAccessObj = AuthGroupAccess::get(['uid' => $this->request->get($this->primaryKey)]);
             if( !is_null($authAccessObj) ){
-                $authAccess = $authAccessObj->group_id;
+                $authAccess = $authAccessObj->groupId;
             }
             $authGroupObj = AuthGroup::all(['status' => 1]);
             if( !empty($authGroupObj) ){
@@ -370,7 +370,7 @@ class Auth extends Base {
                         'description' => '',
                         'info' => '请选择用户组：',
                         'attr' => [
-                            'name' => 'group_id',
+                            'name' => 'groupId',
                             'value' => $authAccess,
                             'options' => $authGroupArr
                         ]
@@ -391,7 +391,7 @@ class Auth extends Base {
             $this->success('操作成功', url('Auth/index'));
         }else{
             $data = [];
-            $dataArrObj = AuthGroupAccess::where(['group_id' => $this->request->get($this->primaryKey)])->select();
+            $dataArrObj = AuthGroupAccess::where(['groupId' => $this->request->get($this->primaryKey)])->select();
             if( !empty($dataArrObj) ){
                 foreach ( $dataArrObj as $dataObj ){
                     $userObj = User::get([$this->primaryKey => $dataObj->uid]);
@@ -476,14 +476,14 @@ class Auth extends Base {
             $deleteAuth = $this->request->put('delete');
             $postAuth = $this->request->put('post');
             $auth = \Permission::AUTH_GET * $getAuth + \Permission::AUTH_DELETE * $deleteAuth + \Permission::AUTH_POST * $postAuth + \Permission::AUTH_PUT * $putAuth;
-            $authDetail = AuthRule::get( ['group_id' => $gid, 'url' => $url] );
+            $authDetail = AuthRule::get( ['groupId' => $gid, 'url' => $url] );
             if( $authDetail ){
                 $authDetail->auth = $auth;
                 $authDetail->save();
             }else{
                 $newAuthDetail = new AuthRule();
                 $newAuthDetail->url = $url;
-                $newAuthDetail->group_id = $gid;
+                $newAuthDetail->groupId = $gid;
                 $newAuthDetail->auth = $auth;
                 $newAuthDetail->save();
             }
@@ -495,7 +495,7 @@ class Auth extends Base {
             }else{
                 session('authGid', $gid);
             }
-            $authRuleArr = AuthRule::where(['group_id' => $gid])->select();
+            $authRuleArr = AuthRule::where(['groupId' => $gid])->select();
             if( $authRuleArr ){
                 $authRule = [];
                 foreach ( $authRuleArr as $value ){

@@ -105,12 +105,12 @@ class Permission {
         if( !empty($userGroups) ){
             $groups[$uid] = [];
             foreach( $userGroups as $value ){
-                $groupInfo = \think\Db::table(config('database')['prefix'].$this->_config['AUTH_GROUP'])->where(['id' => $value['group_id']])->find();
+                $groupInfo = \think\Db::table(config('database')['prefix'].$this->_config['AUTH_GROUP'])->where(['id' => $value['groupId']])->find();
                 if( !is_null($groupInfo) ){
                     if( $groupInfo['status'] != 1 ){
                         continue;
                     }else{
-                        $groups[$uid][] = $value['group_id'];
+                        $groups[$uid][] = $value['groupId'];
                     }
                 }
             }
@@ -148,7 +148,7 @@ class Permission {
 
         $authList = [];
         foreach ($groups as $g) {
-            $groupRule = \think\Db::table(config('database')['prefix'].$this->_config['AUTH_RULE'])->where(['group_id' => $g])->select();
+            $groupRule = \think\Db::table(config('database')['prefix'].$this->_config['AUTH_RULE'])->where(['groupId' => $g])->select();
             if( !empty($groupRule) ){
                 foreach ( $groupRule as $groupValue ){
                     if( isset($authList[$groupValue['url']]) ){

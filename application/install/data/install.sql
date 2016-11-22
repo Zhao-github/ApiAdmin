@@ -42,7 +42,7 @@ DROP TABLE IF EXISTS `auth_group_access`;
 CREATE TABLE `auth_group_access` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` mediumint(8) unsigned NOT NULL,
-  `group_id` mediumint(8) unsigned NOT NULL,
+  `groupId` mediumint(8) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和组的对应关系';
@@ -55,7 +55,7 @@ DROP TABLE IF EXISTS `auth_rule`;
 CREATE TABLE `auth_rule` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
   `url` char(80) NOT NULL DEFAULT '' COMMENT '规则唯一标识',
-  `group_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '权限所属组的ID',
+  `groupId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '权限所属组的ID',
   `auth` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '权限数值',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态：为1正常，为0禁用',
   PRIMARY KEY (`id`),
