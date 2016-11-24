@@ -130,7 +130,7 @@ class Index extends Controller {
                 //检测数据库连接，并且初始化数据
                 if( $dbConfig['DB_TYPE'] == 0 ){
                     $dbConfig['DB_TYPE'] = 'mysql';
-                    $dsn = "mysql:dbname={$dbConfig['DB_NAME']};host={$dbConfig['DB_HOST']};port={$dbConfig['DB_PORT']}";
+                    $dsn = "mysql:dbname={$dbConfig['DB_NAME']};host={$dbConfig['DB_HOST']};port={$dbConfig['DB_PORT']};charset=utf8";
                     try {
                         $db = new \PDO($dsn, $dbConfig['DB_USER'], $dbConfig['DB_PWD']);
                     } catch (\PDOException $e) {
