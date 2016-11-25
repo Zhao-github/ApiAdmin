@@ -106,7 +106,21 @@ VALUES
 	(19,'禁用用户组',4,'Auth/close',0,0,0,'',0),
 	(20,'获取组权限',4,'Auth/access',0,0,0,'',0),
 	(21,'组用户管理',4,'Auth/userAuth',0,0,0,'',0),
-	(22,'用户赋权',4,'Auth/group',0,0,0,'',0);
+	(22,'用户赋权',4,'Auth/group',0,0,0,'',0),
+  (23,'应用管理',0,'',0,6,0,'fa-cubes',0),
+  (24,'应用组管理',23,'AppManager/index',0,0,0,'fa-rss',0),
+  (25,'基础配置',0,'',0,5,0,'fa-cogs',0),
+  (26,'管理员配置',25,'Member/index',0,0,0,'fa-user',0),
+  (27,'秘钥配置',25,'KeyManager/index',0,0,0,'fa-key',0),
+  (28,'规则组配置',25,'FilterManager/index',0,0,0,'fa-filter',0),
+  (29,'监控组配置',25,'WatchManager/index',0,0,0,'fa-eye',0),
+  (30,'报警组配置',25,'WarnManager/index',0,0,0,'fa-warning',0),
+  (31,'API接口管理',23,'ApiManager/index',0,0,0,'fa-usb',0),
+  (32,'API接口调试',23,'ApiDebug/index',0,0,0,'fa-bug',0),
+  (33,'接管第三方',0,'',0,7,0,'fa-cloud',0),
+  (34,'认证方式',33,'TakeOver/auth',0,0,0,'fa-fire',0),
+  (35,'公共参数',33,'TakeOver/param',0,0,0,'fa-file',0),
+  (36,'接口映射',33,'TakeOver/copy',0,0,0,'fa-copy',0);
 
 /*!40000 ALTER TABLE `menu` ENABLE KEYS */;
 UNLOCK TABLES;
