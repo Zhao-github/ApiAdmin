@@ -399,7 +399,7 @@ class Menu extends Base {
                         'info' => '',
                         'attr' => [
                             'name' => $this->primaryKey,
-                            'value' => $detail['id'],
+                            'value' => $detail[$this->primaryKey],
                             'placeholder' => ''
                         ]
                     ],
