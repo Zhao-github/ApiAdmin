@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 
 return [
-    'PRODUCT_VERSION' => 'V1.1.0', //项目版本
+    'PRODUCT_VERSION' => 'V1.1.1', //项目版本
     'PRODUCT_NAME'   => 'ApiAdmin', //产品名称
     'WEBSITE_DOMAIN' => 'http://zxblog.our-dream.cn', //官方网址
     'COMPANY_NAME'   => 'ApiAdmin开发维护团队', //公司名称
