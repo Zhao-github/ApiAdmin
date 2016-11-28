@@ -196,6 +196,7 @@ class Menu extends Base {
 
     public function add(){
         if( $this->request->isPost() ){
+            $this->error('体验版本，关键数据，请勿操作', '');
             $menuModel = new \app\admin\model\Menu();
             $result = $menuModel->allowField(true)->validate(
                 [
@@ -345,6 +346,7 @@ class Menu extends Base {
 
     public function edit(){
         if( $this->request->isPut() ){
+            $this->error('体验版本，关键数据，请勿操作', '');
             $data = $this->request->put();
             $validate = new Validate([
                 'name' => 'require',
@@ -503,6 +505,7 @@ class Menu extends Base {
     }
 
     public function del(){
+        $this->error('体验版本，关键数据，请勿操作', '');
         if( $this->request->isDelete() ){
             $key = $this->request->delete($this->primaryKey);
             $childNum = \app\admin\model\Menu::where(['fid' => $key])->count();
