@@ -9,5 +9,7 @@ namespace app\admin\controller;
 
 
 class FilterManager extends Base {
+    public function index(){
 
+    }
 }
