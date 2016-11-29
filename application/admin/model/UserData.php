@@ -7,9 +7,7 @@
 namespace app\admin\model;
 
 
-use think\Model;
-
-class UserData extends Model {
+class UserData extends Base {
 
     protected $insert = ['lastLoginTime', 'lastLoginIp'];
     protected $update = ['lastLoginIp', 'lastLoginTime'];
