@@ -1,12 +1,14 @@
 <?php
 /**
- * @since   2016-11-26
+ * @since   2016-11-29
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
 namespace app\admin\model;
 
 
-class AppMember extends Base {
+use think\Model;
+
+class Base extends Model {
 
 }

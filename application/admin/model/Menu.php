@@ -8,9 +8,7 @@
 namespace app\admin\model;
 
 
-use think\Model;
-
-class Menu extends Model {
+class Menu extends Base {
     protected $type = [
         'fid'        =>  'integer',
         'type'       =>  'integer',

@@ -8,8 +8,6 @@
 namespace app\admin\model;
 
 
-use think\Model;
-
-class Api extends Model {
+class Api extends Base {
 
 }

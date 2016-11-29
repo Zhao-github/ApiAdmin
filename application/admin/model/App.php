@@ -8,8 +8,6 @@
 namespace app\admin\model;
 
 
-use think\Model;
-
-class App extends Model {
+class App extends Base {
 
 }
