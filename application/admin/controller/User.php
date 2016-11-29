@@ -303,7 +303,6 @@ class User extends Base {
             $userModel = new \app\admin\model\User();
             $userDetail = $userModel->where([$this->primaryKey => $this->uid])->find();
             if( !empty($this->request->put('password')) ){
-                $this->error('体验版本，关键数据，请勿操作', '');
                 $userDetail->password = $this->request->put('password');
             }
             $userDetail->nickname = $this->request->put('nickname');
