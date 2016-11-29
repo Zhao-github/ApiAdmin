@@ -171,6 +171,36 @@ CREATE TABLE `user_data` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员数据表';
 
+# Dump of table keys
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `keys`;
+
+CREATE TABLE `keys` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `description` varchar(50) NOT NULL DEFAULT '' COMMENT '当前Key的备注',
+  `accessKey` varchar(64) NOT NULL DEFAULT '' COMMENT '公钥',
+  `secretKey` varchar(64) NOT NULL DEFAULT '' COMMENT '私钥',
+  `appId` int(11) NOT NULL COMMENT '适配App的ID',
+  `filterId` int(11) NOT NULL COMMENT '适配过滤组的ID',
+  `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间戳',
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '秘钥状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='API认证秘钥对表';
+
+# Dump of table app_member
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `app_member`;
+
+CREATE TABLE `app_member` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '管理员名称',
+  `phone` varchar(11) NOT NULL DEFAULT '' COMMENT '管理员手机号',
+  `email` varchar(50) NOT NULL DEFAULT '' COMMENT '管理员邮箱',
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '管理员状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应用管理员表';
 
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
