@@ -181,8 +181,8 @@ CREATE TABLE `keys` (
   `description` varchar(50) NOT NULL DEFAULT '' COMMENT '当前Key的备注',
   `accessKey` varchar(64) NOT NULL DEFAULT '' COMMENT '公钥',
   `secretKey` varchar(64) NOT NULL DEFAULT '' COMMENT '私钥',
-  `appId` int(11) NOT NULL COMMENT '适配App的ID',
-  `filterId` int(11) NOT NULL COMMENT '适配过滤组的ID',
+  `appId` int(11) NOT NULL DEFAULT '0' COMMENT '适配App的ID',
+  `filterId` int(11) NOT NULL DEFAULT '0' COMMENT '适配过滤组的ID',
   `addTime` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间戳',
   `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '秘钥状态',
   PRIMARY KEY (`id`)
