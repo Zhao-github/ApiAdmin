@@ -9,5 +9,6 @@ namespace app\admin\model;
 
 
 class Keys extends Base {
-
+    protected $autoWriteTimestamp = true;
+    protected $createTime = 'addTime';
 }
