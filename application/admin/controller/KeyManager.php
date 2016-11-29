@@ -196,15 +196,9 @@ class KeyManager extends Base {
     public function del(){
         if( $this->request->isDelete() ){
             $key = $this->request->delete($this->primaryKey);
-            if(!isAdministrator($key)){
-                $delNum = \app\admin\model\User::destroy($key);
-                if( $delNum ){
-                    UserData::destroy(['uid' => $key]);
-                    AuthGroupAccess::destroy(['uid' => $key]);
-                    $this->success('操作成功！', url('User/index'));
-                }
-            }else{
-                $this->error('管理员不能被删除！');
+            $delNum = Keys::destroy($key);
+            if( $delNum ){
+                $this->success('操作成功！', url('KeyManager/index'));
             }
         }
         $this->error('操作失败！');
