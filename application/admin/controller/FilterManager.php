@@ -12,7 +12,12 @@ use app\admin\model\Filter;
 
 class FilterManager extends Base {
     public function index(){
-        $data = Filter::all();
+        $cacheValue = [];
+        $data = (new Filter())->where([])->select();
+        foreach ( $data as $value ){
+            $cacheValue[$value['id']] = $value['name'];
+        }
+        cache(CacheType::FILTER_LIST_KEY, $cacheValue);
         $table = [
             'tempType' => 'table',
             'header' => [
