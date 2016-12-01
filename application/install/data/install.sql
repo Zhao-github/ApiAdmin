@@ -203,6 +203,23 @@ CREATE TABLE `app_member` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应用管理员表';
 
+# Dump of table filter
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `filter`;
+
+CREATE TABLE `filter` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `total` int(11) NOT NULL DEFAULT '0' COMMENT '请求总数',
+  `month` int(11) NOT NULL DEFAULT '0' COMMENT '每月请求频率',
+  `day` int(11) NOT NULL DEFAULT '0' COMMENT '每天请求频率',
+  `hour` int(11) NOT NULL DEFAULT '0' COMMENT '每小时请求频率',
+  `minute` int(11) NOT NULL DEFAULT '0' COMMENT '每分钟请求频率',
+  `second` int(11) NOT NULL DEFAULT '0' COMMENT '没秒钟请求频率',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '过滤组名称',
+  `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '过滤组状态',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Api过滤组配置';
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
