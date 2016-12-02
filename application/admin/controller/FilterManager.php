@@ -109,6 +109,51 @@ class FilterManager extends Base {
                             'class' => 'label label-success'
                         ]
                     ]
+                ],
+                'month' => [
+                    'module' => 'label',
+                    'rule' => [
+                        -1 => [
+                            'info' => '无限制',
+                            'class' => 'label label-primary'
+                        ]
+                    ]
+                ],
+                'day' => [
+                    'module' => 'label',
+                    'rule' => [
+                        -1 => [
+                            'info' => '无限制',
+                            'class' => 'label label-primary'
+                        ]
+                    ]
+                ],
+                'hour' => [
+                    'module' => 'label',
+                    'rule' => [
+                        -1 => [
+                            'info' => '无限制',
+                            'class' => 'label label-primary'
+                        ]
+                    ]
+                ],
+                'second' => [
+                    'module' => 'label',
+                    'rule' => [
+                        -1 => [
+                            'info' => '无限制',
+                            'class' => 'label label-primary'
+                        ]
+                    ]
+                ],
+                'minute' => [
+                    'module' => 'label',
+                    'rule' => [
+                        -1 => [
+                            'info' => '无限制',
+                            'class' => 'label label-primary'
+                        ]
+                    ]
                 ]
             ],
             'data' => $data

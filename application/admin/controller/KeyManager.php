@@ -99,6 +99,15 @@ class KeyManager extends Base {
                             'class' => 'label label-success'
                         ]
                     ]
+                ],
+                'filterId' => [
+                    'module' => 'label',
+                    'rule' => [
+                        -1 => [
+                            'info' => '无限制',
+                            'class' => 'label label-warning'
+                        ]
+                    ]
                 ]
             ],
             'data' => $data
