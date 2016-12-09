@@ -17,6 +17,10 @@
 
 [http://admin.our-dream.cn/](http://admin.our-dream.cn/)
 
+**项目文档**
+
+[http://git.oschina.net/xiaoxunzhao/ApiAdmin/wikis/home](http://git.oschina.net/xiaoxunzhao/ApiAdmin/wikis/home)
+
 **源码地址**
 
 国内OSC：[http://git.oschina.net/xiaoxunzhao/ApiAdmin](http://git.oschina.net/xiaoxunzhao/ApiAdmin)
