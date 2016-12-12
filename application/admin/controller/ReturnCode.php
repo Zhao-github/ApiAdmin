@@ -15,4 +15,7 @@ class ReturnCode {
     const ERROR = 0;
     const GET_TEMPLATE_ERROR = 404;
 
+    const ERROR_BY_REFRESH_PAGE = 302;
+
+
 }

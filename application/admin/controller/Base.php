@@ -129,7 +129,7 @@ class Base extends Controller {
             $sidOld = cache($this->uid);
             if( isset($sidOld) && !empty($sidOld) ){
                 if( $sidOld != $sidNow ){
-                    $this->error("您的账号在别的地方登录了，请重新登录！", url('User/login'));
+                    $this->error("您的账号在别的地方登录了，请重新登录！", url('User/login'), ReturnCode::ERROR_BY_REFRESH_PAGE);
                 }else{
                     cache($this->uid, $sidNow, config('online_time'));
                     $this->userInfo = User::get([ $this->primaryKey => $this->uid ])->toArray();
@@ -142,7 +142,7 @@ class Base extends Controller {
 //                    }
                 }
             }else{
-                $this->error("登录超时，请重新登录！", url('User/login'));
+                $this->error("登录超时，请重新登录！", url('User/login'), ReturnCode::ERROR_BY_REFRESH_PAGE);
             }
         }else{
             $this->redirect('User/login');

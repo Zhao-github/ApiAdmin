@@ -12,5 +12,6 @@ class CacheType {
 
     const FILTER_LIST_KEY = 'ApiAdmin:FilterList';
     const APP_LIST_KEY = 'ApiAdmin:AppList';
+    const AUTH_LIST_KEY = 'ApiAdmin:AuthList';
 
 }

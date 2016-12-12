@@ -137,6 +137,10 @@ class AppManager extends Base {
                 $this->success('操作成功！', url('AppManager/index'));
             }
         }else{
+            $auth = cache(CacheType::AUTH_LIST_KEY);
+//            if( !$auth ){
+//                $this->error('请先配置认证方式！', url('OAuth/index'));
+//            }
             $form = [
                 'formTitle' => $this->menuInfo['name'],
                 'tempType' => 'add',
@@ -177,6 +181,16 @@ class AppManager extends Base {
                                 '监视方式',
                                 '网关方式'
                             ]
+                        ]
+                    ],
+                    [
+                        'module' => 'select',
+                        'description' => '',
+                        'info' => '认证方式：',
+                        'attr' => [
+                            'name' => 'oauth',
+                            'value' => '',
+                            'options' => $auth
                         ]
                     ],
                     [
@@ -244,6 +258,10 @@ class AppManager extends Base {
             $appMemberModel->update($data);
             $this->success('操作成功！', url('AppManager/index'));
         }else{
+            $auth = cache(CacheType::AUTH_LIST_KEY);
+//            if( !$auth ){
+//                $this->error('请先配置认证方式！', url('OAuth/index'));
+//            }
             $detail = App::get($this->request->get($this->primaryKey))->toArray();
             $form = [
                 'formTitle' => $this->menuInfo['name'],
@@ -295,6 +313,16 @@ class AppManager extends Base {
                                 '监视方式',
                                 '网关方式'
                             ]
+                        ]
+                    ],
+                    [
+                        'module' => 'select',
+                        'description' => '',
+                        'info' => '认证方式：',
+                        'attr' => [
+                            'name' => 'oauth',
+                            'value' => '',
+                            'options' => $auth
                         ]
                     ],
                     [

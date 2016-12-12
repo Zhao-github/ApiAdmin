@@ -96,7 +96,11 @@
                     $.alertMsg(data.msg);
                     setTimeout(function() {
                         if (data.url) {
-                            location.href = data.url;
+                            if( data.data == 302 ){
+                                location.href = data.url;
+                            }else{
+                                $.refresh(data.url);
+                            }
                         }
                     }, 1000*data.wait);
                 }
