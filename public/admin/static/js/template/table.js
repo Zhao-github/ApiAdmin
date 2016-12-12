@@ -117,6 +117,15 @@
                                         dataListHtml += '<td><input class="auth" type="checkbox" url="'+ rule.rule['url'] +'" name="'+fieldName+'" ></td>';
                                     }
                                 }
+                                break;
+                            case 'listValue':
+                                if( rule.rule[dataValue[fieldName]] ){
+                                    styleList = rule.rule[dataValue[fieldName]];
+                                    dataListHtml += '<td>'+ styleList +'</td>';
+                                }else{
+                                    dataListHtml += '<td style="color:red;">' + dataValue[fieldName] + '</td>';
+                                }
+                                break;
                         }
                     }else{
                         dataListHtml += '<td>' + dataValue[fieldName] + '</td>';

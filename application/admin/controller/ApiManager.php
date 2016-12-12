@@ -18,15 +18,19 @@ class ApiManager extends Base {
             'header' => [
                 [
                     'field' => 'name',
-                    'info' => '应用名称'
+                    'info' => '接口名称'
                 ],
                 [
-                    'field' => 'info',
-                    'info' => '应用描述'
+                    'field' => 'version',
+                    'info' => '接口版本'
+                ],
+                [
+                    'field' => 'map',
+                    'info' => '接口映射'
                 ],
                 [
                     'field' => 'type',
-                    'info' => '参与方式'
+                    'info' => '接口标识'
                 ],
                 [
                     'field' => 'status',

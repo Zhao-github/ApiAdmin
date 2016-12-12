@@ -39,6 +39,11 @@ class Base extends Controller {
     }
 
     /**
+     * 自定义初始化函数
+     */
+    public function _myInitialize(){}
+
+    /**
      * 空方法默认的页面
      */
     public function _empty(){

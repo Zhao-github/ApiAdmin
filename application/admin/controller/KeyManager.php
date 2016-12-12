@@ -11,6 +11,20 @@ namespace app\admin\controller;
 use app\admin\model\Keys;
 
 class KeyManager extends Base {
+
+    private $apps;
+    private $filters;
+
+    public function _myInitialize() {
+        $this->apps = cache(CacheType::APP_LIST_KEY);
+        if( !$this->apps ){
+            $this->error('请先配置应用！', url('AppManager/index'));
+        }else{
+            $this->apps = [0 => '不关联'] + $this->apps;
+        }
+        $this->filters = [-1 => '不限制'] + cache(CacheType::FILTER_LIST_KEY);
+    }
+
     public function index(){
         $data = Keys::all();
         $table = [
@@ -101,13 +115,12 @@ class KeyManager extends Base {
                     ]
                 ],
                 'filterId' => [
-                    'module' => 'label',
-                    'rule' => [
-                        -1 => [
-                            'info' => '无限制',
-                            'class' => 'label label-warning'
-                        ]
-                    ]
+                    'module' => 'listValue',
+                    'rule' => $this->filters
+                ],
+                'appId' => [
+                    'module' => 'listValue',
+                    'rule' => $this->apps
                 ]
             ],
             'data' => $data
@@ -126,12 +139,6 @@ class KeyManager extends Base {
                 $this->success('操作成功！', url('KeyManager/index'));
             }
         }else{
-            $apps = cache(CacheType::APP_LIST_KEY);
-            if( !$apps ){
-                $this->error('请先配置应用！', url('AppManager/index'));
-            }
-            $filters = cache(CacheType::FILTER_LIST_KEY);
-            $filters[-1] = '不限制';
             $sk = \StrOrg::randString(64);
             $ak = \StrOrg::keyGen();
             $form = [
@@ -172,7 +179,7 @@ class KeyManager extends Base {
                         'attr' => [
                             'name' => 'appId',
                             'value' => '',
-                            'options' => $apps
+                            'options' => $this->apps
                         ]
                     ],
                     [
@@ -182,7 +189,7 @@ class KeyManager extends Base {
                         'attr' => [
                             'name' => 'filterId',
                             'value' => '',
-                            'options' => $filters
+                            'options' => $this->filters
                         ]
                     ],
                     [
@@ -219,12 +226,6 @@ class KeyManager extends Base {
             $keysModel->allowField(true)->update($data);
             $this->success('操作成功！', url('KeyManager/index'));
         }else{
-            $apps = cache(CacheType::APP_LIST_KEY);
-            if( !$apps ){
-                $this->error('请先配置应用！', url('AppManager/index'));
-            }
-            $filters = cache(CacheType::FILTER_LIST_KEY);
-            $filters[-1] = '不限制';
             $detail = Keys::get($this->request->get($this->primaryKey))->toArray();
             $form = [
                 'formTitle' => $this->menuInfo['name'],
@@ -274,7 +275,7 @@ class KeyManager extends Base {
                         'attr' => [
                             'name' => 'appId',
                             'value' => $detail['appId'],
-                            'options' => $apps
+                            'options' => $this->apps
                         ]
                     ],
                     [
@@ -284,7 +285,7 @@ class KeyManager extends Base {
                         'attr' => [
                             'name' => 'filterId',
                             'value' => $detail['filterId'],
-                            'options' => $filters
+                            'options' => $this->filters
                         ]
                     ],
                     [
