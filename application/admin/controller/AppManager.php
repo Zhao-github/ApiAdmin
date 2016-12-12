@@ -193,13 +193,13 @@ class AppManager extends Base {
     public function open(){
         if( $this->request->isPut() ){
             $id = $this->request->put($this->primaryKey);
-            $appMemberObj = \app\admin\model\AppMember::get([$this->primaryKey => $id]);
-            if( is_null($appMemberObj) ){
-                $this->error('管理员不存在','');
+            $appObj = App::get([$this->primaryKey => $id]);
+            if( is_null($appObj) ){
+                $this->error('当前应用不存在','');
             }else{
-                $appMemberObj->status = 1;
-                $appMemberObj->save();
-                $this->success('操作成功', url('AppMember/index'));
+                $appObj->status = 1;
+                $appObj->save();
+                $this->success('操作成功', url('AppManager/index'));
             }
         }
     }
@@ -207,13 +207,13 @@ class AppManager extends Base {
     public function close(){
         if( $this->request->isPut() ){
             $id = $this->request->put($this->primaryKey);
-            $appMemberObj = \app\admin\model\AppMember::get([$this->primaryKey => $id]);
-            if( is_null($appMemberObj) ){
-                $this->error('管理员不存在','');
+            $appObj = App::get([$this->primaryKey => $id]);
+            if( is_null($appObj) ){
+                $this->error('当前应用不存在','');
             }else{
-                $appMemberObj->status = 0;
-                $appMemberObj->save();
-                $this->success('操作成功', url('AppMember/index'));
+                $appObj->status = 0;
+                $appObj->save();
+                $this->success('操作成功', url('AppManager/index'));
             }
         }
     }
@@ -221,9 +221,9 @@ class AppManager extends Base {
     public function del(){
         if( $this->request->isDelete() ){
             $key = $this->request->delete($this->primaryKey);
-            $delNum = \app\admin\model\AppMember::destroy($key);
+            $delNum = App::destroy($key);
             if( $delNum ){
-                $this->success('操作成功！', url('AppMember/index'));
+                $this->success('操作成功！', url('AppManager/index'));
             }
         }
         $this->error('操作失败！');
