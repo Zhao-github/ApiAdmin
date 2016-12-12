@@ -127,10 +127,9 @@ class KeyManager extends Base {
             }
         }else{
             $apps = cache(CacheType::APP_LIST_KEY);
-            //TODO::等待应用配置开发完成开放APP验证
-//            if( !$apps ){
-//                $this->error('请先配置应用！', url('AppManager/index'));
-//            }
+            if( !$apps ){
+                $this->error('请先配置应用！', url('AppManager/index'));
+            }
             $filters = cache(CacheType::FILTER_LIST_KEY);
             $filters[-1] = '不限制';
             $sk = \StrOrg::randString(64);
@@ -221,10 +220,9 @@ class KeyManager extends Base {
             $this->success('操作成功！', url('KeyManager/index'));
         }else{
             $apps = cache(CacheType::APP_LIST_KEY);
-            //TODO::等待应用配置开发完成开放APP验证
-//            if( !$apps ){
-//                $this->error('请先配置应用！', url('AppManager/index'));
-//            }
+            if( !$apps ){
+                $this->error('请先配置应用！', url('AppManager/index'));
+            }
             $filters = cache(CacheType::FILTER_LIST_KEY);
             $filters[-1] = '不限制';
             $detail = Keys::get($this->request->get($this->primaryKey))->toArray();

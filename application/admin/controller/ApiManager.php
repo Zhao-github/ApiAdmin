@@ -1,19 +1,18 @@
 <?php
 /**
- * APP管理
- * @since   2016-02-18
- * @author  zhaoxiang <zhaoxiang051405@outlook.com>
+ * @since   2016-12-12
+ * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
 namespace app\admin\controller;
 
 
-use app\admin\model\App;
+use app\admin\model\Api;
 
-class AppManager extends Base {
+class ApiManager extends Base {
 
     public function index(){
-        $data = App::all();
+        $data = Api::all();
         $table = [
             'tempType' => 'table',
             'header' => [
@@ -118,11 +117,6 @@ class AppManager extends Base {
             ],
             'data' => $data
         ];
-        $appListCache = [];
-        foreach ( $data as $key => $value ){
-            $appListCache[$value['id']] = $value['name'];
-        }
-        cache( CacheType::APP_LIST_KEY, $appListCache );
         $table = $this->_prepareTemplate($table);
         $this->result($table, ReturnCode::GET_TEMPLATE_SUCCESS);
     }
