@@ -39,14 +39,14 @@ class ApiManager extends Base {
             ],
             'topButton' => [
                 [
-                    'href' => 'AppManager/add',
+                    'href' => 'ApiManager/add',
                     'class'=> 'btn-success',
                     'info'=> '新增',
                     'icon' => 'fa fa-plus',
                     'confirm' => 0,
                 ],
                 [
-                    'href' => 'AppManager/del',
+                    'href' => 'ApiManager/del',
                     'class'=> 'btn-danger ajax-delete',
                     'info'=> '删除',
                     'icon' => 'fa fa-trash',
@@ -56,7 +56,7 @@ class ApiManager extends Base {
             'rightButton' => [
                 [
                     'info' => '启用',
-                    'href' => 'AppManager/open',
+                    'href' => 'ApiManager/open',
                     'class'=> 'btn-success ajax-put-url',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-check',
@@ -65,7 +65,7 @@ class ApiManager extends Base {
                 ],
                 [
                     'info' => '禁用',
-                    'href' => 'AppManager/close',
+                    'href' => 'ApiManager/close',
                     'class'=> 'btn-warning ajax-put-url',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-close',
@@ -74,7 +74,25 @@ class ApiManager extends Base {
                 ],
                 [
                     'info' => '编辑',
-                    'href' => 'AppManager/edit',
+                    'href' => 'ApiManager/edit',
+                    'class'=> 'btn-primary',
+                    'param'=> [$this->primaryKey],
+                    'icon' => 'fa fa-pencil',
+                    'confirm' => 0,
+                    'show' => ''
+                ],
+                [
+                    'info' => '请求参数',
+                    'href' => 'ApiFieldsManager/index',
+                    'class'=> 'btn-primary',
+                    'param'=> [$this->primaryKey],
+                    'icon' => 'fa fa-pencil',
+                    'confirm' => 0,
+                    'show' => ''
+                ],
+                [
+                    'info' => '返回参数',
+                    'href' => 'ApiFieldsManager/back',
                     'class'=> 'btn-primary',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-pencil',
@@ -83,7 +101,7 @@ class ApiManager extends Base {
                 ],
                 [
                     'info' => '删除',
-                    'href' => 'AppManager/del',
+                    'href' => 'ApiManager/del',
                     'class'=> 'btn-danger ajax-delete',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-trash',
