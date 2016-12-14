@@ -81,9 +81,18 @@ class AppManager extends Base {
                 [
                     'info' => 'API文档【开发中】',
                     'href' => 'WikiManager/app',
-                    'class'=> 'btn-info',
+                    'class'=> 'btn-success',
                     'param'=> [$this->primaryKey],
                     'icon' => 'fa fa-support',
+                    'confirm' => 0,
+                    'show' => ''
+                ],
+                [
+                    'info' => 'API列表',
+                    'href' => 'ApiManager/index',
+                    'class'=> 'btn-info',
+                    'param'=> [$this->primaryKey],
+                    'icon' => 'fa fa-link',
                     'confirm' => 0,
                     'show' => ''
                 ],
