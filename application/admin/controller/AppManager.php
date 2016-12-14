@@ -79,6 +79,15 @@ class AppManager extends Base {
                     'show' => ''
                 ],
                 [
+                    'info' => 'API文档【开发中】',
+                    'href' => 'WikiManager/app',
+                    'class'=> 'btn-info',
+                    'param'=> [$this->primaryKey],
+                    'icon' => 'fa fa-support',
+                    'confirm' => 0,
+                    'show' => ''
+                ],
+                [
                     'info' => '删除',
                     'href' => 'AppManager/del',
                     'class'=> 'btn-danger ajax-delete',
