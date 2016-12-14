@@ -11,8 +11,23 @@ use app\admin\model\Api;
 
 class ApiManager extends Base {
 
+    private $apps;
+
+    public function _myInitialize() {
+        $this->apps = cache(CacheType::APP_LIST_KEY);
+        if( !$this->apps ){
+            $this->error('请先配置应用！', url('AppManager/index'));
+        }else{
+            $this->apps = [0 => '不关联'] + $this->apps;
+        }
+    }
+
     public function index(){
-        $data = Api::all();
+        if( $this->request->get($this->primaryKey) ){
+            $data = Api::all(['appId' => $this->request->get($this->primaryKey)]);
+        }else{
+            $data = Api::all();
+        }
         $table = [
             'tempType' => 'table',
             'header' => [
@@ -21,16 +36,16 @@ class ApiManager extends Base {
                     'info' => '接口名称'
                 ],
                 [
-                    'field' => 'version',
-                    'info' => '接口版本'
+                    'field' => 'mark',
+                    'info' => '接口标记'
                 ],
                 [
                     'field' => 'map',
                     'info' => '接口映射'
                 ],
                 [
-                    'field' => 'type',
-                    'info' => '接口标识'
+                    'field' => 'version',
+                    'info' => '接口版本'
                 ],
                 [
                     'field' => 'status',
@@ -82,20 +97,29 @@ class ApiManager extends Base {
                     'show' => ''
                 ],
                 [
+                    'info' => 'API文档【开发中】',
+                    'href' => 'WikiManager/api',
+                    'class'=> 'btn-success',
+                    'param'=> [$this->primaryKey],
+                    'icon' => 'fa fa-support',
+                    'confirm' => 0,
+                    'show' => ''
+                ],
+                [
                     'info' => '请求参数',
                     'href' => 'ApiFieldsManager/index',
-                    'class'=> 'btn-primary',
+                    'class'=> 'btn-warning',
                     'param'=> [$this->primaryKey],
-                    'icon' => 'fa fa-pencil',
+                    'icon' => 'fa fa-sign-in',
                     'confirm' => 0,
                     'show' => ''
                 ],
                 [
                     'info' => '返回参数',
                     'href' => 'ApiFieldsManager/back',
-                    'class'=> 'btn-primary',
+                    'class'=> 'btn-info',
                     'param'=> [$this->primaryKey],
-                    'icon' => 'fa fa-pencil',
+                    'icon' => 'fa fa-sign-out',
                     'confirm' => 0,
                     'show' => ''
                 ],
@@ -110,19 +134,6 @@ class ApiManager extends Base {
                 ]
             ],
             'typeRule' => [
-                'type' => [
-                    'module' => 'label',
-                    'rule' => [
-                        [
-                            'info' => '监视方式',
-                            'class' => 'label label-info'
-                        ],
-                        [
-                            'info' => '网关方式',
-                            'class' => 'label label-primary'
-                        ]
-                    ]
-                ],
                 'status' => [
                     'module' => 'label',
                     'rule' => [
@@ -145,27 +156,49 @@ class ApiManager extends Base {
 
     public function add(){
         if( $this->request->isPost() ){
-            $appModel = new App();
-            $result = $appModel->allowField(true)->save($this->request->post());
+            $apiModel = new Api();
+            $result = $apiModel->allowField(true)->save($this->request->post());
             if(false === $result){
-                $this->error($appModel->getError());
+                $this->error($apiModel->getError());
             }else{
-                $this->success('操作成功！', url('AppManager/index'));
+                $this->success('操作成功！', url('ApiManager/index'));
             }
         }else{
+            $map = uniqid();
             $form = [
                 'formTitle' => $this->menuInfo['name'],
                 'tempType' => 'add',
                 'formAttr' => [
-                    'target' => url('AppManager/add'),
-                    'formId' => 'add-AppManager-form',
-                    'backUrl' => url('AppManager/index'),
+                    'target' => url('ApiManager/add'),
+                    'formId' => 'add-ApiManager-form',
+                    'backUrl' => url('ApiManager/index'),
                 ],
                 'formList' => [
                     [
                         'module' => 'text',
+                        'description' => '映射为系统自动生成，并且不可修改',
+                        'info' => 'API映射：',
+                        'attr' => [
+                            'name' => 'map',
+                            'value' => $map,
+                            'placeholder' => '',
+                            'readOnly' => true
+                        ]
+                    ],
+                    [
+                        'module' => 'select',
                         'description' => '',
-                        'info' => '应用名称：',
+                        'info' => '适配APP：',
+                        'attr' => [
+                            'name' => 'appId',
+                            'value' => '',
+                            'options' => $this->apps
+                        ]
+                    ],
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => 'API名称：',
                         'attr' => [
                             'name' => 'name',
                             'value' => '',
@@ -175,30 +208,37 @@ class ApiManager extends Base {
                     [
                         'module' => 'text',
                         'description' => '',
-                        'info' => '基础链接：',
+                        'info' => 'API标记：',
                         'attr' => [
-                            'name' => 'baseUrl',
+                            'name' => 'mark',
                             'value' => '',
-                            'placeholder' => ''
+                            'placeholder' => '请求第三方API服务时候需要拼接的URL，例如：index/index'
                         ]
                     ],
                     [
-                        'module' => 'select',
+                        'module' => 'text',
                         'description' => '',
-                        'info' => '参与方式：',
+                        'info' => 'API版本：',
                         'attr' => [
-                            'name' => 'type',
+                            'name' => 'version',
                             'value' => '',
-                            'options' => [
-                                '监视方式',
-                                '网关方式'
-                            ]
+                            'placeholder' => '建议使用:v1.1.1这类的版本号'
+                        ]
+                    ],
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => 'API提示：',
+                        'attr' => [
+                            'name' => 'warning',
+                            'value' => '',
+                            'placeholder' => '用于API文档生成'
                         ]
                     ],
                     [
                         'module' => 'textarea',
                         'description' => '',
-                        'info' => '应用描述：',
+                        'info' => 'API描述：',
                         'attr' => [
                             'name' => 'info',
                             'value' => '',
@@ -214,13 +254,13 @@ class ApiManager extends Base {
     public function open(){
         if( $this->request->isPut() ){
             $id = $this->request->put($this->primaryKey);
-            $appObj = App::get([$this->primaryKey => $id]);
-            if( is_null($appObj) ){
-                $this->error('当前应用不存在','');
+            $apiObj = Api::get([$this->primaryKey => $id]);
+            if( is_null($apiObj) ){
+                $this->error('当前API不存在','');
             }else{
-                $appObj->status = 1;
-                $appObj->save();
-                $this->success('操作成功', url('AppManager/index'));
+                $apiObj->status = 1;
+                $apiObj->save();
+                $this->success('操作成功', url('ApiManager/index'));
             }
         }
     }
@@ -228,13 +268,13 @@ class ApiManager extends Base {
     public function close(){
         if( $this->request->isPut() ){
             $id = $this->request->put($this->primaryKey);
-            $appObj = App::get([$this->primaryKey => $id]);
-            if( is_null($appObj) ){
-                $this->error('当前应用不存在','');
+            $apiObj = Api::get([$this->primaryKey => $id]);
+            if( is_null($apiObj) ){
+                $this->error('当前API不存在','');
             }else{
-                $appObj->status = 0;
-                $appObj->save();
-                $this->success('操作成功', url('AppManager/index'));
+                $apiObj->status = 0;
+                $apiObj->save();
+                $this->success('操作成功', url('ApiManager/index'));
             }
         }
     }
@@ -242,9 +282,9 @@ class ApiManager extends Base {
     public function del(){
         if( $this->request->isDelete() ){
             $key = $this->request->delete($this->primaryKey);
-            $delNum = App::destroy($key);
+            $delNum = Api::destroy($key);
             if( $delNum ){
-                $this->success('操作成功！', url('AppManager/index'));
+                $this->success('操作成功！', url('ApiManager/index'));
             }
         }
         $this->error('操作失败！');
@@ -256,18 +296,18 @@ class ApiManager extends Base {
                 $this->error('应用名称不能为空', '');
             }
             $data = $this->request->put();
-            $appMemberModel = new App();
+            $appMemberModel = new Api();
             $appMemberModel->update($data);
-            $this->success('操作成功！', url('AppManager/index'));
+            $this->success('操作成功！', url('ApiManager/index'));
         }else{
-            $detail = App::get($this->request->get($this->primaryKey))->toArray();
+            $detail = Api::get($this->request->get($this->primaryKey))->toArray();
             $form = [
                 'formTitle' => $this->menuInfo['name'],
                 'tempType' => 'edit',
                 'formAttr' => [
-                    'target' => url('AppManager/edit'),
-                    'formId' => 'edit-AppManager-form',
-                    'backUrl' => url('AppManager/index'),
+                    'target' => url('ApiManager/edit'),
+                    'formId' => 'edit-ApiManager-form',
+                    'backUrl' => url('ApiManager/index'),
                 ],
                 'formList' => [
                     [
@@ -282,8 +322,29 @@ class ApiManager extends Base {
                     ],
                     [
                         'module' => 'text',
+                        'description' => '映射为系统自动生成，并且不可修改',
+                        'info' => 'API映射：',
+                        'attr' => [
+                            'name' => 'map',
+                            'value' => $detail['map'],
+                            'placeholder' => '',
+                            'readOnly' => true
+                        ]
+                    ],
+                    [
+                        'module' => 'select',
                         'description' => '',
-                        'info' => '应用名称：',
+                        'info' => '适配APP：',
+                        'attr' => [
+                            'name' => 'appId',
+                            'value' => $detail['appId'],
+                            'options' => $this->apps
+                        ]
+                    ],
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => 'API名称：',
                         'attr' => [
                             'name' => 'name',
                             'value' => $detail['name'],
@@ -293,30 +354,37 @@ class ApiManager extends Base {
                     [
                         'module' => 'text',
                         'description' => '',
-                        'info' => '基础链接：',
+                        'info' => 'API标记：',
                         'attr' => [
-                            'name' => 'baseUrl',
-                            'value' => $detail['baseUrl'],
-                            'placeholder' => ''
+                            'name' => 'mark',
+                            'value' => $detail['mark'],
+                            'placeholder' => '请求第三方API服务时候需要拼接的URL，例如：index/index'
                         ]
                     ],
                     [
-                        'module' => 'select',
+                        'module' => 'text',
                         'description' => '',
-                        'info' => '参与方式：',
+                        'info' => 'API版本：',
                         'attr' => [
-                            'name' => 'type',
-                            'value' => $detail['type'],
-                            'options' => [
-                                '监视方式',
-                                '网关方式'
-                            ]
+                            'name' => 'version',
+                            'value' => $detail['version'],
+                            'placeholder' => '建议使用:v1.1.1这类的版本号'
+                        ]
+                    ],
+                    [
+                        'module' => 'text',
+                        'description' => '',
+                        'info' => 'API提示：',
+                        'attr' => [
+                            'name' => 'warning',
+                            'value' => $detail['warning'],
+                            'placeholder' => '用于API文档生成'
                         ]
                     ],
                     [
                         'module' => 'textarea',
                         'description' => '',
-                        'info' => '应用描述：',
+                        'info' => 'API描述：',
                         'attr' => [
                             'name' => 'info',
                             'value' => $detail['info'],
