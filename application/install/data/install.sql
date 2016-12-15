@@ -47,7 +47,7 @@ CREATE TABLE `api_back` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `apiId` int(11) DEFAULT NULL COMMENT '关联的API的ID',
   `name` varchar(50) NOT NULL DEFAULT '' COMMENT '字段名称',
-  `type` tinyint(2) NOT NULL COMMENT '字段类型',
+  `type` varchar(20) NOT NULL COMMENT '字段类型',
   `info` varchar(50) NOT NULL DEFAULT '' COMMENT '字段说明',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='接口返回参数规则说明';
@@ -61,7 +61,7 @@ CREATE TABLE `api_fields` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `apiId` int(11) DEFAULT NULL COMMENT '关联的API的ID',
   `name` varchar(50) NOT NULL DEFAULT '' COMMENT '参数名称',
-  `type` tinyint(2) NOT NULL COMMENT '参数类型',
+  `type` varchar(20) NOT NULL COMMENT '参数类型',
   `must` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否必须1必须0不必须',
   `default` varchar(100) NOT NULL DEFAULT '' COMMENT '字段默认值',
   `info` varchar(50) NOT NULL DEFAULT '' COMMENT '字段说明',
