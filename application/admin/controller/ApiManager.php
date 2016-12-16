@@ -109,7 +109,7 @@ class ApiManager extends Base {
                     'info' => '请求参数',
                     'href' => 'ApiFieldsManager/index',
                     'class'=> 'btn-warning',
-                    'param'=> [$this->primaryKey],
+                    'param'=> [$this->primaryKey, 'name'],
                     'icon' => 'fa fa-sign-in',
                     'confirm' => 0,
                     'show' => ''
@@ -118,7 +118,7 @@ class ApiManager extends Base {
                     'info' => '返回参数',
                     'href' => 'ApiFieldsManager/back',
                     'class'=> 'btn-info',
-                    'param'=> [$this->primaryKey],
+                    'param'=> [$this->primaryKey, 'name'],
                     'icon' => 'fa fa-sign-out',
                     'confirm' => 0,
                     'show' => ''
