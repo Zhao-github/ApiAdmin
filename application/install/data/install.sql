@@ -136,7 +136,6 @@ CREATE TABLE `auth_rule` (
   `auth` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '权限数值',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态：为1正常，为0禁用',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `name` (`url`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限细节';
 
 # Dump of table filter
