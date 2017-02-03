@@ -22,7 +22,7 @@ function checkEnv(){
         ],
         'php' => [
             'title'   => 'PHP版本',
-            'limit'   => '5.6+',
+            'limit'   => '5.4+',
             'current' => PHP_VERSION,
             'icon'    => 'fa fa-check text-success',
         ],
@@ -41,7 +41,7 @@ function checkEnv(){
     ];
 
     //PHP环境检测
-    if($items['php']['current'] < 5.6){
+    if($items['php']['current'] < 5.4){
         $items['php']['icon'] = 'fa fa-close text-danger';
         session('error', true);
     }
