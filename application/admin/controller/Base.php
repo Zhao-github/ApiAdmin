@@ -19,6 +19,7 @@ class Base extends Controller {
     public $url;
     public $menuInfo;
 
+    private $CORS = true;
     private $superUrl = [
         'User/login',
         'User/logout'
@@ -35,6 +36,14 @@ class Base extends Controller {
         //控制器初始化
         if(method_exists($this,'_myInitialize')){
             $this->_myInitialize();
+        }
+
+        if( $this->CORS ){
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Allow-Credentials: true');
+            header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+            header('Access-Control-Allow-Headers: Content-Type, Content-Range, Content-Disposition, Content-Description');
+            $_SERVER['HTTP_X_REQUESTED_WITH'] = 'xmlHttpRequest';
         }
     }
 
