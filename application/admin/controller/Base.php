@@ -19,7 +19,7 @@ class Base extends Controller {
     public $url;
     public $menuInfo;
 
-    private $CORS = true;
+    private $CORS = false;
     private $superUrl = [
         'User/login',
         'User/logout'
