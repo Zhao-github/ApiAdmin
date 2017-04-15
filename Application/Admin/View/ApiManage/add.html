@@ -1,0 +1,182 @@
+<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>接口管理 - 新增接口</legend>
+        <div class="layui-field-box">
+            <form class="layui-form" action="">
+                <if condition="isset($detail['id'])">
+                    <input type="hidden" name="id" value="{$detail['id']}">
+                </if>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">接口名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="apiName" required value="{:(isset($detail['apiName'])?$detail['apiName']:'')}" lay-verify="required" placeholder="请输入应用名称" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">请求方式</label>
+                    <div class="layui-input-inline">
+                        <select name="method">
+                            <switch name="detail['method']" >
+                                <case value="0" break="1">
+                                    <option value="1">POST</option>
+                                    <option value="2">GET</option>
+                                    <option value="0" selected>不限</option>
+                                </case>
+                                <case value="1" break="1">
+                                    <option value="1" selected>POST</option>
+                                    <option value="2">GET</option>
+                                    <option value="0">不限</option>
+                                </case>
+                                <case value="2" break="1">
+                                    <option value="1">POST</option>
+                                    <option value="2" selected>GET</option>
+                                    <option value="0">不限</option>
+                                </case>
+                                <default />
+                                <option value="1">POST</option>
+                                <option value="2">GET</option>
+                                <option value="0">不限</option>
+                            </switch>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">接口映射</label>
+                    <div class="layui-input-inline">
+                        <input name="hash" value="{$detail['hash']}" readonly class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">系统自动生成，不允许修改</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">AccessToken</label>
+                    <div class="layui-input-inline">
+                        <select name="accessToken">
+                            <switch name="detail['accessToken']" >
+                                <case value="0" break="1">
+                                    <option value="1">验证Token</option>
+                                    <option value="0" selected>忽略Token</option>
+                                </case>
+                                <case value="1" break="1">
+                                    <option value="1" selected>验证Token</option>
+                                    <option value="0">忽略Token</option>
+                                </case>
+                                <default />
+                                <option value="1">验证Token</option>
+                                <option value="0">忽略Token</option>
+                            </switch>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户登录</label>
+                    <div class="layui-input-inline">
+                        <select name="needLogin">
+                            <switch name="detail['needLogin']" >
+                                <case value="0" break="1">
+                                    <option value="1">验证登录</option>
+                                    <option value="0" selected>忽略登录</option>
+                                </case>
+                                <case value="1" break="1">
+                                    <option value="1" selected>验证登录</option>
+                                    <option value="0">忽略登录</option>
+                                </case>
+                                <default />
+                                <option value="1">验证登录</option>
+                                <option value="0">忽略登录</option>
+                            </switch>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">测试模式</label>
+                    <div class="layui-input-inline">
+                        <select name="isTest">
+                            <switch name="detail['isTest']" >
+                                <case value="0" break="1">
+                                    <option value="1">开启测试</option>
+                                    <option value="0" selected>关闭测试</option>
+                                </case>
+                                <case value="1" break="1">
+                                    <option value="1" selected>开启测试</option>
+                                    <option value="0">关闭测试</option>
+                                </case>
+                                <default />
+                                <option value="0">关闭测试</option>
+                                <option value="1">开启测试</option>
+                            </switch>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">应用描述</label>
+                    <div class="layui-input-block">
+                        <textarea name="info" placeholder="请输入内容" class="layui-textarea">{:(isset($detail['info'])?$detail['info']:'')}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <if condition="isset($detail['id'])">
+        <input type="hidden" name="id" value="{$detail['id']}">
+        <script>
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(formDemo)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("edit")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                parent.location.reload();
+                            }else{
+                                parent.layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
+        <else />
+        <script>
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(formDemo)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("add")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                parent.location.reload();
+                            }else{
+                                parent.layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
+    </if>
+</block>

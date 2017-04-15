@@ -1,0 +1,94 @@
+<extend name="Public/base" />
+<block name="main">
+    <link rel="stylesheet" href="__PUBLIC__/jsonFormater/jsonFormater.css">
+    <script type="text/javascript" src="__PUBLIC__/jsonFormater/jsonFormater.js"></script>
+    <fieldset class="layui-elem-field">
+        <legend>接口管理 - 返回字段[批量覆盖]</legend>
+        <div class="layui-field-box">
+            <form class="layui-form">
+                <if condition="isset($detail['id'])">
+                    <input type="hidden" name="id" value="{$detail['id']}">
+                </if>
+                <input type="hidden" name="hash" value="{:(isset($detail['hash'])?$detail['hash']:I('get.hash'))}">
+                <input type="hidden" name="type" value="{:(isset($detail['type'])?$detail['type']:I('get.type'))}">
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">数据模版</label>
+                    <div class="layui-input-block">
+                        <textarea name="jsonStr" required id="RawJson" rows="7" placeholder="请输入内容" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <span class="layui-btn layui-btn-danger" id="format">JSON格式化</span>
+                        <span class="layui-btn layui-btn-normal" id="collapseAll">全部收起</span>
+                        <span class="layui-btn layui-btn-warm" id="expandAll">全部展开</span>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">格式化数据</label>
+                    <div class="layui-input-block">
+                        <pre style="max-height: 300px;overflow: auto;" class="layui-code" id="Canvas"></pre>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button onclick="history.go(-1);" class="layui-btn layui-btn-primary">返回</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <script>
+        $(document).ready(function () {
+            var format = function () {
+                var options = {
+                    dom: '#Canvas',
+                    isCollapsible: true,
+                    quoteKeys: true,
+                    tabSize: 2,
+                    imgCollapsed: "__PUBLIC__/images/jsonFormater/Collapsed.gif",
+                    imgExpanded: "__PUBLIC__/images/jsonFormater/Expanded.gif"
+                };
+                window.jf = new JsonFormater(options);
+                jf.doFormat($('#RawJson').val());
+            };
+            $('#format').click(function () {
+                format();
+            });
+            $('#expandAll').click(function () {
+                window.jf.expandAll();
+            });
+            $('#collapseAll').click(function () {
+                window.jf.collapseLevel(2);
+            });
+
+
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(formDemo)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("upload")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                location.href = "{:(I('get.type') == 1?U('response', array('hash' => I('get.hash'))):U('request', array('hash' => I('get.hash'))))}";
+                            }else{
+                                layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        });
+    </script>
+</block>

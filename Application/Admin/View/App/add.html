@@ -1,0 +1,101 @@
+<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>应用管理 - 新增应用</legend>
+        <div class="layui-field-box">
+            <form class="layui-form" action="">
+                <if condition="isset($detail['id'])">
+                    <input type="hidden" name="id" value="{$detail['id']}">
+                </if>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">应用名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="app_name" required value="{:(isset($detail['app_name'])?$detail['app_name']:'')}" lay-verify="required" placeholder="请输入应用名称" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">AppId</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                        <input name="app_id" value="{$detail['app_id']}" readonly class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">系统自动生成，不允许修改</div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">AppSecret</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                        <input name="app_secret" value="{$detail['app_secret']}" readonly class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">系统自动生成，不允许修改</div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">应用描述</label>
+                    <div class="layui-input-block">
+                        <textarea name="app_info" placeholder="请输入内容" class="layui-textarea">{:(isset($detail['app_info'])?$detail['app_info']:'')}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <if condition="isset($detail['id'])">
+        <input type="hidden" name="id" value="{$detail['id']}">
+        <script>
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(formDemo)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("edit")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                parent.location.reload();
+                            }else{
+                                parent.layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
+        <else />
+        <script>
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(formDemo)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("add")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                parent.location.reload();
+                            }else{
+                                parent.layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
+    </if>
+</block>

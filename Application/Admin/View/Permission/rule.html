@@ -1,0 +1,74 @@
+<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>权限管理 - 权限组细节配置</legend>
+        <div class="layui-field-box">
+            <form class="layui-form" action="">
+                <input type="hidden" name="groupId" value="{:I('get.group_id')}">
+                <volist name="list" id="vo">
+                    <div class="layui-form-item">
+                        <input lay-skin="primary" type="checkbox" lay-filter="admin-check" name="rule[{$vo['id']}]" value="{$vo['url']}" title="{$vo['name']}" {:(in_array($vo['url'], $hasRule)?'checked':'')}>
+                    </div>
+                    <if condition="count($vo['_child'])">
+                        <div class="layui-form-item">
+                            <div style="margin-left: 50px;">
+                            <volist name="vo['_child']" id="child">
+                                <input lay-skin="primary" type="checkbox" lay-filter="admin-check" fid="{$vo['url']}" name="rule[{$child['id']}]" value="{$child['url']}" title="{$child['name']}" {:(in_array($child['url'], $hasRule)?'checked':'')}>
+                                <if condition="count($child['_child'])">
+                                    <div style="margin-left: 50px;">
+                                    <volist name="child['_child']" id="_child">
+                                        <input lay-skin="primary" type="checkbox" pid="{$vo['url']}" fid="{$child['url']}" name="rule[{$_child['id']}]" value="{$_child['url']}" title="{$_child['name']}" {:(in_array($_child['url'], $hasRule)?'checked':'')}>
+                                    </volist>
+                                    </div>
+                                </if>
+                            </volist>
+                            </div>
+                        </div>
+                    </if>
+                </volist>
+                <div class="layui-form-item">
+                    <button class="layui-btn" lay-submit lay-filter="admin-form">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <script>
+        layui.use('form', function(){
+            var form = layui.form();
+            form.on('checkbox(admin-check)', function(data){
+                var $el = data.elem;
+                if( $el.checked ){
+                    $('input[fid="'+data.elem.value+'"]').attr('checked','checked');
+                    $('input[pid="'+data.elem.value+'"]').attr('checked','checked');
+                    form.render();
+                }else{
+                    $('input[fid="'+data.elem.value+'"]').removeAttr('checked');
+                    $('input[pid="'+data.elem.value+'"]').removeAttr('checked');
+                    form.render();
+                }
+            });
+            form.on('submit(admin-form)', function(data){
+                $.ajax({
+                    type: "POST",
+                    url: '{:U("rule")}',
+                    data: data.field,
+                    success: function(msg){
+                        if( msg.code == 1 ){
+                            parent.location.reload();
+                        }else{
+                            parent.layer.msg(msg.msg, {
+                                icon: 5,
+                                shade: [0.6, '#393D49'],
+                                time:1500
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+</block>

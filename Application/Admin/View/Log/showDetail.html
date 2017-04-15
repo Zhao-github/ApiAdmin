@@ -1,0 +1,51 @@
+<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>日志详情</legend>
+        <div class="layui-field-box">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">行为名称</label>
+                    <div class="layui-input-block">
+                        <input disabled type="text" value="{:(isset($detail['actionName'])?$detail['actionName']:'')}" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">操作用户ID</label>
+                    <div class="layui-input-block">
+                        <input disabled type="text" value="{:(isset($detail['uid'])?$detail['uid']:'')}" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">用户昵称</label>
+                    <div class="layui-input-block">
+                        <input disabled type="text" value="{:(isset($detail['nickname'])?$detail['nickname']:'')}" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">操作时间</label>
+                    <div class="layui-input-block">
+                        <input disabled type="text" value="{:(isset($detail['addTime'])?date('Y-m-d H:i:s', $detail['addTime']):'')}" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">操作URL</label>
+                    <div class="layui-input-block">
+                        <input disabled type="text" value="{:(isset($detail['url'])?$detail['url']:'')}" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">请求数据</label>
+                    <div class="layui-input-block">
+                        <textarea disabled class="layui-textarea">{:(isset($detail['data'])?$detail['data']:'')}</textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <script>
+        layui.use('form', function(){});
+    </script>
+</block>

@@ -1,0 +1,109 @@
+<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>菜单管理 - {:(isset($detail['id'])?'编辑':'新增')}菜单</legend>
+        <div class="layui-field-box">
+            <form class="layui-form" action="">
+                <if condition="isset($detail['id'])">
+                    <input type="hidden" name="id" value="{$detail['id']}">
+                </if>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span style="color:red">*</span> 菜单名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="name" required value="{:(isset($detail['name'])?$detail['name']:'')}" lay-verify="required" placeholder="请输入菜单名称" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span style="color:red">*</span> 父级菜单</label>
+                    <div class="layui-input-block">
+                        <select name="fid" lay-verify="">
+                            <option value="0">顶级菜单</option>
+                            <volist name="options" id="vo">
+                                <option value="{$key}" {:($detail['fid'] == $key?'selected':'')}>{$vo}</option>
+                            </volist>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span style="color:red">*</span> 是否隐藏</label>
+                    <div class="layui-input-block">
+                        <input type="checkbox" name="hide" lay-skin="switch" lay-text="隐藏|显示" {:((isset($detail['hide']) && $detail['hide']==1)?'checked':'')}>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">菜单URL</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="url" value="{:(isset($detail['url'])?$detail['url']:'')}" placeholder="请输入菜单URL" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">菜单排序</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="sort" value="{:(isset($detail['sort'])?$detail['sort']:'')}" placeholder="请输入正整数，越大排名越靠后" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="admin-form">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <if condition="isset($detail['id'])">
+        <script>
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(admin-form)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("edit")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                parent.location.reload();
+                            }else{
+                                parent.layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
+        <else />
+        <script>
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(admin-form)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("add")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                parent.location.reload();
+                            }else{
+                                parent.layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
+    </if>
+</block>

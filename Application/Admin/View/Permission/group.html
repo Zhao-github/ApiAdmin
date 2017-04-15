@@ -1,0 +1,56 @@
+<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>授权管理</legend>
+        <div class="layui-field-box">
+            <form class="layui-form" action="">
+                <input type="hidden" name="uid" value="{:I('get.uid')}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label"><span style="color:red">*</span> 请选择组</label>
+                    <div class="layui-input-block">
+                        <volist name="allGroup" id="vo">
+                            <if condition="in_array($vo['id'], $groupAccess)">
+                                <input type="checkbox" name="groupAccess[{$vo['id']}]" value="{$vo['id']}" title="{$vo['name']}" checked>
+                                <else />
+                                <input type="checkbox" name="groupAccess[{$vo['id']}]" value="{$vo['id']}" title="{$vo['name']}">
+                            </if>
+                        </volist>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="admin-form">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <script>
+        layui.use('form', function(){
+            var form = layui.form();
+            form.on('submit(admin-form)', function(data){
+                $.ajax({
+                    type: "POST",
+                    url: '{:U("group")}',
+                    data: data.field,
+                    success: function(msg){
+                        if( msg.code == 1 ){
+                            parent.location.reload();
+                        }else{
+                            parent.layer.msg(msg.msg, {
+                                icon: 5,
+                                shade: [0.6, '#393D49'],
+                                time:1500
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+
+        });
+    </script>
+</block>

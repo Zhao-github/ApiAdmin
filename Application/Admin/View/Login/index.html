@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>{:C('APP_NAME')}管理后台</title>
+    <link rel="stylesheet" type="text/css" href="__PUBLIC__/layui/css/layui.css" />
+    <style>
+        /* login */
+        .login-body {
+            background: url("__PUBLIC__/images/bg.png") repeat fixed;
+        }
+        .login-box {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+            width: 320px;
+            height: 241px;
+            max-height: 300px;
+        }
+        .login-body .login-box h3{
+            color: #444;
+            font-size: 22px;
+            text-align: center;
+        }
+        .login-box .layui-input[type='number'] {
+            display: inline-block;
+            width: 50%;
+            vertical-align: top;
+        }
+        .login-box img {
+            display: inline-block;
+            width: 46%;
+            height: 38px;
+            border: none;
+            vertical-align: top;
+            cursor: pointer;
+            margin-left: 4%;
+        }
+        .login-box button.btn-reset{
+            width: 95px;
+        }
+        .login-box button.btn-submit{
+            width: 190px;
+        }
+        .login-box .version{
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body class="login-body">
+
+<div class="login-box">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <h3>{:C('APP_NAME')}管理后台&nbsp;<span class="version">{:C('APP_VERSION')}</span></h3>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名：</label>
+            <div class="layui-input-inline">
+                <input type="text" name="username" required class="layui-input" lay-verify="username" placeholder="请输入用户名"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码：</label>
+            <div class="layui-input-inline">
+                <input type="password" name="password" required class="layui-input" lay-verify="password" placeholder="请输入密码"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <button type="reset" class="layui-btn btn-reset layui-btn-danger" >重置</button>
+            <button type="button" class="layui-btn btn-submit" lay-submit="" lay-filter="sub">立即登录</button>
+        </div>
+    </form>
+</div>
+<script type="text/javascript" src="__PUBLIC__/layui/layui.js"></script>
+<script type="text/javascript">
+    layui.use(['form', 'layer'], function () {
+        var $ = layui.jquery,form = layui.form(),layer = layui.layer;
+
+        // 登录表单验证
+        form.verify({
+            username: function (value) {
+                if (value == "") {
+                    return "请输入用户名";
+                }
+            },
+            password: function (value) {
+                if (value == "") {
+                    return "请输入密码";
+                }
+            }
+        });
+
+        form.on('submit(sub)', function (data) {
+            $.post("{:U('Login/login')}",data.field,function(res){
+                if(res.code > 0){
+                    layer.msg(res.msg,{time:1800},function(){
+                        location.href = "{:U('Index/index')}";
+                    });
+                }else{
+                    layer.msg(res.msg,{time:1800});
+                    $('#verify').click();
+                }
+            });
+            return false;
+        })
+    })
+
+</script>
+</body>
+</html>

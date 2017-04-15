@@ -1,0 +1,61 @@
+<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>接口管理 - {:($type == 1?'返回':'请求')}字段列表</legend>
+        <div class="layui-field-box">
+            <a class="layui-btn layui-btn-normal" href='{:U("add")}'><i class="layui-icon">&#xe608;</i> 新增</a>
+            <table class="layui-table" lay-even>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>字段名称</th>
+                    <th>字段说明</th>
+                    <th width="150px">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="list" id="vo">
+                    <tr>
+                        <td>{$i}</td>
+                        <td>{$vo['field']}</td>
+                        <td>{$vo['info']}</td>
+                        <td>
+                            <a href="{:U('edit', array('id' => $vo['id']))}" class="layui-btn layui-btn-normal">编辑</a>
+                            <span class="layui-btn layui-btn-danger confirm" data-id="{$vo['id']}" data-info="你确定删除当前字段么？" data-url="{:U('del')}">删除</span>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <script>
+        layui.use(['layer'], function() {
+            $('.confirm').on('click', function () {
+                var ownObj = $(this);
+                layer.confirm(ownObj.attr('data-info'), {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        type: "POST",
+                        url: ownObj.attr('data-url'),
+                        data: {id:ownObj.attr('data-id')},
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                location.reload();
+                            }else{
+                                layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</block>

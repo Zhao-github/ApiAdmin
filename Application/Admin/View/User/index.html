@@ -1,0 +1,97 @@
+<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>用户管理 - 用户列表</legend>
+        <div class="layui-field-box">
+            <span class="layui-btn layui-btn-normal api-add"><i class="layui-icon">&#xe608;</i> 新增</span>
+            <table class="layui-table" lay-even>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>用户账号</th>
+                    <th>用户昵称</th>
+                    <th>登录次数</th>
+                    <th>最后登录时间</th>
+                    <th>最后登录IP</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <volist name="list" id="vo">
+                    <tr>
+                        <td>{$i}</td>
+                        <td>{$vo['username']}</td>
+                        <td>{$vo['nickname']}</td>
+                        <td>{:intval($vo['loginTimes'])}</td>
+                        <td>{:(empty($vo['lastLoginTime'])?'该用户未曾登录过':$vo['lastLoginTime'])}</td>
+                        <td>{:(empty($vo['lastLoginIp'])?'该用户未曾登录过':$vo['lastLoginIp'])}</td>
+                        <td>
+                            <if condition="$vo['status']">
+                                <span style="border-radius: 2px;background-color: #5FB878;padding:5px 10px;color: #ffffff">启用</span>
+                                <else />
+                                <span style="border-radius: 2px;background-color: #FF5722;padding:5px 10px;color: #ffffff">禁用</span>
+                            </if>
+                        </td>
+                        <td>
+                            <if condition="$vo['status']">
+                                <span class="layui-btn layui-btn-danger confirm" data-info="你确定禁用当前用户么？" data-id="{$vo['id']}" data-url="{:U('close')}">禁用</span>
+                                <else />
+                                <span class="layui-btn confirm" data-info="你确定启用当前用户么？" data-id="{$vo['id']}" data-url="{:U('open')}">启用</span>
+                            </if>
+                            <span data-url="{:U('Permission/group', array('uid' => $vo['id']))}" class="layui-btn edit layui-btn-normal">授权</span>
+                            <span class="layui-btn layui-btn-danger confirm" data-id="{$vo['id']}" data-info="你确定删除当前菜单么？" data-url="{:U('del')}">删除</span>
+                        </td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <script>
+        layui.use(['layer'], function() {
+            $('.api-add').on('click', function () {
+                layer.open({
+                    type: 2,
+                    area: ['60%', '60%'],
+                    maxmin: true,
+                    content: '{:U("add")}'
+                });
+            });
+            $('.edit').on('click', function () {
+                var ownObj = $(this);
+                layer.open({
+                    type: 2,
+                    area: ['60%', '60%'],
+                    maxmin: true,
+                    content: ownObj.attr('data-url')
+                });
+            });
+            $('.confirm').on('click', function () {
+                var ownObj = $(this);
+                layer.confirm(ownObj.attr('data-info'), {
+                    btn: ['确定','取消'] //按钮
+                }, function(){
+                    $.ajax({
+                        type: "POST",
+                        url: ownObj.attr('data-url'),
+                        data: {id:ownObj.attr('data-id')},
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                location.reload();
+                            }else{
+                                layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+</block>

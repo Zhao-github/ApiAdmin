@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{$apiInfo['apiName']} - 在线接口文档</title>
+    <link rel="stylesheet" href="https://staticfile.qnssl.com/semantic-ui/2.1.6/semantic.min.css">
+    <script src="//cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/semantic-ui/2.1.6/components/tab.js"></script>
+    <link rel="stylesheet" href="__PUBLIC__/jsonFormater/jsonFormater.css">
+    <script type="text/javascript" src="__PUBLIC__/jsonFormater/jsonFormater.js"></script>
+</head>
+<body>
+<br />
+<div class="ui text container" style="max-width: none !important;">
+    <div class="ui floating message">
+        <h2 class='ui header'>接口唯一标识：<a target="_blank" href="http://{$_SERVER['HTTP_HOST']}/api/{$apiInfo['hash']}">{$apiInfo['hash']}</a>（{$apiInfo['apiName']}）</h2><br />
+        <switch name="apiInfo['method']" >
+            <case value="1" break="1"> <span class='ui orange tag label'>POST</span></case>
+            <case value="2" break="1"> <span class='ui blue tag label'>GET</span></case>
+            <default /> <span class='ui teal tag label'>不限</span>
+        </switch>
+        <span class='ui orange tag label'>{:C('APP_VERSION')}</span>
+        <div class="ui raised segment">
+            <span class="ui red ribbon label">接口说明</span>
+            <div class="ui message">
+                <p>{$apiInfo['info']}</p>
+            </div>
+        </div>
+        <div class="ui pointing large blue three item menu">
+            <a class="item active" data-tab="first">请求参数</a>
+            <a class="item" data-tab="second">返回参数</a>
+            <a class="item" data-tab="third">返回示例</a>
+        </div>
+        <div class="ui tab segment active" data-tab="first" style="max-height: 500px;overflow: auto;">
+            <h3>公共请求参数</h3>
+            <table class="ui orange celled striped table" >
+                <thead>
+                <tr><th>参数名字</th><th>类型</th><th>是否必须</th><th>默认值</th><th>其他</th><th>说明</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>version</td>
+                    <td>String</td>
+                    <td><span class="ui green label">必填</span></td>
+                    <td>{:C('APP_VERSION')}</td>
+                    <td></td>
+                    <td>API版本号【请在Header头里面传递】</td>
+                </tr>
+                <tr>
+                    <td>access-token</td>
+                    <td>String</td>
+                    <td>{$apiInfo['accessToken']==1?'<span class="ui green label">必填</span>':'<span class="ui red label">勿填</span>'}</td>
+                    <td></td>
+                    <td></td>
+                    <td>APP认证秘钥【请在Header头里面传递】</td>
+                </tr>
+                <tr>
+                    <td>user-token</td>
+                    <td>String</td>
+                    <td>{$apiInfo['needLogin']==1?'<span class="ui green label">必填</span>':'<span class="ui red label">勿填</span>'}</td>
+                    <td></td>
+                    <td></td>
+                    <td>用户认证秘钥【请在Header头里面传递】</td>
+                </tr>
+                </tbody>
+            </table>
+            <h3>请求参数</h3>
+            <table class="ui red celled striped table" >
+                <thead>
+                <tr><th>参数名字</th><th>类型</th><th>是否必须</th><th>默认值</th><th>其他</th><th>说明</th></tr>
+                </thead>
+                <tbody>
+                <volist name="request" id="vo">
+                    <tr>
+                        <td>{$vo['fieldName']}</td>
+                        <td>{$dataType[$vo['dataType']]}</td>
+                        <td>{$vo['isMust']==1?'<span class="ui green label">必填</span>':'<span class="ui teal label">可选</span>'}</td>
+                        <td>{$vo['default']}</td>
+                        <td>{$vo['range']}</td>
+                        <td>{$vo['info']}</td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+        <div class="ui tab segment" data-tab="second" style="max-height: 500px;overflow: auto;">
+            <h3>公共返回参数</h3>
+            <table class="ui olive celled striped table" >
+                <thead>
+                <tr><th>返回字段</th><th>类型</th><th>说明</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>code</td>
+                    <td>Integer</td>
+                    <td>返回码，详情请参阅<a href="{:U('/errorList')}">错误码说明</a></td>
+                </tr>
+                <tr>
+                    <td>msg</td>
+                    <td>String</td>
+                    <td>错误描述，当请求成功时可能为空</td>
+                </tr>
+                <tr>
+                    <td>debug</td>
+                    <td>String</td>
+                    <td>调试字段，如果没有调试信息会没有此字段</td>
+                </tr>
+                </tbody>
+            </table>
+            <h3>返回参数</h3>
+            <table class="ui green celled striped table" >
+                <thead>
+                <tr><th>返回字段</th><th>类型</th><th>说明</th></tr>
+                </thead>
+                <tbody>
+                <volist name="response" id="vo">
+                    <tr>
+                        <td>{$vo['showName']}</td>
+                        <td>{$dataType[$vo['dataType']]}</td>
+                        <td>{$vo['info']}</td>
+                    </tr>
+                </volist>
+                </tbody>
+            </table>
+        </div>
+        <div class="ui tab segment" data-tab="third" style="max-height: 500px;overflow: auto;">
+            <pre id="json" style='font-family: Arial;'></pre>
+        </div>
+        <div class="ui blue message">
+            <strong>温馨提示：</strong> 此接口参数列表根据后台代码自动生成，如有疑问请咨询后端开发
+        </div>
+        <p>&copy; Powered  By <a href="">{:C('APP_NAME')} {:C('APP_VERSION')}</a> <p>
+    </div>
+</div>
+<script>
+    $('.pointing.menu .item').tab();
+    $(document).ready(function () {
+        var s = function () {
+            var options = {
+                dom: '#json',
+                isCollapsible: true,
+                quoteKeys: true,
+                tabSize: 2,
+                imgCollapsed: "__PUBLIC__/images/jsonFormater/Collapsed.gif",
+                imgExpanded: "__PUBLIC__/images/jsonFormater/Expanded.gif"
+            };
+            window.jf = new JsonFormater(options);
+            jf.doFormat({$apiInfo['returnStr']});
+        }();
+    });
+</script>
+</body>
+</html>

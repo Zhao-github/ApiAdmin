@@ -1,0 +1,129 @@
+<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>接口管理 - {:(I('get.id')?'编辑':'新增')}{:(I('get.type') == 1?'返回':'请求')}字段</legend>
+        <div class="layui-field-box">
+            <form class="layui-form" action="">
+                <if condition="isset($detail['id'])">
+                    <input type="hidden" name="id" value="{$detail['id']}">
+                </if>
+                <input type="hidden" name="hash" value="{:(isset($detail['hash'])?$detail['hash']:I('get.hash'))}">
+                <input type="hidden" name="type" value="{:(isset($detail['type'])?$detail['type']:I('get.type'))}">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">字段名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="showName" required value="{:(isset($detail['showName'])?$detail['showName']:'')}" lay-verify="required" placeholder="请输入字段名称" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">数据类型</label>
+                    <div class="layui-input-inline">
+                        <select name="dataType">
+                            <volist name="dataType" id="vo">
+                                <if condition="(isset($detail['dataType'])) AND ($key eq $detail['dataType'])">
+                                    <option value="{$key}" selected>{$vo}</option>
+                                    <else />
+                                    <option value="{$key}">{$vo}</option>
+                                </if>
+
+                            </volist>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">默认值</label>
+                    <div class="layui-input-block">
+                        <input name="default" value="{$detail['default']}" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">是否必填</label>
+                    <div class="layui-input-block">
+                        <if condition="(isset($detail['isMust'])) AND ($detail['isMust'] eq 0) ">
+                            <input type="radio" name="isMust" value="1" title="必填">
+                            <input type="radio" name="isMust" value="0" title="不必填" checked>
+                            <else />
+                            <input type="radio" name="isMust" value="1" title="必填" checked>
+                            <input type="radio" name="isMust" value="0" title="不必填">
+                        </if>
+
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">规则细节</label>
+                    <div class="layui-input-block">
+                        <textarea name="range" placeholder="请输入符合要求的JSON字符串" class="layui-textarea">{:(isset($detail['range'])?$detail['range']:'')}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">字段说明</label>
+                    <div class="layui-input-block">
+                        <textarea name="info" placeholder="请输入内容" class="layui-textarea">{:(isset($detail['info'])?$detail['info']:'')}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button onclick="history.go(-1);" class="layui-btn layui-btn-primary">返回</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <if condition="isset($detail['id'])">
+        <input type="hidden" name="id" value="{$detail['id']}">
+        <script>
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(formDemo)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("edit")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                location.href = "{:(I('get.type') == 1?U('response', array('hash' => $detail['hash'])):U('request', array('hash' => $detail['hash'])))}";
+                            }else{
+                                layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
+        <else />
+        <script>
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(formDemo)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("add")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                location.href = "{:(I('get.type') == 1?U('response', array('hash' => I('get.hash'))):U('request', array('hash' => I('get.hash'))))}";
+                            }else{
+                                layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
+    </if>
+</block>

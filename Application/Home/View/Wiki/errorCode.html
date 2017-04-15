@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{:MODULE_NAME} - 错误码说明</title>
+    <link rel="stylesheet" href="https://staticfile.qnssl.com/semantic-ui/2.1.6/semantic.min.css">
+    <link rel="stylesheet" href="https://staticfile.qnssl.com/semantic-ui/2.1.6/components/table.min.css">
+    <link rel="stylesheet" href="https://staticfile.qnssl.com/semantic-ui/2.1.6/components/container.min.css">
+    <link rel="stylesheet" href="https://staticfile.qnssl.com/semantic-ui/2.1.6/components/message.min.css">
+</head>
+<body>
+<br />
+<div class="ui text container" style="max-width: none !important;">
+    <div class="ui floating message">
+        <h1 class="ui header">错误码说明 {:C('APP_VERSION')}</h1>
+        <a href="{:U('/wikiList')}">
+            <button class="ui green button" style="margin-top: 15px">返回接口列表</button>
+        </a>
+        <table class="ui red celled striped table">
+            <thead>
+            <tr>
+                <th>#</th><th>英文标识</th><th>错误码</th><th>中文说明</th>
+            </tr>
+            </thead>
+            <tbody>
+            <volist name="codeArr" id="vo">
+                <tr>
+                    <td>
+                        {$i}
+                    </td>
+                    <td>
+                        {$key}
+                    </td>
+                    <td>
+                        <b>{$vo}</b>
+                    </td>
+                    <td>
+                        {$errorInfo[$vo]}
+                    </td>
+                </tr>
+            </volist>
+            </tbody>
+        </table>
+        <p>&copy; Powered  By <a href="">{:C('APP_NAME')} {:C('APP_VERSION')}</a> <p>
+    </div>
+</div>
+</body>
+</html>
