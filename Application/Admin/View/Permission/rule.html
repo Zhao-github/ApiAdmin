@@ -41,14 +41,13 @@
             form.on('checkbox(admin-check)', function(data){
                 var $el = data.elem;
                 if( $el.checked ){
-                    $('input[fid="'+data.elem.value+'"]').attr('checked','checked');
-                    $('input[pid="'+data.elem.value+'"]').attr('checked','checked');
-                    form.render();
+                    $('input[fid="'+$el.value+'"]').prop('checked','checked');
+                    $('input[pid="'+$el.value+'"]').prop('checked','checked');
                 }else{
-                    $('input[fid="'+data.elem.value+'"]').removeAttr('checked');
-                    $('input[pid="'+data.elem.value+'"]').removeAttr('checked');
-                    form.render();
+                    $('input[fid="'+$el.value+'"]').prop('checked', false);
+                    $('input[pid="'+$el.value+'"]').prop('checked', false);
                 }
+                form.render();
             });
             form.on('submit(admin-form)', function(data){
                 $.ajax({
