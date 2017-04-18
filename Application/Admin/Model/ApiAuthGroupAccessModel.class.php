@@ -6,6 +6,6 @@
  */
 namespace Admin\Model;
 
-class AuthGroupAccessModel extends BaseModel{
+class ApiAuthGroupAccessModel extends BaseModel{
 
 }

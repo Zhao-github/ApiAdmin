@@ -6,7 +6,7 @@
  */
 namespace Admin\Model;
 
-class AuthRuleModel extends BaseModel{
+class ApiAuthRuleModel extends BaseModel{
 
 
 }

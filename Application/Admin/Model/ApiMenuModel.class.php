@@ -6,6 +6,6 @@
  */
 namespace Admin\Model;
 
-class MenuModel extends BaseModel{
+class ApiMenuModel extends BaseModel{
 
 }

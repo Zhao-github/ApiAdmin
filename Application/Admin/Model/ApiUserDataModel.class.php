@@ -4,7 +4,7 @@
  */
 namespace Admin\Model;
 
-class UserDataModel extends BaseModel{
+class ApiUserDataModel extends BaseModel{
 
 
 }
