@@ -3,8 +3,8 @@
     display: inline-block;
 }
 
-.dataTables_length, .dataTables_info {
-    float: left;
+#list-admin_length{
+    float: right;
 }
 
 .dataTables_filter, .dataTables_paginate {
