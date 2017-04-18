@@ -221,9 +221,11 @@ class Push {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return $this
      */
-    public function iosNotification($alert, $notification = array()) {
+    public function iosNotification($alert = null, $notification = array()) {
         $ios = array();
-        $ios['alert'] = (is_string($alert) || is_array($alert)) ? $alert : '';
+        if (!is_null($alert)) {
+            $ios['alert'] = (is_string($alert) || is_array($alert)) ? $alert : '';
+        }
         if (!empty($notification)) {
             if (isset($notification['sound']) && is_string($notification['sound'])) {
                 $ios['sound'] = $notification['sound'];
@@ -262,9 +264,11 @@ class Push {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return $this
      */
-    public function androidNotification($alert, array $notification = array()) {
+    public function androidNotification($alert = null, array $notification = array()) {
         $android = array();
-        $android['alert'] = is_string($alert) ? $alert : '';
+        if (!is_null($alert)) {
+            $android['alert'] = is_string($alert) ? $alert : '';
+        }
         if (!empty($notification)) {
             if (isset($notification['title']) && is_string($notification['title'])) {
                 $android['title'] = $notification['title'];
@@ -394,43 +398,39 @@ class Push {
             if (is_null($this->androidNotification['alert'])) {
                 if (is_null($this->notificationAlert)) {
                     Response::error(ReturnCode::EXCEPTION, 'Android alert can not be null');
-                } else {
-                    $notification['android']['alert'] = $this->notificationAlert;
                 }
-            }
-        } else {
-            if (!is_null($this->extras)) {
-                $notification['android']['extras'] = $this->extras;
+            } else {
+                $notification['android']['alert'] = $this->androidNotification['alert'];
             }
         }
+        if (!is_null($this->extras)) {
+            $notification['android']['extras'] = $this->extras;
+        }
+
 
         if (!is_null($this->iosNotification)) {
             $notification['ios'] = $this->iosNotification;
             if (is_null($this->iosNotification['alert'])) {
                 if (is_null($this->notificationAlert)) {
                     Response::error(ReturnCode::EXCEPTION, 'iOS alert can not be null');
-                } else {
-                    $notification['ios']['alert'] = $this->notificationAlert;
                 }
+            } else {
+                $notification['ios']['alert'] = $this->iosNotification['alert'];
             }
-        } else {
-            if (!is_null($this->extras)) {
-                $notification['ios']['extras'] = $this->extras;
-            }
+        }
+        if (!is_null($this->extras)) {
+            $notification['ios']['extras'] = $this->extras;
         }
 
         if (count($notification) > 0) {
             $payload['notification'] = $notification;
         }
-
         if (count($this->message) > 0) {
             $payload['message'] = $this->message;
         }
-
         if (!array_key_exists('notification', $payload) && !array_key_exists('message', $payload)) {
             Response::error(ReturnCode::EXCEPTION, 'notification and message can not all be null');
         }
-
         if (!is_null($this->options)) {
             $payload['options'] = $this->options;
         }

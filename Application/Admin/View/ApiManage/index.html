@@ -22,7 +22,7 @@
                     <tr>
                         <td>{$i}</td>
                         <td>{$vo['apiName']}</td>
-                        <td>{$vo['hash']}</td>
+                        <td><a style="color: #01AAED;" target="_blank" href="{:U('/wiki/'.$vo['hash'])}">{$vo['hash']}</a></td>
                         <td>
                             <if condition="$vo['status']">
                                 <span style="border-radius: 2px;background-color: #5FB878;padding:5px 10px;color: #ffffff">生效</span>

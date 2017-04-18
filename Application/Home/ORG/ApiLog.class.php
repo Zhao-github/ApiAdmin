@@ -9,12 +9,13 @@ namespace Home\ORG;
 
 class ApiLog {
 
-    private static $appInfo = null;
-    private static $apiInfo = null;
-    private static $request = null;
-    private static $requestAfterFilter = null;
-    private static $response = null;
-    private static $header = null;
+    private static $appInfo = 'null';
+    private static $apiInfo = 'null';
+    private static $request = 'null';
+    private static $requestAfterFilter = 'null';
+    private static $response = 'null';
+    private static $header = 'null';
+    private static $userInfo = 'null';
 
     public static function setAppInfo($data) {
         self::$appInfo = $data['app_id'] . "({$data['app_name']}) {$data['device_id']}";
@@ -28,6 +29,13 @@ class ApiLog {
 
     public static function setApiInfo($data) {
         self::$apiInfo = $data['apiName'] . ' ' . $data['hash'];
+    }
+
+    public static function setUserInfo($data) {
+        if (is_array($data)) {
+            $data = json_encode($data);
+        }
+        self::$userInfo = $data;
     }
 
     public static function setRequest($data) {
@@ -54,7 +62,7 @@ class ApiLog {
     public static function save() {
         $logPath = APP_PATH . '/ApiLog/' . date('YmdH') . '.log';
         $logStr = self::$apiInfo . ' ' . date('H:i:s') . ' ' . self::$request . ' ' . self::$header . ' '
-            . self::$response . ' ' . self::$requestAfterFilter . ' ' . self::$appInfo."\n";
+            . self::$response . ' ' . self::$requestAfterFilter . ' ' . self::$appInfo.' '.self::$userInfo."\n";
         @file_put_contents($logPath, $logStr, FILE_APPEND);
     }
 
