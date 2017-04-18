@@ -102,6 +102,7 @@
             var myFun = function (query) {
                 query = query || '';
                 return $('#list-admin').DataTable({
+                    dom: 'rt<"bottom"ifpl><"clear">',
                     ordering: false,
                     autoWidth: false,
                     searching:false,
