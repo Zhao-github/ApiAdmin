@@ -3,7 +3,7 @@
 return array(
     'URL_MODEL' => 2,
 
-    'APP_VERSION' => 'v1.0',
+    'APP_VERSION' => 'v2.0',
     'APP_NAME'    => 'apiAdmin',
 
     'USER_ADMINISTRATOR' => array(1,2),
