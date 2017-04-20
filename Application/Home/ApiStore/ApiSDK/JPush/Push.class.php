@@ -5,12 +5,11 @@
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
-namespace Home\ORG\JPush;
+namespace Home\ApiStore\ApiSDK\JPush;
 
 
 use Home\ORG\Response;
 use Home\ORG\ReturnCode;
-use Home\ORG\Str;
 
 class Push {
     private $platform = 'all';

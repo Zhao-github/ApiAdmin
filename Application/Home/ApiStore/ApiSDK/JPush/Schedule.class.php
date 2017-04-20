@@ -5,9 +5,9 @@
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
-namespace Home\ORG\JPush;
+namespace Home\ApiStore\ApiSDK\JPush;
 
 
-class Report {
+class Schedule {
 
 }

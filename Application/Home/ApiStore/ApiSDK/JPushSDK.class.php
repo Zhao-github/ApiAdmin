@@ -5,13 +5,13 @@
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
-namespace Home\ORG;
+namespace Home\ApiStore\ApiSDK;
 
 
-use Home\ORG\JPush\Device;
-use Home\ORG\JPush\Push;
-use Home\ORG\JPush\Report;
-use Home\ORG\JPush\Schedule;
+use Home\ApiStore\ApiSDK\JPush\Device;
+use Home\ApiStore\ApiSDK\JPush\Push;
+use Home\ApiStore\ApiSDK\JPush\Report;
+use Home\ApiStore\ApiSDK\JPush\Schedule;
 
 class JPushSDK {
 
