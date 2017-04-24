@@ -10,21 +10,20 @@ class AuthSign {
     /**
      * 获取身份秘钥
      * @param array $params
-     * @param object $appInfo
+     * @param array $appInfo
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return string
      */
     public static function getSign($params, $appInfo) {
         ksort($params);
 
-        $stringToBeSigned = $appInfo->secretKey;
+        $stringToBeSigned = $appInfo['secretKey'];
         foreach ($params as $k => $v) {
             if (is_string($v) && "@" != substr($v, 0, 1)) {
                 $stringToBeSigned .= "$k$v";
             }
         }
-        unset($k, $v);
-        $stringToBeSigned .= $appInfo->secretKey;
+        $stringToBeSigned .= $appInfo['secretKey'];
 
         return strtoupper(md5($stringToBeSigned));
     }
