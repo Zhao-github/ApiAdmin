@@ -8,11 +8,11 @@
 namespace Home\Controller;
 
 
+use Home\Api\User;
 use Home\ORG\ApiLog;
 use Home\ORG\Filter;
 use Home\ORG\Response;
 use Home\ORG\ReturnCode;
-use Think\Log;
 
 class ApiController extends BaseController {
 
@@ -61,6 +61,11 @@ class ApiController extends BaseController {
             case 2:
                 $this->param = $getArr;
                 break;
+        }
+        if( $this->header['USER-AGENT'] == 'wx' ){
+            $data = file_get_contents("php://input");
+            $data = json_decode($data, true);
+            $this->param = $data;
         }
         ApiLog::setRequest($this->param);
         $this->iniApi();
