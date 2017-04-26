@@ -110,11 +110,26 @@ class FieldsManageController extends BaseController {
             $data = json_decode($jsonStr, true);
             D('ApiList')->where(array('hash' => $hash))->save(array('returnStr' => json_encode($data)));
             $this->handle($data['data'], $dataArr);
-            D('ApiFields')->where(array(
+            $old = D('ApiFields')->where(array(
                 'hash' => $hash,
                 'type' => I('post.type')
-            ))->delete();
-            D('ApiFields')->addAll($dataArr);
+            ))->select();
+            $oldArr = array_column($old, 'showName');
+            $newArr = array_column($dataArr, 'showName');
+            $addArr = array_diff($newArr, $oldArr);
+            $delArr = array_diff($oldArr, $newArr);
+            if ($delArr) {
+                D('ApiFields')->where(array('showName' => array('in', $delArr)))->delete();
+            }
+            if ($addArr) {
+                $addData = array();
+                foreach ($dataArr as $item) {
+                    if (in_array($item['showName'], $addArr)) {
+                        $addData[] = $item;
+                    }
+                }
+                D('ApiFields')->addAll($addData);
+            }
             $this->ajaxSuccess('操作成功');
         } else {
             $this->display();
