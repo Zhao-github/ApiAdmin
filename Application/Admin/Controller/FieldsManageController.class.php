@@ -142,7 +142,7 @@ class FieldsManageController extends BaseController {
                 }
                 D('ApiFields')->addAll($addData);
             }
-            if ($type) {
+            if ($type == 0) {
                 S('ApiRequest_' . $hash, 0);
             } else {
                 S('ApiResponse_' . $hash, 0);
