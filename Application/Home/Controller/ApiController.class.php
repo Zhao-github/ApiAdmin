@@ -25,16 +25,42 @@ class ApiController extends BaseController {
     public function index() {
         $getArr = I('get.');
         $postArr = I('post.');
-        $this->apiDetail = M('ApiList')->where(array('hash' => $getArr['hash'], 'status' => 1))->find();
+
+        //获取ApiInfo根据
+        $this->apiDetail = S('ApiInfo_' . $getArr['hash']);
+        if (!$this->apiDetail) {
+            $this->apiDetail = M('ApiList')->where(array('hash' => $getArr['hash'], 'status' => 1))->find();
+            S('ApiInfo_' . $getArr['hash'], json_encode($this->apiDetail));
+        } else {
+            $this->apiDetail = json_decode($this->apiDetail, true);
+        }
 
         if (empty($this->apiDetail)) {
             Response::error(ReturnCode::NOT_EXISTS, '非法的API标识');
         }
         ApiLog::setApiInfo($this->apiDetail);
 
-        $this->apiRequest = M('ApiFields')->where(array('hash' => $getArr['hash'], 'type' => 0))->select();
-        $this->apiResponse = M('ApiFields')->where(array('hash' => $getArr['hash'], 'type' => 1))->select();
-        $returnType = M('ApiFields')->where(array('hash' => $getArr['hash'], 'showName' => 'data', 'type' => 1))->find();
+        $this->apiRequest = S('ApiRequest_' . $getArr['hash']);
+        if (!$this->apiRequest) {
+            $this->apiRequest = M('ApiFields')->where(array('hash' => $getArr['hash'], 'type' => 0))->select();
+            S('ApiRequest_' . $getArr['hash'], json_encode($this->apiRequest));
+        } else {
+            $this->apiRequest = json_decode($this->apiRequest, true);
+        }
+
+        $this->apiResponse = S('ApiResponse_' . $getArr['hash']);
+        if (!$this->apiResponse) {
+            $this->apiResponse = M('ApiFields')->where(array('hash' => $getArr['hash'], 'type' => 1))->select();
+            S('ApiResponse_' . $getArr['hash'], json_encode($this->apiResponse));
+        } else {
+            $this->apiResponse = json_decode($this->apiResponse, true);
+        }
+
+        $returnType = S('ApiReturnType_' . $getArr['hash']);
+        if (!$returnType) {
+            $returnType = M('ApiFields')->where(array('hash' => $getArr['hash'], 'showName' => 'data', 'type' => 1))->getField('dataType');
+            S('ApiReturnType_' . $getArr['hash'], $returnType);
+        }
         Response::setDataType($returnType['dataType']);
 
         $this->header = apache_request_headers();
