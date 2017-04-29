@@ -25,31 +25,30 @@
 
 国内OSC：[http://git.oschina.net/xiaoxunzhao/ApiAdmin](http://git.oschina.net/xiaoxunzhao/ApiAdmin)
 
-国际GitHub：[https://github.com/Zhao-github/ApiAdmin](https://github.com/Zhao-github/ApiAdmin)
+国际GitHub(暂未开通)：[https://github.com/Zhao-github/ApiAdmin](https://github.com/Zhao-github/ApiAdmin)
 
 **下载地址**
 
 国内OSC：[http://git.oschina.net/xiaoxunzhao/ApiAdmin/releases](http://git.oschina.net/xiaoxunzhao/ApiAdmin)
 
-国际GitHub：[https://github.com/Zhao-github/ApiAdmin/releases](https://github.com/Zhao-github/ApiAdmin/releases)
+国际GitHub(暂未开通)：[https://github.com/Zhao-github/ApiAdmin/releases](https://github.com/Zhao-github/ApiAdmin/releases)
 
 **项目构成**
 
-- ThinkPHP v5.0.3
-- AdminLTE v2.3.7
-- fastClick
-- jQuery v3.1.1
-- bootstrap v3.3.6
-- bootBox v4.4.0
-- slimscroll v1.3.8
+- ThinkPHP v3.2.3
+- LayUI
+- semanticUI
 - ...
 
 **功能简介**
 
- 1. 页面实现纯JS加载。（已完成）
- 2. 拥有易懂的项目使用手册。（完善中...）
- 3. 拥有完善的技术服务及其技术支持渠道。（待规划）
- 4. 拥有丰富的应用场景解决方案。（待规划）
+ 1. 接口文档自动生成
+ 2. 接口输入参数自动检查
+ 3. 接口输出参数数据类型自动规整
+ 4. 灵活的参数规则设定
+ 5. 支持三方Api无缝融合
+ 6. 本地二次开发友好
+ 7. ...
  
  ```
  ApiAdmin（PHP部分）
@@ -58,28 +57,17 @@
  |  ├─ 用户管理 - 添加新用户，封号，删号以及给账号分配权限组
  |  ├─ 权限管理 - 权限组管理，给权限组添加权限，将用户提出权限组
  |  └─ 操作日志 - 记录管理员的操作，用于追责，回溯和备案
- ├─ 基础配置
- |  ├─ 管理员配置 - 配置APP管理员的手机号，邮箱用于明确APP的责任人和接收APP所属API的报警信息
- |  ├─ 秘钥配置 - 用于生成与ApiAdmin相对接的秘钥对
- |  ├─ 规则组配置 - 用于定义API接口过滤规则（例：请求上限，请求频率等）
- |  ├─ 监控组配置 - 用于实时监测API健康状态（例：HTTP状态码，服务器ping等）
- |  └─ 报警组配置 - 定义报警阀值，以及指定接受报警信息的管理员
- ├─ 应用管理
- |  ├─ 应用组管理 - 所有API都至少属于一个APP组
- |  ├─ API接口管理 - 全部在用接口列表，包含了接口的开发、测试、上线的状态变更，包含了接口统计，文档生成
- |  └─ API接口调试 - 调试已配置的API接口
- ├─ 接管第三方
- |  ├─ 认证方式 - 目前拟定系统预置的方式有微信、微博、阿里云、聚合数据、百度APIStore以及一套通用的APP认证
- |  ├─ 接口映射 - ApiAdmin既然接管了第三方，那么必须要提供一套自己的个性接口
- |  └─ 公共参数 - 接入第三方的时候允许配置一些公共参数。
  |  ...
  ```
 
 **页面截图**
 
-![输入图片说明](http://git.oschina.net/uploads/images/2016/1115/153057_5fb85494_110856.png "在这里输入图片标题")
-![输入图片说明](http://git.oschina.net/uploads/images/2016/1115/153108_43ba4095_110856.png "在这里输入图片标题")
-![输入图片说明](http://git.oschina.net/uploads/images/2016/1115/153745_ef999653_110856.png "在这里输入图片标题")
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0415/221526_c2090391_110856.png "在这里输入图片标题")
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0415/221536_be4efd42_110856.png "在这里输入图片标题")
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0415/221550_5d92dbdf_110856.png "在这里输入图片标题")
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0415/221559_44530e0b_110856.png "在这里输入图片标题")
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0415/221609_fd20b776_110856.png "在这里输入图片标题")
+![输入图片说明](https://git.oschina.net/uploads/images/2017/0415/221618_bcfd94b5_110856.png "在这里输入图片标题")
 
 **项目特性**
 
