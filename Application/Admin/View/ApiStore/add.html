@@ -1,0 +1,99 @@
+<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>接口管理 - 接口编辑</legend>
+        <div class="layui-field-box">
+            <form class="layui-form" action="">
+                <if condition="isset($detail['id'])">
+                    <input type="hidden" name="id" value="{$detail['id']}">
+                </if>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">接口名称</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                        <input type="text" name="name" value="{$detail['name']}" readonly class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">系统自动生成，不允许修改</div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">接口路径</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                        <input type="text" name="path" value="{$detail['path']}" readonly class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">系统自动生成，不允许修改</div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">适配秘钥</label>
+                    <div class="layui-input-inline" style="width: 300px;">
+                        <select name="auth" lay-verify="">
+                            <volist name="list" id="vo">
+                                <option value="{$key}" {:($detail['auth'] == $key?'selected':'')}>{$vo}</option>
+                            </volist>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <if condition="isset($detail['id'])">
+        <input type="hidden" name="id" value="{$detail['id']}">
+        <script>
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(formDemo)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("edit")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                parent.location.reload();
+                            }else{
+                                parent.layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
+        <else />
+        <script>
+            layui.use('form', function(){
+                var form = layui.form();
+                form.on('submit(formDemo)', function(data){
+                    $.ajax({
+                        type: "POST",
+                        url: '{:U("add")}',
+                        data: data.field,
+                        success: function(msg){
+                            if( msg.code == 1 ){
+                                parent.location.reload();
+                            }else{
+                                parent.layer.msg(msg.msg, {
+                                    icon: 5,
+                                    shade: [0.6, '#393D49'],
+                                    time:1500
+                                });
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
+        </script>
+    </if>
+</block>

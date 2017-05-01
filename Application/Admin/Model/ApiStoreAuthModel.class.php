@@ -1,17 +1,13 @@
 <?php
 /**
- *
- * @since   2017/03/07 创建
+ * @since   2017-04-22
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
 namespace Admin\Model;
 
 
-use Think\Model;
-
-class BaseModel extends Model {
-    Protected $autoCheckFields = false;
+class ApiStoreAuthModel extends BaseModel {
 
     public function open( $where ){
         return $this->where( $where )->save( array('status' => 1) );
@@ -20,4 +16,5 @@ class BaseModel extends Model {
     public function close( $where ){
         return $this->where( $where )->save( array('status' => 0) );
     }
+
 }
