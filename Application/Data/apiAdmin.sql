@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 192.168.105.105 (MySQL 5.5.40-log)
-# Database: rent
-# Generation Time: 2017-04-15 12:45:48 +0000
+# Host: 127.0.0.1 (MySQL 5.7.14-log)
+# Database: apiAdmin
+# Generation Time: 2017-05-01 09:04:19 +0000
 # ************************************************************
 
 
@@ -48,7 +48,7 @@ CREATE TABLE `api_auth_group` (
   `description` varchar(50) NOT NULL COMMENT '组描述',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '组状态：为1正常，为0禁用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限组';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限组';
 
 
 # Dump of table api_auth_group_access
@@ -101,20 +101,6 @@ CREATE TABLE `api_fields` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于保存各个API的字段规则';
 
 
-# Dump of table api_fields_info
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `api_fields_info`;
-
-CREATE TABLE `api_fields_info` (
-  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '唯一主键',
-  `field` varchar(50) NOT NULL DEFAULT '' COMMENT '字段名',
-  `info` varchar(300) NOT NULL DEFAULT '' COMMENT '字段说明',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `field` (`field`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='字段说明对应关系';
-
-
 # Dump of table api_list
 # ------------------------------------------------------------
 
@@ -152,7 +138,7 @@ CREATE TABLE `api_menu` (
   `icon` varchar(50) NOT NULL DEFAULT '' COMMENT '菜单图标',
   `level` tinyint(2) NOT NULL DEFAULT '0' COMMENT '菜单认证等级',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='目录信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='目录信息';
 
 LOCK TABLES `api_menu` WRITE;
 /*!40000 ALTER TABLE `api_menu` DISABLE KEYS */;
@@ -205,10 +191,57 @@ VALUES
 	(44,'用户入组',5,'Permission/group',0,0,1,'',0),
 	(45,'组用户列表',5,'Permission/member',0,0,1,'',0),
 	(46,'踢出成员',5,'Permission/delMember',0,0,1,'',0),
-	(47,'权限组权限配置',5,'Permission/rule',0,0,1,'',0);
+	(47,'权限组权限配置',5,'Permission/rule',0,0,1,'',0),
+	(48,'三方接口',0,'',0,4,0,'',0),
+	(49,'接口仓库',48,'ApiStore/index',0,0,0,'',0),
+	(50,'Ajax获取接口列表',49,'ApiStore/ajaxGetIndex',0,0,1,'',0),
+	(51,'刷新接口',49,'ApiStore/refresh',0,0,1,'',0),
+	(52,'编辑接口',49,'ApiStore/edit',0,0,1,'',0),
+	(53,'启用接口',49,'ApiStore/open',0,0,1,'',0),
+	(54,'禁用接口',49,'ApiStore/close',0,0,1,'',0),
+	(55,'Ajax获取秘钥列表',61,'ApiKey/ajaxGetIndex',0,0,1,'',0),
+	(56,'新增秘钥类别',61,'ApiKey/add',0,0,1,'',0),
+	(57,'编辑秘钥类别',61,'ApiKey/edit',0,0,1,'',0),
+	(58,'删除秘钥分类',61,'ApiKey/del',0,0,1,'',0),
+	(59,'启用秘钥分类',61,'ApiKey/open',0,0,1,'',0),
+	(60,'禁用秘钥分类',61,'ApiKey/close',0,0,1,'',0),
+	(61,'秘钥管理',48,'ApiKey/index',0,1,0,'',0);
 
 /*!40000 ALTER TABLE `api_menu` ENABLE KEYS */;
 UNLOCK TABLES;
+
+
+# Dump of table api_store
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `api_store`;
+
+CREATE TABLE `api_store` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `path` varchar(50) NOT NULL DEFAULT '' COMMENT '对应的代码路径',
+  `auth` int(11) NOT NULL DEFAULT '0' COMMENT '使用的接口秘钥',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '接口状态',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '接口名称（提供辨识使用）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='三方接口仓库';
+
+
+# Dump of table api_store_auth
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `api_store_auth`;
+
+CREATE TABLE `api_store_auth` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '秘钥名称',
+  `appId` varchar(50) NOT NULL DEFAULT '' COMMENT '应用ID',
+  `appSecret` varchar(255) NOT NULL DEFAULT '' COMMENT '应用秘钥',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '秘钥状态',
+  `accessToken` varchar(255) DEFAULT '' COMMENT '授权秘钥（千米）',
+  `refreshToken` varchar(255) DEFAULT '' COMMENT '刷新秘钥（千米）',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='三方接口秘钥管理';
+
 
 
 # Dump of table api_user
@@ -225,12 +258,12 @@ CREATE TABLE `api_user` (
   `regIp` varchar(11) NOT NULL DEFAULT '' COMMENT '注册IP',
   `updateTime` int(10) NOT NULL DEFAULT '0' COMMENT '更新时间',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '账号状态 0封号 1正常',
+  `openId` varchar(100) DEFAULT NULL COMMENT '微信唯一ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员认证信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员认证信息';
 INSERT INTO `api_user` (`username`, `nickname`, `password`, `regTime`, `regIp`, `updateTime`, `status`)
 VALUES
 	('root', 'root', '912601e4ad1b308c9ae41877cf6ca754', 1492004246, '3682992231', 1492236545, 1);
-
 
 
 # Dump of table api_user_action
@@ -262,7 +295,8 @@ CREATE TABLE `api_user_data` (
   `lastLoginTime` int(11) NOT NULL COMMENT '最后登录时间',
   `uid` varchar(11) NOT NULL DEFAULT '' COMMENT '用户ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员数据表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员数据表';
+
 
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
