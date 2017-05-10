@@ -167,7 +167,7 @@ class ApiController extends BaseController {
             if (!is_array($userInfo) || !isset($userInfo['passport_uid'])) {
                 Response::error(ReturnCode::AUTH_ERROR, 'user-token不匹配');
             }
-            C('USER_INFO', $userInfo);
+            ApiLog::setUserInfo($userInfo);
         }
     }
 
