@@ -30,9 +30,9 @@ class ApiManageController extends BaseController {
             $data = I('post.');
             $res = D('ApiList')->where(array('id' => $data['id']))->save($data);
             if( $res === false ) {
-                S('ApiInfo_' . $data['hash'], 0);
                 $this->ajaxError('操作失败');
             } else {
+                S('ApiInfo_' . $data['hash'], null);
                 $this->ajaxSuccess('添加成功');
             }
         }
@@ -59,7 +59,7 @@ class ApiManageController extends BaseController {
             $id = I('post.id');
             if( $id ) {
                 $hash = D('ApiList')->where(array('id' => $id))->getField('hash');
-                S('ApiInfo_' . $hash, 0);
+                S('ApiInfo_' . $hash, null);
                 D('ApiList')->open(array('id' => $id));
                 $this->ajaxSuccess('操作成功');
             } else {
@@ -73,7 +73,7 @@ class ApiManageController extends BaseController {
             $id = I('post.id');
             if( $id ) {
                 $hash = D('ApiList')->where(array('id' => $id))->getField('hash');
-                S('ApiInfo_' . $hash, 0);
+                S('ApiInfo_' . $hash, null);
                 D('ApiList')->close(array('id' => $id));
                 $this->ajaxSuccess('操作成功');
             } else {
@@ -87,7 +87,7 @@ class ApiManageController extends BaseController {
             $id = I('post.id');
             if( $id ) {
                 $hash = D('ApiList')->where(array('id' => $id))->getField('hash');
-                S('ApiInfo_' . $hash, 0);
+                S('ApiInfo_' . $hash, null);
                 D('ApiList')->del(array('id' => $id));
                 $this->ajaxSuccess('操作成功');
             } else {
