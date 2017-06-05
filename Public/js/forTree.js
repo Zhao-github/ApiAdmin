@@ -60,21 +60,20 @@ layui.define(function(exports) {
         /**
          * 开始循环
          */
-        this.each = function(arr) {
+        this.each = function(arr,index) {
             if(arr == undefined) {
                 arr = _father;
             }
-
+            var index = index ? index: 0;
             for(var i in arr) {
                 var children = _that.getChildren(arr[i][_idName]);
                 var counter  = children.length;
-
                 _that.forBefore(arr[i], i, counter);
                 _that.forCurr(arr[i], i, counter);
 
-                if(counter) {
+                if(counter && index==0) {
                     _that.callBefore(arr[i], i);
-                    _that.each(children);
+                    _that.each(children,2);
                     _that.callAfter(arr[i], i);
                 }
 
