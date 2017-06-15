@@ -61,6 +61,8 @@ class FieldsManageController extends BaseController {
             if ($res === false) {
                 $this->ajaxError('操作失败');
             } else {
+                S('ApiRequest_' . $data['hash'], null);
+                S('ApiResponse_' . $data['hash'], null);
                 $this->ajaxSuccess('添加成功');
             }
         } else {
