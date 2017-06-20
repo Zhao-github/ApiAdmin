@@ -89,6 +89,9 @@ class ApiManageController extends BaseController {
                 $hash = D('ApiList')->where(array('id' => $id))->getField('hash');
                 S('ApiInfo_' . $hash, null);
                 D('ApiList')->del(array('id' => $id));
+                S('ApiRequest_' . $hash, null);
+                S('ApiResponse_' . $hash, null);
+                D('ApiFields')->where(array('hash' => $hash))->delete();
                 $this->ajaxSuccess('操作成功');
             } else {
                 $this->ajaxError('缺少参数');
