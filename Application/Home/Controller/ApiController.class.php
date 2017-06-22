@@ -67,15 +67,6 @@ class ApiController extends BaseController {
         $this->header = array_change_key_case($this->header, CASE_UPPER);
         ApiLog::setHeader($this->header);
 
-        if ($this->apiDetail['accessToken'] && !$this->apiDetail['isTest']) {
-            $this->checkAccessToken();
-        }
-        if (!$this->apiDetail['isTest']) {
-            $this->checkVersion();
-        }
-        $this->checkLogin();
-
-        unset($getArr['hash']);
         switch ($this->apiDetail['method']) {
             case 0:
                 $this->param = array_merge($getArr, $postArr);
@@ -93,6 +84,15 @@ class ApiController extends BaseController {
             $this->param = $data;
         }
         ApiLog::setRequest($this->param);
+
+        if ($this->apiDetail['accessToken'] && !$this->apiDetail['isTest']) {
+            $this->checkAccessToken();
+        }
+        if (!$this->apiDetail['isTest']) {
+            $this->checkVersion();
+        }
+        $this->checkLogin();
+        unset($getArr['hash']);
         $this->iniApi();
     }
 
