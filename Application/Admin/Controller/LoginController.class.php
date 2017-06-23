@@ -16,6 +16,13 @@ class LoginController extends BaseController {
     public function login() {
         $pass = user_md5(I('post.password'));
         $user = I('post.username');
+
+        $challenge = I('post.geetest_challenge');
+        $validate = I('post.geetest_validate');
+        if(!$challenge || md5($challenge) != $validate){
+            $this->ajaxError('请先通过验证！');
+        }
+
         $userInfo = D('ApiUser')->where(array('username' => $user, 'password' => $pass))->find();
         if (!empty($userInfo)) {
             if ($userInfo['status']) {
