@@ -298,6 +298,24 @@ CREATE TABLE `api_user_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员数据表';
 
 
+# Dump of table api_document
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `api_document`;
+
+CREATE TABLE `api_document` (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`key` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '授权秘钥',
+	`endTime` INT(11) NOT NULL DEFAULT '0' COMMENT '失效时间戳',
+	`times` INT(11) NOT NULL DEFAULT '0' COMMENT '访问次数',
+	`lastTime` INT(11) NOT NULL DEFAULT '0' COMMENT '最后访问时间',
+	`lastIp` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '最后访问IP',
+	`createTime` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+	`keep` INT(11) NOT NULL DEFAULT '0' COMMENT '有效时长（单位小时）',
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `key` (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文档访问秘钥';
+
 
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
