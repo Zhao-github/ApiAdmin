@@ -61,6 +61,8 @@ class FieldsManageController extends BaseController {
             if ($res === false) {
                 $this->ajaxError('操作失败');
             } else {
+                S('ApiRequest_' . $data['hash'], null);
+                S('ApiResponse_' . $data['hash'], null);
                 $this->ajaxSuccess('添加成功');
             }
         } else {
@@ -78,9 +80,9 @@ class FieldsManageController extends BaseController {
                 $this->ajaxError('操作失败');
             } else {
                 if ($data['type'] == 0) {
-                    S('ApiRequest_' . $data['hash'], 0);
+                    S('ApiRequest_' . $data['hash'], null);
                 } else {
-                    S('ApiResponse_' . $data['hash'], 0);
+                    S('ApiResponse_' . $data['hash'], null);
                 }
                 $this->ajaxSuccess('添加成功');
             }
@@ -101,9 +103,9 @@ class FieldsManageController extends BaseController {
             if ($id) {
                 $detail = D('ApiFields')->where(array('id' => $id))->find();
                 if ($detail['type'] == 0) {
-                    S('ApiRequest_' . $detail['hash'], 0);
+                    S('ApiRequest_' . $detail['hash'], null);
                 } else {
-                    S('ApiResponse_' . $detail['hash'], 0);
+                    S('ApiResponse_' . $detail['hash'], null);
                 }
                 D('ApiFields')->where(array('id' => $id))->delete();
                 $this->ajaxSuccess('操作成功');
@@ -143,11 +145,11 @@ class FieldsManageController extends BaseController {
                 D('ApiFields')->addAll($addData);
             }
             if ($type == 0) {
-                S('ApiRequest_' . $hash, 0);
+                S('ApiRequest_' . $hash, null);
             } else {
-                S('ApiResponse_' . $hash, 0);
+                S('ApiResponse_' . $hash, null);
             }
-            S('ApiReturnType_' . $hash, 0);
+            S('ApiReturnType_' . $hash, null);
             $this->ajaxSuccess('操作成功');
         } else {
             $this->display();

@@ -13,7 +13,7 @@
 <br />
 <div class="ui text container" style="max-width: none !important;">
     <div class="ui floating message">
-        <h2 class='ui header'>接口唯一标识：<a target="_blank" href="http://{$_SERVER['HTTP_HOST']}/api/{$apiInfo['hash']}">{$apiInfo['hash']}</a>（{$apiInfo['apiName']}）</h2><br />
+        <h2 class='ui header'>接口唯一标识：<a target="_blank" href="{:U('/api/'.$apiInfo['hash'])}">{$apiInfo['hash']}</a>（{$apiInfo['apiName']}）</h2><br />
         <switch name="apiInfo['method']" >
             <case value="1" break="1"> <span class='ui orange tag label'>POST</span></case>
             <case value="2" break="1"> <span class='ui blue tag label'>GET</span></case>

@@ -17,7 +17,8 @@
             <button class="ui orange button" style="margin-top: 15px">算法详解</button>
         </a>
         <div class="ui teal message">
-            <strong>API统一访问地址：</strong> http://{$_SERVER['HTTP_HOST']}/api/接口唯一标识
+            <php>$http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';</php>
+            <strong>API统一访问地址：</strong> {$http_type}{$_SERVER['HTTP_HOST']}/api/接口唯一标识
         </div>
         <div class="ui floating message">
             <div class="content">

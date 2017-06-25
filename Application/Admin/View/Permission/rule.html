@@ -7,21 +7,21 @@
                 <input type="hidden" name="groupId" value="{:I('get.group_id')}">
                 <volist name="list" id="vo">
                     <div class="layui-form-item">
-                        <input lay-skin="primary" type="checkbox" lay-filter="admin-check" name="rule[{$vo['id']}]" value="{$vo['url']}" title="{$vo['name']}" {:(in_array($vo['url'], $hasRule)?'checked':'')}>
+                        <input lay-skin="primary" type="checkbox" data-id="{$vo['id']}" lay-filter="admin-check" name="rule[{$vo['id']}]" value="{$vo['url']}" title="{$vo['name']}" {:(in_array($vo['url'], $hasRule)?'checked':'')}>
                     </div>
                     <if condition="count($vo['_child'])">
                         <div class="layui-form-item">
                             <div style="margin-left: 50px;">
-                            <volist name="vo['_child']" id="child">
-                                <input lay-skin="primary" type="checkbox" lay-filter="admin-check" fid="{$vo['url']}" name="rule[{$child['id']}]" value="{$child['url']}" title="{$child['name']}" {:(in_array($child['url'], $hasRule)?'checked':'')}>
-                                <if condition="count($child['_child'])">
-                                    <div style="margin-left: 50px;">
-                                    <volist name="child['_child']" id="_child">
-                                        <input lay-skin="primary" type="checkbox" pid="{$vo['url']}" fid="{$child['url']}" name="rule[{$_child['id']}]" value="{$_child['url']}" title="{$_child['name']}" {:(in_array($_child['url'], $hasRule)?'checked':'')}>
-                                    </volist>
-                                    </div>
-                                </if>
-                            </volist>
+                                <volist name="vo['_child']" id="child">
+                                    <input lay-skin="primary" type="checkbox" lay-filter="admin-check" data-id="{$child['id']}" fid="{$vo['id']}" name="rule[{$child['id']}]" value="{$child['url']}" title="{$child['name']}" {:(in_array($child['url'], $hasRule)?'checked':'')}>
+                                    <if condition="count($child['_child'])">
+                                        <div style="margin-left: 50px;">
+                                            <volist name="child['_child']" id="_child">
+                                                <input lay-skin="primary" type="checkbox" pid="{$vo['id']}" data-id="{$_child['id']}" fid="{$child['id']}" name="rule[{$_child['id']}]" value="{$_child['url']}" title="{$_child['name']}" {:(in_array($_child['url'], $hasRule)?'checked':'')}>
+                                            </volist>
+                                        </div>
+                                    </if>
+                                </volist>
                             </div>
                         </div>
                     </if>
@@ -39,13 +39,14 @@
         layui.use('form', function(){
             var form = layui.form();
             form.on('checkbox(admin-check)', function(data){
+                var dataId = $(this).attr('data-id');
                 var $el = data.elem;
                 if( $el.checked ){
-                    $('input[fid="'+$el.value+'"]').prop('checked','checked');
-                    $('input[pid="'+$el.value+'"]').prop('checked','checked');
+                    $('input[fid="'+dataId+'"]').prop('checked','checked');
+                    $('input[pid="'+dataId+'"]').prop('checked','checked');
                 }else{
-                    $('input[fid="'+$el.value+'"]').prop('checked', false);
-                    $('input[pid="'+$el.value+'"]').prop('checked', false);
+                    $('input[fid="'+dataId+'"]').prop('checked', false);
+                    $('input[pid="'+dataId+'"]').prop('checked', false);
                 }
                 form.render();
             });
