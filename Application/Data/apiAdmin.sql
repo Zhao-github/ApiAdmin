@@ -311,7 +311,6 @@ CREATE TABLE `api_document` (
 	`lastTime` INT(11) NOT NULL DEFAULT '0' COMMENT '最后访问时间',
 	`lastIp` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '最后访问IP',
 	`createTime` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
-	`keep` INT(11) NOT NULL DEFAULT '0' COMMENT '有效时长（单位小时）',
   `status` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1生效，0失效',
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `key` (`key`)
