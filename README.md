@@ -15,7 +15,9 @@
 
 **体验地址**
 
-[http://admin.our-dream.cn/](http://admin.our-dream.cn/)
+[http://admin.apiadmin.org/](http://admin.apiadmin.org/)
+
+注：线上体验项目的账号密码请移步：[http://git.oschina.net/xiaoxunzhao/apiadmin-wxpro](http://git.oschina.net/xiaoxunzhao/apiadmin-wxpro) 获取微信小程序二维码，扫描二维码获取体验账号！
 
 **2.0安装指引**
 
