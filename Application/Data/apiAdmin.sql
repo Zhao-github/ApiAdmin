@@ -205,7 +205,14 @@ VALUES
 	(58,'删除秘钥分类',61,'ApiKey/del',0,0,1,'',0),
 	(59,'启用秘钥分类',61,'ApiKey/open',0,0,1,'',0),
 	(60,'禁用秘钥分类',61,'ApiKey/close',0,0,1,'',0),
-	(61,'秘钥管理',48,'ApiKey/index',0,1,0,'',0);
+	(61,'秘钥管理',48,'ApiKey/index',0,1,0,'',0),
+  (66, '文档管理', 0, '', 0, 5, 0, '', 0),
+  (67, '秘钥管理', 66, 'Document/index', 0, 0, 0, '', 0),
+  (68, 'Ajax获取文档记录', 67, 'Document/ajaxGetIndex', 0, 1, 1, '', 0),
+  (69, '创建访问秘钥', 67, 'Document/add', 0, 2, 1, '', 0),
+  (70, '延长Key时间', 67, 'Document/addTime', 0, 3, 1, '', 0),
+  (71, '启用Key', 67, 'Document/open', 0, 4, 1, '', 0),
+  (72, '禁用Key', 67, 'Document/close', 0, 5, 1, '', 0);
 
 /*!40000 ALTER TABLE `api_menu` ENABLE KEYS */;
 UNLOCK TABLES;

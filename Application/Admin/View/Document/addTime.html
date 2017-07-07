@@ -1,0 +1,57 @@
+add.html<extend name="Public/base" />
+<block name="main">
+    <fieldset class="layui-elem-field">
+        <legend>文档秘钥管理 - 延时秘钥</legend>
+        <div class="layui-field-box">
+            <form class="layui-form" action="">
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">访问秘钥</label>
+                    <div class="layui-input-inline" style="width: 280px">
+                        <input name="key" value="{$key}" readonly class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">系统自动生成，不允许修改</div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">延长时间</label>
+                    <div class="layui-input-inline" style="width: 280px">
+                        <input type="text" name="keep" value="" placeholder="请输入有效时长" class="layui-input">
+                    </div>
+                    <div class="layui-form-mid layui-word-aux">单位：小时</div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="admin-form">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+</block>
+<block name="myScript">
+    <script>
+        layui.use('form', function(){
+            var form = layui.form();
+            form.on('submit(admin-form)', function(data){
+                $.ajax({
+                    type: "POST",
+                    url: '{:U("addTime")}',
+                    data: data.field,
+                    success: function(msg){
+                        if( msg.code == 1 ){
+                            parent.location.reload();
+                        }else{
+                            parent.layer.msg(msg.msg, {
+                                icon: 5,
+                                shade: [0.6, '#393D49'],
+                                time:1500
+                            });
+                        }
+                    }
+                });
+                return false;
+            });
+
+        });
+    </script>
+</block>
