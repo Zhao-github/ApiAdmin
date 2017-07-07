@@ -9,6 +9,7 @@
             <table class="layui-table" id="list-admin" lay-even>
                 <thead>
                 <tr>
+                    <th>秘钥备注</th>
                     <th>访问秘钥</th>
                     <th>过期时间</th>
                     <th>访问次数</th>
@@ -114,19 +115,19 @@
                     },
                     columnDefs:[
                         {
-                            "targets":1,
-                            "render": function(data){
-                                return new Date(data*1000).Format("yyyy-MM-dd hh:mm:ss");
-                            }
-                        },
-                        {
-                            "targets":3,
+                            "targets":2,
                             "render": function(data){
                                 return new Date(data*1000).Format("yyyy-MM-dd hh:mm:ss");
                             }
                         },
                         {
                             "targets":4,
+                            "render": function(data){
+                                return new Date(data*1000).Format("yyyy-MM-dd hh:mm:ss");
+                            }
+                        },
+                        {
+                            "targets":5,
                             "render": function(data){
                                 if(data == 1){
                                     return '<span style="border-radius: 2px;background-color: #5FB878;padding:5px 10px;color: #ffffff">已启用</span>';
@@ -136,7 +137,7 @@
                             }
                         },
                         {
-                            "targets":5,
+                            "targets":6,
                             "render":function(data, type, row){
                                 var returnStr = '';
                                 if(row.status == 1){
@@ -157,6 +158,7 @@
                     iDisplayLength : 20,
                     aLengthMenu : [20, 30, 50],
                     columns: [
+                        {"data": "info"},
                         {"data": "key"},
                         {"data": "endTime"},
                         {"data": "times" },
