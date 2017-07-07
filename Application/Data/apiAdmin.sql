@@ -154,7 +154,7 @@ VALUES
 	(7,'应用管理',0,'',0,2,0,'',0),
 	(8,'应用列表',7,'App/index',0,0,0,'',0),
 	(9,'接口列表',7,'ApiManage/index',0,1,0,'',0),
-	(10,'字段注解',7,'FieldsInfoManage/index',0,2,1,'',0),
+	(10,'字段注解（暂未开放）',7,'FieldsInfoManage/index',0,2,1,'',0),
 	(11,'首页',0,'Index/index',0,0,1,'',0),
 	(12,'新增菜单',3,'Menu/add',0,0,1,'',0),
 	(13,'编辑菜单',3,'Menu/edit',0,0,1,'',0),
@@ -311,6 +311,7 @@ CREATE TABLE `api_document` (
 	`lastTime` INT(11) NOT NULL DEFAULT '0' COMMENT '最后访问时间',
 	`lastIp` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '最后访问IP',
 	`createTime` INT(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  `info` varchar(50) NOT NULL COMMENT '备注',
   `status` TINYINT(1) NOT NULL DEFAULT '1' COMMENT '1生效，0失效',
 	PRIMARY KEY (`id`),
 	UNIQUE INDEX `key` (`key`)
