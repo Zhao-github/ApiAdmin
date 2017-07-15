@@ -34,6 +34,7 @@ class DocumentController extends BaseController {
             $data['createTime'] = NOW_TIME;
             $data['endTime'] = I('post.keep') * 3600 + NOW_TIME;
             $data['key'] = I('post.key');
+            $data['info'] = I('post.info');
             D('ApiDocument')->add($data);
             $this->ajaxSuccess('添加成功');
         } else {
@@ -101,7 +102,9 @@ class DocumentController extends BaseController {
             $this->ajaxSuccess('修改成功');
         } else {
             $key = I('get.key');
+            $detail = D('ApiDocument')->where(array('key' => $key))->find();
             $this->assign('key', $key);
+            $this->assign('info', $detail['info']);
             $this->display();
         }
     }
