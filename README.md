@@ -15,13 +15,9 @@
 
 **体验地址**
 
-[http://admin.apiadmin.org/](http://admin.apiadmin.org/)
+[https://admin.apiadmin.org/](https://admin.apiadmin.org/)
 
-注：线上体验项目的账号密码请移步：[http://git.oschina.net/xiaoxunzhao/apiadmin-wxpro](http://git.oschina.net/xiaoxunzhao/apiadmin-wxpro) 获取微信小程序二维码，扫描二维码获取体验账号！
-
-**2.0安装指引**
-
-[http://git.oschina.net/xiaoxunzhao/ApiAdmin/wikis/%E9%A1%B9%E7%9B%AE%E5%AE%89%E8%A3%852.0](http://git.oschina.net/xiaoxunzhao/ApiAdmin/wikis/%E9%A1%B9%E7%9B%AE%E5%AE%89%E8%A3%852.0)
+注：线上体验项目的账号密码请移步：[http://git.oschina.net/apiadmin/apiadmin-wxpro](http://git.oschina.net/apiadmin/apiadmin-wxpro) 获取微信小程序二维码，扫描二维码获取体验账号！
 
 **二次开发文档**
 
@@ -29,13 +25,13 @@
 
 **源码地址**
 
-国内OSC：[http://git.oschina.net/xiaoxunzhao/ApiAdmin](http://git.oschina.net/xiaoxunzhao/ApiAdmin)
+国内OSC：[http://git.oschina.net/apiadmin/ApiAdmin](http://git.oschina.net/apiadmin/ApiAdmin)
 
 国际GitHub：[https://github.com/Zhao-github/ApiAdmin](https://github.com/Zhao-github/ApiAdmin)
 
 **下载地址**
 
-国内OSC：[http://git.oschina.net/xiaoxunzhao/ApiAdmin/releases](http://git.oschina.net/xiaoxunzhao/ApiAdmin)
+国内OSC：[http://git.oschina.net/apiadmin/ApiAdmin/releases](http://git.oschina.net/apiadmin/ApiAdmin)
 
 国际GitHub：[https://github.com/Zhao-github/ApiAdmin/releases](https://github.com/Zhao-github/ApiAdmin/releases)
 
