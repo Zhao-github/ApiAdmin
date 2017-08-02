@@ -54,7 +54,7 @@ class ApiLog {
         self::$requestAfterFilter = $data;
     }
 
-    public static function setResponse($data, $code) {
+    public static function setResponse($data, $code = '') {
         if (is_array($data)) {
             $data = json_encode($data);
         }
