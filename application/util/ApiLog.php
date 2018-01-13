@@ -84,7 +84,7 @@ class ApiLog {
             self::$userInfo
         ));
         if (!file_exists($logPath)) {
-            mkdir($logPath);
+            mkdir($logPath, 0755, true);
         }
         @file_put_contents($logPath . date('YmdH') . '.log', $logStr . "\n", FILE_APPEND);
     }
@@ -95,7 +95,10 @@ class ApiLog {
      * @param string $type 日志文件名称
      * @param string $filePath
      */
-    public static function writeLog($log, $type = 'sql', $filePath = '.' . DS . 'runtime' . DS) {
+    public static function writeLog($log, $type = 'sql', $filePath = '') {
+        if(!$filePath) {
+            $filePath = '.' . DS . 'runtime' . DS;
+        }
         $filename = $filePath . date("Ymd") . '_' . $type . ".log";
         @$handle = fopen($filename, "a+");
         @fwrite($handle, date('Y-m-d H:i:s') . "\t" . $log . "\r\n");
