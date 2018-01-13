@@ -24,7 +24,8 @@ class ApiAuth {
     /**
      * 默认行为函数
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
-     * @return \think\Request
+     * @return \think\response\Json
+     * @throws \think\Exception
      * @throws \think\exception\DbException
      */
     public function run() {
