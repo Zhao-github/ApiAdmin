@@ -2,7 +2,7 @@
 // +----------------------------------------------------------------------
 // | ThinkPHP [ WE CAN DO IT JUST THINK ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2017 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2006~2018 http://thinkphp.cn All rights reserved.
 // +----------------------------------------------------------------------
 // | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
 // +----------------------------------------------------------------------
@@ -692,10 +692,10 @@ class Request
     {
         if (empty($this->post)) {
             $content = $this->input;
-            if(false !== strpos($this->contentType(), 'multipart/form-data')) {
-                $this->post = $_POST;
-            } else {
+            if (empty($_POST) && false !== strpos($this->contentType(), 'application/json')) {
                 $this->post = (array) json_decode($content, true);
+            } else {
+                $this->post = $_POST;
             }
         }
         if (is_array($name)) {
@@ -1265,7 +1265,7 @@ class Request
      * @param boolean   $adv 是否进行高级模式获取（有可能被伪装）
      * @return mixed
      */
-    public function ip($type = 0, $adv = false)
+    public function ip($type = 0, $adv = true)
     {
         $type      = $type ? 1 : 0;
         static $ip = null;
@@ -1342,6 +1342,9 @@ class Request
      */
     public function host()
     {
+        if (isset($_SERVER['HTTP_X_REAL_HOST'])) {
+            return $_SERVER['HTTP_X_REAL_HOST'];
+        }
         return $this->server('HTTP_HOST');
     }
 
