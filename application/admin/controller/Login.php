@@ -60,7 +60,11 @@ class Login extends Base {
         return $this->buildSuccess($return, '登录成功');
     }
 
-    public function logout($userToken) {
+    public function logout() {
+        $userToken = $this->request->get('userToken');
+        if (!$userToken) {
+            return $this->buildFailed(ReturnCode::NOT_EXISTS, '缺少userToken!');
+        }
         $userInfo = cache($userToken);
         $userInfo = json_decode($userInfo, true);
         cache($userToken, null);
