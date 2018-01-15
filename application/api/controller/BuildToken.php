@@ -18,19 +18,19 @@ class BuildToken extends Base {
     public function getAccessToken() {
         $param = $this->request->param();
         if (empty($param['app_id'])) {
-            $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少app_id');
+            return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少app_id');
         }
         $appInfo = (new ApiApp())->where(['app_id' => $param['app_id'], 'app_status' => 1])->find();
         if (empty($appInfo)) {
-            $this->buildFailed(ReturnCode::INVALID, '应用ID非法');
+            return $this->buildFailed(ReturnCode::INVALID, '应用ID非法');
         }
 
         $signature = $param['signature'];
         unset($param['signature']);
         $sign = $this->getAuthToken($appInfo['app_secret'], $param);
-
+        $this->debug($sign);
         if ($sign !== $signature) {
-            $this->buildFailed(ReturnCode::INVALID, '身份令牌验证失败');
+            return $this->buildFailed(ReturnCode::INVALID, '身份令牌验证失败');
         }
         $expires = config('apiAdmin.ONLINE_TIME');
         $accessToken = cache($param['device_id']);

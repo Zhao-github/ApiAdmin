@@ -20,9 +20,8 @@ class RequestFilter {
 
     /**
      * 默认行为函数
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
-     * @return \think\Request
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function run() {
         $request = Request::instance();
