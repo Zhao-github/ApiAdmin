@@ -17,7 +17,7 @@ class Menu extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-        $list = ApiMenu::all([]);
+        $list = ApiMenu::all();
         $list = json_decode(json_encode($list), true);
         $list = formatTree(listToTree($list));
         return $this->buildSuccess($list, '登录成功');
@@ -28,6 +28,7 @@ class Menu extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function add() {
+        $postData = $this->request->post();
         if (IS_POST) {
             $data = I('post.');
             $data['hide'] = isset($data['hide']) ? 1 : 0;
