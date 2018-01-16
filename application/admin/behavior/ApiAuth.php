@@ -8,6 +8,7 @@
 namespace app\admin\behavior;
 
 
+use app\util\ReturnCode;
 use think\Request;
 
 class ApiAuth {
@@ -16,23 +17,20 @@ class ApiAuth {
 
     /**
      * 默认行为函数
+     * @return \think\response\Json
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
-     * @return \think\Request
-     * @throws \think\exception\DbException
      */
     public function run() {
         $request = Request::instance();
-        $userToken = $request->header('user-token', '');
-        if ($this->apiInfo['needLogin']) {
-            if ($userToken) {
-                return json(['code' => ReturnCode::AUTH_ERROR, 'msg' => '缺少user-token', 'data' => []]);
-            }
-        }
+        $userToken = $request->header('Authorization', '');
         if ($userToken) {
             $userInfo = cache($userToken);
-            if (!is_array($userInfo) || !isset($userInfo['passport_uid'])) {
-                return json(['code' => ReturnCode::AUTH_ERROR, 'msg' => 'user-token不匹配', 'data' => []]);
+            $userInfo = json_decode($userInfo, true);
+            if (!$userInfo || !isset($userInfo['id'])) {
+                return json(['code' => ReturnCode::AUTH_ERROR, 'msg' => 'Authorization不匹配', 'data' => []]);
             }
+        } else {
+            return json(['code' => ReturnCode::AUTH_ERROR, 'msg' => '缺少Authorization', 'data' => []]);
         }
     }
 

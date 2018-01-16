@@ -12,9 +12,8 @@ class BuildResponse {
 
     /**
      * 返回参数过滤（主要是将返回参数的数据类型给规范）
-     * @param $response \think\Response
+     * @param $response
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
-     * @throws \think\exception\DbException
      */
     public function run($response) {
         $header['Access-Control-Allow-Origin'] = '*';
