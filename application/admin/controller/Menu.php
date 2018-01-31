@@ -20,7 +20,10 @@ class Menu extends Base {
         $list = ApiMenu::all();
         $list = json_decode(json_encode($list), true);
         $list = formatTree(listToTree($list));
-        return $this->buildSuccess($list, '登录成功');
+
+        return $this->buildSuccess([
+            'list'  => $list
+        ], '登录成功');
     }
 
     /**
