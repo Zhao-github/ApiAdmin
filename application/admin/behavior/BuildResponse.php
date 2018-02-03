@@ -8,6 +8,9 @@
 namespace app\admin\behavior;
 
 
+use think\Config;
+use think\Response;
+
 class BuildResponse {
 
     /**
@@ -15,11 +18,8 @@ class BuildResponse {
      * @param $response
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public function run($response) {
-        $header['Access-Control-Allow-Origin'] = '*';
-        $header['Access-Control-Allow-Methods'] = 'POST,PUT,GET,DELETE';
-        $header['Access-Control-Allow-Headers'] = 'Authorization, User-Agent, Keep-Alive, Origin, No-Cache, X-Requested-With, If-Modified-Since, Pragma, Last-Modified, Cache-Control, Expires, Content-Type, X-E4M-With';
-        $header['Access-Control-Allow-Credentials'] = 'true';
+    public function run(Response $response) {
+        $header = Config::get('apiAdmin.CROSS_DOMAIN');
         $response->header($header);
     }
 

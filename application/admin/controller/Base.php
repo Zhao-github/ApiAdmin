@@ -27,7 +27,7 @@ class Base extends Controller {
             $return['debug'] = $this->debug;
         }
 
-        return json($return);
+        return $return;
     }
 
     public function buildFailed($code, $msg, $data = []) {
@@ -40,7 +40,7 @@ class Base extends Controller {
             $return['debug'] = $this->debug;
         }
 
-        return json($return);
+        return $return;
     }
 
     protected function debug($data) {
