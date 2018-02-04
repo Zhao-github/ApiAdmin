@@ -19,6 +19,18 @@ return [
             'admin/Menu/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'Menu/add' => [
+            'admin/Menu/add',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'Menu/edit' => [
+            'admin/Menu/edit',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'Menu/del' => [
+            'admin/Menu/del',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         '__miss__'          => ['admin/Miss/index'],
     ],
 ];
