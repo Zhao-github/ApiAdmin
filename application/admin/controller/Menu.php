@@ -9,6 +9,7 @@ namespace app\admin\controller;
 
 
 use app\model\ApiMenu;
+use app\util\ReturnCode;
 
 class Menu extends Base {
 
@@ -56,30 +57,20 @@ class Menu extends Base {
     }
 
     /**
-     * 显示菜单
+     * 菜单状态编辑
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public function open() {
-        $id = I('post.id');
-        $res = D('ApiMenu')->where(array('id' => $id))->save(array('hide' => 0));
+    public function changeStatus() {
+        $id = $this->request->get('id');
+        $status = $this->request->get('status');
+        $res = ApiMenu::update([
+            'id' => $id,
+            'hide' => $status
+        ]);
         if ($res === false) {
-            $this->ajaxError('操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
-            $this->ajaxSuccess('添加成功');
-        }
-    }
-
-    /**
-     * 隐藏菜单
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
-     */
-    public function close() {
-        $id = I('post.id');
-        $res = D('ApiMenu')->where(array('id' => $id))->save(array('hide' => 1));
-        if ($res === false) {
-            $this->ajaxError('操作失败');
-        } else {
-            $this->ajaxSuccess('添加成功');
+            return $this->buildSuccess([]);
         }
     }
 

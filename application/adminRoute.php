@@ -3,18 +3,22 @@ $afterBehavior = ['\app\admin\behavior\ApiAuth', '\app\admin\behavior\ApiPermiss
 
 return [
     '[admin]' => [
-        'Login/index'  => [
+        'Login/index'       => [
             'admin/Login/index',
             ['method' => 'post']
         ],
-        'Login/logout' => [
+        'Login/logout'      => [
             'admin/Login/logout',
             ['method' => 'get']
         ],
-        'Menu/index'   => [
+        'Menu/index'        => [
             'admin/Menu/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        '__miss__'     => ['admin/Miss/index'],
+        'Menu/changeStatus' => [
+            'admin/Menu/changeStatus',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        '__miss__'          => ['admin/Miss/index'],
     ],
 ];
