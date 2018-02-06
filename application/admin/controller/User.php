@@ -1,31 +1,39 @@
 <?php
 /**
  *
- * @since   2018-01-16
+ * @since   2018-02-06
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
 namespace app\admin\controller;
 
 
-use app\model\ApiMenu;
-use app\util\ReturnCode;
+use app\model\ApiUser;
+use app\model\ApiUserData;
 
-class Menu extends Base {
+class User extends Base {
 
     /**
-     * 获取菜单列表
+     * 获取用户列表
      * @return array
-     * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-        $list = ApiMenu::all();
-        $list = json_decode(json_encode($list), true);
-        $list = formatTree(listToTree($list));
+        $listInfo = ApiUser::all();
+        $userData = ApiUserData::all();
+        $userData = $this->buildArrByNewKey($userData, 'uid');
+
+        foreach ($listInfo as $key => $value) {
+            if ($userData) {
+                $listInfo[$key]['lastLoginIp'] = long2ip($userData[$value['id']]['lastLoginIp']);
+                $listInfo[$key]['loginTimes'] = $userData[$value['id']]['loginTimes'];
+                $listInfo[$key]['lastLoginTime'] = date('Y-m-d H:i:s', $userData[$value['id']]['lastLoginTime']);
+            }
+        }
 
         return $this->buildSuccess([
-            'list' => $list
+            'list'  => $listInfo,
+            'count' => $count
         ], '登录成功');
     }
 
@@ -93,6 +101,7 @@ class Menu extends Base {
             return $this->buildFailed(ReturnCode::INVALID, '当前菜单存在子菜单,不可以被删除!');
         } else {
             ApiMenu::destroy($id);
+
             return $this->buildSuccess([]);
         }
     }

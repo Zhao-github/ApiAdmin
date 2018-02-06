@@ -31,6 +31,26 @@ return [
             'admin/Menu/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'User/index'        => [
+            'admin/User/index',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'User/changeStatus' => [
+            'admin/User/changeStatus',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'User/add' => [
+            'admin/User/add',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'User/edit' => [
+            'admin/User/edit',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'User/del' => [
+            'admin/User/del',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         '__miss__'          => ['admin/Miss/index'],
     ],
 ];

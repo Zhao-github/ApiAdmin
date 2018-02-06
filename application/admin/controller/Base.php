@@ -43,6 +43,21 @@ class Base extends Controller {
         return $return;
     }
 
+    /**
+     * 将二维数组变成指定key
+     * @param $array
+     * @param $keyName
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     */
+    protected function buildArrByNewKey($array, $keyName = 'id') {
+        $list = array();
+        foreach ($array as $item) {
+            $list[$item[$keyName]] = $item;
+        }
+        return $list;
+    }
+
     protected function debug($data) {
         if ($data) {
             $this->debug[] = $data;

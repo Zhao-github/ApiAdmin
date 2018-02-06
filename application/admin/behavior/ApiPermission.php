@@ -8,6 +8,8 @@
 namespace app\admin\behavior;
 
 
+use think\Request;
+
 class ApiPermission {
 
     /**
@@ -17,7 +19,9 @@ class ApiPermission {
      * @throws \think\exception\DbException
      */
     public function run() {
-
+        $request = Request::instance();
+        $route = $request->routeInfo();
+        $route = $route['route'];
     }
 
 
