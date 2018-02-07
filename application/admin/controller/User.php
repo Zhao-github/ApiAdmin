@@ -59,7 +59,7 @@ class User extends Base {
     }
 
     /**
-     * 新增菜单
+     * 新增用户
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
@@ -74,7 +74,7 @@ class User extends Base {
     }
 
     /**
-     * 菜单状态编辑
+     * 用户状态编辑
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
@@ -93,7 +93,7 @@ class User extends Base {
     }
 
     /**
-     * 编辑菜单
+     * 编辑用户
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
@@ -108,7 +108,7 @@ class User extends Base {
     }
 
     /**
-     * 删除菜单
+     * 删除用户
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
