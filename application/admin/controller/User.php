@@ -10,6 +10,7 @@ namespace app\admin\controller;
 
 use app\model\ApiUser;
 use app\model\ApiUserData;
+use app\util\ReturnCode;
 
 class User extends Base {
 
@@ -80,9 +81,9 @@ class User extends Base {
     public function changeStatus() {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
-        $res = ApiMenu::update([
+        $res = ApiUser::update([
             'id'   => $id,
-            'hide' => $status
+            'status' => $status
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
