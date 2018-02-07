@@ -32,7 +32,7 @@ class BuildToken extends Base {
         if ($sign !== $signature) {
             return $this->buildFailed(ReturnCode::INVALID, '身份令牌验证失败');
         }
-        $expires = config('apiAdmin.ONLINE_TIME');
+        $expires = config('apiAdmin.ACCESS_TOKEN_TIME_OUT');
         $accessToken = cache($param['device_id']);
         if ($accessToken) {
             cache($accessToken, null);

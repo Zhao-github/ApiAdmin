@@ -58,6 +58,27 @@ class Base extends Controller {
         return $list;
     }
 
+    /**
+     * 将查询的二维对象转换成二维数组
+     * @param Object $res
+     * @param string $key
+     * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    protected function buildArrFromObj($res, $key = '') {
+        $arr = [];
+        foreach ($res as $value) {
+            $value = $value->toArray();
+            if ($key) {
+                $arr[$value[$key]] = $value;
+            } else {
+                $arr[] = $value;
+            }
+        }
+
+        return $arr;
+    }
+
     protected function debug($data) {
         if ($data) {
             $this->debug[] = $data;
