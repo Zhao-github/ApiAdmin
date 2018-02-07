@@ -26,11 +26,26 @@ class User extends Base {
 
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
         $start = $limit * ($this->request->get('page', 1) - 1);
+        $type = $this->request->get('type', '');
+        $keywords = $this->request->get('keywords', '');
+        $status = $this->request->get('status', '');
 
-        $key = $this->request->get('key', '');
-        $order = $this->request->get('order', '');
+        $where = [];
+        if ($status === '1' || $status === '0') {
+            $where['status'] = $status;
+        }
+        if ($type) {
+            switch ($type) {
+                case 1:
+                    $where['username'] = ['like', "%{$keywords}%"];
+                    break;
+                case 2:
+                    $where['nickname'] = ['like', "%{$keywords}%"];
+                    break;
+            }
+        }
 
-        $listModel = (new ApiUser())->where([])->order('regTime', 'DESC');
+        $listModel = (new ApiUser())->where($where)->order('regTime', 'DESC');
         $listInfo = $listModel->limit($start, $limit)->select();
         $count = $listModel->count();
 
@@ -59,7 +74,7 @@ class User extends Base {
     }
 
     /**
-     * 新增用户
+     * 新增用户 等待组权限
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
