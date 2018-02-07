@@ -692,10 +692,10 @@ class Request
     {
         if (empty($this->post)) {
             $content = $this->input;
-            if(false !== strpos($this->contentType(), 'multipart/form-data')) {
-                $this->post = $_POST;
-            } else {
+            if (empty($_POST) && false !== strpos($this->contentType(), 'application/json')) {
                 $this->post = (array) json_decode($content, true);
+            } else {
+                $this->post = $_POST;
             }
         }
         if (is_array($name)) {
