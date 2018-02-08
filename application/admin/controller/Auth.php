@@ -8,14 +8,14 @@
 namespace app\admin\controller;
 
 
+use app\model\ApiAuthGroup;
 use app\model\ApiUser;
-use app\model\ApiUserData;
 use app\util\ReturnCode;
 
-class User extends Base {
+class Auth extends Base {
 
     /**
-     * 获取用户列表
+     * 获取权限组列表
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -26,46 +26,13 @@ class User extends Base {
 
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
         $start = $limit * ($this->request->get('page', 1) - 1);
-        $type = $this->request->get('type', '');
-        $keywords = $this->request->get('keywords', '');
-        $status = $this->request->get('status', '');
 
         $where = [];
-        if ($status === '1' || $status === '0') {
-            $where['status'] = $status;
-        }
-        if ($type) {
-            switch ($type) {
-                case 1:
-                    $where['username'] = ['like', "%{$keywords}%"];
-                    break;
-                case 2:
-                    $where['nickname'] = ['like', "%{$keywords}%"];
-                    break;
-            }
-        }
 
-        $listModel = (new ApiUser())->where($where)->order('regTime', 'DESC');
+        $listModel = (new ApiAuthGroup())->where($where);
         $listInfo = $listModel->limit($start, $limit)->select();
         $count = $listModel->count();
-
         $listInfo = $this->buildArrFromObj($listInfo);
-        $idArr = array_column($listInfo, 'id');
-
-        $userData = ApiUserData::all(function($query) use ($idArr) {
-            $query->whereIn('uid', $idArr);
-        });
-        $userData = $this->buildArrFromObj($userData);
-        $userData = $this->buildArrByNewKey($userData, 'uid');
-
-        foreach ($listInfo as $key => $value) {
-            if (isset($userData[$value['id']])) {
-                $listInfo[$key]['lastLoginIp'] = long2ip($userData[$value['id']]['lastLoginIp']);
-                $listInfo[$key]['loginTimes'] = $userData[$value['id']]['loginTimes'];
-                $listInfo[$key]['lastLoginTime'] = date('Y-m-d H:i:s', $userData[$value['id']]['lastLoginTime']);
-            }
-            $listInfo[$key]['regIp'] = long2ip($listInfo[$key]['regIp']);
-        }
 
         return $this->buildSuccess([
             'list'  => $listInfo,

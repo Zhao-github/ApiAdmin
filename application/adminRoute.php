@@ -19,15 +19,15 @@ return [
             'admin/Menu/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Menu/add' => [
+        'Menu/add'          => [
             'admin/Menu/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'Menu/edit' => [
+        'Menu/edit'         => [
             'admin/Menu/edit',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'Menu/del' => [
+        'Menu/del'          => [
             'admin/Menu/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
@@ -39,16 +39,36 @@ return [
             'admin/User/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'User/add' => [
+        'User/add'          => [
             'admin/User/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'User/edit' => [
+        'User/edit'         => [
             'admin/User/edit',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'User/del' => [
+        'User/del'          => [
             'admin/User/del',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'Auth/index'        => [
+            'admin/Auth/index',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'Auth/changeStatus' => [
+            'admin/Auth/changeStatus',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'Auth/add'          => [
+            'admin/Auth/add',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'Auth/edit'         => [
+            'admin/Auth/edit',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'Auth/del'          => [
+            'admin/Auth/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
         '__miss__'          => ['admin/Miss/index'],
