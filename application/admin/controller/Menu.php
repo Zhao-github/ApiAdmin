@@ -21,7 +21,7 @@ class Menu extends Base {
      */
     public function index() {
         $list = ApiMenu::all();
-        $list = json_decode(json_encode($list), true);
+        $list = $this->buildArrFromObj($list);
         $list = formatTree(listToTree($list));
 
         return $this->buildSuccess([

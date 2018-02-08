@@ -71,6 +71,10 @@ return [
             'admin/Auth/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'Auth/getRuleList'         => [
+            'admin/Auth/getRuleList',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         '__miss__'          => ['admin/Miss/index'],
     ],
 ];

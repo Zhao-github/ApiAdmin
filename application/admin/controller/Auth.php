@@ -9,6 +9,8 @@ namespace app\admin\controller;
 
 
 use app\model\ApiAuthGroup;
+use app\model\ApiAuthRule;
+use app\model\ApiMenu;
 use app\model\ApiUser;
 use app\util\ReturnCode;
 
@@ -38,6 +40,28 @@ class Auth extends Base {
             'list'  => $listInfo,
             'count' => $count
         ]);
+    }
+
+    public function getRuleList() {
+        $groupId = $this->request->get('groupId', 0);
+
+        $list = (new ApiMenu)->where([])->order('sort', 'ASC')->select();
+        $list = $this->buildArrFromObj($list);
+        $list = listToTree($list);
+
+        if ($groupId) {
+            $rules = (new ApiAuthRule())->where(['groupId' => $groupId])->select();
+            $rules = array_column($rules, 'url');
+        }
+
+        $newList = [];
+        foreach ($list as $key => $value) {
+
+        }
+
+        return $this->buildSuccess([
+            'list' => $newList
+        ], '登录成功');
     }
 
     /**
