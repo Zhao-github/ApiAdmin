@@ -130,11 +130,19 @@ class Auth extends Base {
     /**
      * 编辑用户
      * @return array
+     * @throws \Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function edit() {
         $postData = $this->request->post();
-        $res = ApiMenu::update($postData);
+        if ($postData['rules']) {
+            $this->editRule();
+        }
+        unset($postData['rules']);
+        $res = ApiAuthGroup::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -181,6 +189,44 @@ class Auth extends Base {
         }
 
         return $newList;
+    }
+
+    /**
+     * 编辑权限细节
+     * @throws \Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    private function editRule() {
+        $postData = $this->request->post();
+        $needAdd = [];
+        $has = (new ApiAuthRule())->where(['groupId' => $postData['id']])->select();
+        $has = $this->buildArrFromObj($has);
+        $hasRule = array_column($has, 'url');
+        $needDel = array_flip($hasRule);
+        foreach ($postData['rules'] as $key => $value) {
+            if (!empty($value)) {
+                if (!in_array($value, $hasRule)) {
+                    $data['url'] = $value;
+                    $data['groupId'] = $postData['id'];
+                    $needAdd[] = $data;
+                } else {
+                    unset($needDel[$value]);
+                }
+            }
+        }
+        if (count($needAdd)) {
+            (new ApiAuthRule())->saveAll($needAdd);
+        }
+        if (count($needDel)) {
+            $urlArr = array_keys($needDel);
+            ApiAuthRule::destroy([
+                'groupId' => $postData['id'],
+                'url'     => ['in', $urlArr]
+            ]);
+        }
     }
 
 }
