@@ -60,7 +60,7 @@ class Base extends Controller {
 
     /**
      * 将查询的二维对象转换成二维数组
-     * @param Object $res
+     * @param array $res
      * @param string $key
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>

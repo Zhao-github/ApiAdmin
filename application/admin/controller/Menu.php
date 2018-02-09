@@ -20,7 +20,7 @@ class Menu extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-        $list = ApiMenu::all();
+        $list = (new ApiMenu)->where([])->order('sort', 'ASC')->select();
         $list = $this->buildArrFromObj($list);
         $list = formatTree(listToTree($list));
 

@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * 权限相关配置
  * @since   2018-02-06
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
@@ -31,7 +31,7 @@ class Auth extends Base {
 
         $where = [];
 
-        $listModel = (new ApiAuthGroup())->where($where);
+        $listModel = (new ApiAuthGroup())->where($where)->order('id', 'DESC');
         $listInfo = $listModel->limit($start, $limit)->select();
         $count = $listModel->count();
         $listInfo = $this->buildArrFromObj($listInfo);
@@ -42,6 +42,14 @@ class Auth extends Base {
         ]);
     }
 
+    /**
+     * 获取组所在权限列表
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
     public function getRuleList() {
         $groupId = $this->request->get('groupId', 0);
 
@@ -49,45 +57,62 @@ class Auth extends Base {
         $list = $this->buildArrFromObj($list);
         $list = listToTree($list);
 
+        $rules = [];
         if ($groupId) {
             $rules = (new ApiAuthRule())->where(['groupId' => $groupId])->select();
             $rules = array_column($rules, 'url');
         }
-
-        $newList = [];
-        foreach ($list as $key => $value) {
-
-        }
+        $newList = $this->buildList($list, $rules);
 
         return $this->buildSuccess([
             'list' => $newList
-        ], '登录成功');
+        ]);
     }
 
     /**
-     * 新增用户 等待组权限
+     * 新增组
      * @return array
+     * @throws \Exception
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function add() {
+        $rules = [];
         $postData = $this->request->post();
-        $res = ApiMenu::create($postData);
+        if ($postData['rules']) {
+            $rules = $postData['rules'];
+            $rules = array_filter($rules);
+        }
+        unset($postData['rules']);
+        $res = ApiAuthGroup::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
+            if ($rules) {
+                $insertData = [];
+                foreach ($rules as $value) {
+                    if ($value) {
+                        $insertData[] = [
+                            'groupId' => $res->id,
+                            'url'     => $value
+                        ];
+                    }
+                }
+                (new ApiAuthRule())->saveAll($insertData);
+            }
+
             return $this->buildSuccess([]);
         }
     }
 
     /**
-     * 用户状态编辑
+     * 权限组状态编辑
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function changeStatus() {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
-        $res = ApiUser::update([
+        $res = ApiAuthGroup::update([
             'id'     => $id,
             'status' => $status
         ]);
@@ -114,7 +139,7 @@ class Auth extends Base {
     }
 
     /**
-     * 删除用户
+     * 删除组
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
@@ -123,14 +148,35 @@ class Auth extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        $childNum = ApiMenu::where(['fid' => $id])->count();
-        if ($childNum) {
-            return $this->buildFailed(ReturnCode::INVALID, '当前菜单存在子菜单,不可以被删除!');
-        } else {
-            ApiMenu::destroy($id);
+        ApiAuthGroup::destroy($id);
+        ApiAuthRule::destroy(['groupId' => $id]);
 
-            return $this->buildSuccess([]);
+        return $this->buildSuccess([]);
+    }
+
+    /**
+     * 构建适用前端的权限数据
+     * @param $list
+     * @param $rules
+     * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    private function buildList($list, $rules) {
+        $newList = [];
+        foreach ($list as $key => $value) {
+            $newList[$key]['title'] = $value['name'];
+            $newList[$key]['key'] = $value['url'];
+            if (isset($value['_child'])) {
+                $newList[$key]['expand'] = true;
+                $newList[$key]['children'] = $this->buildList($value['_child'], $rules);
+            } else {
+                if (in_array($value['url'], $rules)) {
+                    $newList[$key]['checked'] = true;
+                }
+            }
         }
+
+        return $newList;
     }
 
 }
