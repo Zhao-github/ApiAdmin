@@ -11,7 +11,6 @@ namespace app\admin\controller;
 use app\model\ApiAuthGroup;
 use app\model\ApiAuthRule;
 use app\model\ApiMenu;
-use app\model\ApiUser;
 use app\util\ReturnCode;
 
 class Auth extends Base {
@@ -28,8 +27,13 @@ class Auth extends Base {
 
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
         $start = $limit * ($this->request->get('page', 1) - 1);
+        $keywords = $this->request->get('keywords', '');
+        $status = $this->request->get('status', '');
 
-        $where = [];
+        $where['name'] = ['like', "%{$keywords}%"];
+        if ($status === '1' || $status === '0') {
+            $where['status'] = $status;
+        }
 
         $listModel = (new ApiAuthGroup())->where($where)->order('id', 'DESC');
         $listInfo = $listModel->limit($start, $limit)->select();
