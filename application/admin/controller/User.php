@@ -141,7 +141,6 @@ class User extends Base {
         });
         $userData = $this->buildArrFromObj($userData);
         $userData = $this->buildArrByNewKey($userData, 'uid');
-        $this->debug($userData);
 
         foreach ($userInfo as $key => $value) {
             if (isset($userData[$value['id']])) {
