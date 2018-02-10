@@ -35,9 +35,8 @@ class Auth extends Base {
             $where['status'] = $status;
         }
 
-        $listModel = (new ApiAuthGroup())->where($where)->order('id', 'DESC');
-        $listInfo = $listModel->limit($start, $limit)->select();
-        $count = $listModel->count();
+        $listInfo = (new ApiAuthGroup())->where($where)->order('id', 'DESC')->limit($start, $limit)->select();
+        $count = (new ApiAuthGroup())->where($where)->count();
         $listInfo = $this->buildArrFromObj($listInfo);
 
         return $this->buildSuccess([

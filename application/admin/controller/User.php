@@ -47,10 +47,8 @@ class User extends Base {
             }
         }
 
-        $listModel = (new ApiUser())->where($where)->order('regTime', 'DESC');
-        $listInfo = $listModel->limit($start, $limit)->select();
-        $count = $listModel->count();
-
+        $listInfo = (new ApiUser())->where($where)->order('regTime', 'DESC')->limit($start, $limit)->select();
+        $count = (new ApiUser())->where($where)->count();
         $listInfo = $this->buildArrFromObj($listInfo);
         $idArr = array_column($listInfo, 'id');
 
@@ -115,6 +113,52 @@ class User extends Base {
     }
 
     /**
+     * 获取当前组的全部用户
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getUsers() {
+        $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
+        $start = $limit * ($this->request->get('page', 1) - 1);
+        $gid = $this->request->get('gid', 0);
+        if (!$gid) {
+            return $this->buildFailed(ReturnCode::PARAM_INVALID, '非法操作');
+        }
+
+        $listInfo = (new ApiAuthGroupAccess())->where(['groupId' => ['like', "%{$gid}%"]])->select();
+        $listInfo = $this->buildArrFromObj($listInfo);
+        $uidArr = array_column($listInfo, 'uid');
+
+        $userInfo = (new ApiUser())->whereIn('id', $uidArr)->order('regTime', 'DESC')->limit($start, $limit)->select();
+        $count = (new ApiUser())->whereIn('id', $uidArr)->count();
+        $userInfo = $this->buildArrFromObj($userInfo);
+
+        $userData = ApiUserData::all(function($query) use ($uidArr) {
+            $query->whereIn('uid', $uidArr);
+        });
+        $userData = $this->buildArrFromObj($userData);
+        $userData = $this->buildArrByNewKey($userData, 'uid');
+        $this->debug($userData);
+
+        foreach ($userInfo as $key => $value) {
+            if (isset($userData[$value['id']])) {
+                $userInfo[$key]['lastLoginIp'] = long2ip($userData[$value['id']]['lastLoginIp']);
+                $userInfo[$key]['loginTimes'] = $userData[$value['id']]['loginTimes'];
+                $userInfo[$key]['lastLoginTime'] = date('Y-m-d H:i:s', $userData[$value['id']]['lastLoginTime']);
+            }
+            $userInfo[$key]['regIp'] = long2ip($userInfo[$key]['regIp']);
+        }
+
+        return $this->buildSuccess([
+            'list'  => $userInfo,
+            'count' => $count
+        ]);
+    }
+
+    /**
      * 用户状态编辑
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
@@ -137,6 +181,7 @@ class User extends Base {
      * 编辑用户
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @throws \think\exception\DbException
      */
     public function edit() {
         $groups = '';
@@ -156,11 +201,19 @@ class User extends Base {
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
-            ApiAuthGroupAccess::update([
-                'groupId' => $groups
-            ], [
-                'uid' => $res->id,
-            ]);
+            $has = ApiAuthGroupAccess::get(['uid' => $postData['id']]);
+            if($has){
+                ApiAuthGroupAccess::update([
+                    'groupId' => $groups
+                ], [
+                    'uid' => $postData['id'],
+                ]);
+            }else{
+                ApiAuthGroupAccess::create([
+                    'uid'     => $postData['id'],
+                    'groupId' => $groups
+                ]);
+            }
 
             return $this->buildSuccess([]);
         }

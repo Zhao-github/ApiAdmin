@@ -35,6 +35,10 @@ return [
             'admin/User/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'User/getUsers'        => [
+            'admin/User/getUsers',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         'User/changeStatus' => [
             'admin/User/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
