@@ -47,6 +47,25 @@ class Auth extends Base {
     }
 
     /**
+     * 获取全部已开放的可选组
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getGroups() {
+        $listInfo = (new ApiAuthGroup())->where(['status' => 1])->order('id', 'DESC')->select();
+        $count = count($listInfo);
+        $listInfo = $this->buildArrFromObj($listInfo);
+
+        return $this->buildSuccess([
+            'list'  => $listInfo,
+            'count' => $count
+        ]);
+    }
+
+    /**
      * 获取组所在权限列表
      * @return array
      * @throws \think\db\exception\DataNotFoundException

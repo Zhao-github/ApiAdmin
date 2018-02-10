@@ -8,9 +8,11 @@
 namespace app\admin\controller;
 
 
+use app\model\ApiAuthGroupAccess;
 use app\model\ApiUser;
 use app\model\ApiUserData;
 use app\util\ReturnCode;
+use app\util\Tools;
 
 class User extends Base {
 
@@ -58,6 +60,12 @@ class User extends Base {
         $userData = $this->buildArrFromObj($userData);
         $userData = $this->buildArrByNewKey($userData, 'uid');
 
+        $userGroup = ApiAuthGroupAccess::all(function($query) use ($idArr) {
+            $query->whereIn('uid', $idArr);
+        });
+        $userGroup = $this->buildArrFromObj($userGroup);
+        $userGroup = $this->buildArrByNewKey($userGroup, 'uid');
+
         foreach ($listInfo as $key => $value) {
             if (isset($userData[$value['id']])) {
                 $listInfo[$key]['lastLoginIp'] = long2ip($userData[$value['id']]['lastLoginIp']);
@@ -65,6 +73,11 @@ class User extends Base {
                 $listInfo[$key]['lastLoginTime'] = date('Y-m-d H:i:s', $userData[$value['id']]['lastLoginTime']);
             }
             $listInfo[$key]['regIp'] = long2ip($listInfo[$key]['regIp']);
+            if (isset($userGroup[$value['id']])) {
+                $listInfo[$key]['groupId'] = explode(',', $userGroup[$value['id']]['groupId']);
+            } else {
+                $listInfo[$key]['groupId'] = [];
+            }
         }
 
         return $this->buildSuccess([
@@ -74,16 +87,29 @@ class User extends Base {
     }
 
     /**
-     * 新增用户 等待组权限
+     * 新增用户
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function add() {
+        $groups = '';
         $postData = $this->request->post();
-        $res = ApiMenu::create($postData);
+        $postData['regIp'] = request()->ip(1);
+        $postData['regTime'] = time();
+        $postData['password'] = Tools::userMd5($postData['password']);
+        if ($postData['groupId']) {
+            $groups = implode(',', $postData['groupId']);
+        }
+        unset($postData['groupId']);
+        $res = ApiUser::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
+            ApiAuthGroupAccess::create([
+                'uid'     => $res->id,
+                'groupId' => $groups
+            ]);
+
             return $this->buildSuccess([]);
         }
     }
@@ -109,15 +135,33 @@ class User extends Base {
 
     /**
      * 编辑用户
-     * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
      */
     public function edit() {
+        $groups = '';
         $postData = $this->request->post();
-        $res = ApiMenu::update($postData);
+        $postData['regIp'] = request()->ip(1);
+        $postData['regTime'] = time();
+        if ($postData['password'] === 'ApiAdmin') {
+            unset($postData['password']);
+        } else {
+            $postData['password'] = Tools::userMd5($postData['password']);
+        }
+        if ($postData['groupId']) {
+            $groups = implode(',', $postData['groupId']);
+        }
+        unset($postData['groupId']);
+        $res = ApiUser::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
+            ApiAuthGroupAccess::update([
+                'groupId' => $groups
+            ], [
+                'uid' => $res->id,
+            ]);
+
             return $this->buildSuccess([]);
         }
     }
@@ -132,14 +176,11 @@ class User extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        $childNum = ApiMenu::where(['fid' => $id])->count();
-        if ($childNum) {
-            return $this->buildFailed(ReturnCode::INVALID, '当前菜单存在子菜单,不可以被删除!');
-        } else {
-            ApiMenu::destroy($id);
+        ApiUser::destroy($id);
+        ApiAuthGroupAccess::destroy(['uid' => $id]);
 
-            return $this->buildSuccess([]);
-        }
+        return $this->buildSuccess([]);
+
     }
 
 }
