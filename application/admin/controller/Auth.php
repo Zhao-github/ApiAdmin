@@ -9,6 +9,7 @@ namespace app\admin\controller;
 
 
 use app\model\ApiAuthGroup;
+use app\model\ApiAuthGroupAccess;
 use app\model\ApiAuthRule;
 use app\model\ApiMenu;
 use app\util\ReturnCode;
@@ -182,6 +183,36 @@ class Auth extends Base {
         ApiAuthRule::destroy(['groupId' => $id]);
 
         return $this->buildSuccess([]);
+    }
+
+    /**
+     * 从指定组中删除指定用户
+     * @return array
+     * @throws \think\Exception
+     * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public function delMember() {
+        $gid = $this->request->get('gid', 0);
+        $uid = $this->request->get('uid', 0);
+        if (!$gid || !$uid) {
+            return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
+        }
+        $oldInfo = ApiAuthGroupAccess::get(['uid' => $uid])->toArray();
+        $oldGroupArr = explode(',', $oldInfo['groupId']);
+        $key = array_search($gid, $oldGroupArr);
+        unset($oldGroupArr[$key]);
+        $newData = implode(',', $oldGroupArr);
+        $res = ApiAuthGroupAccess::update([
+            'groupId' => $newData
+        ],[
+            'uid' => $uid
+        ]);
+        if ($res === false) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+        } else {
+            return $this->buildSuccess([]);
+        }
     }
 
     /**

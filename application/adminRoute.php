@@ -63,6 +63,10 @@ return [
             'admin/Auth/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'Auth/delMember' => [
+            'admin/Auth/delMember',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         'Auth/add'          => [
             'admin/Auth/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
