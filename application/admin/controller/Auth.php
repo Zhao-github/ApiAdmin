@@ -172,6 +172,9 @@ class Auth extends Base {
     /**
      * 删除组
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function del() {
@@ -179,6 +182,20 @@ class Auth extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
+
+        $listInfo = (new ApiAuthGroupAccess())->where(['groupId' => ['like', "%{$id}%"]])->select();
+        if ($listInfo) {
+            foreach ($listInfo as $value) {
+                $valueArr = $value->toArray();
+                $oldGroupArr = explode(',', $valueArr['groupId']);
+                $key = array_search($id, $oldGroupArr);
+                unset($oldGroupArr[$key]);
+                $newData = implode(',', $oldGroupArr);
+                $value->groupId = $newData;
+                $value->save();
+            }
+        }
+
         ApiAuthGroup::destroy($id);
         ApiAuthRule::destroy(['groupId' => $id]);
 
@@ -205,7 +222,7 @@ class Auth extends Base {
         $newData = implode(',', $oldGroupArr);
         $res = ApiAuthGroupAccess::update([
             'groupId' => $newData
-        ],[
+        ], [
             'uid' => $uid
         ]);
         if ($res === false) {
