@@ -87,6 +87,26 @@ return [
             'admin/Auth/getRuleList',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'App/index'        => [
+            'admin/App/index',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'App/changeStatus' => [
+            'admin/App/changeStatus',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'App/add'          => [
+            'admin/App/add',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'App/edit'         => [
+            'admin/App/edit',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'App/del'          => [
+            'admin/App/del',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         '__miss__'          => ['admin/Miss/index'],
     ],
 ];

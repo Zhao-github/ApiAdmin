@@ -3,7 +3,6 @@
 namespace app\model;
 
 
-class ApiApp extends Base
-{
-    //
+class ApiApp extends Base {
+
 }
