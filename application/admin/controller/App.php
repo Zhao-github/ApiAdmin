@@ -9,7 +9,11 @@ namespace app\admin\controller;
 
 
 use app\model\ApiApp;
+use app\model\ApiMenu;
+use app\model\ApiList;
+use app\model\ApiGroup;
 use app\util\ReturnCode;
+use app\util\Strs;
 
 class App extends Base {
     /**
@@ -28,7 +32,7 @@ class App extends Base {
 
         $where = [];
         if ($status === '1' || $status === '0') {
-            $where['status'] = $status;
+            $where['app_status'] = $status;
         }
         if ($type) {
             switch ($type) {
@@ -52,6 +56,32 @@ class App extends Base {
     }
 
     /**
+     * 获取AppId,AppSecret,接口列表,应用接口权限细节
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     * @throws \think\exception\DbException
+     */
+    public function getAppInfo() {
+        $apiArr = ApiList::all();
+        foreach ($apiArr as $api) {
+            $res['apiList'][$api['groupId']][] = $api;
+        }
+        $groupArr = ApiGroup::all();
+        $groupArr = $this->buildArrFromObj($groupArr);
+        $res['groupInfo'] = array_column($groupArr, 'name', 'id');
+        $res['groupInfo'][0] = '默认分组';
+        $id = $this->request->get('id', 0);
+        if ($id) {
+
+        } else {
+            $res['app_id'] = Strs::randString(8, 1);
+            $res['app_secret'] = Strs::randString(32);
+        }
+
+        return $this->buildSuccess($res);
+    }
+
+    /**
      * 新增菜单
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
@@ -67,7 +97,7 @@ class App extends Base {
     }
 
     /**
-     * 菜单状态编辑
+     * 应用状态编辑
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
@@ -77,7 +107,7 @@ class App extends Base {
         $res = ApiApp::update([
             'app_status' => $status
         ], [
-            'app_id' => $id
+            'id' => $id
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');

@@ -95,6 +95,10 @@ return [
             'admin/App/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'App/getAppInfo' => [
+            'admin/App/getAppInfo',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         'App/add'          => [
             'admin/App/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
