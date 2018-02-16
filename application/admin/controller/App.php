@@ -64,17 +64,17 @@ class App extends Base {
     public function getAppInfo() {
         $apiArr = ApiList::all();
         foreach ($apiArr as $api) {
-            $res['apiList'][$api['groupId']][] = $api;
+            $res['apiList'][$api['groupHash']][] = $api;
         }
         $groupArr = ApiGroup::all();
         $groupArr = $this->buildArrFromObj($groupArr);
-        $res['groupInfo'] = array_column($groupArr, 'name', 'id');
-        $res['groupInfo'][0] = '默认分组';
+        $res['groupInfo'] = array_column($groupArr, 'name', 'hash');
+        $res['groupInfo']['default'] = '默认分组';
         $id = $this->request->get('id', 0);
         if ($id) {
 
         } else {
-            $res['app_id'] = Strs::randString(8, 1);
+            $res['app_id'] = mt_rand(1, 9) . Strs::randString(7, 1);
             $res['app_secret'] = Strs::randString(32);
         }
 
