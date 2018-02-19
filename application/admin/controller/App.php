@@ -59,6 +59,7 @@ class App extends Base {
      * 获取AppId,AppSecret,接口列表,应用接口权限细节
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @throws \think\Exception
      * @throws \think\exception\DbException
      */
     public function getAppInfo() {
@@ -72,7 +73,8 @@ class App extends Base {
         $res['groupInfo']['default'] = '默认分组';
         $id = $this->request->get('id', 0);
         if ($id) {
-
+            $appInfo = ApiApp::get($id)->toArray();
+            $res['app_detail'] = json_decode($appInfo['app_api_show'], true);
         } else {
             $res['app_id'] = mt_rand(1, 9) . Strs::randString(7, 1);
             $res['app_secret'] = Strs::randString(32);
@@ -82,13 +84,28 @@ class App extends Base {
     }
 
     /**
-     * 新增菜单
+     * 新增应用
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function add() {
         $postData = $this->request->post();
-        $res = ApiMenu::create($postData);
+        $data = [
+            'app_id'       => $postData['app_id'],
+            'app_secret'   => $postData['app_secret'],
+            'app_name'     => $postData['app_name'],
+            'app_info'     => $postData['app_info'],
+            'app_api'      => '',
+            'app_api_show' => '',
+        ];
+        if (isset($postData['app_api']) && $postData['app_api']) {
+            $data['app_api_show'] = json_encode($postData['app_api']);
+            foreach ($postData['app_api'] as $value) {
+                $data['app_api'] .= implode(',', $value) . ',';
+            }
+            $data['app_api'] = trim($data['app_api'], ',');
+        }
+        $res = ApiApp::create($data);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -123,7 +140,23 @@ class App extends Base {
      */
     public function edit() {
         $postData = $this->request->post();
-        $res = ApiMenu::update($postData);
+        $data = [
+            'id'           => $postData['id'],
+            'app_id'       => $postData['app_id'],
+            'app_secret'   => $postData['app_secret'],
+            'app_name'     => $postData['app_name'],
+            'app_info'     => $postData['app_info'],
+            'app_api'      => '',
+            'app_api_show' => '',
+        ];
+        if (isset($postData['app_api']) && $postData['app_api']) {
+            $data['app_api_show'] = json_encode($postData['app_api']);
+            foreach ($postData['app_api'] as $value) {
+                $data['app_api'] .= implode(',', $value) . ',';
+            }
+            $data['app_api'] = trim($data['app_api'], ',');
+        }
+        $res = ApiApp::update($data);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -141,13 +174,8 @@ class App extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        $childNum = ApiMenu::where(['fid' => $id])->count();
-        if ($childNum) {
-            return $this->buildFailed(ReturnCode::INVALID, '当前菜单存在子菜单,不可以被删除!');
-        } else {
-            ApiMenu::destroy($id);
+        ApiApp::destroy($id);
 
-            return $this->buildSuccess([]);
-        }
+        return $this->buildSuccess([]);
     }
 }
