@@ -33,7 +33,7 @@ class ApiLog {
     }
 
     public static function setApiInfo($data) {
-        self::$apiInfo = isset($data['apiName']) ? $data['apiName'] : '' . self::$separator . isset($data['hash']) ? $data['hash'] : '';
+        self::$apiInfo = isset($data['apiClass']) ? $data['apiClass'] : '' . self::$separator . isset($data['hash']) ? $data['hash'] : '';
     }
 
     public static function setUserInfo($data) {

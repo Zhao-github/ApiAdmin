@@ -45,7 +45,7 @@
         </div>
         <div class="twelve wide column">
             <div class="ui floating message" id="detail" style="overflow: auto;">
-                <h2 class='ui header'>接口唯一标识：<a target="_blank" href="{$http_type}{$_SERVER['HTTP_HOST']}/api/{$hash}">{$hash}</a>（{$detail['apiName']}）</h2><br />
+                <h2 class='ui header'>接口唯一标识：<a target="_blank" href="{$http_type}{$_SERVER['HTTP_HOST']}/api/{$hash}">{$hash}</a>（{$detail['apiClass']}）</h2><br />
                 <div class="ui raised segment">
                     <span class="ui red ribbon large label">接口说明</span>
                     {if condition="$detail['status'] eq 0 "}

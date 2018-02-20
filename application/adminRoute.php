@@ -111,6 +111,30 @@ return [
             'admin/App/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'InterfaceList/index'        => [
+            'admin/InterfaceList/index',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'InterfaceList/changeStatus' => [
+            'admin/InterfaceList/changeStatus',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'InterfaceList/getHash' => [
+            'admin/InterfaceList/getHash',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'InterfaceList/add'          => [
+            'admin/InterfaceList/add',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'InterfaceList/edit'         => [
+            'admin/InterfaceList/edit',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'InterfaceList/del'          => [
+            'admin/InterfaceList/del',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         '__miss__'          => ['admin/Miss/index'],
     ],
 ];
