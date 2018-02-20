@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * 应用管理
  * @since   2018-02-11
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
@@ -9,7 +9,6 @@ namespace app\admin\controller;
 
 
 use app\model\ApiApp;
-use app\model\ApiMenu;
 use app\model\ApiList;
 use app\model\ApiGroup;
 use app\util\ReturnCode;
@@ -134,7 +133,7 @@ class App extends Base {
     }
 
     /**
-     * 编辑菜单
+     * 编辑应用
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
@@ -165,7 +164,7 @@ class App extends Base {
     }
 
     /**
-     * 删除菜单
+     * 删除应用
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
