@@ -9,5 +9,4 @@ namespace app\admin\controller;
 
 
 class AppGroup extends Base {
-
 }

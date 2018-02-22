@@ -163,6 +163,26 @@ return [
             'admin/Fields/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'InterfaceGroup/index'        => [
+            'admin/InterfaceGroup/index',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'InterfaceGroup/add'          => [
+            'admin/InterfaceGroup/add',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'InterfaceGroup/edit'         => [
+            'admin/InterfaceGroup/edit',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'InterfaceGroup/del'          => [
+            'admin/InterfaceGroup/del',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'InterfaceGroup/changeStatus' => [
+            'admin/InterfaceGroup/changeStatus',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         '__miss__'          => ['admin/Miss/index'],
     ],
 ];
