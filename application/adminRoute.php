@@ -135,6 +135,34 @@ return [
             'admin/InterfaceList/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'Fields/index'        => [
+            'admin/Fields/index',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'Fields/request' => [
+            'admin/Fields/request',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'Fields/response' => [
+            'admin/Fields/response',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'Fields/add'          => [
+            'admin/Fields/add',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'Fields/upload'          => [
+            'admin/Fields/upload',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'Fields/edit'         => [
+            'admin/Fields/edit',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'Fields/del'          => [
+            'admin/Fields/del',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         '__miss__'          => ['admin/Miss/index'],
     ],
 ];

@@ -8,7 +8,9 @@
 namespace app\admin\controller;
 
 
+use app\model\ApiFields;
 use app\util\DataType;
+use app\util\ReturnCode;
 
 class Fields extends Base {
     private $dataType = array(
@@ -27,30 +29,59 @@ class Fields extends Base {
         return $this->buildSuccess($this->dataType);
     }
 
+    /**
+     * 获取请求参数
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
     public function request() {
-        $hash = I('get.hash');
-        $where['type'] = 0;
+        $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
+        $start = $limit * ($this->request->get('page', 1) - 1);
+        $hash = $this->request->get('hash', '');
+
         if (!empty($hash)) {
-            $where['hash'] = $hash;
+            $listInfo = (new ApiFields())->where(['hash' => $hash, 'type' => 0])->limit($start, $limit)->select();
+            $count = (new ApiFields())->where(['hash' => $hash, 'type' => 0])->count();
+            $listInfo = $this->buildArrFromObj($listInfo);
+
+            return $this->buildSuccess([
+                'list'     => $listInfo,
+                'count'    => $count,
+                'dataType' => $this->dataType
+            ]);
+        } else {
+            return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        $res = D('ApiFields')->where($where)->select();
-        $this->assign('dataType', $this->dataType);
-        $this->assign('list', $res);
-        $this->assign('type', 0);
-        $this->display('index');
     }
 
+    /**
+     * 获取返回参数
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
     public function response() {
-        $hash = I('get.hash');
-        $where['type'] = 1;
+        $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
+        $start = $limit * ($this->request->get('page', 1) - 1);
+        $hash = $this->request->get('hash', '');
+
         if (!empty($hash)) {
-            $where['hash'] = $hash;
+            $listInfo = (new ApiFields())->where(['hash' => $hash, 'type' => 1])->limit($start, $limit)->select();
+            $count = (new ApiFields())->where(['hash' => $hash, 'type' => 1])->count();
+            $listInfo = $this->buildArrFromObj($listInfo);
+
+            return $this->buildSuccess([
+                'list'     => $listInfo,
+                'count'    => $count,
+                'dataType' => $this->dataType
+            ]);
+        } else {
+            return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        $res = D('ApiFields')->where($where)->select();
-        $this->assign('dataType', $this->dataType);
-        $this->assign('list', $res);
-        $this->assign('type', 1);
-        $this->display('index');
     }
 
     public function add() {
