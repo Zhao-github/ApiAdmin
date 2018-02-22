@@ -179,6 +179,10 @@ return [
             'admin/InterfaceGroup/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'InterfaceGroup/getAll'          => [
+            'admin/InterfaceGroup/getAll',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         'InterfaceGroup/changeStatus' => [
             'admin/InterfaceGroup/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]

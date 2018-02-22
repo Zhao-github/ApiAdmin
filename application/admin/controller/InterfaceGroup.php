@@ -53,6 +53,21 @@ class InterfaceGroup extends Base {
     }
 
     /**
+     * 获取全部有效的接口组
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getAll() {
+        $listInfo = (new ApiGroup())->where(['status' => 1])->select();
+
+        return $this->buildSuccess([
+            'list'     => $listInfo
+        ]);
+    }
+
+    /**
      * 接口组状态编辑
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
