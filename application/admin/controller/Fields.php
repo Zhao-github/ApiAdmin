@@ -9,6 +9,7 @@ namespace app\admin\controller;
 
 
 use app\model\ApiFields;
+use app\model\ApiList;
 use app\util\DataType;
 use app\util\ReturnCode;
 
@@ -135,45 +136,45 @@ class Fields extends Base {
         return $this->buildSuccess([]);
     }
 
+    /**
+     * 批量上传返回字段
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function upload() {
-        if (IS_POST) {
-            $hash = I('post.hash');
-            $type = I('post.type');
-            $jsonStr = I('post.jsonStr');
-            $jsonStr = html_entity_decode($jsonStr);
-            $data = json_decode($jsonStr, true);
-            D('ApiList')->where(array('hash' => $hash))->save(array('returnStr' => json_encode($data)));
-            $this->handle($data['data'], $dataArr);
-            $old = D('ApiFields')->where(array(
-                'hash' => $hash,
-                'type' => $type
-            ))->select();
-            $oldArr = array_column($old, 'showName');
-            $newArr = array_column($dataArr, 'showName');
-            $addArr = array_diff($newArr, $oldArr);
-            $delArr = array_diff($oldArr, $newArr);
-            if ($delArr) {
-                D('ApiFields')->where(array('showName' => array('in', $delArr)))->delete();
-            }
-            if ($addArr) {
-                $addData = array();
-                foreach ($dataArr as $item) {
-                    if (in_array($item['showName'], $addArr)) {
-                        $addData[] = $item;
-                    }
-                }
-                D('ApiFields')->addAll($addData);
-            }
-            if ($type == 0) {
-                S('ApiRequest_' . $hash, null);
-            } else {
-                S('ApiResponse_' . $hash, null);
-            }
-            S('ApiReturnType_' . $hash, null);
-            $this->ajaxSuccess('操作成功');
-        } else {
-            $this->display();
+        $hash = $this->request->post('hash');
+        $type = $this->request->post('type');
+        $jsonStr = $this->request->post('jsonStr');
+        $jsonStr = html_entity_decode($jsonStr);
+        $data = json_decode($jsonStr, true);
+        ApiList::update(['returnStr' => json_encode($data)], ['hash' => $hash]);
+        $this->handle($data['data'], $dataArr);
+        $old = (new ApiFields())->where([
+            'hash' => $hash,
+            'type' => $type
+        ])->select();
+        $old = $this->buildArrFromObj($old);
+        $oldArr = array_column($old, 'showName');
+        $newArr = array_column($dataArr, 'showName');
+        $addArr = array_diff($newArr, $oldArr);
+        $delArr = array_diff($oldArr, $newArr);
+        if ($delArr) {
+            ApiFields::destroy(['showName' => ['in', $delArr]]);
         }
+        if ($addArr) {
+            $addData = [];
+            foreach ($dataArr as $item) {
+                if (in_array($item['showName'], $addArr)) {
+                    $addData[] = $item;
+                }
+            }
+            (new ApiFields())->insertAll($addData);
+        }
+
+        return $this->buildSuccess([]);
     }
 
     private function handle($data, &$dataArr, $prefix = 'data', $index = 'data') {
