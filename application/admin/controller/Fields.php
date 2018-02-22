@@ -150,6 +150,9 @@ class Fields extends Base {
         $jsonStr = $this->request->post('jsonStr');
         $jsonStr = html_entity_decode($jsonStr);
         $data = json_decode($jsonStr, true);
+        if ($data === null) {
+            return $this->buildFailed(ReturnCode::EXCEPTION, 'JSON数据格式有误');
+        }
         ApiList::update(['returnStr' => json_encode($data)], ['hash' => $hash]);
         $this->handle($data['data'], $dataArr);
         $old = (new ApiFields())->where([
