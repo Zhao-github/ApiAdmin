@@ -84,66 +84,55 @@ class Fields extends Base {
         }
     }
 
+    /**
+     * 新增字段
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     */
     public function add() {
-        if (IS_POST) {
-            $data = I('post.');
-            $data['fieldName'] = $data['showName'];
-            $res = D('ApiFields')->add($data);
-            if ($res === false) {
-                $this->ajaxError('操作失败');
-            } else {
-                S('ApiRequest_' . $data['hash'], null);
-                S('ApiResponse_' . $data['hash'], null);
-                $this->ajaxSuccess('添加成功');
-            }
+        $postData = $this->request->post();
+        $postData['showName'] = $postData['fieldName'];
+        $postData['default'] = $postData['defaults'];
+        unset($postData['defaults']);
+        $res = ApiFields::create($postData);
+        if ($res === false) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
-            $this->assign('dataType', $this->dataType);
-            $this->display();
+            return $this->buildSuccess('操作成功');
         }
     }
 
+    /**
+     * 字段编辑
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     */
     public function edit() {
-        if (IS_POST) {
-            $data = I('post.');
-            $data['fieldName'] = $data['showName'];
-            $res = D('ApiFields')->where(array('id' => $data['id']))->save($data);
-            if ($res === false) {
-                $this->ajaxError('操作失败');
-            } else {
-                if ($data['type'] == 0) {
-                    S('ApiRequest_' . $data['hash'], null);
-                } else {
-                    S('ApiResponse_' . $data['hash'], null);
-                }
-                $this->ajaxSuccess('添加成功');
-            }
+        $postData = $this->request->post();
+        $postData['showName'] = $postData['fieldName'];
+        $postData['default'] = $postData['defaults'];
+        unset($postData['defaults']);
+        $res = ApiFields::update($postData);
+        if ($res === false) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
-            $id = I('get.id');
-            if ($id) {
-                $detail = D('ApiFields')->where(array('id' => $id))->find();
-                $this->assign('detail', $detail);
-                $this->assign('dataType', $this->dataType);
-                $this->display('add');
-            }
+            return $this->buildSuccess([]);
         }
     }
 
+    /**
+     * 字段删除
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     */
     public function del() {
-        if (IS_POST) {
-            $id = I('post.id');
-            if ($id) {
-                $detail = D('ApiFields')->where(array('id' => $id))->find();
-                if ($detail['type'] == 0) {
-                    S('ApiRequest_' . $detail['hash'], null);
-                } else {
-                    S('ApiResponse_' . $detail['hash'], null);
-                }
-                D('ApiFields')->where(array('id' => $id))->delete();
-                $this->ajaxSuccess('操作成功');
-            } else {
-                $this->ajaxError('缺少参数');
-            }
+        $id = $this->request->get('id');
+        if (!$id) {
+            return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
+        ApiFields::destroy($id);
+
+        return $this->buildSuccess([]);
     }
 
     public function upload() {
@@ -192,10 +181,10 @@ class Fields extends Base {
             $addArr = array(
                 'fieldName' => $index,
                 'showName'  => $prefix,
-                'hash'      => I('post.hash'),
+                'hash'      => $this->request->post('hash'),
                 'isMust'    => 1,
                 'dataType'  => DataType::TYPE_ARRAY,
-                'type'      => I('post.type')
+                'type'      => $this->request->post('type')
             );
             $dataArr[] = $addArr;
             $prefix .= '[]';
@@ -206,10 +195,10 @@ class Fields extends Base {
             $addArr = array(
                 'fieldName' => $index,
                 'showName'  => $prefix,
-                'hash'      => I('post.hash'),
+                'hash'      => $this->request->post('hash'),
                 'isMust'    => 1,
                 'dataType'  => DataType::TYPE_OBJECT,
-                'type'      => I('post.type')
+                'type'      => $this->request->post('type')
             );
             $dataArr[] = $addArr;
             $prefix .= '{}';
@@ -218,10 +207,10 @@ class Fields extends Base {
                 $addArr = array(
                     'fieldName' => $index,
                     'showName'  => $myPre,
-                    'hash'      => I('post.hash'),
+                    'hash'      => $this->request->post('hash'),
                     'isMust'    => 1,
                     'dataType'  => DataType::TYPE_STRING,
-                    'type'      => I('post.type')
+                    'type'      => $this->request->post('type')
                 );
                 if (is_numeric($datum)) {
                     if (preg_match('/^\d*$/', $datum)) {

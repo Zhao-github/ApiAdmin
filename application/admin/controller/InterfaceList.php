@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 
 
+use app\model\ApiFields;
 use app\model\ApiList;
 use app\util\ReturnCode;
 
@@ -123,11 +124,12 @@ class InterfaceList extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function del() {
-        $id = $this->request->get('id');
-        if (!$id) {
+        $hash = $this->request->get('hash');
+        if (!$hash) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        ApiList::destroy($id);
+        ApiList::destroy(['hash' => $hash]);
+        ApiFields::destroy(['hash' => $hash]);
 
         return $this->buildSuccess([]);
     }
