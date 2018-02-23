@@ -1,5 +1,6 @@
 <?php
 /**
+ * 登录登出
  * @since   2017-11-02
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
@@ -14,6 +15,12 @@ use app\util\Tools;
 
 class Login extends Base {
 
+    /**
+     * 用户登录
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     * @throws \think\exception\DbException
+     */
     public function index() {
         $username = $this->request->post('username');
         $password = $this->request->post('password');

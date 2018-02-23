@@ -96,7 +96,7 @@ class User extends Base {
         $postData['regTime'] = time();
         $postData['password'] = Tools::userMd5($postData['password']);
         if ($postData['groupId']) {
-            $groups = implode(',', $postData['groupId']);
+            $groups = trim(implode(',', $postData['groupId']), ',');
         }
         unset($postData['groupId']);
         $res = ApiUser::create($postData);
@@ -193,7 +193,7 @@ class User extends Base {
             $postData['password'] = Tools::userMd5($postData['password']);
         }
         if ($postData['groupId']) {
-            $groups = implode(',', $postData['groupId']);
+            $groups = trim(implode(',', $postData['groupId']), ',');
         }
         unset($postData['groupId']);
         $res = ApiUser::update($postData);
