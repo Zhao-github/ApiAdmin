@@ -187,6 +187,30 @@ return [
             'admin/InterfaceGroup/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'AppGroup/index'        => [
+            'admin/AppGroup/index',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'AppGroup/add'          => [
+            'admin/AppGroup/add',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'AppGroup/edit'         => [
+            'admin/AppGroup/edit',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
+        'AppGroup/del'          => [
+            'admin/AppGroup/del',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'AppGroup/getAll'          => [
+            'admin/AppGroup/getAll',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'AppGroup/changeStatus' => [
+            'admin/AppGroup/changeStatus',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         '__miss__'          => ['admin/Miss/index'],
     ],
 ];
