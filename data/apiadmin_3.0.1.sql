@@ -260,40 +260,6 @@ VALUES
 UNLOCK TABLES;
 
 
-# Dump of table api_store
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `api_store`;
-
-CREATE TABLE `api_store` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `path` varchar(50) NOT NULL DEFAULT '' COMMENT '对应的代码路径',
-  `auth` int(11) NOT NULL DEFAULT 0 COMMENT '使用的接口秘钥',
-  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '接口状态',
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '接口名称（提供辨识使用）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='三方接口仓库';
-
-
-
-# Dump of table api_store_auth
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `api_store_auth`;
-
-CREATE TABLE `api_store_auth` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '秘钥名称',
-  `appId` varchar(50) NOT NULL DEFAULT '' COMMENT '应用ID',
-  `appSecret` varchar(255) NOT NULL DEFAULT '' COMMENT '应用秘钥',
-  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '秘钥状态',
-  `accessToken` varchar(255) DEFAULT '' COMMENT '授权秘钥（千米）',
-  `refreshToken` varchar(255) DEFAULT '' COMMENT '刷新秘钥（千米）',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='三方接口秘钥管理';
-
-
-
 # Dump of table api_user
 # ------------------------------------------------------------
 
