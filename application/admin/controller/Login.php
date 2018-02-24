@@ -62,13 +62,18 @@ class Login extends Base {
         cache($userToken, json_encode($userInfo), config('apiAdmin.ONLINE_TIME'));
         cache($userInfo['id'], $userToken, config('apiAdmin.ONLINE_TIME'));
 
-        $groups = ApiAuthGroupAccess::get(['uid' => $userInfo['id']]);
-        $return['access'] = 0;
-        if (isset($groups) || $groups->groupId) {
-            if (strpos($groups->groupId, ',') === false) {
-                $return['access'] = intval($groups->groupId);
-            } else {
-                $return['access'] = explode(',', $groups->groupId);
+        $return['access'] = 1000000;
+        $isSupper = Tools::isAdministrator($userInfo['id']);
+        if ($isSupper) {
+            $return['access'] = 0;
+        } else {
+            $groups = ApiAuthGroupAccess::get(['uid' => $userInfo['id']]);
+            if (isset($groups) || $groups->groupId) {
+                if (strpos($groups->groupId, ',') === false) {
+                    $return['access'] = intval($groups->groupId);
+                } else {
+                    $return['access'] = explode(',', $groups->groupId);
+                }
             }
         }
 
