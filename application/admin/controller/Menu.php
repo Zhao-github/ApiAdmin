@@ -20,7 +20,7 @@ class Menu extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-        $list = (new ApiMenu)->where([])->order('sort', 'ASC')->select();
+        $list = (new ApiMenu)->where([])->order('sort', 'DESC')->select();
         $list = $this->buildArrFromObj($list);
         $list = formatTree(listToTree($list));
 
@@ -36,6 +36,9 @@ class Menu extends Base {
      */
     public function add() {
         $postData = $this->request->post();
+        if ($postData['url']) {
+            $postData['url'] = 'admin/' . $postData['url'];
+        }
         $res = ApiMenu::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
@@ -93,6 +96,7 @@ class Menu extends Base {
             return $this->buildFailed(ReturnCode::INVALID, '当前菜单存在子菜单,不可以被删除!');
         } else {
             ApiMenu::destroy($id);
+
             return $this->buildSuccess([]);
         }
     }
