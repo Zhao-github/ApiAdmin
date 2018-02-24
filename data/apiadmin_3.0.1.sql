@@ -103,27 +103,6 @@ CREATE TABLE `api_auth_rule` (
 
 
 
-# Dump of table api_document
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `api_document`;
-
-CREATE TABLE `api_document` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `key` varchar(50) NOT NULL DEFAULT '' COMMENT '授权秘钥',
-  `endTime` int(11) NOT NULL DEFAULT 0 COMMENT '失效时间戳',
-  `times` int(11) NOT NULL DEFAULT 0 COMMENT '访问次数',
-  `lastTime` int(11) NOT NULL DEFAULT 0 COMMENT '最后访问时间',
-  `lastIp` varchar(50) NOT NULL DEFAULT '' COMMENT '最后访问IP',
-  `createTime` int(11) NOT NULL DEFAULT 0 COMMENT '创建时间',
-  `info` varchar(50) NOT NULL COMMENT '备注',
-  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '1生效，0失效',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `key` (`key`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文档访问秘钥';
-
-
-
 # Dump of table api_fields
 # ------------------------------------------------------------
 
