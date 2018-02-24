@@ -14,7 +14,7 @@ return [
     'APP_NAME'    => 'ApiAdmin',
 
     //鉴权相关
-    'USER_ADMINISTRATOR' => [1, 2],
+    'USER_ADMINISTRATOR' => [1],
 
     //安全秘钥
     'AUTH_KEY'           => 'I&TC{pft>L,C`wFQ>&#ROW>k{Kxlt1>ryW(>r<#R',

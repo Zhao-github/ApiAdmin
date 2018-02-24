@@ -20,7 +20,7 @@ class Menu extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-        $list = (new ApiMenu)->where([])->order('sort', 'DESC')->select();
+        $list = (new ApiMenu)->where([])->order('sort', 'ASC')->select();
         $list = $this->buildArrFromObj($list);
         $list = formatTree(listToTree($list));
 
@@ -73,6 +73,9 @@ class Menu extends Base {
      */
     public function edit() {
         $postData = $this->request->post();
+        if ($postData['url']) {
+            $postData['url'] = 'admin/' . $postData['url'];
+        }
         $res = ApiMenu::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
