@@ -6,8 +6,8 @@
 # https://github.com/sequelpro/sequelpro
 #
 # Host: 127.0.0.1 (MySQL 5.5.5-10.2.12-MariaDB)
-# Database: apiadmin
-# Generation Time: 2018-02-23 02:01:14 +0000
+# Database: apiadmin2
+# Generation Time: 2018-02-24 07:57:14 +0000
 # ************************************************************
 
 
@@ -33,7 +33,7 @@ CREATE TABLE `api_app` (
   `app_status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '应用状态：0表示禁用，1表示启用',
   `app_info` tinytext DEFAULT NULL COMMENT '应用说明',
   `app_api` text DEFAULT NULL COMMENT '当前应用允许请求的全部API接口',
-  `app_group` int(11) NOT NULL DEFAULT 0 COMMENT '当前应用所属的应用组',
+  `app_group` varchar(128) NOT NULL DEFAULT 'default' COMMENT '当前应用所属的应用组唯一标识',
   `app_addTime` int(11) NOT NULL DEFAULT 0 COMMENT '应用创建时间',
   `app_api_show` text DEFAULT NULL COMMENT '前台样式显示所需数据格式',
   PRIMARY KEY (`id`),
@@ -52,6 +52,7 @@ CREATE TABLE `api_app_group` (
   `name` varchar(128) NOT NULL DEFAULT '' COMMENT '组名称',
   `description` text DEFAULT NULL COMMENT '组说明',
   `status` tinyint(2) NOT NULL DEFAULT 1 COMMENT '组状态',
+  `hash` varchar(128) NOT NULL DEFAULT '' COMMENT '组标识',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应用组，目前只做管理使用，没有实际权限控制';
 
@@ -187,74 +188,67 @@ LOCK TABLES `api_menu` WRITE;
 
 INSERT INTO `api_menu` (`id`, `name`, `fid`, `url`, `auth`, `sort`, `hide`, `icon`, `level`)
 VALUES
-	(1,'欢迎页',0,'Index/welcome',0,0,0,'',0),
-	(2,'系统配置',0,'',0,1,0,'',0),
-	(3,'菜单维护',2,'Menu/index',0,0,0,'',0),
-	(4,'用户管理',2,'User/index',0,1,0,'',0),
-	(5,'权限管理',2,'Permission/index',0,2,0,'',0),
-	(6,'操作日志',2,'Log/index',0,3,0,'',0),
-	(7,'应用管理',0,'',0,2,0,'',0),
-	(8,'应用列表',7,'App/index',0,0,0,'',0),
-	(9,'接口列表',7,'ApiManage/index',0,1,0,'',0),
-	(10,'字段注解（暂未开放）',7,'FieldsInfoManage/index',0,2,1,'',0),
-	(11,'首页',0,'Index/index',0,0,1,'',0),
-	(12,'新增菜单',3,'Menu/add',0,0,1,'',0),
-	(13,'编辑菜单',3,'Menu/edit',0,0,1,'',0),
-	(14,'隐藏菜单',3,'Menu/close',0,0,1,'',0),
-	(15,'显示菜单',3,'Menu/open',0,0,1,'',0),
-	(16,'删除菜单',3,'Menu/del',0,0,1,'',0),
-	(17,'新增用户',4,'User/add',0,0,1,'',0),
-	(18,'账号封停',4,'User/close',0,0,1,'',0),
-	(19,'账号解封',4,'User/open',0,0,1,'',0),
-	(20,'账号删除',4,'User/del',0,0,1,'',0),
-	(21,'编辑应用',8,'App/edit',0,0,1,'',0),
-	(22,'新增应用',8,'App/add',0,0,1,'',0),
-	(23,'启用应用',8,'App/open',0,0,1,'',0),
-	(24,'禁用应用',8,'App/close',0,0,1,'',0),
-	(25,'删除应用',8,'App/del',0,0,1,'',0),
-	(26,'新增接口',9,'ApiManage/add',0,0,1,'',0),
-	(27,'启用接口',9,'ApiManage/open',0,0,1,'',0),
-	(28,'禁用接口',9,'ApiManage/close',0,0,1,'',0),
-	(29,'编辑接口',9,'ApiManage/edit',0,0,1,'',0),
-	(30,'删除接口',9,'ApiManage/del',0,0,1,'',0),
-	(31,'返回字段编辑',9,'FieldsManage/response',0,0,1,'',0),
-	(32,'请求字段编辑',9,'FieldsManage/request',0,0,1,'',0),
-	(33,'新增字段',9,'FieldsManage/add',0,0,1,'',0),
-	(34,'字段编辑',9,'FieldsManage/edit',0,0,1,'',0),
-	(35,'批量上传返回字段',9,'FieldsManage/upload',0,0,1,'',0),
-	(36,'Ajax查询Log列表',6,'Log/ajaxGetIndex',0,0,1,'',0),
-	(37,'日志删除',6,'Log/del',0,0,1,'',0),
-	(38,'日志详情查看',6,'Log/showDetail',0,0,1,'',0),
-	(39,'添加权限组',5,'Permission/add',0,0,1,'',0),
-	(40,'禁用权限组',5,'Permission/close',0,0,1,'',0),
-	(41,'启用权限组',5,'Permission/open',0,0,1,'',0),
-	(42,'编辑权限组',5,'Permission/edit',0,0,1,'',0),
-	(43,'删除权限组',5,'Permission/del',0,0,1,'',0),
-	(44,'用户入组',5,'Permission/group',0,0,1,'',0),
-	(45,'组用户列表',5,'Permission/member',0,0,1,'',0),
-	(46,'踢出成员',5,'Permission/delMember',0,0,1,'',0),
-	(47,'权限组权限配置',5,'Permission/rule',0,0,1,'',0),
-	(48,'三方接口',0,'',0,4,0,'',0),
-	(49,'接口仓库',48,'ApiStore/index',0,0,0,'',0),
-	(50,'Ajax获取接口列表',49,'ApiStore/ajaxGetIndex',0,0,1,'',0),
-	(51,'刷新接口',49,'ApiStore/refresh',0,0,1,'',0),
-	(52,'编辑接口',49,'ApiStore/edit',0,0,1,'',0),
-	(53,'启用接口',49,'ApiStore/open',0,0,1,'',0),
-	(54,'禁用接口',49,'ApiStore/close',0,0,1,'',0),
-	(55,'Ajax获取秘钥列表',61,'ApiKey/ajaxGetIndex',0,0,1,'',0),
-	(56,'新增秘钥类别',61,'ApiKey/add',0,0,1,'',0),
-	(57,'编辑秘钥类别',61,'ApiKey/edit',0,0,1,'',0),
-	(58,'删除秘钥分类',61,'ApiKey/del',0,0,1,'',0),
-	(59,'启用秘钥分类',61,'ApiKey/open',0,0,1,'',0),
-	(60,'禁用秘钥分类',61,'ApiKey/close',0,0,1,'',0),
-	(61,'秘钥管理',48,'ApiKey/index',0,1,0,'',0),
-	(66,'文档管理',0,'',0,5,0,'',0),
-	(67,'秘钥管理',66,'Document/index',0,0,0,'',0),
-	(68,'Ajax获取文档记录',67,'Document/ajaxGetIndex',0,1,1,'',0),
-	(69,'创建访问秘钥',67,'Document/add',0,2,1,'',0),
-	(70,'延长Key时间',67,'Document/addTime',0,3,1,'',0),
-	(71,'启用Key',67,'Document/open',0,4,1,'',0),
-	(72,'禁用Key',67,'Document/close',0,5,1,'',0);
+	(1,'用户登录',0,'admin/Login/index',0,0,0,'',0),
+	(2,'用户登出',0,'admin/Login/logout',0,0,0,'',0),
+	(3,'系统管理',0,'',0,1,0,'',0),
+	(4,'菜单维护',3,'',0,1,0,'',0),
+	(5,'菜单状态修改',4,'admin/Menu/changeStatus',0,0,0,'',0),
+	(6,'新增菜单',4,'admin/Menu/add',0,0,0,'',0),
+	(7,'编辑菜单',4,'admin/Menu/edit',0,0,0,'',0),
+	(8,'菜单删除',4,'admin/Menu/del',0,0,0,'',0),
+	(9,'用户管理',3,'',0,2,0,'',0),
+	(10,'获取当前组的全部用户',9,'admin/User/getUsers',0,0,0,'',0),
+	(11,'用户状态修改',9,'admin/User/changeStatus',0,0,0,'',0),
+	(12,'新增用户',9,'admin/User/add',0,0,0,'',0),
+	(13,'用户编辑',9,'admin/User/edit',0,0,0,'',0),
+	(14,'用户删除',9,'admin/User/del',0,0,0,'',0),
+	(15,'权限管理',3,'',0,3,0,'',0),
+	(16,'权限组状态编辑',15,'admin/Auth/changeStatus',0,0,0,'',0),
+	(17,'从指定组中删除指定用户',15,'admin/Auth/delMember',0,0,0,'',0),
+	(18,'新增权限组',15,'admin/Auth/add',0,0,0,'',0),
+	(19,'权限组编辑',15,'admin/Auth/edit',0,0,0,'',0),
+	(20,'删除权限组',15,'admin/Auth/del',0,0,0,'',0),
+	(21,'获取全部已开放的可选组',15,'admin/Auth/getGroups',0,0,0,'',0),
+	(22,'获取组所有的权限列表',15,'admin/Auth/getRuleList',0,0,0,'',0),
+	(23,'应用接入',0,'',0,2,0,'',0),
+	(24,'应用管理',23,'',0,0,0,'',0),
+	(25,'应用状态编辑',24,'admin/App/changeStatus',0,0,0,'',0),
+	(26,'获取AppId,AppSecret,接口列表,应用接口权限细节',24,'admin/App/getAppInfo',0,0,0,'',0),
+	(27,'新增应用',24,'admin/App/add',0,0,0,'',0),
+	(28,'编辑应用',24,'admin/App/edit',0,0,0,'',0),
+	(29,'删除应用',24,'admin/App/del',0,0,0,'',0),
+	(30,'接口管理',0,'',0,3,0,'',0),
+	(31,'接口维护',30,'',0,0,0,'',0),
+	(32,'接口状态编辑',31,'admin/InterfaceList/changeStatus',0,0,0,'',0),
+	(33,'获取接口唯一标识',31,'admin/InterfaceList/getHash',0,0,0,'',0),
+	(34,'添加接口',31,'admin/InterfaceList/add',0,0,0,'',0),
+	(35,'编辑接口',31,'admin/InterfaceList/edit',0,0,0,'',0),
+	(36,'删除接口',31,'admin/InterfaceList/del',0,0,0,'',0),
+	(37,'获取接口请求字段',31,'admin/Fields/request',0,0,0,'',0),
+	(38,'获取接口返回字段',31,'admin/Fields/response',0,0,0,'',0),
+	(39,'添加接口字段',31,'admin/Fields/add',0,0,0,'',0),
+	(40,'上传接口返回字段',31,'admin/Fields/upload',0,0,0,'',0),
+	(41,'编辑接口字段',31,'admin/Fields/edit',0,0,0,'',0),
+	(42,'删除接口字段',31,'admin/Fields/del',0,0,0,'',0),
+	(43,'接口分组',30,'',0,1,0,'',0),
+	(44,'添加接口组',43,'admin/InterfaceGroup/add',0,0,0,'',0),
+	(45,'编辑接口组',43,'admin/InterfaceGroup/edit',0,0,0,'',0),
+	(46,'删除接口组',43,'admin/InterfaceGroup/del',0,0,0,'',0),
+	(47,'获取全部有效的接口组',43,'admin/InterfaceGroup/getAll',0,0,0,'',0),
+	(48,'接口组状态维护',43,'admin/InterfaceGroup/changeStatus',0,0,0,'',0),
+	(49,'应用分组',23,'',0,1,0,'',0),
+	(50,'添加应用组',49,'admin/AppGroup/add',0,0,0,'',0),
+	(51,'编辑应用组',49,'admin/AppGroup/edit',0,0,0,'',0),
+	(52,'删除应用组',49,'admin/AppGroup/del',0,0,0,'',0),
+	(53,'获取全部可用应用组',49,'admin/AppGroup/getAll',0,0,0,'',0),
+	(54,'应用组状态编辑',49,'admin/AppGroup/changeStatus',0,0,0,'',0),
+	(55,'菜单列表',4,'admin/Menu/index',0,0,0,'',0),
+	(56,'用户列表',9,'admin/User/index',0,0,0,'',0),
+	(57,'权限列表',15,'admin/Auth/index',0,0,0,'',0),
+	(58,'应用列表',24,'admin/App/index',0,0,0,'',0),
+	(59,'应用分组列表',49,'admin/AppGroup/index',0,0,0,'',0),
+	(60,'接口列表',31,'admin/InterfaceList/index',0,0,0,'',0),
+	(61,'接口分组列表',43,'admin/InterfaceGroup/index',0,0,0,'',0);
 
 /*!40000 ALTER TABLE `api_menu` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -283,7 +277,7 @@ LOCK TABLES `api_user` WRITE;
 
 INSERT INTO `api_user` (`id`, `username`, `nickname`, `password`, `regTime`, `regIp`, `updateTime`, `status`, `openId`)
 VALUES
-	(1,'root','root','912601e4ad1b308c9ae41877cf6ca754',1492004246,3682992231,1492236545,1,NULL);
+	(1,'root','root','912601e4ad1b308c9ae41877cf6ca754',1519458966,3663623043,0,1,NULL);
 
 /*!40000 ALTER TABLE `api_user` ENABLE KEYS */;
 UNLOCK TABLES;
