@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 
 
+use app\model\ApiAuthGroupAccess;
 use app\model\ApiUser;
 use app\model\ApiUserData;
 use app\util\ReturnCode;
@@ -17,9 +18,10 @@ class Login extends Base {
 
     /**
      * 用户登录
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @throws \think\Exception
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
         $username = $this->request->post('username');
@@ -59,6 +61,17 @@ class Login extends Base {
         $userToken = md5(uniqid() . time());
         cache($userToken, json_encode($userInfo), config('apiAdmin.ONLINE_TIME'));
         cache($userInfo['id'], $userToken, config('apiAdmin.ONLINE_TIME'));
+
+        $groups = ApiAuthGroupAccess::get(['uid' => $userInfo['id']]);
+        $return['access'] = 0;
+        if (isset($groups) || $groups->groupId) {
+            if (strpos($groups->groupId, ',') === false) {
+                $return['access'] = intval($groups->groupId);
+            } else {
+                $return['access'] = explode(',', $groups->groupId);
+            }
+        }
+
         $return['id'] = $userInfo['id'];
         $return['username'] = $userInfo['username'];
         $return['nickname'] = $userInfo['nickname'];
