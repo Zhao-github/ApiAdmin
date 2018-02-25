@@ -10,6 +10,7 @@ namespace app\admin\controller;
 
 use app\model\ApiMenu;
 use app\util\ReturnCode;
+use app\util\Tools;
 
 class Menu extends Base {
 
@@ -21,7 +22,7 @@ class Menu extends Base {
      */
     public function index() {
         $list = (new ApiMenu)->where([])->order('sort', 'ASC')->select();
-        $list = $this->buildArrFromObj($list);
+        $list = Tools::buildArrFromObj($list);
         $list = formatTree(listToTree($list));
 
         return $this->buildSuccess([

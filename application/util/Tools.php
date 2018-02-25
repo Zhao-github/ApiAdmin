@@ -76,4 +76,25 @@ class Tools {
 
         return false;
     }
+
+    /**
+     * 将查询的二维对象转换成二维数组
+     * @param array $res
+     * @param string $key 允许指定索引值
+     * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public static function buildArrFromObj($res, $key = '') {
+        $arr = [];
+        foreach ($res as $value) {
+            $value = $value->toArray();
+            if ($key) {
+                $arr[$value[$key]] = $value;
+            } else {
+                $arr[] = $value;
+            }
+        }
+
+        return $arr;
+    }
 }

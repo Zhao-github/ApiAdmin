@@ -21,8 +21,4 @@ class DataType {
     const TYPE_MOBILE = 8;
     const TYPE_OBJECT = 9;
 
-    //JPush推送消息类型
-    const PUSH_SYSTEM_DATA = 1;
-    const PUSH_ACTIVITY_DATA = 2;
-
 }

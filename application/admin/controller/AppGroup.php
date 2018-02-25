@@ -10,6 +10,7 @@ namespace app\admin\controller;
 
 use app\model\ApiAppGroup;
 use app\util\ReturnCode;
+use app\util\Tools;
 
 class AppGroup extends Base {
     /**
@@ -44,7 +45,7 @@ class AppGroup extends Base {
 
         $listInfo = (new ApiAppGroup())->where($where)->limit($start, $limit)->select();
         $count = (new ApiAppGroup())->where($where)->count();
-        $listInfo = $this->buildArrFromObj($listInfo);
+        $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
             'list'     => $listInfo,

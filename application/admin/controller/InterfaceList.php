@@ -11,6 +11,7 @@ namespace app\admin\controller;
 use app\model\ApiFields;
 use app\model\ApiList;
 use app\util\ReturnCode;
+use app\util\Tools;
 
 class InterfaceList extends Base {
     /**
@@ -49,7 +50,7 @@ class InterfaceList extends Base {
 
         $listInfo = (new ApiList())->where($where)->order('id', 'DESC')->limit($start, $limit)->select();
         $count = (new ApiList())->where($where)->count();
-        $listInfo = $this->buildArrFromObj($listInfo);
+        $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
             'list'  => $listInfo,

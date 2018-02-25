@@ -12,6 +12,7 @@ use app\model\ApiFields;
 use app\model\ApiList;
 use app\util\DataType;
 use app\util\ReturnCode;
+use app\util\Tools;
 
 class Fields extends Base {
     private $dataType = array(
@@ -45,7 +46,7 @@ class Fields extends Base {
         if (!empty($hash)) {
             $listInfo = (new ApiFields())->where(['hash' => $hash, 'type' => 0])->limit($start, $limit)->select();
             $count = (new ApiFields())->where(['hash' => $hash, 'type' => 0])->count();
-            $listInfo = $this->buildArrFromObj($listInfo);
+            $listInfo = Tools::buildArrFromObj($listInfo);
 
             return $this->buildSuccess([
                 'list'     => $listInfo,
@@ -73,7 +74,7 @@ class Fields extends Base {
         if (!empty($hash)) {
             $listInfo = (new ApiFields())->where(['hash' => $hash, 'type' => 1])->limit($start, $limit)->select();
             $count = (new ApiFields())->where(['hash' => $hash, 'type' => 1])->count();
-            $listInfo = $this->buildArrFromObj($listInfo);
+            $listInfo = Tools::buildArrFromObj($listInfo);
 
             return $this->buildSuccess([
                 'list'     => $listInfo,
@@ -159,7 +160,7 @@ class Fields extends Base {
             'hash' => $hash,
             'type' => $type
         ])->select();
-        $old = $this->buildArrFromObj($old);
+        $old = Tools::buildArrFromObj($old);
         $oldArr = array_column($old, 'showName');
         $newArr = array_column($dataArr, 'showName');
         $addArr = array_diff($newArr, $oldArr);

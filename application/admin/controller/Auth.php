@@ -13,6 +13,7 @@ use app\model\ApiAuthGroupAccess;
 use app\model\ApiAuthRule;
 use app\model\ApiMenu;
 use app\util\ReturnCode;
+use app\util\Tools;
 
 class Auth extends Base {
 
@@ -38,7 +39,7 @@ class Auth extends Base {
 
         $listInfo = (new ApiAuthGroup())->where($where)->order('id', 'DESC')->limit($start, $limit)->select();
         $count = (new ApiAuthGroup())->where($where)->count();
-        $listInfo = $this->buildArrFromObj($listInfo);
+        $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
             'list'  => $listInfo,
@@ -57,7 +58,7 @@ class Auth extends Base {
     public function getGroups() {
         $listInfo = (new ApiAuthGroup())->where(['status' => 1])->order('id', 'DESC')->select();
         $count = count($listInfo);
-        $listInfo = $this->buildArrFromObj($listInfo);
+        $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
             'list'  => $listInfo,
@@ -77,7 +78,7 @@ class Auth extends Base {
         $groupId = $this->request->get('groupId', 0);
 
         $list = (new ApiMenu)->where([])->order('sort', 'ASC')->select();
-        $list = $this->buildArrFromObj($list);
+        $list = Tools::buildArrFromObj($list);
         $list = listToTree($list);
 
         $rules = [];
@@ -269,7 +270,7 @@ class Auth extends Base {
         $postData = $this->request->post();
         $needAdd = [];
         $has = (new ApiAuthRule())->where(['groupId' => $postData['id']])->select();
-        $has = $this->buildArrFromObj($has);
+        $has = Tools::buildArrFromObj($has);
         $hasRule = array_column($has, 'url');
         $needDel = array_flip($hasRule);
         foreach ($postData['rules'] as $key => $value) {

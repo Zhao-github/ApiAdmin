@@ -13,6 +13,7 @@ use app\model\ApiList;
 use app\model\ApiGroup;
 use app\util\ReturnCode;
 use app\util\Strs;
+use app\util\Tools;
 
 class App extends Base {
     /**
@@ -46,7 +47,7 @@ class App extends Base {
 
         $listInfo = (new ApiApp())->where($where)->order('app_addTime', 'DESC')->limit($start, $limit)->select();
         $count = (new ApiApp())->where($where)->count();
-        $listInfo = $this->buildArrFromObj($listInfo);
+        $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
             'list'  => $listInfo,
@@ -67,7 +68,7 @@ class App extends Base {
             $res['apiList'][$api['groupHash']][] = $api;
         }
         $groupArr = ApiGroup::all();
-        $groupArr = $this->buildArrFromObj($groupArr);
+        $groupArr = Tools::buildArrFromObj($groupArr);
         $res['groupInfo'] = array_column($groupArr, 'name', 'hash');
         $res['groupInfo']['default'] = '默认分组';
         $id = $this->request->get('id', 0);

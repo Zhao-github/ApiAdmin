@@ -49,19 +49,19 @@ class User extends Base {
 
         $listInfo = (new ApiUser())->where($where)->order('regTime', 'DESC')->limit($start, $limit)->select();
         $count = (new ApiUser())->where($where)->count();
-        $listInfo = $this->buildArrFromObj($listInfo);
+        $listInfo = Tools::buildArrFromObj($listInfo);
         $idArr = array_column($listInfo, 'id');
 
         $userData = ApiUserData::all(function($query) use ($idArr) {
             $query->whereIn('uid', $idArr);
         });
-        $userData = $this->buildArrFromObj($userData);
+        $userData = Tools::buildArrFromObj($userData);
         $userData = $this->buildArrByNewKey($userData, 'uid');
 
         $userGroup = ApiAuthGroupAccess::all(function($query) use ($idArr) {
             $query->whereIn('uid', $idArr);
         });
-        $userGroup = $this->buildArrFromObj($userGroup);
+        $userGroup = Tools::buildArrFromObj($userGroup);
         $userGroup = $this->buildArrByNewKey($userGroup, 'uid');
 
         foreach ($listInfo as $key => $value) {
@@ -129,17 +129,17 @@ class User extends Base {
         }
 
         $listInfo = (new ApiAuthGroupAccess())->where(['groupId' => ['like', "%{$gid}%"]])->select();
-        $listInfo = $this->buildArrFromObj($listInfo);
+        $listInfo = Tools::buildArrFromObj($listInfo);
         $uidArr = array_column($listInfo, 'uid');
 
         $userInfo = (new ApiUser())->whereIn('id', $uidArr)->order('regTime', 'DESC')->limit($start, $limit)->select();
         $count = (new ApiUser())->whereIn('id', $uidArr)->count();
-        $userInfo = $this->buildArrFromObj($userInfo);
+        $userInfo = Tools::buildArrFromObj($userInfo);
 
         $userData = ApiUserData::all(function($query) use ($uidArr) {
             $query->whereIn('uid', $uidArr);
         });
-        $userData = $this->buildArrFromObj($userData);
+        $userData = Tools::buildArrFromObj($userData);
         $userData = $this->buildArrByNewKey($userData, 'uid');
 
         foreach ($userInfo as $key => $value) {
