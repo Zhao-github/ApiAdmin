@@ -15,4 +15,11 @@ return [
         ],
         '__miss__'      => ['api/Miss/index'],
     ],
+    '[wiki]' => [
+        'login' => [
+            'wiki/index/login',
+            ['method' => 'get']
+        ],
+        '__miss__'      => ['api/Miss/index'],
+    ],
 ];

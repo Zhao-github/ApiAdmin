@@ -95,7 +95,7 @@ class Index extends Base {
     }
 
     public function login() {
-        return $this->fetch();
+        return view();
     }
 
 }
