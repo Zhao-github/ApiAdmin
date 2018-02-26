@@ -50,11 +50,11 @@ class BuildToken extends Base {
     }
 
     public function e1() {
-        return $this->buildSuccess('e1');
+        return $this->buildSuccess(['e1']);
     }
 
     public function e2() {
-        return $this->buildSuccess('e2');
+        return $this->buildSuccess(['e2']);
     }
 
     /**

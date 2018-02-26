@@ -64,7 +64,7 @@ class ApiAuth {
      * Api接口合法性检测
      */
     private function checkAccessToken() {
-        $access_token = $this->request->header('');
+        $access_token = $this->request->header('access-token');
         if (!isset($access_token) || !$access_token) {
             return json(['code' => ReturnCode::ACCESS_TOKEN_TIMEOUT, 'msg' => '缺少参数access-token', 'data' => []]);
         } else {

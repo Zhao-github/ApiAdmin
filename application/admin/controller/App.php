@@ -98,11 +98,12 @@ class App extends Base {
             'app_api_show' => '',
         ];
         if (isset($postData['app_api']) && $postData['app_api']) {
+            $appApi = [];
             $data['app_api_show'] = json_encode($postData['app_api']);
             foreach ($postData['app_api'] as $value) {
-                $data['app_api'] .= implode(',', $value) . ',';
+                $appApi = array_merge($appApi, $value);
             }
-            $data['app_api'] = trim($data['app_api'], ',');
+            $data['app_api'] = implode(',', $appApi);
         }
         $res = ApiApp::create($data);
         if ($res === false) {
@@ -149,11 +150,12 @@ class App extends Base {
             'app_api_show' => '',
         ];
         if (isset($postData['app_api']) && $postData['app_api']) {
+            $appApi = [];
             $data['app_api_show'] = json_encode($postData['app_api']);
             foreach ($postData['app_api'] as $value) {
-                $data['app_api'] .= implode(',', $value) . ',';
+                $appApi = array_merge($appApi, $value);
             }
-            $data['app_api'] = trim($data['app_api'], ',');
+            $data['app_api'] = implode(',', $appApi);
         }
         $res = ApiApp::update($data);
         if ($res === false) {

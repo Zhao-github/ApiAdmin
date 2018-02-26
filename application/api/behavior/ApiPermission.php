@@ -1,6 +1,6 @@
 <?php
 /**
- * 处理app_id接入接口权限
+ * 处理app_id接入接口权限 需要重新签发AccessToken才能生效新的权限
  * @since   2017-07-25
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
@@ -8,23 +8,37 @@
 namespace app\api\behavior;
 
 
-use app\model\ApiFields;
-use app\util\ApiLog;
 use app\util\ReturnCode;
-use app\util\DataType;
 use think\Request;
-use think\Validate;
 
 class ApiPermission {
 
     /**
-     * 默认行为函数
+     * @var Request
+     */
+    private $request;
+
+    /**
+     * 接口鉴权
+     * @return \think\response\Json
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
-     * @return \think\Request
-     * @throws \think\exception\DbException
      */
     public function run() {
+        $this->request = Request::instance();
+        $hash = $this->request->routeInfo();
+        if (isset($hash['rule'][1])) {
+            $hash = $hash['rule'][1];
+            $access_token = $this->request->header('access-token');
+            if ($access_token) {
+                $appInfo = cache($access_token);
+                $allRules = explode(',', $appInfo['app_api']);
+                if (!in_array($hash, $allRules)) {
+                    $data = ['code' => ReturnCode::INVALID, 'msg' => '非常抱歉，您没有权限怎么做！', 'data' => []];
 
+                    return json($data);
+                }
+            }
+        }
     }
 
 
