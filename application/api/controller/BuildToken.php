@@ -15,6 +15,14 @@ use app\util\Strs;
 
 class BuildToken extends Base {
 
+    /**
+     * 构建AccessToken
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
     public function getAccessToken() {
         $param = $this->request->param();
         if (empty($param['app_id'])) {
