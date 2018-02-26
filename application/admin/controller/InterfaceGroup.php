@@ -95,6 +95,7 @@ class InterfaceGroup extends Base {
      */
     public function add() {
         $postData = $this->request->post();
+        $postData['addTime'] = $postData['updateTime'] = time();
         $res = ApiGroup::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
@@ -110,6 +111,7 @@ class InterfaceGroup extends Base {
      */
     public function edit() {
         $postData = $this->request->post();
+        $postData['updateTime'] = time();
         $res = ApiGroup::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
