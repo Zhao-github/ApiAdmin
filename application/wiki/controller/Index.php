@@ -41,19 +41,32 @@ class Index extends Base {
     }
 
     public function detail() {
-        $gid = $this->request->route('gid');
-        $hash = $this->request->route('hash');
-        $newList = [];
-        $apiList = ApiList::all(['groupId' => $gid]);
-        foreach ($apiList as $value) {
-            $newList[$value['hash']] = $value;
+        $this->checkLogin();
+
+        $groupHash = $this->request->route('groupHash');
+        $hash = $this->request->route('hash', '');
+        $this->appInfo['app_api_show'] = json_decode($this->appInfo['app_api_show'], true);
+        if (!isset($this->appInfo['app_api_show'][$groupHash]) || empty($this->appInfo['app_api_show'][$groupHash])) {
+            $this->error('请求非法', url('/wiki/index'));
         }
-        if ($hash) {
-            $detail = $newList[$hash];
+
+        if (!$hash) {
+            $hash = $this->appInfo['app_api_show'][$groupHash][0];
         } else {
-            $detail = $apiList[0];
-            $hash = $detail['hash'];
+            if (!in_array($hash, $this->appInfo['app_api_show'][$groupHash])) {
+                $this->error('请求非法', url('/wiki/index'));
+            }
         }
+
+        $apiList = (new ApiList())->whereIn('hash', $this->appInfo['app_api_show'][$groupHash])->where(['groupHash' => $groupHash])->select();
+        $apiList = Tools::buildArrFromObj($apiList);
+        $apiList = Tools::buildArrByNewKey($apiList, 'hash');
+
+        if (!$hash) {
+            $hash = $this->appInfo['app_api_show'][$groupHash][0];
+        }
+        $detail = $apiList[$hash];
+
         $request = ApiFields::all(['hash' => $hash, 'type' => 0]);
         $response = ApiFields::all(['hash' => $hash, 'type' => 1]);
         $dataType = array(
@@ -67,15 +80,19 @@ class Index extends Base {
             DataType::TYPE_OBJECT  => 'Object',
             DataType::TYPE_MOBILE  => 'Mobile'
         );
-        $this->assign('request', $request);
-        $this->assign('response', $response);
-        $this->assign('dataType', $dataType);
-        $this->assign('apiList', $apiList);
-        $this->assign('detail', $detail);
-        $this->assign('hash', $hash);
-        $this->assign('gid', $gid);
 
-        return $this->fetch();
+        $groupInfo = ApiGroup::get(['hash' => $groupHash])->toArray();
+
+        return view('', [
+            'groupInfo' => $groupInfo,
+            'request'   => $request,
+            'response'  => $response,
+            'dataType'  => $dataType,
+            'apiList'   => $apiList,
+            'detail'    => $detail,
+            'hash'      => $hash,
+            'groupHash' => $groupHash
+        ]);
     }
 
     public function calculation() {

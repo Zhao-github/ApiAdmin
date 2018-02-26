@@ -19,9 +19,9 @@
                     <img src="http://static10.photo.sina.com.cn/middle/5a3ab1b1x9961016a8699&690">
                 </div>
                 <div class="content">
-                    <span class="header">XXX分组</span>
+                    <span class="header">{$groupInfo['name']}</span>
                     <div class="description">
-                        <p>系统将严格过滤请求字段，并且进行全部必要认证！ 系统将严格过滤请求字段，并且进行全部必要认证！ 系统将严格过滤请求字段，并且进行全部必要认证！ 系统将严格过滤请求字段，并且进行全部必要认证！</p>
+                        <p>{$groupInfo['description']}</p>
                     </div>
                     <div class="extra">
                         额外的细节
@@ -36,7 +36,7 @@
         <div class="four wide column">
             <div class="ui vertical menu" style="width: 100%;overflow: auto;">
                 {volist name="apiList" id="vo"}
-                <a class="{if condition="$hash == $vo['hash']"}active{/if} teal item" href="{:url('/wiki/detail-'.$gid.'-'.$vo["hash"])}">
+                <a class="{if condition="$hash == $vo['hash']"}active{/if} teal item" href="{:url('/wiki/detail/'.$groupHash.'/'.$vo["hash"])}">
                     {:substr($vo['hash'], 0, 11)}...（{:mb_substr($vo['info'], 0, 3)}...）
                     <div class="ui {if condition="$hash == $vo['hash']"}teal{/if} label"> &gt; </div>
                 </a>
@@ -45,7 +45,7 @@
         </div>
         <div class="twelve wide column">
             <div class="ui floating message" id="detail" style="overflow: auto;">
-                <h2 class='ui header'>接口唯一标识：<a target="_blank" href="{$http_type}{$_SERVER['HTTP_HOST']}/api/{$hash}">{$hash}</a>（{$detail['apiClass']}）</h2><br />
+                <h2 class='ui header'>接口唯一标识：<a target="_blank" href="{$http_type}{$_SERVER['HTTP_HOST']}/api/{$hash}">{$hash}</a>{if condition="$detail['isTest'] == 1"}（{$detail['apiClass']}）{/if}</h2><br />
                 <div class="ui raised segment">
                     <span class="ui red ribbon large label">接口说明</span>
                     {if condition="$detail['status'] eq 0 "}

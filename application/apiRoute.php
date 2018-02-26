@@ -44,7 +44,7 @@ return [
             'wiki/index/errorCode',
             ['method' => 'get']
         ],
-        'detail/:hash' => [
+        'detail/:groupHash/[:hash]' => [
             'wiki/index/detail',
             ['method' => 'get']
         ],
@@ -52,6 +52,6 @@ return [
             'wiki/index/logout',
             ['method' => 'get']
         ],
-        '__miss__'      => ['api/Miss/index'],
+        '__miss__'      => ['wiki/index/index'],
     ],
 ];
