@@ -8,15 +8,36 @@
 namespace app\wiki\controller;
 
 
+use app\model\ApiApp;
 use app\model\ApiFields;
+use app\model\ApiGroup;
 use app\model\ApiList;
 use app\util\DataType;
 use app\util\ReturnCode;
+use app\util\Tools;
 
 class Index extends Base {
 
+    /**
+     * 获取应用列表
+     * @return \think\response\View
+     * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
     public function index() {
-        return $this->fetch();
+        $this->checkLogin();
+
+        $groupInfo = ApiGroup::all();
+        $groupInfo = Tools::buildArrFromObj($groupInfo);
+        $groupInfo = Tools::buildArrByNewKey($groupInfo, 'hash');
+
+        $this->appInfo = ApiApp::get(['app_id' => $this->appInfo['app_id']]);
+        $this->appInfo['app_api_show'] = json_decode($this->appInfo['app_api_show'], true);
+
+        return view('', [
+            'groupInfo' => $groupInfo,
+            'appInfo'   => $this->appInfo
+        ]);
     }
 
     public function detail() {
@@ -58,10 +79,13 @@ class Index extends Base {
     }
 
     public function calculation() {
-        return $this->fetch();
+        $this->checkLogin();
+
+        return view();
     }
 
     public function errorCode() {
+        $this->checkLogin();
         $codeArr = ReturnCode::getConstants();
         $errorInfo = array(
             ReturnCode::SUCCESS              => '请求成功',
@@ -81,21 +105,55 @@ class Index extends Base {
             ReturnCode::AUTH_ERROR           => '权限认证失败',
             ReturnCode::OTHER_LOGIN          => '别的终端登录',
             ReturnCode::VERSION_INVALID      => 'API版本非法',
+            ReturnCode::CURL_ERROR           => 'CURL操作异常',
+            ReturnCode::RECORD_NOT_FOUND     => '记录未找到',
+            ReturnCode::DELETE_FAILED        => '删除失败',
+            ReturnCode::ADD_FAILED           => '添加记录失败',
+            ReturnCode::UPDATE_FAILED        => '添加记录失败',
             ReturnCode::PARAM_INVALID        => '数据类型非法',
             ReturnCode::ACCESS_TOKEN_TIMEOUT => '身份令牌过期',
             ReturnCode::SESSION_TIMEOUT      => 'SESSION过期',
             ReturnCode::UNKNOWN              => '未知错误',
             ReturnCode::EXCEPTION            => '系统异常',
-            ReturnCode::CURL_ERROR           => 'CURL操作异常'
         );
-        $this->assign('errorInfo', $errorInfo);
-        $this->assign('codeArr', $codeArr);
 
-        return $this->fetch();
+        return view('', [
+            'errorInfo' => $errorInfo,
+            'codeArr'   => $codeArr
+        ]);
     }
 
     public function login() {
         return view();
+    }
+
+    /**
+     * 处理wiki登录
+     * @throws \think\Exception
+     * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public function doLogin() {
+        $appId = $this->request->post('appId');
+        $appSecret = $this->request->post('appSecret');
+
+        $appInfo = ApiApp::get(['app_id' => $appId, 'app_secret' => $appSecret]);
+        if (!empty($appInfo)) {
+            if ($appInfo->app_status) {
+                //保存用户信息和登录凭证
+                session('app_info', json_encode($appInfo));
+                $this->success('登录成功', url('/wiki/index'));
+            } else {
+                $this->error('当前应用已被封禁，请联系管理员');
+            }
+        } else {
+            $this->error('AppId或AppSecret错误');
+        }
+    }
+
+    public function logout() {
+        session('app_info', null);
+        $this->success('退出成功', url('/wiki/login'));
     }
 
 }

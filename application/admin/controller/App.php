@@ -70,7 +70,6 @@ class App extends Base {
         $groupArr = ApiGroup::all();
         $groupArr = Tools::buildArrFromObj($groupArr);
         $res['groupInfo'] = array_column($groupArr, 'name', 'hash');
-        $res['groupInfo']['default'] = '默认分组';
         $id = $this->request->get('id', 0);
         if ($id) {
             $appInfo = ApiApp::get($id)->toArray();

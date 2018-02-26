@@ -25,40 +25,51 @@
             </div>
         </div>
         <div class="ui cards four column">
-            <div class="card column">
-                <a class="image" href="#">
-                    <img src="http://static10.photo.sina.com.cn/middle/5a3ab1b1x9961016a8699&690">
-                </a>
-                <div class="content">
-                    <a class="header">
-                        XXX分组
+            {volist name="appInfo['app_api_show']" id="vo"}
+                {php}
+                $apiLength = count($vo);
+                {/php}
+                {if condition="$apiLength"}
+                <div class="card column">
+                    <a class="image" href="{:url('/wiki/detail/' . $key)}">
+                        <img src="http://static10.photo.sina.com.cn/middle/5a3ab1b1x9961016a8699&690">
                     </a>
-                    <a class="meta">
-                        <span class="group" style="font-size: 0.8em;">2017-07-17</span>
-                    </a>
-                    <a class="description" style="display: block;font-size: 0.8em;">
-                        {php}
-                        $vo['success_place_description'] = '需要啥需要啥需要啥需要啥需要啥需要啥需要啥需要啥需要啥需要啥需要啥需要啥';
-                        $len = mb_strlen($vo['success_place_description'], 'utf8');
-                        if($len > 31) {
-                            echo mb_substr($vo['success_place_description'], 0, 31, 'utf8') . ' ...';
-                        } else {
-                            echo $vo['success_place_description'];
-                        }
-                        {/php}
-                    </a>
+                    <div class="content">
+                        <a class="header" href="{:url('/wiki/detail/' . $key)}">
+                            {$groupInfo[$key]['name']}
+                        </a>
+                        <a class="meta" href="{:url('/wiki/detail/' . $key)}">
+                            <span class="group" style="font-size: 0.8em;">{:date('Y-m-d', $groupInfo[$key]['updateTime'])}</span>
+                        </a>
+                        <a class="description" style="display: block;font-size: 0.8em;" href="{:url('/wiki/detail/' . $key)}">
+                            {php}
+                            $len = mb_strlen($groupInfo[$key]['description'], 'utf8');
+                            if($len > 31) {
+                                echo mb_substr($groupInfo[$key]['description'], 0, 31, 'utf8') . ' ...';
+                            } else {
+                                echo $groupInfo[$key]['description'];
+                            }
+                            if ($groupInfo[$key]['hot'] >= 10000) {
+                                $hot = sprintf("%.1f", $groupInfo[$key]['hot']/10000) . '万';
+                            } else {
+                                $hot = $groupInfo[$key]['hot'];
+                            }
+                            {/php}
+                        </a>
+                    </div>
+                    <div class="extra content" style="font-size: 0.9em">
+                        <a class="right floated created" href="{:url('/wiki/detail/' . $key)}">
+                            <i class="fire icon"></i>
+                            热度{$hot}
+                        </a>
+                        <a class="friends" href="{:url('/wiki/detail/' . $key)}">
+                            <i class="cubes icon"></i>
+                            共{$apiLength}个接口
+                        </a>
+                    </div>
                 </div>
-                <div class="extra content" style="font-size: 0.9em">
-                    <a class="right floated created">
-                        <i class="fire icon"></i>
-                        热度29.1万
-                    </a>
-                    <a class="friends">
-                        <i class="cubes icon"></i>
-                        共190个接口
-                    </a>
-                </div>
-            </div>
+                {/if}
+            {/volist}
         </div>
         <p>&copy; Powered  By <a href="http://www.apiadmin.org/" target="_blank">{:config('apiAdmin.APP_NAME')} {:config('apiAdmin.APP_VERSION')}</a> <p>
     </div>

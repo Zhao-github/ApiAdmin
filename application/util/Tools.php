@@ -97,4 +97,19 @@ class Tools {
 
         return $arr;
     }
+
+    /**
+     * 将二维数组变成指定key
+     * @param $array
+     * @param $keyName
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     */
+    public static function buildArrByNewKey($array, $keyName = 'id') {
+        $list = array();
+        foreach ($array as $item) {
+            $list[$item[$keyName]] = $item;
+        }
+        return $list;
+    }
 }

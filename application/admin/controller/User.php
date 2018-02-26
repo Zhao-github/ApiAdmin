@@ -56,13 +56,13 @@ class User extends Base {
             $query->whereIn('uid', $idArr);
         });
         $userData = Tools::buildArrFromObj($userData);
-        $userData = $this->buildArrByNewKey($userData, 'uid');
+        $userData = Tools::buildArrByNewKey($userData, 'uid');
 
         $userGroup = ApiAuthGroupAccess::all(function($query) use ($idArr) {
             $query->whereIn('uid', $idArr);
         });
         $userGroup = Tools::buildArrFromObj($userGroup);
-        $userGroup = $this->buildArrByNewKey($userGroup, 'uid');
+        $userGroup = Tools::buildArrByNewKey($userGroup, 'uid');
 
         foreach ($listInfo as $key => $value) {
             if (isset($userData[$value['id']])) {
@@ -140,7 +140,7 @@ class User extends Base {
             $query->whereIn('uid', $uidArr);
         });
         $userData = Tools::buildArrFromObj($userData);
-        $userData = $this->buildArrByNewKey($userData, 'uid');
+        $userData = Tools::buildArrByNewKey($userData, 'uid');
 
         foreach ($userInfo as $key => $value) {
             if (isset($userData[$value['id']])) {
