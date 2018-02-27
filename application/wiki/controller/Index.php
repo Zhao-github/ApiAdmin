@@ -81,10 +81,12 @@ class Index extends Base {
             DataType::TYPE_MOBILE  => 'Mobile'
         );
 
-        $groupInfo = ApiGroup::get(['hash' => $groupHash])->toArray();
+        $groupInfo = ApiGroup::get(['hash' => $groupHash]);
+        $groupInfo->hot = $groupInfo->hot + 1;
+        $groupInfo->save();
 
         return view('', [
-            'groupInfo' => $groupInfo,
+            'groupInfo' => $groupInfo->toArray(),
             'request'   => $request,
             'response'  => $response,
             'dataType'  => $dataType,
