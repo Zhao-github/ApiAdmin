@@ -134,4 +134,25 @@ class InterfaceList extends Base {
 
         return $this->buildSuccess([]);
     }
+
+    /**
+     * 刷新接口路由
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     * @throws \think\exception\DbException
+     */
+    public function refresh() {
+        $apiRoutePath = ROOT_PATH . 'application/apiRoute.php';
+        $tplPath = ROOT_PATH . 'data/apiRoute.tpl';
+        $methodArr = ['*','POST','GET'];
+
+        $tplStr = file_get_contents($tplPath);
+        $listInfo = ApiList::all(['status' => 1]);
+        foreach ($listInfo as $value) {
+            $tplStr .= 'Route::rule(\'api/'.$value->hash.'\',\'api/'.$value->apiClass.'\', \''.$methodArr[$value->method].'\', [\'after_behavior\' => $afterBehavior]);';
+        }
+
+        file_put_contents($apiRoutePath, $tplStr);
+        return $this->buildSuccess([]);
+    }
 }

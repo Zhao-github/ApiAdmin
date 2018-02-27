@@ -115,6 +115,10 @@ return [
             'admin/InterfaceList/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'InterfaceList/refresh'        => [
+            'admin/InterfaceList/refresh',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         'InterfaceList/changeStatus' => [
             'admin/InterfaceList/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
