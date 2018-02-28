@@ -9,7 +9,7 @@ return [
         ],
         'Login/logout'      => [
             'admin/Login/logout',
-            ['method' => 'get']
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
         'Menu/index'        => [
             'admin/Menu/index',

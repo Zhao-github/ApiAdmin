@@ -12,9 +12,14 @@ use think\Controller;
 class Base extends Controller {
 
     private $debug = [];
+    protected $userInfo;
 
     public function _initialize() {
-
+        $ApiAuth = $this->request->get('ApiAuth');
+        if ($ApiAuth) {
+            $userInfo = cache($ApiAuth);
+            $this->userInfo = json_decode($userInfo, true);
+        }
     }
 
     public function buildSuccess($data, $msg = '操作成功', $code = ReturnCode::SUCCESS) {
