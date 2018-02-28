@@ -215,6 +215,14 @@ return [
             'admin/AppGroup/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
+        'Log/index'        => [
+            'admin/Log/index',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'Log/del'          => [
+            'admin/Log/del',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
         '__miss__'          => ['admin/Miss/index'],
     ],
 ];
