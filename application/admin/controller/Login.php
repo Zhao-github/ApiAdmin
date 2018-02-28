@@ -58,9 +58,9 @@ class Login extends Base {
         } else {
             return $this->buildFailed(ReturnCode::LOGIN_ERROR, '用户名密码不正确');
         }
-        $userToken = md5(uniqid() . time());
-        cache($userToken, json_encode($userInfo), config('apiAdmin.ONLINE_TIME'));
-        cache($userInfo['id'], $userToken, config('apiAdmin.ONLINE_TIME'));
+        $apiAuth = md5(uniqid() . time());
+        cache($apiAuth, json_encode($userInfo), config('apiAdmin.ONLINE_TIME'));
+        cache($userInfo['id'], $apiAuth, config('apiAdmin.ONLINE_TIME'));
 
         $return['access'] = 1000000;
         $isSupper = Tools::isAdministrator($userInfo['id']);
@@ -80,16 +80,17 @@ class Login extends Base {
         $return['id'] = $userInfo['id'];
         $return['username'] = $userInfo['username'];
         $return['nickname'] = $userInfo['nickname'];
-        $return['userToken'] = $userToken;
+        $return['apiAuth'] = $apiAuth;
 
         return $this->buildSuccess($return, '登录成功');
     }
 
     public function logout() {
-        cache($this->userInfo, null);
+        $ApiAuth = $this->request->header('ApiAuth');
+        cache($ApiAuth, null);
         cache($this->userInfo['id'], null);
 
-        return $this->buildSuccess(ReturnCode::SUCCESS, [], '登出成功');
+        return $this->buildSuccess([], '登出成功');
     }
 
 }
