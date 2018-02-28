@@ -149,7 +149,7 @@ LOCK TABLES `api_group` WRITE;
 
 INSERT INTO `api_group` (`id`, `name`, `description`, `status`, `hash`, `addTime`, `updateTime`, `image`, `hot`)
 VALUES
-	(1,'默认分组','系统自动默认的一个分组，如果你的接口没有设置分组，将默认划分到该组',1,'default',0,1519616309,NULL,10010323);
+	(1,'默认分组','系统自动默认的一个分组，如果你的接口没有设置分组，将默认划分到该组',1,'default',0,1519616309,NULL,0);
 
 /*!40000 ALTER TABLE `api_group` ENABLE KEYS */;
 UNLOCK TABLES;
