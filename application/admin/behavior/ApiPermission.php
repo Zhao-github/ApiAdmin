@@ -29,7 +29,7 @@ class ApiPermission {
         $request = Request::instance();
         $route = $request->routeInfo();
         $header = config('apiAdmin.CROSS_DOMAIN');
-        $userToken = $request->header('Authorization', '');
+        $userToken = $request->header('ApiAuth', '');
         $userInfo = cache($userToken);
         $userInfo = json_decode($userInfo, true);
         if (!$this->checkAuth($userInfo['id'], $route['route'])) {
