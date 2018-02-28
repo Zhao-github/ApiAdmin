@@ -1,11 +1,15 @@
 <?php
-$afterBehavior = ['\app\admin\behavior\ApiAuth', '\app\admin\behavior\ApiPermission'];
+$afterBehavior = [
+    '\app\admin\behavior\ApiAuth',
+    '\app\admin\behavior\ApiPermission',
+    '\app\admin\behavior\AdminLog'
+];
 
 return [
     '[admin]' => [
         'Login/index'       => [
             'admin/Login/index',
-            ['method' => 'post']
+            ['method' => 'post', 'after_behavior' => '\app\admin\behavior\AdminLog']
         ],
         'Login/logout'      => [
             'admin/Login/logout',
