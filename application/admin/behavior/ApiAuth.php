@@ -23,16 +23,16 @@ class ApiAuth {
     public function run() {
         $request = Request::instance();
         $header = config('apiAdmin.CROSS_DOMAIN');
-        $userToken = $request->header('Authorization', '');
+        $userToken = $request->header('ApiAuth', '');
         if ($userToken) {
             $userInfo = cache($userToken);
             $userInfo = json_decode($userInfo, true);
             if (!$userInfo || !isset($userInfo['id'])) {
-                $data = ['code' => ReturnCode::AUTH_ERROR, 'msg' => 'Authorization不匹配', 'data' => []];
+                $data = ['code' => ReturnCode::AUTH_ERROR, 'msg' => 'ApiAuth不匹配', 'data' => []];
                 return json($data, 200, $header);
             }
         } else {
-            $data = ['code' => ReturnCode::AUTH_ERROR, 'msg' => '缺少Authorization', 'data' => []];
+            $data = ['code' => ReturnCode::AUTH_ERROR, 'msg' => '缺少ApiAuth', 'data' => []];
             return json($data, 200, $header);
         }
     }
