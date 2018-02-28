@@ -9,7 +9,7 @@ return [
     '[admin]' => [
         'Login/index'       => [
             'admin/Login/index',
-            ['method' => 'post', 'after_behavior' => '\app\admin\behavior\AdminLog']
+            ['method' => 'post']
         ],
         'Login/logout'      => [
             'admin/Login/logout',
