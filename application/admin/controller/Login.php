@@ -9,6 +9,8 @@ namespace app\admin\controller;
 
 
 use app\model\ApiAuthGroupAccess;
+use app\model\ApiAuthRule;
+use app\model\ApiMenu;
 use app\model\ApiUser;
 use app\model\ApiUserData;
 use app\util\ReturnCode;
@@ -44,12 +46,14 @@ class Login extends Base {
                     $data['loginTimes'] = $userData['loginTimes'] + 1;
                     $data['lastLoginIp'] = $this->request->ip(1);
                     $data['lastLoginTime'] = time();
+                    $return['headImg'] = $userData['headImg'];
                     ApiUserData::update($data, ['uid' => $userInfo['id']]);
                 } else {
                     $data['loginTimes'] = 1;
                     $data['uid'] = $userInfo['id'];
                     $data['lastLoginIp'] = $this->request->ip(1);
                     $data['lastLoginTime'] = time();
+                    $return['headImg'] = '';
                     ApiUserData::create($data);
                 }
             } else {
@@ -65,15 +69,15 @@ class Login extends Base {
         $return['access'] = 1000000;
         $isSupper = Tools::isAdministrator($userInfo['id']);
         if ($isSupper) {
-            $return['access'] = 0;
+            $access = ApiMenu::all(['hide' => 0]);
+            $access = Tools::buildArrFromObj($access);
+            $return['access'] = array_values(array_filter(array_column($access, 'url')));
         } else {
             $groups = ApiAuthGroupAccess::get(['uid' => $userInfo['id']]);
             if (isset($groups) || $groups->groupId) {
-                if (strpos($groups->groupId, ',') === false) {
-                    $return['access'] = intval($groups->groupId);
-                } else {
-                    $return['access'] = explode(',', $groups->groupId);
-                }
+                $access = (new ApiAuthRule())->whereIn('groupId', $groups->groupId)->select();
+                $access = Tools::buildArrFromObj($access);
+                $return['access'] = array_values(array_unique(array_column($access, 'url')));
             }
         }
 
