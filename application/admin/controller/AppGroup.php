@@ -14,7 +14,7 @@ use app\util\Tools;
 
 class AppGroup extends Base {
     /**
-     * 获取接口组列表
+     * 获取应用组列表
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      * @throws \think\db\exception\DataNotFoundException
@@ -54,7 +54,7 @@ class AppGroup extends Base {
     }
 
     /**
-     * 获取全部有效的接口组
+     * 获取全部有效的应用组
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
@@ -69,7 +69,7 @@ class AppGroup extends Base {
     }
 
     /**
-     * 接口组状态编辑
+     * 应用组状态编辑
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
@@ -89,7 +89,7 @@ class AppGroup extends Base {
     }
 
     /**
-     * 添加接口组
+     * 添加应用组
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      */
@@ -104,7 +104,7 @@ class AppGroup extends Base {
     }
 
     /**
-     * 接口组编辑
+     * 应用组编辑
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      */
@@ -119,7 +119,7 @@ class AppGroup extends Base {
     }
 
     /**
-     * 接口组删除
+     * 应用组删除
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      */

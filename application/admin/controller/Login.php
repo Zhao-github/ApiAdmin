@@ -53,6 +53,7 @@ class Login extends Base {
                     $data['uid'] = $userInfo['id'];
                     $data['lastLoginIp'] = $this->request->ip(1);
                     $data['lastLoginTime'] = time();
+                    $data['headImg'] = '';
                     $return['headImg'] = '';
                     ApiUserData::create($data);
                 }
