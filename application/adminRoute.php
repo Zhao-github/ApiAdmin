@@ -7,167 +7,171 @@ $afterBehavior = [
 
 return [
     '[admin]' => [
-        'Login/index'       => [
+        'Login/index'                 => [
             'admin/Login/index',
             ['method' => 'post']
         ],
-        'Login/logout'      => [
-            'admin/Login/logout',
-            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        'Index/upload'                => [
+            'admin/Index/upload',
+            ['method' => 'post', 'after_behavior' => ['\app\admin\behavior\ApiAuth', '\app\admin\behavior\AdminLog']]
         ],
-        'Menu/index'        => [
+        'Login/logout'                => [
+            'admin/Login/logout',
+            ['method' => 'get', 'after_behavior' => ['\app\admin\behavior\ApiAuth', '\app\admin\behavior\AdminLog']]
+        ],
+        'Menu/index'                  => [
             'admin/Menu/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Menu/changeStatus' => [
+        'Menu/changeStatus'           => [
             'admin/Menu/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Menu/add'          => [
+        'Menu/add'                    => [
             'admin/Menu/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'Menu/edit'         => [
+        'Menu/edit'                   => [
             'admin/Menu/edit',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'Menu/del'          => [
+        'Menu/del'                    => [
             'admin/Menu/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'User/index'        => [
+        'User/index'                  => [
             'admin/User/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'User/getUsers'        => [
+        'User/getUsers'               => [
             'admin/User/getUsers',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'User/changeStatus' => [
+        'User/changeStatus'           => [
             'admin/User/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'User/add'          => [
+        'User/add'                    => [
             'admin/User/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'User/edit'         => [
+        'User/edit'                   => [
             'admin/User/edit',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'User/del'          => [
+        'User/del'                    => [
             'admin/User/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Auth/index'        => [
+        'Auth/index'                  => [
             'admin/Auth/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Auth/changeStatus' => [
+        'Auth/changeStatus'           => [
             'admin/Auth/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Auth/delMember' => [
+        'Auth/delMember'              => [
             'admin/Auth/delMember',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Auth/add'          => [
+        'Auth/add'                    => [
             'admin/Auth/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'Auth/edit'         => [
+        'Auth/edit'                   => [
             'admin/Auth/edit',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'Auth/del'          => [
+        'Auth/del'                    => [
             'admin/Auth/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Auth/getGroups'          => [
+        'Auth/getGroups'              => [
             'admin/Auth/getGroups',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Auth/getRuleList'         => [
+        'Auth/getRuleList'            => [
             'admin/Auth/getRuleList',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'App/index'        => [
+        'App/index'                   => [
             'admin/App/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'App/changeStatus' => [
+        'App/changeStatus'            => [
             'admin/App/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'App/getAppInfo' => [
+        'App/getAppInfo'              => [
             'admin/App/getAppInfo',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'App/add'          => [
+        'App/add'                     => [
             'admin/App/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'App/edit'         => [
+        'App/edit'                    => [
             'admin/App/edit',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'App/del'          => [
+        'App/del'                     => [
             'admin/App/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'InterfaceList/index'        => [
+        'InterfaceList/index'         => [
             'admin/InterfaceList/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'InterfaceList/refresh'        => [
+        'InterfaceList/refresh'       => [
             'admin/InterfaceList/refresh',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'InterfaceList/changeStatus' => [
+        'InterfaceList/changeStatus'  => [
             'admin/InterfaceList/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'InterfaceList/getHash' => [
+        'InterfaceList/getHash'       => [
             'admin/InterfaceList/getHash',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'InterfaceList/add'          => [
+        'InterfaceList/add'           => [
             'admin/InterfaceList/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'InterfaceList/edit'         => [
+        'InterfaceList/edit'          => [
             'admin/InterfaceList/edit',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'InterfaceList/del'          => [
+        'InterfaceList/del'           => [
             'admin/InterfaceList/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Fields/index'        => [
+        'Fields/index'                => [
             'admin/Fields/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Fields/request' => [
+        'Fields/request'              => [
             'admin/Fields/request',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Fields/response' => [
+        'Fields/response'             => [
             'admin/Fields/response',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Fields/add'          => [
+        'Fields/add'                  => [
             'admin/Fields/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'Fields/upload'          => [
+        'Fields/upload'               => [
             'admin/Fields/upload',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'Fields/edit'         => [
+        'Fields/edit'                 => [
             'admin/Fields/edit',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'Fields/del'          => [
+        'Fields/del'                  => [
             'admin/Fields/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
@@ -187,7 +191,7 @@ return [
             'admin/InterfaceGroup/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'InterfaceGroup/getAll'          => [
+        'InterfaceGroup/getAll'       => [
             'admin/InterfaceGroup/getAll',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
@@ -195,38 +199,38 @@ return [
             'admin/InterfaceGroup/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'AppGroup/index'        => [
+        'AppGroup/index'              => [
             'admin/AppGroup/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'AppGroup/add'          => [
+        'AppGroup/add'                => [
             'admin/AppGroup/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'AppGroup/edit'         => [
+        'AppGroup/edit'               => [
             'admin/AppGroup/edit',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
-        'AppGroup/del'          => [
+        'AppGroup/del'                => [
             'admin/AppGroup/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'AppGroup/getAll'          => [
+        'AppGroup/getAll'             => [
             'admin/AppGroup/getAll',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'AppGroup/changeStatus' => [
+        'AppGroup/changeStatus'       => [
             'admin/AppGroup/changeStatus',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Log/index'        => [
+        'Log/index'                   => [
             'admin/Log/index',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        'Log/del'          => [
+        'Log/del'                     => [
             'admin/Log/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
-        '__miss__'          => ['admin/Miss/index'],
+        '__miss__'                    => ['admin/Miss/index'],
     ],
 ];
