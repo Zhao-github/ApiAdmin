@@ -166,8 +166,9 @@ class User extends Base {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
         $res = ApiUser::update([
-            'id'     => $id,
-            'status' => $status
+            'id'         => $id,
+            'status'     => $status,
+            'updateTime' => time()
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
@@ -195,19 +196,20 @@ class User extends Base {
         if ($postData['groupId']) {
             $groups = trim(implode(',', $postData['groupId']), ',');
         }
+        $postData['updateTime'] = time();
         unset($postData['groupId']);
         $res = ApiUser::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
             $has = ApiAuthGroupAccess::get(['uid' => $postData['id']]);
-            if($has){
+            if ($has) {
                 ApiAuthGroupAccess::update([
                     'groupId' => $groups
                 ], [
                     'uid' => $postData['id'],
                 ]);
-            }else{
+            } else {
                 ApiAuthGroupAccess::create([
                     'uid'     => $postData['id'],
                     'groupId' => $groups
