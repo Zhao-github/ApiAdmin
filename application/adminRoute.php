@@ -1,5 +1,9 @@
 <?php
-$afterBehavior = ['\app\admin\behavior\ApiAuth', '\app\admin\behavior\ApiPermission'];
+$afterBehavior = [
+    '\app\admin\behavior\ApiAuth',
+    '\app\admin\behavior\ApiPermission',
+    '\app\admin\behavior\AdminLog'
+];
 
 return [
     '[admin]' => [
@@ -213,6 +217,14 @@ return [
         ],
         'AppGroup/changeStatus' => [
             'admin/AppGroup/changeStatus',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'Log/index'        => [
+            'admin/Log/index',
+            ['method' => 'get', 'after_behavior' => $afterBehavior]
+        ],
+        'Log/del'          => [
+            'admin/Log/del',
             ['method' => 'get', 'after_behavior' => $afterBehavior]
         ],
         '__miss__'          => ['admin/Miss/index'],
