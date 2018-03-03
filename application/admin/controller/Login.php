@@ -43,11 +43,11 @@ class Login extends Base {
                 $userData = ApiUserData::get(['uid' => $userInfo['id']]);
                 $data = [];
                 if ($userData) {
-                    $data['loginTimes'] = $userData['loginTimes'] + 1;
-                    $data['lastLoginIp'] = $this->request->ip(1);
-                    $data['lastLoginTime'] = time();
+                    $userData->loginTimes ++;
+                    $userData->lastLoginIp = $this->request->ip(1);
+                    $userData->lastLoginTime = time();
                     $return['headImg'] = $userData['headImg'];
-                    ApiUserData::update($data, ['uid' => $userInfo['id']]);
+                    $userData->save();
                 } else {
                     $data['loginTimes'] = 1;
                     $data['uid'] = $userInfo['id'];
