@@ -16,7 +16,7 @@
         <div class="ui items">
             <div class="item">
                 <div class="image">
-                    <img src="http://static10.photo.sina.com.cn/middle/5a3ab1b1x9961016a8699&690">
+                    <img src="{$groupInfo['image'] ? $groupInfo['image'] : '/static/defaultImg.jpg'}">
                 </div>
                 <div class="content">
                     <span class="header">{$groupInfo['name']}</span>
@@ -191,7 +191,7 @@
                 imgExpanded: "__STATIC__/jsonFormater/Expanded.gif"
             };
             window.jf = new JsonFormater(options);
-            jf.doFormat('{$detail["returnStr"]}');
+            jf.doFormat({$detail["returnStr"]});
         }();
     });
     $('.ui .vertical').css('max-height', $('#detail').outerHeight(true));

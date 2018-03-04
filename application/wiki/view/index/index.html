@@ -32,7 +32,7 @@
                 {if condition="$apiLength"}
                 <div class="card column">
                     <a class="image" href="{:url('/wiki/detail/' . $key)}">
-                        <img src="http://static10.photo.sina.com.cn/middle/5a3ab1b1x9961016a8699&690">
+                        <img src="{$groupInfo[$key]['image'] ? $groupInfo[$key]['image'] : '/static/defaultImg.jpg'}">
                     </a>
                     <div class="content">
                         <a class="header" href="{:url('/wiki/detail/' . $key)}">
