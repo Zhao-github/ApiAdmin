@@ -8,7 +8,7 @@
 namespace app\admin\controller;
 
 
-use app\model\ApiMenu;
+use app\model\AdminMenu;
 use app\util\ReturnCode;
 use app\util\Tools;
 
@@ -21,7 +21,7 @@ class Menu extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-        $list = (new ApiMenu)->where([])->order('sort', 'ASC')->select();
+        $list = (new AdminMenu)->where([])->order('sort', 'ASC')->select();
         $list = Tools::buildArrFromObj($list);
         $list = formatTree(listToTree($list));
 
@@ -40,7 +40,7 @@ class Menu extends Base {
         if ($postData['url']) {
             $postData['url'] = 'admin/' . $postData['url'];
         }
-        $res = ApiMenu::create($postData);
+        $res = AdminMenu::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -56,7 +56,7 @@ class Menu extends Base {
     public function changeStatus() {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
-        $res = ApiMenu::update([
+        $res = AdminMenu::update([
             'id'   => $id,
             'hide' => $status
         ]);
@@ -77,7 +77,7 @@ class Menu extends Base {
         if ($postData['url']) {
             $postData['url'] = 'admin/' . $postData['url'];
         }
-        $res = ApiMenu::update($postData);
+        $res = AdminMenu::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -95,11 +95,11 @@ class Menu extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        $childNum = ApiMenu::where(['fid' => $id])->count();
+        $childNum = AdminMenu::where(['fid' => $id])->count();
         if ($childNum) {
             return $this->buildFailed(ReturnCode::INVALID, '当前菜单存在子菜单,不可以被删除!');
         } else {
-            ApiMenu::destroy($id);
+            AdminMenu::destroy($id);
 
             return $this->buildSuccess([]);
         }

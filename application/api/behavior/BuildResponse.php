@@ -8,7 +8,7 @@
 namespace app\api\behavior;
 
 
-use app\model\ApiFields;
+use app\model\AdminFields;
 use app\util\ApiLog;
 use app\util\DataType;
 use think\Request;
@@ -27,7 +27,7 @@ class BuildResponse {
         $hash = $request->routeInfo();
         if (isset($hash['rule'][1])) {
             $hash = $hash['rule'][1];
-            $rule = ApiFields::all(['hash' => $hash, 'type' => 1]);
+            $rule = AdminFields::all(['hash' => $hash, 'type' => 1]);
             if ($rule) {
                 $rule = json_decode(json_encode($rule), true);
                 $newRule = array_column($rule, 'dataType', 'showName');

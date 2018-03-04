@@ -8,10 +8,10 @@
 namespace app\wiki\controller;
 
 
-use app\model\ApiApp;
-use app\model\ApiFields;
-use app\model\ApiGroup;
-use app\model\ApiList;
+use app\model\AdminApp;
+use app\model\AdminFields;
+use app\model\AdminGroup;
+use app\model\AdminList;
 use app\util\DataType;
 use app\util\ReturnCode;
 use app\util\Tools;
@@ -27,11 +27,11 @@ class Index extends Base {
     public function index() {
         $this->checkLogin();
 
-        $groupInfo = ApiGroup::all();
+        $groupInfo = AdminGroup::all();
         $groupInfo = Tools::buildArrFromObj($groupInfo);
         $groupInfo = Tools::buildArrByNewKey($groupInfo, 'hash');
 
-        $this->appInfo = ApiApp::get(['app_id' => $this->appInfo['app_id']]);
+        $this->appInfo = AdminApp::get(['app_id' => $this->appInfo['app_id']]);
         $this->appInfo['app_api_show'] = json_decode($this->appInfo['app_api_show'], true);
 
         return view('', [
@@ -58,7 +58,7 @@ class Index extends Base {
             }
         }
 
-        $apiList = (new ApiList())->whereIn('hash', $this->appInfo['app_api_show'][$groupHash])->where(['groupHash' => $groupHash])->select();
+        $apiList = (new AdminList())->whereIn('hash', $this->appInfo['app_api_show'][$groupHash])->where(['groupHash' => $groupHash])->select();
         $apiList = Tools::buildArrFromObj($apiList);
         $apiList = Tools::buildArrByNewKey($apiList, 'hash');
 
@@ -67,8 +67,8 @@ class Index extends Base {
         }
         $detail = $apiList[$hash];
 
-        $request = ApiFields::all(['hash' => $hash, 'type' => 0]);
-        $response = ApiFields::all(['hash' => $hash, 'type' => 1]);
+        $request = AdminFields::all(['hash' => $hash, 'type' => 0]);
+        $response = AdminFields::all(['hash' => $hash, 'type' => 1]);
         $dataType = array(
             DataType::TYPE_INTEGER => 'Integer',
             DataType::TYPE_STRING  => 'String',
@@ -81,7 +81,7 @@ class Index extends Base {
             DataType::TYPE_MOBILE  => 'Mobile'
         );
 
-        $groupInfo = ApiGroup::get(['hash' => $groupHash]);
+        $groupInfo = AdminGroup::get(['hash' => $groupHash]);
         $groupInfo->hot = $groupInfo->hot + 1;
         $groupInfo->save();
 
@@ -156,7 +156,7 @@ class Index extends Base {
         $appId = $this->request->post('appId');
         $appSecret = $this->request->post('appSecret');
 
-        $appInfo = ApiApp::get(['app_id' => $appId, 'app_secret' => $appSecret]);
+        $appInfo = AdminApp::get(['app_id' => $appId, 'app_secret' => $appSecret]);
         if (!empty($appInfo)) {
             if ($appInfo->app_status) {
                 //保存用户信息和登录凭证

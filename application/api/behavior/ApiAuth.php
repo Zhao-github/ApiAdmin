@@ -8,7 +8,7 @@
 namespace app\api\behavior;
 
 
-use app\model\ApiList;
+use app\model\AdminList;
 use app\util\ApiLog;
 use app\util\ReturnCode;
 use think\Request;
@@ -33,7 +33,7 @@ class ApiAuth {
         $hash = $this->request->routeInfo();
         if (isset($hash['rule'][1])) {
             $hash = $hash['rule'][1];
-            $this->apiInfo = ApiList::get(['hash' => $hash]);
+            $this->apiInfo = AdminList::get(['hash' => $hash]);
             if ($this->apiInfo) {
                 $this->apiInfo = $this->apiInfo->toArray();
             } else {

@@ -3,6 +3,6 @@
 namespace app\model;
 
 
-class ApiMenu extends Base {
+class AdminMenu extends Base {
     //
 }

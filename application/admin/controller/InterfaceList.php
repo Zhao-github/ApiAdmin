@@ -8,8 +8,8 @@
 namespace app\admin\controller;
 
 
-use app\model\ApiFields;
-use app\model\ApiList;
+use app\model\AdminFields;
+use app\model\AdminList;
 use app\util\ReturnCode;
 use app\util\Tools;
 
@@ -48,8 +48,8 @@ class InterfaceList extends Base {
             }
         }
 
-        $listInfo = (new ApiList())->where($where)->order('id', 'DESC')->limit($start, $limit)->select();
-        $count = (new ApiList())->where($where)->count();
+        $listInfo = (new AdminList())->where($where)->order('id', 'DESC')->limit($start, $limit)->select();
+        $count = (new AdminList())->where($where)->count();
         $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
@@ -76,7 +76,7 @@ class InterfaceList extends Base {
      */
     public function add() {
         $postData = $this->request->post();
-        $res = ApiList::create($postData);
+        $res = AdminList::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -92,7 +92,7 @@ class InterfaceList extends Base {
     public function changeStatus() {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
-        $res = ApiList::update([
+        $res = AdminList::update([
             'status' => $status
         ], [
             'id' => $id
@@ -111,7 +111,7 @@ class InterfaceList extends Base {
      */
     public function edit() {
         $postData = $this->request->post();
-        $res = ApiList::update($postData);
+        $res = AdminList::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -129,8 +129,8 @@ class InterfaceList extends Base {
         if (!$hash) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        ApiList::destroy(['hash' => $hash]);
-        ApiFields::destroy(['hash' => $hash]);
+        AdminList::destroy(['hash' => $hash]);
+        AdminFields::destroy(['hash' => $hash]);
 
         return $this->buildSuccess([]);
     }
@@ -147,7 +147,7 @@ class InterfaceList extends Base {
         $methodArr = ['*','POST','GET'];
 
         $tplStr = file_get_contents($tplPath);
-        $listInfo = ApiList::all(['status' => 1]);
+        $listInfo = AdminList::all(['status' => 1]);
         foreach ($listInfo as $value) {
             $tplStr .= 'Route::rule(\'api/'.$value->hash.'\',\'api/'.$value->apiClass.'\', \''.$methodArr[$value->method].'\', [\'after_behavior\' => $afterBehavior]);';
         }

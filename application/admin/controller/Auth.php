@@ -8,10 +8,10 @@
 namespace app\admin\controller;
 
 
-use app\model\ApiAuthGroup;
-use app\model\ApiAuthGroupAccess;
-use app\model\ApiAuthRule;
-use app\model\ApiMenu;
+use app\model\AdminAuthGroup;
+use app\model\AdminAuthGroupAccess;
+use app\model\AdminAuthRule;
+use app\model\AdminMenu;
 use app\util\ReturnCode;
 use app\util\Tools;
 
@@ -37,8 +37,8 @@ class Auth extends Base {
             $where['status'] = $status;
         }
 
-        $listInfo = (new ApiAuthGroup())->where($where)->order('id', 'DESC')->limit($start, $limit)->select();
-        $count = (new ApiAuthGroup())->where($where)->count();
+        $listInfo = (new AdminAuthGroup())->where($where)->order('id', 'DESC')->limit($start, $limit)->select();
+        $count = (new AdminAuthGroup())->where($where)->count();
         $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
@@ -56,7 +56,7 @@ class Auth extends Base {
      * @throws \think\exception\DbException
      */
     public function getGroups() {
-        $listInfo = (new ApiAuthGroup())->where(['status' => 1])->order('id', 'DESC')->select();
+        $listInfo = (new AdminAuthGroup())->where(['status' => 1])->order('id', 'DESC')->select();
         $count = count($listInfo);
         $listInfo = Tools::buildArrFromObj($listInfo);
 
@@ -77,13 +77,13 @@ class Auth extends Base {
     public function getRuleList() {
         $groupId = $this->request->get('groupId', 0);
 
-        $list = (new ApiMenu)->where([])->order('sort', 'ASC')->select();
+        $list = (new AdminMenu)->where([])->order('sort', 'ASC')->select();
         $list = Tools::buildArrFromObj($list);
         $list = listToTree($list);
 
         $rules = [];
         if ($groupId) {
-            $rules = (new ApiAuthRule())->where(['groupId' => $groupId])->select();
+            $rules = (new AdminAuthRule())->where(['groupId' => $groupId])->select();
             $rules = array_column($rules, 'url');
         }
         $newList = $this->buildList($list, $rules);
@@ -107,7 +107,7 @@ class Auth extends Base {
             $rules = array_filter($rules);
         }
         unset($postData['rules']);
-        $res = ApiAuthGroup::create($postData);
+        $res = AdminAuthGroup::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -121,7 +121,7 @@ class Auth extends Base {
                         ];
                     }
                 }
-                (new ApiAuthRule())->saveAll($insertData);
+                (new AdminAuthRule())->saveAll($insertData);
             }
 
             return $this->buildSuccess([]);
@@ -136,7 +136,7 @@ class Auth extends Base {
     public function changeStatus() {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
-        $res = ApiAuthGroup::update([
+        $res = AdminAuthGroup::update([
             'id'     => $id,
             'status' => $status
         ]);
@@ -162,7 +162,7 @@ class Auth extends Base {
             $this->editRule();
         }
         unset($postData['rules']);
-        $res = ApiAuthGroup::update($postData);
+        $res = AdminAuthGroup::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -184,7 +184,7 @@ class Auth extends Base {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
 
-        $listInfo = (new ApiAuthGroupAccess())->where(['groupId' => ['like', "%{$id}%"]])->select();
+        $listInfo = (new AdminAuthGroupAccess())->where(['groupId' => ['like', "%{$id}%"]])->select();
         if ($listInfo) {
             foreach ($listInfo as $value) {
                 $valueArr = $value->toArray();
@@ -197,8 +197,8 @@ class Auth extends Base {
             }
         }
 
-        ApiAuthGroup::destroy($id);
-        ApiAuthRule::destroy(['groupId' => $id]);
+        AdminAuthGroup::destroy($id);
+        AdminAuthRule::destroy(['groupId' => $id]);
 
         return $this->buildSuccess([]);
     }
@@ -216,12 +216,12 @@ class Auth extends Base {
         if (!$gid || !$uid) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        $oldInfo = ApiAuthGroupAccess::get(['uid' => $uid])->toArray();
+        $oldInfo = AdminAuthGroupAccess::get(['uid' => $uid])->toArray();
         $oldGroupArr = explode(',', $oldInfo['groupId']);
         $key = array_search($gid, $oldGroupArr);
         unset($oldGroupArr[$key]);
         $newData = implode(',', $oldGroupArr);
-        $res = ApiAuthGroupAccess::update([
+        $res = AdminAuthGroupAccess::update([
             'groupId' => $newData
         ], [
             'uid' => $uid
@@ -269,7 +269,7 @@ class Auth extends Base {
     private function editRule() {
         $postData = $this->request->post();
         $needAdd = [];
-        $has = (new ApiAuthRule())->where(['groupId' => $postData['id']])->select();
+        $has = (new AdminAuthRule())->where(['groupId' => $postData['id']])->select();
         $has = Tools::buildArrFromObj($has);
         $hasRule = array_column($has, 'url');
         $needDel = array_flip($hasRule);
@@ -285,11 +285,11 @@ class Auth extends Base {
             }
         }
         if (count($needAdd)) {
-            (new ApiAuthRule())->saveAll($needAdd);
+            (new AdminAuthRule())->saveAll($needAdd);
         }
         if (count($needDel)) {
             $urlArr = array_keys($needDel);
-            ApiAuthRule::destroy([
+            AdminAuthRule::destroy([
                 'groupId' => $postData['id'],
                 'url'     => ['in', $urlArr]
             ]);

@@ -3,6 +3,6 @@
 namespace app\model;
 
 
-class ApiApp extends Base {
+class AdminApp extends Base {
 
 }

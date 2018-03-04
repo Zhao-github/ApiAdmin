@@ -1,11 +1,13 @@
 <?php
 /**
- * @since   2017-07-30
+ *
+ * @since   2018-02-11
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
 namespace app\model;
 
-class ApiList extends Base {
+
+class AdminAppGroup extends Base {
 
 }

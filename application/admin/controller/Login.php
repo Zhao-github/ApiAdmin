@@ -8,11 +8,11 @@
 namespace app\admin\controller;
 
 
-use app\model\ApiAuthGroupAccess;
-use app\model\ApiAuthRule;
-use app\model\ApiMenu;
-use app\model\ApiUser;
-use app\model\ApiUserData;
+use app\model\AdminAuthGroupAccess;
+use app\model\AdminAuthRule;
+use app\model\AdminMenu;
+use app\model\AdminUser;
+use app\model\AdminUserData;
 use app\util\ReturnCode;
 use app\util\Tools;
 
@@ -36,11 +36,11 @@ class Login extends Base {
         } else {
             $password = Tools::userMd5($password);
         }
-        $userInfo = ApiUser::get(['username' => $username, 'password' => $password]);
+        $userInfo = AdminUser::get(['username' => $username, 'password' => $password]);
         if (!empty($userInfo)) {
             if ($userInfo['status']) {
                 //更新用户数据
-                $userData = ApiUserData::get(['uid' => $userInfo['id']]);
+                $userData = AdminUserData::get(['uid' => $userInfo['id']]);
                 $data = [];
                 if ($userData) {
                     $userData->loginTimes ++;
@@ -55,7 +55,7 @@ class Login extends Base {
                     $data['lastLoginTime'] = time();
                     $data['headImg'] = '';
                     $return['headImg'] = '';
-                    ApiUserData::create($data);
+                    AdminUserData::create($data);
                 }
             } else {
                 return $this->buildFailed(ReturnCode::LOGIN_ERROR, '用户已被封禁，请联系管理员');
@@ -70,13 +70,13 @@ class Login extends Base {
         $return['access'] = 1000000;
         $isSupper = Tools::isAdministrator($userInfo['id']);
         if ($isSupper) {
-            $access = ApiMenu::all(['hide' => 0]);
+            $access = AdminMenu::all(['hide' => 0]);
             $access = Tools::buildArrFromObj($access);
             $return['access'] = array_values(array_filter(array_column($access, 'url')));
         } else {
-            $groups = ApiAuthGroupAccess::get(['uid' => $userInfo['id']]);
+            $groups = AdminAuthGroupAccess::get(['uid' => $userInfo['id']]);
             if (isset($groups) || $groups->groupId) {
-                $access = (new ApiAuthRule())->whereIn('groupId', $groups->groupId)->select();
+                $access = (new AdminAuthRule())->whereIn('groupId', $groups->groupId)->select();
                 $access = Tools::buildArrFromObj($access);
                 $return['access'] = array_values(array_unique(array_column($access, 'url')));
             }

@@ -8,7 +8,7 @@
 namespace app\admin\controller;
 
 
-use app\model\ApiGroup;
+use app\model\AdminGroup;
 use app\util\ReturnCode;
 use app\util\Tools;
 
@@ -43,8 +43,8 @@ class InterfaceGroup extends Base {
             }
         }
 
-        $listInfo = (new ApiGroup())->where($where)->limit($start, $limit)->select();
-        $count = (new ApiGroup())->where($where)->count();
+        $listInfo = (new AdminGroup())->where($where)->limit($start, $limit)->select();
+        $count = (new AdminGroup())->where($where)->count();
         $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
@@ -61,7 +61,7 @@ class InterfaceGroup extends Base {
      * @throws \think\exception\DbException
      */
     public function getAll() {
-        $listInfo = (new ApiGroup())->where(['status' => 1])->select();
+        $listInfo = (new AdminGroup())->where(['status' => 1])->select();
 
         return $this->buildSuccess([
             'list'     => $listInfo
@@ -76,7 +76,7 @@ class InterfaceGroup extends Base {
     public function changeStatus() {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
-        $res = ApiGroup::update([
+        $res = AdminGroup::update([
             'status' => $status
         ], [
             'id' => $id
@@ -96,7 +96,7 @@ class InterfaceGroup extends Base {
     public function add() {
         $postData = $this->request->post();
         $postData['addTime'] = $postData['updateTime'] = time();
-        $res = ApiGroup::create($postData);
+        $res = AdminGroup::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -112,7 +112,7 @@ class InterfaceGroup extends Base {
     public function edit() {
         $postData = $this->request->post();
         $postData['updateTime'] = time();
-        $res = ApiGroup::update($postData);
+        $res = AdminGroup::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -130,7 +130,7 @@ class InterfaceGroup extends Base {
         if (!$hash) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        ApiGroup::destroy(['hash' => $hash]);
+        AdminGroup::destroy(['hash' => $hash]);
 
         return $this->buildSuccess([]);
     }

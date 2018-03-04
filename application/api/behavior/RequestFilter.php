@@ -9,7 +9,7 @@
 namespace app\api\behavior;
 
 
-use app\model\ApiFields;
+use app\model\AdminFields;
 use app\util\ApiLog;
 use app\util\ReturnCode;
 use app\util\DataType;
@@ -47,7 +47,7 @@ class RequestFilter {
         $hash = $request->routeInfo();
         if (isset($hash['rule'][1])) {
             $hash = $hash['rule'][1];
-            $rule = ApiFields::all(['hash' => $hash, 'type' => 0]);
+            $rule = AdminFields::all(['hash' => $hash, 'type' => 0]);
             $newRule = $this->buildValidateRule($rule);
 
             if ($newRule) {

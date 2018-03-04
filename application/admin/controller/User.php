@@ -8,9 +8,9 @@
 namespace app\admin\controller;
 
 
-use app\model\ApiAuthGroupAccess;
-use app\model\ApiUser;
-use app\model\ApiUserData;
+use app\model\AdminAuthGroupAccess;
+use app\model\AdminUser;
+use app\model\AdminUserData;
 use app\util\ReturnCode;
 use app\util\Tools;
 
@@ -47,18 +47,18 @@ class User extends Base {
             }
         }
 
-        $listInfo = (new ApiUser())->where($where)->order('regTime', 'DESC')->limit($start, $limit)->select();
-        $count = (new ApiUser())->where($where)->count();
+        $listInfo = (new AdminUser())->where($where)->order('regTime', 'DESC')->limit($start, $limit)->select();
+        $count = (new AdminUser())->where($where)->count();
         $listInfo = Tools::buildArrFromObj($listInfo);
         $idArr = array_column($listInfo, 'id');
 
-        $userData = ApiUserData::all(function($query) use ($idArr) {
+        $userData = AdminUserData::all(function($query) use ($idArr) {
             $query->whereIn('uid', $idArr);
         });
         $userData = Tools::buildArrFromObj($userData);
         $userData = Tools::buildArrByNewKey($userData, 'uid');
 
-        $userGroup = ApiAuthGroupAccess::all(function($query) use ($idArr) {
+        $userGroup = AdminAuthGroupAccess::all(function($query) use ($idArr) {
             $query->whereIn('uid', $idArr);
         });
         $userGroup = Tools::buildArrFromObj($userGroup);
@@ -99,11 +99,11 @@ class User extends Base {
             $groups = trim(implode(',', $postData['groupId']), ',');
         }
         unset($postData['groupId']);
-        $res = ApiUser::create($postData);
+        $res = AdminUser::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
-            ApiAuthGroupAccess::create([
+            AdminAuthGroupAccess::create([
                 'uid'     => $res->id,
                 'groupId' => $groups
             ]);
@@ -128,15 +128,15 @@ class User extends Base {
             return $this->buildFailed(ReturnCode::PARAM_INVALID, '非法操作');
         }
 
-        $listInfo = (new ApiAuthGroupAccess())->where(['groupId' => ['like', "%{$gid}%"]])->select();
+        $listInfo = (new AdminAuthGroupAccess())->where(['groupId' => ['like', "%{$gid}%"]])->select();
         $listInfo = Tools::buildArrFromObj($listInfo);
         $uidArr = array_column($listInfo, 'uid');
 
-        $userInfo = (new ApiUser())->whereIn('id', $uidArr)->order('regTime', 'DESC')->limit($start, $limit)->select();
-        $count = (new ApiUser())->whereIn('id', $uidArr)->count();
+        $userInfo = (new AdminUser())->whereIn('id', $uidArr)->order('regTime', 'DESC')->limit($start, $limit)->select();
+        $count = (new AdminUser())->whereIn('id', $uidArr)->count();
         $userInfo = Tools::buildArrFromObj($userInfo);
 
-        $userData = ApiUserData::all(function($query) use ($uidArr) {
+        $userData = AdminUserData::all(function($query) use ($uidArr) {
             $query->whereIn('uid', $uidArr);
         });
         $userData = Tools::buildArrFromObj($userData);
@@ -165,7 +165,7 @@ class User extends Base {
     public function changeStatus() {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
-        $res = ApiUser::update([
+        $res = AdminUser::update([
             'id'         => $id,
             'status'     => $status,
             'updateTime' => time()
@@ -196,19 +196,19 @@ class User extends Base {
         }
         $postData['updateTime'] = time();
         unset($postData['groupId']);
-        $res = ApiUser::update($postData);
+        $res = AdminUser::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
-            $has = ApiAuthGroupAccess::get(['uid' => $postData['id']]);
+            $has = AdminAuthGroupAccess::get(['uid' => $postData['id']]);
             if ($has) {
-                ApiAuthGroupAccess::update([
+                AdminAuthGroupAccess::update([
                     'groupId' => $groups
                 ], [
                     'uid' => $postData['id'],
                 ]);
             } else {
-                ApiAuthGroupAccess::create([
+                AdminAuthGroupAccess::create([
                     'uid'     => $postData['id'],
                     'groupId' => $groups
                 ]);
@@ -242,11 +242,11 @@ class User extends Base {
         $postData['id'] = $this->userInfo['id'];
         $postData['updateTime'] = time();
         unset($postData['headImg']);
-        $res = ApiUser::update($postData);
+        $res = AdminUser::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
-            $userData = ApiUserData::get(['uid' => $postData['id']]);
+            $userData = AdminUserData::get(['uid' => $postData['id']]);
             $userData->headImg = $headImg;
             $userData->save();
 
@@ -264,8 +264,8 @@ class User extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        ApiUser::destroy($id);
-        ApiAuthGroupAccess::destroy(['uid' => $id]);
+        AdminUser::destroy($id);
+        AdminAuthGroupAccess::destroy(['uid' => $id]);
 
         return $this->buildSuccess([]);
 

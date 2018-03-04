@@ -8,7 +8,7 @@
 namespace app\api\controller;
 
 
-use app\model\ApiApp;
+use app\model\AdminApp;
 use app\util\ApiLog;
 use app\util\ReturnCode;
 use app\util\Strs;
@@ -28,7 +28,7 @@ class BuildToken extends Base {
         if (empty($param['app_id'])) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少app_id');
         }
-        $appInfo = (new ApiApp())->where(['app_id' => $param['app_id'], 'app_status' => 1])->find();
+        $appInfo = (new AdminApp())->where(['app_id' => $param['app_id'], 'app_status' => 1])->find();
         if (empty($appInfo)) {
             return $this->buildFailed(ReturnCode::INVALID, '应用ID非法');
         }

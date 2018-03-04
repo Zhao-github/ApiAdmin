@@ -8,7 +8,7 @@
 namespace app\admin\controller;
 
 
-use app\model\ApiAppGroup;
+use app\model\AdminAppGroup;
 use app\util\ReturnCode;
 use app\util\Tools;
 
@@ -43,8 +43,8 @@ class AppGroup extends Base {
             }
         }
 
-        $listInfo = (new ApiAppGroup())->where($where)->limit($start, $limit)->select();
-        $count = (new ApiAppGroup())->where($where)->count();
+        $listInfo = (new AdminAppGroup())->where($where)->limit($start, $limit)->select();
+        $count = (new AdminAppGroup())->where($where)->count();
         $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
@@ -61,7 +61,7 @@ class AppGroup extends Base {
      * @throws \think\exception\DbException
      */
     public function getAll() {
-        $listInfo = (new ApiAppGroup())->where(['status' => 1])->select();
+        $listInfo = (new AdminAppGroup())->where(['status' => 1])->select();
 
         return $this->buildSuccess([
             'list'     => $listInfo
@@ -76,7 +76,7 @@ class AppGroup extends Base {
     public function changeStatus() {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
-        $res = ApiAppGroup::update([
+        $res = AdminAppGroup::update([
             'status' => $status
         ], [
             'id' => $id
@@ -95,7 +95,7 @@ class AppGroup extends Base {
      */
     public function add() {
         $postData = $this->request->post();
-        $res = ApiAppGroup::create($postData);
+        $res = AdminAppGroup::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -110,7 +110,7 @@ class AppGroup extends Base {
      */
     public function edit() {
         $postData = $this->request->post();
-        $res = ApiAppGroup::update($postData);
+        $res = AdminAppGroup::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -128,7 +128,7 @@ class AppGroup extends Base {
         if (!$hash) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        ApiAppGroup::destroy(['hash' => $hash]);
+        AdminAppGroup::destroy(['hash' => $hash]);
 
         return $this->buildSuccess([]);
     }

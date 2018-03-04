@@ -8,9 +8,9 @@
 namespace app\admin\controller;
 
 
-use app\model\ApiApp;
-use app\model\ApiList;
-use app\model\ApiGroup;
+use app\model\AdminApp;
+use app\model\AdminList;
+use app\model\AdminGroup;
 use app\util\ReturnCode;
 use app\util\Strs;
 use app\util\Tools;
@@ -45,8 +45,8 @@ class App extends Base {
             }
         }
 
-        $listInfo = (new ApiApp())->where($where)->order('app_addTime', 'DESC')->limit($start, $limit)->select();
-        $count = (new ApiApp())->where($where)->count();
+        $listInfo = (new AdminApp())->where($where)->order('app_addTime', 'DESC')->limit($start, $limit)->select();
+        $count = (new AdminApp())->where($where)->count();
         $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
@@ -63,16 +63,16 @@ class App extends Base {
      * @throws \think\exception\DbException
      */
     public function getAppInfo() {
-        $apiArr = ApiList::all();
+        $apiArr = AdminList::all();
         foreach ($apiArr as $api) {
             $res['apiList'][$api['groupHash']][] = $api;
         }
-        $groupArr = ApiGroup::all();
+        $groupArr = AdminGroup::all();
         $groupArr = Tools::buildArrFromObj($groupArr);
         $res['groupInfo'] = array_column($groupArr, 'name', 'hash');
         $id = $this->request->get('id', 0);
         if ($id) {
-            $appInfo = ApiApp::get($id)->toArray();
+            $appInfo = AdminApp::get($id)->toArray();
             $res['app_detail'] = json_decode($appInfo['app_api_show'], true);
         } else {
             $res['app_id'] = mt_rand(1, 9) . Strs::randString(7, 1);
@@ -105,7 +105,7 @@ class App extends Base {
             }
             $data['app_api'] = implode(',', $appApi);
         }
-        $res = ApiApp::create($data);
+        $res = AdminApp::create($data);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -121,7 +121,7 @@ class App extends Base {
     public function changeStatus() {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
-        $res = ApiApp::update([
+        $res = AdminApp::update([
             'app_status' => $status
         ], [
             'id' => $id
@@ -157,7 +157,7 @@ class App extends Base {
             }
             $data['app_api'] = implode(',', $appApi);
         }
-        $res = ApiApp::update($data);
+        $res = AdminApp::update($data);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -175,7 +175,7 @@ class App extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        ApiApp::destroy($id);
+        AdminApp::destroy($id);
 
         return $this->buildSuccess([]);
     }

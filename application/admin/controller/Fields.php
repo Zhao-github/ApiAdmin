@@ -8,8 +8,8 @@
 namespace app\admin\controller;
 
 
-use app\model\ApiFields;
-use app\model\ApiList;
+use app\model\AdminFields;
+use app\model\AdminList;
 use app\util\DataType;
 use app\util\ReturnCode;
 use app\util\Tools;
@@ -44,8 +44,8 @@ class Fields extends Base {
         $hash = $this->request->get('hash', '');
 
         if (!empty($hash)) {
-            $listInfo = (new ApiFields())->where(['hash' => $hash, 'type' => 0])->limit($start, $limit)->select();
-            $count = (new ApiFields())->where(['hash' => $hash, 'type' => 0])->count();
+            $listInfo = (new AdminFields())->where(['hash' => $hash, 'type' => 0])->limit($start, $limit)->select();
+            $count = (new AdminFields())->where(['hash' => $hash, 'type' => 0])->count();
             $listInfo = Tools::buildArrFromObj($listInfo);
 
             return $this->buildSuccess([
@@ -72,8 +72,8 @@ class Fields extends Base {
         $hash = $this->request->get('hash', '');
 
         if (!empty($hash)) {
-            $listInfo = (new ApiFields())->where(['hash' => $hash, 'type' => 1])->limit($start, $limit)->select();
-            $count = (new ApiFields())->where(['hash' => $hash, 'type' => 1])->count();
+            $listInfo = (new AdminFields())->where(['hash' => $hash, 'type' => 1])->limit($start, $limit)->select();
+            $count = (new AdminFields())->where(['hash' => $hash, 'type' => 1])->count();
             $listInfo = Tools::buildArrFromObj($listInfo);
 
             return $this->buildSuccess([
@@ -96,7 +96,7 @@ class Fields extends Base {
         $postData['showName'] = $postData['fieldName'];
         $postData['default'] = $postData['defaults'];
         unset($postData['defaults']);
-        $res = ApiFields::create($postData);
+        $res = AdminFields::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -114,7 +114,7 @@ class Fields extends Base {
         $postData['showName'] = $postData['fieldName'];
         $postData['default'] = $postData['defaults'];
         unset($postData['defaults']);
-        $res = ApiFields::update($postData);
+        $res = AdminFields::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -132,7 +132,7 @@ class Fields extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        ApiFields::destroy($id);
+        AdminFields::destroy($id);
 
         return $this->buildSuccess([]);
     }
@@ -154,9 +154,9 @@ class Fields extends Base {
         if ($data === null) {
             return $this->buildFailed(ReturnCode::EXCEPTION, 'JSON数据格式有误');
         }
-        ApiList::update(['returnStr' => json_encode($data)], ['hash' => $hash]);
+        AdminList::update(['returnStr' => json_encode($data)], ['hash' => $hash]);
         $this->handle($data['data'], $dataArr);
-        $old = (new ApiFields())->where([
+        $old = (new AdminFields())->where([
             'hash' => $hash,
             'type' => $type
         ])->select();
@@ -166,7 +166,7 @@ class Fields extends Base {
         $addArr = array_diff($newArr, $oldArr);
         $delArr = array_diff($oldArr, $newArr);
         if ($delArr) {
-            ApiFields::destroy(['showName' => ['in', $delArr]]);
+            AdminFields::destroy(['showName' => ['in', $delArr]]);
         }
         if ($addArr) {
             $addData = [];
@@ -175,7 +175,7 @@ class Fields extends Base {
                     $addData[] = $item;
                 }
             }
-            (new ApiFields())->insertAll($addData);
+            (new AdminFields())->insertAll($addData);
         }
 
         return $this->buildSuccess([]);

@@ -8,8 +8,8 @@
 namespace app\admin\behavior;
 
 
-use app\model\ApiMenu;
-use app\model\ApiUserAction;
+use app\model\AdminMenu;
+use app\model\AdminUserAction;
 use app\util\ReturnCode;
 use think\Request;
 
@@ -29,7 +29,7 @@ class AdminLog {
         $userToken = $request->header('ApiAuth', '');
         $userInfo = cache($userToken);
         $userInfo = json_decode($userInfo, true);
-        $menuInfo = ApiMenu::get(['url' => $route['route']]);
+        $menuInfo = AdminMenu::get(['url' => $route['route']]);
 
         if ($menuInfo) {
             $menuInfo = $menuInfo->toArray();
@@ -39,7 +39,7 @@ class AdminLog {
             return json($data, 200, $header);
         }
 
-        ApiUserAction::create([
+        AdminUserAction::create([
             'actionName' => $menuInfo['name'],
             'uid'        => $userInfo['id'],
             'nickname'   => $userInfo['nickname'],

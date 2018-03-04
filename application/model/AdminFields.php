@@ -7,6 +7,6 @@
 
 namespace app\model;
 
-class ApiFields extends Base {
+class AdminFields extends Base {
 
 }

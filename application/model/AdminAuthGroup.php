@@ -8,10 +8,10 @@
 namespace app\model;
 
 
-class ApiAuthGroup extends Base {
+class AdminAuthGroup extends Base {
 
     public function rules() {
-        return $this->hasMany('ApiAuthRule', 'groupId', 'id');
+        return $this->hasMany('AdminAuthRule', 'groupId', 'id');
     }
 
 }

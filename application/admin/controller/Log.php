@@ -8,10 +8,10 @@
 namespace app\admin\controller;
 
 
-use app\model\ApiAuthGroupAccess;
-use app\model\ApiUser;
-use app\model\ApiUserAction;
-use app\model\ApiUserData;
+use app\model\AdminAuthGroupAccess;
+use app\model\AdminUser;
+use app\model\AdminUserAction;
+use app\model\AdminUserData;
 use app\util\ReturnCode;
 use app\util\Tools;
 
@@ -47,8 +47,8 @@ class Log extends Base {
             }
         }
 
-        $listInfo = (new ApiUserAction())->where($where)->order('addTime', 'DESC')->limit($start, $limit)->select();
-        $count = (new ApiUserAction())->where($where)->count();
+        $listInfo = (new AdminUserAction())->where($where)->order('addTime', 'DESC')->limit($start, $limit)->select();
+        $count = (new AdminUserAction())->where($where)->count();
         $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
@@ -67,7 +67,7 @@ class Log extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        ApiUserAction::destroy($id);
+        AdminUserAction::destroy($id);
 
         return $this->buildSuccess([]);
 

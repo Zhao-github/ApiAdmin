@@ -1,13 +1,12 @@
 <?php
 /**
- *
- * @since   2018-02-08
+ * @since   2017-11-02
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
 namespace app\model;
 
 
-class ApiAuthRule extends Base {
+class AdminUser extends Base {
 
 }
