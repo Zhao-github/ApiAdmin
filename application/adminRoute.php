@@ -55,6 +55,10 @@ return [
             'admin/User/add',
             ['method' => 'post', 'after_behavior' => $afterBehavior]
         ],
+        'User/own'                    => [
+            'admin/User/own',
+            ['method' => 'post', 'after_behavior' => $afterBehavior]
+        ],
         'User/edit'                   => [
             'admin/User/edit',
             ['method' => 'post', 'after_behavior' => $afterBehavior]

@@ -186,8 +186,6 @@ class User extends Base {
     public function edit() {
         $groups = '';
         $postData = $this->request->post();
-        $postData['regIp'] = request()->ip(1);
-        $postData['regTime'] = time();
         if ($postData['password'] === 'ApiAdmin') {
             unset($postData['password']);
         } else {
@@ -215,6 +213,42 @@ class User extends Base {
                     'groupId' => $groups
                 ]);
             }
+
+            return $this->buildSuccess([]);
+        }
+    }
+
+    /**
+     * 修改自己的信息
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     * @throws \think\exception\DbException
+     */
+    public function own() {
+        $postData = $this->request->post();
+        $headImg = $postData['headImg'];
+        if ($postData['password'] && $postData['oldPassword']) {
+            $oldPass = Tools::userMd5($postData['oldPassword']);
+            unset($postData['oldPassword']);
+            if ($oldPass === $this->userInfo['password']) {
+                $postData['password'] = Tools::userMd5($postData['password']);
+            } else {
+                return $this->buildFailed(ReturnCode::INVALID, '原始密码不正确');
+            }
+        } else {
+            unset($postData['password']);
+            unset($postData['oldPassword']);
+        }
+        $postData['id'] = $this->userInfo['id'];
+        $postData['updateTime'] = time();
+        unset($postData['headImg']);
+        $res = ApiUser::update($postData);
+        if ($res === false) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+        } else {
+            $userData = ApiUserData::get(['uid' => $postData['id']]);
+            $userData->headImg = $headImg;
+            $userData->save();
 
             return $this->buildSuccess([]);
         }
