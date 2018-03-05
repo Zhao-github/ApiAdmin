@@ -15,6 +15,11 @@
             "email": "756958008@qq.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "app\\": "application"
+        }
+    },
     "require": {
         "php": ">=5.6.0",
         "topthink/framework": "~5.0.0"
