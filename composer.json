@@ -1,22 +1,22 @@
 {
-    "name": "topthink/think",
-    "description": "the new thinkphp framework",
+    "name": "apiadmin/apiadmin",
+    "description": "the api manager",
     "type": "project",
     "keywords": [
-        "framework",
-        "thinkphp",
-        "ORM"
+        "API",
+        "ApiAdmin",
+        "TP5"
     ],
-    "homepage": "http://thinkphp.cn/",
+    "homepage": "http://www.apiadmin.org/",
     "license": "Apache-2.0",
     "authors": [
         {
-            "name": "liu21st",
-            "email": "liu21st@gmail.com"
+            "name": "zhao",
+            "email": "756958008@qq.com"
         }
     ],
     "require": {
-        "php": ">=5.4.0",
+        "php": ">=5.6.0",
         "topthink/framework": "~5.0.0"
     },
     "extra": {
