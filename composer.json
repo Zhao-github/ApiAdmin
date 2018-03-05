@@ -3,9 +3,9 @@
     "description": "the api manager",
     "type": "project",
     "keywords": [
-        "API",
-        "ApiAdmin",
-        "TP5"
+        "api",
+        "apiadmin",
+        "tp5"
     ],
     "homepage": "http://www.apiadmin.org/",
     "license": "Apache-2.0",
