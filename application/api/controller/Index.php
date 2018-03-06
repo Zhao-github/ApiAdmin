@@ -3,8 +3,12 @@
 namespace app\api\controller;
 
 
+use Curl\Curl;
+
 class Index extends Base {
     public function index() {
+        $curl = new Curl();
+        dump($curl->get('http://www.apiadmin.org'));exit;
         $this->debug([
             'TpVersion' => THINK_VERSION
         ]);
