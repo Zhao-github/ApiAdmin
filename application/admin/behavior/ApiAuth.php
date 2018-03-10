@@ -23,7 +23,7 @@ class ApiAuth {
         $header = config('apiAdmin.CROSS_DOMAIN');
         $ApiAuth = $request->header('ApiAuth', '');
         if ($ApiAuth) {
-            $userInfo = cache($ApiAuth);
+            $userInfo = cache('Login:' . $ApiAuth);
             $userInfo = json_decode($userInfo, true);
             if (!$userInfo || !isset($userInfo['id'])) {
                 $data = ['code' => ReturnCode::AUTH_ERROR, 'msg' => 'ApiAuth不匹配', 'data' => []];

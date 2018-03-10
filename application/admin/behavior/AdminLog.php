@@ -26,8 +26,8 @@ class AdminLog {
         $header = config('apiAdmin.CROSS_DOMAIN');
         $request = Request::instance();
         $route = $request->routeInfo();
-        $userToken = $request->header('ApiAuth', '');
-        $userInfo = cache($userToken);
+        $ApiAuth = $request->header('ApiAuth', '');
+        $userInfo = cache('Login:' . $ApiAuth);
         $userInfo = json_decode($userInfo, true);
         $menuInfo = AdminMenu::get(['url' => $route['route']]);
 

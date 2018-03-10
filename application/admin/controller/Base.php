@@ -17,7 +17,7 @@ class Base extends Controller {
     public function _initialize() {
         $ApiAuth = $this->request->header('ApiAuth');
         if ($ApiAuth) {
-            $userInfo = cache($ApiAuth);
+            $userInfo = cache('Login:' . $ApiAuth);
             $this->userInfo = json_decode($userInfo, true);
         }
     }

@@ -30,7 +30,7 @@ class ApiPermission {
         $route = $request->routeInfo();
         $header = config('apiAdmin.CROSS_DOMAIN');
         $ApiAuth = $request->header('ApiAuth', '');
-        $userInfo = cache($ApiAuth);
+        $userInfo = cache('Login:' . $ApiAuth);
         $userInfo = json_decode($userInfo, true);
         if (!$this->checkAuth($userInfo['id'], $route['route'])) {
             $data = ['code' => ReturnCode::INVALID, 'msg' => '非常抱歉，您没有权限怎么做！', 'data' => []];
