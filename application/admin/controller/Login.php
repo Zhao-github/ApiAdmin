@@ -67,7 +67,7 @@ class Login extends Base {
         cache('Login:' . $apiAuth, json_encode($userInfo), config('apiAdmin.ONLINE_TIME'));
         cache('Login:' . $userInfo['id'], $apiAuth, config('apiAdmin.ONLINE_TIME'));
 
-        $return['access'] = 1000000;
+        $return['access'] = [];
         $isSupper = Tools::isAdministrator($userInfo['id']);
         if ($isSupper) {
             $access = AdminMenu::all(['hide' => 0]);
