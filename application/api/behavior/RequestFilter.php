@@ -1,7 +1,6 @@
 <?php
 /**
  * 输入参数过滤行为
- * TODO::Route异常捕获、规则缓存
  * @since   2017-07-25
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
@@ -13,6 +12,7 @@ use app\model\AdminFields;
 use app\util\ApiLog;
 use app\util\ReturnCode;
 use app\util\DataType;
+use think\Cache;
 use think\Request;
 use think\Validate;
 
@@ -47,8 +47,17 @@ class RequestFilter {
         $hash = $request->routeInfo();
         if (isset($hash['rule'][1])) {
             $hash = $hash['rule'][1];
-            $rule = AdminFields::all(['hash' => $hash, 'type' => 0]);
-            $newRule = $this->buildValidateRule($rule);
+
+            $has = Cache::has('RequestFields:NewRule:' . $hash);
+            if ($has) {
+                $newRule = cache('RequestFields:NewRule:' . $hash);
+                $rule = cache('RequestFields:Rule:' . $hash);
+            } else {
+                $rule = AdminFields::all(['hash' => $hash, 'type' => 0]);
+                $newRule = $this->buildValidateRule($rule);
+                cache('RequestFields:NewRule:' . $hash, $newRule);
+                cache('RequestFields:Rule:' . $hash, $rule);
+            }
 
             if ($newRule) {
                 $validate = new Validate($newRule);

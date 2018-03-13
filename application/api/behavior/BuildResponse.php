@@ -11,6 +11,7 @@ namespace app\api\behavior;
 use app\model\AdminFields;
 use app\util\ApiLog;
 use app\util\DataType;
+use think\Cache;
 use think\Request;
 
 class BuildResponse {
@@ -27,7 +28,15 @@ class BuildResponse {
         $hash = $request->routeInfo();
         if (isset($hash['rule'][1])) {
             $hash = $hash['rule'][1];
-            $rule = AdminFields::all(['hash' => $hash, 'type' => 1]);
+
+            $has = Cache::has('ResponseFieldsRule:' . $hash);
+            if ($has) {
+                $rule = cache('ResponseFieldsRule:' . $hash);
+            } else {
+                $rule = AdminFields::all(['hash' => $hash, 'type' => 1]);
+                cache('ResponseFieldsRule:' . $hash, $rule);
+            }
+
             if ($rule) {
                 $rule = json_decode(json_encode($rule), true);
                 $newRule = array_column($rule, 'dataType', 'showName');

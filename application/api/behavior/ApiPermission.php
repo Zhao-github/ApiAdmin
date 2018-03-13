@@ -30,7 +30,7 @@ class ApiPermission {
             $hash = $hash['rule'][1];
             $access_token = $this->request->header('access-token');
             if ($access_token) {
-                $appInfo = cache($access_token);
+                $appInfo = cache('AccessToken:' . $access_token);
                 $allRules = explode(',', $appInfo['app_api']);
                 if (!in_array($hash, $allRules)) {
                     $data = ['code' => ReturnCode::INVALID, 'msg' => '非常抱歉，您没有权限怎么做！', 'data' => []];

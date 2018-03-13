@@ -41,16 +41,16 @@ class BuildToken extends Base {
             return $this->buildFailed(ReturnCode::INVALID, '身份令牌验证失败');
         }
         $expires = config('apiAdmin.ACCESS_TOKEN_TIME_OUT');
-        $accessToken = cache($param['device_id']);
+        $accessToken = cache('AccessToken:' . $param['device_id']);
         if ($accessToken) {
-            cache($accessToken, null);
-            cache($param['device_id'], null);
+            cache('AccessToken:' . $accessToken, null);
+            cache('AccessToken:' . $param['device_id'], null);
         }
         $accessToken = $this->buildAccessToken($appInfo['app_id'], $appInfo['app_secret']);
         $appInfo['device_id'] = $param['device_id'];
         ApiLog::setAppInfo($appInfo);
-        cache($accessToken, $appInfo, $expires);
-        cache($param['device_id'], $accessToken, $expires);
+        cache('AccessToken:' . $accessToken, $appInfo, $expires);
+        cache('AccessToken:' . $param['device_id'], $accessToken, $expires);
         $return['access_token'] = $accessToken;
         $return['expires_in'] = $expires;
 
@@ -71,13 +71,14 @@ class BuildToken extends Base {
      * @param $data
      * @return string
      */
-    private function getAuthToken( $appSecret, $data ){
-        if(empty($data)){
+    private function getAuthToken($appSecret, $data) {
+        if (empty($data)) {
             return '';
-        }else{
+        } else {
             $preArr = array_merge($data, ['app_secret' => $appSecret]);
             ksort($preArr);
             $preStr = http_build_query($preArr);
+
             return md5($preStr);
         }
     }
@@ -88,8 +89,9 @@ class BuildToken extends Base {
      * @param $appSecret
      * @return string
      */
-    private function buildAccessToken( $appId, $appSecret ){
-        $preStr = $appSecret.$appId.time().Strs::keyGen();
+    private function buildAccessToken($appId, $appSecret) {
+        $preStr = $appSecret . $appId . time() . Strs::keyGen();
+
         return md5($preStr);
     }
 

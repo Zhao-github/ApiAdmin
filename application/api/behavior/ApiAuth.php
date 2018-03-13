@@ -11,6 +11,7 @@ namespace app\api\behavior;
 use app\model\AdminList;
 use app\util\ApiLog;
 use app\util\ReturnCode;
+use think\Cache;
 use think\Request;
 
 class ApiAuth {
@@ -33,12 +34,20 @@ class ApiAuth {
         $hash = $this->request->routeInfo();
         if (isset($hash['rule'][1])) {
             $hash = $hash['rule'][1];
-            $this->apiInfo = AdminList::get(['hash' => $hash]);
-            if ($this->apiInfo) {
-                $this->apiInfo = $this->apiInfo->toArray();
+
+            $cached = Cache::has('ApiInfo:' . $hash);
+            if ($cached) {
+                $this->apiInfo = Cache::get('ApiInfo:' . $hash);
             } else {
-                return json(['code' => ReturnCode::DB_READ_ERROR, 'msg' => '获取接口配置数据失败', 'data' => []]);
+                $apiInfo = AdminList::get(['hash' => $hash]);
+                if ($apiInfo) {
+                    $this->apiInfo = $apiInfo->toArray();
+                    Cache::set('ApiInfo:' . $hash, $this->apiInfo);
+                } else {
+                    return json(['code' => ReturnCode::DB_READ_ERROR, 'msg' => '获取接口配置数据失1败', 'data' => []]);
+                }
             }
+
             if ($this->apiInfo['accessToken'] && !$this->apiInfo['isTest']) {
                 $accessRes = $this->checkAccessToken();
                 if ($accessRes) {
@@ -68,7 +77,7 @@ class ApiAuth {
         if (!isset($access_token) || !$access_token) {
             return json(['code' => ReturnCode::ACCESS_TOKEN_TIMEOUT, 'msg' => '缺少参数access-token', 'data' => []]);
         } else {
-            $appInfo = cache($access_token);
+            $appInfo = cache('AccessToken:' . $access_token);
             if (!$appInfo) {
                 return json(['code' => ReturnCode::ACCESS_TOKEN_TIMEOUT, 'msg' => 'access-token已过期', 'data' => []]);
             }
@@ -91,6 +100,7 @@ class ApiAuth {
     }
 
     /**
+     * TODO::需要根据实际情况另外改写
      * 检测用户登录情况  检测通过请赋予USER_INFO值
      */
     private function checkLogin() {
