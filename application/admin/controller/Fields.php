@@ -97,6 +97,11 @@ class Fields extends Base {
         $postData['default'] = $postData['defaults'];
         unset($postData['defaults']);
         $res = AdminFields::create($postData);
+
+        cache('RequestFields:NewRule:' . $postData['hash'], null);
+        cache('RequestFields:Rule:' . $postData['hash'], null);
+        cache('ResponseFieldsRule:' . $postData['hash'], null);
+
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -115,6 +120,11 @@ class Fields extends Base {
         $postData['default'] = $postData['defaults'];
         unset($postData['defaults']);
         $res = AdminFields::update($postData);
+
+        cache('RequestFields:NewRule:' . $postData['hash'], null);
+        cache('RequestFields:Rule:' . $postData['hash'], null);
+        cache('ResponseFieldsRule:' . $postData['hash'], null);
+
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -126,12 +136,19 @@ class Fields extends Base {
      * 字段删除
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @throws \think\exception\DbException
      */
     public function del() {
         $id = $this->request->get('id');
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
+
+        $fieldsInfo = AdminFields::get($id);
+        cache('RequestFields:NewRule:' . $fieldsInfo->hash, null);
+        cache('RequestFields:Rule:' . $fieldsInfo->hash, null);
+        cache('ResponseFieldsRule:' . $fieldsInfo->hash, null);
+
         AdminFields::destroy($id);
 
         return $this->buildSuccess([]);
@@ -177,6 +194,10 @@ class Fields extends Base {
             }
             (new AdminFields())->insertAll($addData);
         }
+
+        cache('RequestFields:NewRule:' . $hash, null);
+        cache('RequestFields:Rule:' . $hash, null);
+        cache('ResponseFieldsRule:' . $hash, null);
 
         return $this->buildSuccess([]);
     }

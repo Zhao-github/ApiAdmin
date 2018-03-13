@@ -91,16 +91,17 @@ class InterfaceList extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function changeStatus() {
-        $id = $this->request->get('id');
+        $hash = $this->request->get('hash');
         $status = $this->request->get('status');
         $res = AdminList::update([
             'status' => $status
         ], [
-            'id' => $id
+            'hash' => $hash
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
+            cache('ApiInfo:' . $hash, null);
             return $this->buildSuccess([]);
         }
     }
@@ -116,6 +117,7 @@ class InterfaceList extends Base {
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
+            cache('ApiInfo:' . $postData['hash'], null);
             return $this->buildSuccess([]);
         }
     }
@@ -156,6 +158,8 @@ class InterfaceList extends Base {
 
         AdminList::destroy(['hash' => $hash]);
         AdminFields::destroy(['hash' => $hash]);
+
+        cache('ApiInfo:' . $hash, null);
 
         return $this->buildSuccess([]);
     }
