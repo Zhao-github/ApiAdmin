@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 
 
+use app\model\AdminApp;
 use app\model\AdminFields;
 use app\model\AdminList;
 use app\util\ReturnCode;
@@ -105,7 +106,7 @@ class InterfaceList extends Base {
     }
 
     /**
-     * 编辑应用
+     * 编辑接口
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
@@ -122,6 +123,7 @@ class InterfaceList extends Base {
     /**
      * 删除接口
      * @return array
+     * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function del() {
@@ -129,6 +131,29 @@ class InterfaceList extends Base {
         if (!$hash) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
+
+        $hashRule = AdminApp::all([
+            'app_api' => ['like', "%$hash%"]
+        ]);
+        if ($hashRule) {
+            $oldInfo = AdminList::get(['hash' => $hash]);
+            foreach ($hashRule as $rule) {
+                $appApiArr = explode(',', $rule->app_api);
+                $appApiIndex = array_search($hash, $appApiArr);
+                array_splice($appApiArr, $appApiIndex, 1);
+                $rule->app_api = implode(',', $appApiArr);
+
+                $appApiShowArrOld = json_decode($rule->app_api_show, true);
+                $appApiShowArr = $appApiShowArrOld[$oldInfo->groupHash];
+                $appApiShowIndex = array_search($hash, $appApiShowArr);
+                array_splice($appApiShowArr, $appApiShowIndex, 1);
+                $appApiShowArrOld[$oldInfo->groupHash] = $appApiShowArr;
+                $rule->app_api_show = json_encode($appApiShowArrOld);
+
+                $rule->save();
+            }
+        }
+
         AdminList::destroy(['hash' => $hash]);
         AdminFields::destroy(['hash' => $hash]);
 
