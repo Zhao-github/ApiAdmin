@@ -94,6 +94,8 @@ class App extends Base {
             'app_secret'   => $postData['app_secret'],
             'app_name'     => $postData['app_name'],
             'app_info'     => $postData['app_info'],
+            'app_group'    => $postData['app_group'],
+            'app_addTime'  => time(),
             'app_api'      => '',
             'app_api_show' => '',
         ];
@@ -141,11 +143,9 @@ class App extends Base {
     public function edit() {
         $postData = $this->request->post();
         $data = [
-            'id'           => $postData['id'],
-            'app_id'       => $postData['app_id'],
-            'app_secret'   => $postData['app_secret'],
             'app_name'     => $postData['app_name'],
             'app_info'     => $postData['app_info'],
+            'app_group'    => $postData['app_group'],
             'app_api'      => '',
             'app_api_show' => '',
         ];
@@ -157,7 +157,7 @@ class App extends Base {
             }
             $data['app_api'] = implode(',', $appApi);
         }
-        $res = AdminApp::update($data);
+        $res = AdminApp::update($data, ['id' => $postData['id']]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {

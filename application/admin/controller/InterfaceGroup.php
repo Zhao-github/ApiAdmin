@@ -8,7 +8,9 @@
 namespace app\admin\controller;
 
 
+use app\model\AdminApp;
 use app\model\AdminGroup;
+use app\model\AdminList;
 use app\util\ReturnCode;
 use app\util\Tools;
 
@@ -48,8 +50,8 @@ class InterfaceGroup extends Base {
         $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
-            'list'     => $listInfo,
-            'count'    => $count
+            'list'  => $listInfo,
+            'count' => $count
         ]);
     }
 
@@ -64,7 +66,7 @@ class InterfaceGroup extends Base {
         $listInfo = (new AdminGroup())->where(['status' => 1])->select();
 
         return $this->buildSuccess([
-            'list'     => $listInfo
+            'list' => $listInfo
         ]);
     }
 
@@ -122,14 +124,40 @@ class InterfaceGroup extends Base {
 
     /**
      * 接口组删除
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function del() {
         $hash = $this->request->get('hash');
         if (!$hash) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
+        if ($hash === 'default') {
+            return $this->buildFailed(ReturnCode::INVALID, '系统预留关键数据，禁止删除！');
+        }
+
+        AdminList::update(['groupHash' => 'default'], ['groupHash' => $hash]);
+
+        $hashRule = AdminApp::all([
+            'app_api_show' => ['like', "%$hash%"]
+        ]);
+        if ($hashRule) {
+            foreach ($hashRule as $rule) {
+                $appApiShowArr = json_decode($rule->app_api_show, true);
+                if (!empty($appApiShowArr[$hash])) {
+                    if (isset($appApiShowArr['default'])) {
+                        $appApiShowArr['default'] = array_merge($appApiShowArr['default'], $appApiShowArr[$hash]);
+                    } else {
+                        $appApiShowArr['default'] = $appApiShowArr[$hash];
+                    }
+                }
+                unset($appApiShowArr[$hash]);
+                $rule->app_api_show = json_encode($appApiShowArr);
+                $rule->save();
+            }
+        }
+
         AdminGroup::destroy(['hash' => $hash]);
 
         return $this->buildSuccess([]);

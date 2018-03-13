@@ -8,6 +8,7 @@
 namespace app\admin\controller;
 
 
+use app\model\AdminApp;
 use app\model\AdminAppGroup;
 use app\util\ReturnCode;
 use app\util\Tools;
@@ -48,8 +49,8 @@ class AppGroup extends Base {
         $listInfo = Tools::buildArrFromObj($listInfo);
 
         return $this->buildSuccess([
-            'list'     => $listInfo,
-            'count'    => $count
+            'list'  => $listInfo,
+            'count' => $count
         ]);
     }
 
@@ -64,7 +65,7 @@ class AppGroup extends Base {
         $listInfo = (new AdminAppGroup())->where(['status' => 1])->select();
 
         return $this->buildSuccess([
-            'list'     => $listInfo
+            'list' => $listInfo
         ]);
     }
 
@@ -128,6 +129,12 @@ class AppGroup extends Base {
         if (!$hash) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
+
+        $has = (new AdminApp())->where(['app_group' => $hash])->count();
+        if ($has) {
+            return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '当前分组存在' . $has . '个应用，禁止删除');
+        }
+
         AdminAppGroup::destroy(['hash' => $hash]);
 
         return $this->buildSuccess([]);
