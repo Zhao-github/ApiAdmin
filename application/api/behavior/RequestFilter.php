@@ -76,16 +76,16 @@ class RequestFilter {
 
             switch ($method) {
                 case 'GET':
-                    $request->get($newData);
+                    $request->forceGet($newData);
                     break;
                 case 'POST':
-                    $request->post($newData);
+                    $request->forcePost($newData);
                     break;
                 case 'DELETE':
-                    $request->delete($newData);
+                    $request->forceDelete($newData);
                     break;
                 case 'PUT':
-                    $request->put($newData);
+                    $request->forcePut($newData);
                     break;
             }
             ApiLog::setRequestAfterFilter($newData);

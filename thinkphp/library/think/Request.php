@@ -1645,4 +1645,88 @@ class Request
     {
         return isset($this->bind[$name]);
     }
+
+    /**
+     * 强制覆盖GET参数
+     * @access public
+     * @param string|array  $name 变量名
+     * @param mixed         $default 默认值
+     * @param string|array  $filter 过滤方法
+     * @return mixed
+     */
+    public function forceGet($name = '', $default = null, $filter = '')
+    {
+        if (empty($this->get)) {
+            $this->get = $_GET;
+        }
+        if (is_array($name)) {
+            $this->param      = [];
+            return $this->get = $name;
+        }
+        return $this->input($this->get, $name, $default, $filter);
+    }
+
+    /**
+     * 强制覆盖POST参数
+     * @access public
+     * @param string        $name 变量名
+     * @param mixed         $default 默认值
+     * @param string|array  $filter 过滤方法
+     * @return mixed
+     */
+    public function forcePost($name = '', $default = null, $filter = '')
+    {
+        if (empty($this->post)) {
+            $content = $this->input;
+            if (empty($_POST) && false !== strpos($this->contentType(), 'application/json')) {
+                $this->post = (array) json_decode($content, true);
+            } else {
+                $this->post = $_POST;
+            }
+        }
+        if (is_array($name)) {
+            $this->param       = [];
+            return $this->post = $name;
+        }
+        return $this->input($this->post, $name, $default, $filter);
+    }
+
+    /**
+     * 强制覆盖PUT参数
+     * @access public
+     * @param string|array      $name 变量名
+     * @param mixed             $default 默认值
+     * @param string|array      $filter 过滤方法
+     * @return mixed
+     */
+    public function forcePut($name = '', $default = null, $filter = '')
+    {
+        if (is_null($this->put)) {
+            $content = $this->input;
+            if (false !== strpos($this->contentType(), 'application/json')) {
+                $this->put = (array) json_decode($content, true);
+            } else {
+                parse_str($content, $this->put);
+            }
+        }
+        if (is_array($name)) {
+            $this->param      = [];
+            return $this->put = $name;
+        }
+
+        return $this->input($this->put, $name, $default, $filter);
+    }
+
+    /**
+     * 强制覆盖DELETE参数
+     * @access public
+     * @param string|array      $name 变量名
+     * @param mixed             $default 默认值
+     * @param string|array      $filter 过滤方法
+     * @return mixed
+     */
+    public function forceDelete($name = '', $default = null, $filter = '')
+    {
+        return $this->forcePut($name, $default, $filter);
+    }
 }
