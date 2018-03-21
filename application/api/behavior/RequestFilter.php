@@ -68,7 +68,7 @@ class RequestFilter {
 
             $newData = [];
             foreach ($rule as $item) {
-                $newData[$item['fieldName']] = $data[$item['fieldName']];
+                $newData[$item['fieldName']] = isset($data[$item['fieldName']])? $data[$item['fieldName']] : '';
                 if (!$item['isMust'] && $item['default'] !== '' && !isset($data[$item['fieldName']])) {
                     $newData[$item['fieldName']] = $item['default'];
                 }
