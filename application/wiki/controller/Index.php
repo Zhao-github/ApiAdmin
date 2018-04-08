@@ -128,7 +128,7 @@ class Index extends Base {
             ReturnCode::RECORD_NOT_FOUND     => '记录未找到',
             ReturnCode::DELETE_FAILED        => '删除失败',
             ReturnCode::ADD_FAILED           => '添加记录失败',
-            ReturnCode::UPDATE_FAILED        => '添加记录失败',
+            ReturnCode::UPDATE_FAILED        => '更新记录失败',
             ReturnCode::PARAM_INVALID        => '数据类型非法',
             ReturnCode::ACCESS_TOKEN_TIMEOUT => '身份令牌过期',
             ReturnCode::SESSION_TIMEOUT      => 'SESSION过期',

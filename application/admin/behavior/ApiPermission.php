@@ -33,7 +33,7 @@ class ApiPermission {
         $userInfo = cache('Login:' . $ApiAuth);
         $userInfo = json_decode($userInfo, true);
         if (!$this->checkAuth($userInfo['id'], $route['route'])) {
-            $data = ['code' => ReturnCode::INVALID, 'msg' => '非常抱歉，您没有权限怎么做！', 'data' => []];
+            $data = ['code' => ReturnCode::INVALID, 'msg' => '非常抱歉，您没有权限这么做！', 'data' => []];
 
             return json($data, 200, $header);
         }
