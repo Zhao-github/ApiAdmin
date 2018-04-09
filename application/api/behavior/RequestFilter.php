@@ -20,6 +20,7 @@ class RequestFilter {
 
     /**
      * 默认行为函数
+     * @throws \think\Exception
      * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */

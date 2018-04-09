@@ -131,7 +131,7 @@ class Query
     }
 
     /**
-     * 获取当前的模型对象名
+     * 获取当前的模型对象实例
      * @access public
      * @return Model|null
      */
@@ -403,7 +403,7 @@ class Query
             if (empty($this->options['table'])) {
                 $this->options['table'] = $this->getTable();
             }
-            $key    = is_string($cache['key']) ? $cache['key'] : md5($field . serialize($this->options) . serialize($this->bind));
+            $key    = is_string($cache['key']) ? $cache['key'] : md5($this->connection->getConfig('database') . '.' . $field . serialize($this->options) . serialize($this->bind));
             $result = Cache::get($key);
         }
         if (false === $result) {
@@ -447,7 +447,7 @@ class Query
             if (empty($this->options['table'])) {
                 $this->options['table'] = $this->getTable();
             }
-            $guid   = is_string($cache['key']) ? $cache['key'] : md5($field . serialize($this->options) . serialize($this->bind));
+            $guid   = is_string($cache['key']) ? $cache['key'] : md5($this->connection->getConfig('database') . '.' . $field . serialize($this->options) . serialize($this->bind));
             $result = Cache::get($guid);
         }
         if (false === $result) {
@@ -708,6 +708,7 @@ class Query
         // 传入的表名为数组
         if (is_array($join)) {
             $table = $join;
+            $alias = array_shift($join);
         } else {
             $join = trim($join);
             if (false !== strpos($join, '(')) {
@@ -793,7 +794,7 @@ class Query
         }
 
         if (isset($this->options['field'])) {
-            $field = array_merge($this->options['field'], $field);
+            $field = array_merge((array) $this->options['field'], $field);
         }
         $this->options['field'] = array_unique($field);
         return $this;
@@ -873,9 +874,9 @@ class Query
     public function view($join, $field = true, $on = null, $type = 'INNER')
     {
         $this->options['view'] = true;
-        if (is_array($join) && key($join) !== 0) {
+        if (is_array($join) && key($join) === 0) {
             foreach ($join as $key => $val) {
-                $this->view($key, $val[0], isset($val[1]) ? $val[1] : null, isset($val[2]) ? $val[2] : 'INNER');
+                $this->view($val[0], $val[1], isset($val[2]) ? $val[2] : null, isset($val[3]) ? $val[3] : 'INNER');
             }
         } else {
             $fields = [];
@@ -983,7 +984,7 @@ class Query
      */
     public function whereNull($field, $logic = 'AND')
     {
-        $this->parseWhereExp($logic, $field, 'null', null);
+        $this->parseWhereExp($logic, $field, 'null', null, [], true);
         return $this;
     }
 
@@ -996,7 +997,7 @@ class Query
      */
     public function whereNotNull($field, $logic = 'AND')
     {
-        $this->parseWhereExp($logic, $field, 'notnull', null);
+        $this->parseWhereExp($logic, $field, 'notnull', null, [], true);
         return $this;
     }
 
@@ -1036,7 +1037,7 @@ class Query
      */
     public function whereIn($field, $condition, $logic = 'AND')
     {
-        $this->parseWhereExp($logic, $field, 'in', $condition);
+        $this->parseWhereExp($logic, $field, 'in', $condition, [], true);
         return $this;
     }
 
@@ -1050,7 +1051,7 @@ class Query
      */
     public function whereNotIn($field, $condition, $logic = 'AND')
     {
-        $this->parseWhereExp($logic, $field, 'not in', $condition);
+        $this->parseWhereExp($logic, $field, 'not in', $condition, [], true);
         return $this;
     }
 
@@ -1064,7 +1065,7 @@ class Query
      */
     public function whereLike($field, $condition, $logic = 'AND')
     {
-        $this->parseWhereExp($logic, $field, 'like', $condition);
+        $this->parseWhereExp($logic, $field, 'like', $condition, [], true);
         return $this;
     }
 
@@ -1078,7 +1079,7 @@ class Query
      */
     public function whereNotLike($field, $condition, $logic = 'AND')
     {
-        $this->parseWhereExp($logic, $field, 'not like', $condition);
+        $this->parseWhereExp($logic, $field, 'not like', $condition, [], true);
         return $this;
     }
 
@@ -1092,7 +1093,7 @@ class Query
      */
     public function whereBetween($field, $condition, $logic = 'AND')
     {
-        $this->parseWhereExp($logic, $field, 'between', $condition);
+        $this->parseWhereExp($logic, $field, 'between', $condition, [], true);
         return $this;
     }
 
@@ -1106,7 +1107,7 @@ class Query
      */
     public function whereNotBetween($field, $condition, $logic = 'AND')
     {
-        $this->parseWhereExp($logic, $field, 'not between', $condition);
+        $this->parseWhereExp($logic, $field, 'not between', $condition, [], true);
         return $this;
     }
 
@@ -1120,7 +1121,7 @@ class Query
      */
     public function whereExp($field, $condition, $logic = 'AND')
     {
-        $this->parseWhereExp($logic, $field, 'exp', $condition);
+        $this->parseWhereExp($logic, $field, 'exp', $condition, [], true);
         return $this;
     }
 
@@ -1147,9 +1148,10 @@ class Query
      * @param mixed                 $op        查询表达式
      * @param mixed                 $condition 查询条件
      * @param array                 $param     查询参数
+     * @param  bool                 $strict    严格模式
      * @return void
      */
-    protected function parseWhereExp($logic, $field, $op, $condition, $param = [])
+    protected function parseWhereExp($logic, $field, $op, $condition, $param = [], $strict = false)
     {
         $logic = strtoupper($logic);
         if ($field instanceof \Closure) {
@@ -1160,7 +1162,14 @@ class Query
         if (is_string($field) && !empty($this->options['via']) && !strpos($field, '.')) {
             $field = $this->options['via'] . '.' . $field;
         }
-        if (is_string($field) && preg_match('/[,=\>\<\'\"\(\s]/', $field)) {
+
+        if ($strict) {
+            // 使用严格模式查询
+            $where[$field] = [$op, $condition];
+
+            // 记录一个字段多次查询条件
+            $this->options['multi'][$logic][$field][] = $where[$field];
+        } elseif (is_string($field) && preg_match('/[,=\>\<\'\"\(\s]/', $field)) {
             $where[] = ['exp', $field];
             if (is_array($op)) {
                 // 参数绑定
@@ -2322,7 +2331,7 @@ class Query
             // 判断查询缓存
             $cache = $options['cache'];
             unset($options['cache']);
-            $key       = is_string($cache['key']) ? $cache['key'] : md5(serialize($options) . serialize($this->bind));
+            $key       = is_string($cache['key']) ? $cache['key'] : md5($this->connection->getConfig('database') . '.' . serialize($options) . serialize($this->bind));
             $resultSet = Cache::get($key);
         }
         if (false === $resultSet) {
@@ -2423,10 +2432,12 @@ class Query
         } elseif (is_array($value) && is_string($value[0]) && 'eq' == strtolower($value[0])) {
             $data = $value[1];
         }
+        $prefix = $this->connection->getConfig('database') . '.';
+
         if (isset($data)) {
-            return 'think:' . (is_array($options['table']) ? key($options['table']) : $options['table']) . '|' . $data;
+            return 'think:' . $prefix . (is_array($options['table']) ? key($options['table']) : $options['table']) . '|' . $data;
         } else {
-            return md5(serialize($options) . serialize($bind));
+            return md5($prefix . serialize($options) . serialize($bind));
         }
     }
 
@@ -2463,11 +2474,11 @@ class Query
             // 判断查询缓存
             $cache = $options['cache'];
             if (true === $cache['key'] && !is_null($data) && !is_array($data)) {
-                $key = 'think:' . (is_array($options['table']) ? key($options['table']) : $options['table']) . '|' . $data;
+                $key = 'think:' . $this->connection->getConfig('database') . '.' . (is_array($options['table']) ? key($options['table']) : $options['table']) . '|' . $data;
             } elseif (is_string($cache['key'])) {
                 $key = $cache['key'];
             } elseif (!isset($key)) {
-                $key = md5(serialize($options) . serialize($this->bind));
+                $key = md5($this->connection->getConfig('database') . '.' . serialize($options) . serialize($this->bind));
             }
             $result = Cache::get($key);
         }

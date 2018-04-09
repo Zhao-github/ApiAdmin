@@ -116,10 +116,14 @@ abstract class Builder
                         $result[$item] = $val[1];
                         break;
                     case 'inc':
-                        $result[$item] = $this->parseKey($val[1]) . '+' . floatval($val[2]);
+                        if ($key == $val[1]) {
+                            $result[$item] = $this->parseKey($val[1]) . '+' . floatval($val[2]);
+                        }
                         break;
                     case 'dec':
-                        $result[$item] = $this->parseKey($val[1]) . '-' . floatval($val[2]);
+                        if ($key == $val[1]) {
+                            $result[$item] = $this->parseKey($val[1]) . '-' . floatval($val[2]);
+                        }
                         break;
                 }
             } elseif (is_scalar($val)) {
@@ -338,7 +342,7 @@ abstract class Builder
                 throw new Exception('where express error:' . $exp);
             }
         }
-        $bindName = $bindName ?: 'where_' . str_replace(['.', '-'], '_', $field);
+        $bindName = $bindName ?: 'where_' . $rule . '_' . str_replace(['.', '-'], '_', $field);
         if (preg_match('/\W/', $bindName)) {
             // 处理带非单词字符的字段名
             $bindName = md5($bindName);
