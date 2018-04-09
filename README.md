@@ -31,7 +31,7 @@ ApiAdmin3.0是一个前后端完全分离的项目，前端采用Vue构建，如
 
 **项目构成**
 
-- ThinkPHP v5.0.11
+- ThinkPHP v5.0.16
 - Vue 2.0
 - semanticUI
 - ...
