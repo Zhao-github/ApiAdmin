@@ -3,9 +3,9 @@
 
 # ApiAdmin
 [![ApiAdmin](https://img.shields.io/hexpm/l/plug.svg)](http://www.apiadmin.org/)
-[![ApiAdmin](https://img.shields.io/badge/release-v3.0.4-blue.svg)](http://www.apiadmin.org/)
+[![ApiAdmin](https://img.shields.io/badge/release-v3.0.6-blue.svg)](http://www.apiadmin.org/)
 [![ApiAdmin](https://img.shields.io/wercker/ci/wercker/docs.svg)](http://www.apiadmin.org/)
-[![ApiAdmin](https://img.shields.io/badge/ApiAdmin-v3.0.4-brightgreen.svg)](http://www.apiadmin.org/)
+[![ApiAdmin](https://img.shields.io/badge/ApiAdmin-v3.0.6-brightgreen.svg)](http://www.apiadmin.org/)
 
 ## 前端页面
 ApiAdmin3.0是一个前后端完全分离的项目，前端采用Vue构建，如需要可视化配置的请移步：[ApiAdmin-WEB](https://gitee.com/apiadmin/ApiAdmin-WEB)
