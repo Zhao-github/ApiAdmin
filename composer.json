@@ -22,7 +22,6 @@
     },
     "require": {
         "php": ">=5.6.0",
-        "topthink/framework": "~5.0.0",
         "php-curl-class/php-curl-class": "^8.0"
     },
     "extra": {

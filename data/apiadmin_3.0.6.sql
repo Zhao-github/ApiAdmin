@@ -6,8 +6,8 @@
 # https://github.com/sequelpro/sequelpro
 #
 # Host: 127.0.0.1 (MySQL 5.5.5-10.2.12-MariaDB)
-# Database: a
-# Generation Time: 2018-03-04 15:18:46 +0000
+# Database: demo
+# Generation Time: 2018-04-11 01:21:30 +0000
 # ************************************************************
 
 
@@ -38,7 +38,7 @@ CREATE TABLE `admin_app` (
   `app_api_show` text DEFAULT NULL COMMENT '前台样式显示所需数据格式',
   PRIMARY KEY (`id`),
   UNIQUE KEY `app_id` (`app_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='appId和appSecret表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='appId和appSecret表';
 
 
 
@@ -65,11 +65,11 @@ DROP TABLE IF EXISTS `admin_auth_group`;
 
 CREATE TABLE `admin_auth_group` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL COMMENT '组名称',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '组名称',
   `description` varchar(50) DEFAULT '' COMMENT '组描述',
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '组状态：为1正常，为0禁用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限组';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限组';
 
 
 
@@ -84,7 +84,7 @@ CREATE TABLE `admin_auth_group_access` (
   `groupId` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和组的对应关系';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户和组的对应关系';
 
 
 
@@ -100,7 +100,7 @@ CREATE TABLE `admin_auth_rule` (
   `auth` int(11) unsigned NOT NULL DEFAULT 0 COMMENT '权限数值',
   `status` tinyint(1) unsigned NOT NULL DEFAULT 1 COMMENT '状态：为1正常，为0禁用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='权限细节';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限细节';
 
 
 
@@ -122,7 +122,7 @@ CREATE TABLE `admin_fields` (
   `showName` varchar(50) NOT NULL DEFAULT '' COMMENT 'wiki显示用字段',
   PRIMARY KEY (`id`),
   KEY `hash` (`hash`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于保存各个API的字段规则';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用于保存各个API的字段规则';
 
 
 
@@ -144,15 +144,6 @@ CREATE TABLE `admin_group` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='接口组管理';
 
-LOCK TABLES `admin_group` WRITE;
-/*!40000 ALTER TABLE `admin_group` DISABLE KEYS */;
-
-INSERT INTO `admin_group` (`id`, `name`, `description`, `status`, `hash`, `addTime`, `updateTime`, `image`, `hot`)
-VALUES
-	(1,'默认分组','',1,'default',0,0,NULL,0);
-
-/*!40000 ALTER TABLE `admin_group` ENABLE KEYS */;
-UNLOCK TABLES;
 
 
 # Dump of table admin_list
@@ -174,7 +165,7 @@ CREATE TABLE `admin_list` (
   `groupHash` varchar(64) NOT NULL DEFAULT 'default' COMMENT '当前接口所属的接口分组',
   PRIMARY KEY (`id`),
   UNIQUE KEY `hash` (`hash`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用于维护接口信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用于维护接口信息';
 
 
 
@@ -194,7 +185,7 @@ CREATE TABLE `admin_menu` (
   `icon` varchar(50) NOT NULL DEFAULT '' COMMENT '菜单图标',
   `level` tinyint(2) NOT NULL DEFAULT 0 COMMENT '菜单认证等级',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='目录信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='目录信息';
 
 LOCK TABLES `admin_menu` WRITE;
 /*!40000 ALTER TABLE `admin_menu` DISABLE KEYS */;
@@ -287,16 +278,16 @@ CREATE TABLE `admin_user` (
   `regIp` bigint(11) NOT NULL COMMENT '注册IP',
   `updateTime` int(10) NOT NULL DEFAULT 0 COMMENT '更新时间',
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '账号状态 0封号 1正常',
-  `openId` varchar(100) DEFAULT NULL COMMENT '微信唯一ID',
+  `openId` varchar(100) DEFAULT NULL COMMENT '三方登录唯一ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='管理员认证信息';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员认证信息';
 
 LOCK TABLES `admin_user` WRITE;
 /*!40000 ALTER TABLE `admin_user` DISABLE KEYS */;
 
 INSERT INTO `admin_user` (`id`, `username`, `nickname`, `password`, `regTime`, `regIp`, `updateTime`, `status`, `openId`)
 VALUES
-	(1,'root','root','912601e4ad1b308c9ae41877cf6ca754',1519453594,3663623043,1492236545,1,NULL);
+	(1,'root','root','953dbb5a8a45ae6000e30f29d78dcc68',1519453594,3663623043,1520173599,1,NULL);
 
 /*!40000 ALTER TABLE `admin_user` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -316,7 +307,7 @@ CREATE TABLE `admin_user_action` (
   `data` text DEFAULT NULL COMMENT '用户提交的数据',
   `url` varchar(200) NOT NULL DEFAULT '' COMMENT '操作URL',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户操作日志';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户操作日志';
 
 
 
@@ -335,6 +326,15 @@ CREATE TABLE `admin_user_data` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员数据表';
 
+LOCK TABLES `admin_user_data` WRITE;
+/*!40000 ALTER TABLE `admin_user_data` DISABLE KEYS */;
+
+INSERT INTO `admin_user_data` (`id`, `loginTimes`, `lastLoginIp`, `lastLoginTime`, `uid`, `headImg`)
+VALUES
+	(1,0,0,0,'1','');
+
+/*!40000 ALTER TABLE `admin_user_data` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 
