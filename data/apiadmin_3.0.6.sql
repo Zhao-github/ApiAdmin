@@ -287,7 +287,7 @@ LOCK TABLES `admin_user` WRITE;
 
 INSERT INTO `admin_user` (`id`, `username`, `nickname`, `password`, `regTime`, `regIp`, `updateTime`, `status`, `openId`)
 VALUES
-	(1,'root','root','953dbb5a8a45ae6000e30f29d78dcc68',1519453594,3663623043,1520173599,1,NULL);
+	(1,'root','root','912601e4ad1b308c9ae41877cf6ca754',1519453594,3663623043,1520173599,1,NULL);
 
 /*!40000 ALTER TABLE `admin_user` ENABLE KEYS */;
 UNLOCK TABLES;
