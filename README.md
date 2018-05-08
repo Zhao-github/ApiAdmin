@@ -3,9 +3,9 @@
 
 # ApiAdmin
 [![ApiAdmin](https://img.shields.io/hexpm/l/plug.svg)](http://www.apiadmin.org/)
-[![ApiAdmin](https://img.shields.io/badge/release-v3.0.7-blue.svg)](http://www.apiadmin.org/)
+[![ApiAdmin](https://img.shields.io/badge/release-v3.0.8-blue.svg)](http://www.apiadmin.org/)
 [![ApiAdmin](https://img.shields.io/wercker/ci/wercker/docs.svg)](http://www.apiadmin.org/)
-[![ApiAdmin](https://img.shields.io/badge/ApiAdmin-v3.0.7-brightgreen.svg)](http://www.apiadmin.org/)
+[![ApiAdmin](https://img.shields.io/badge/ApiAdmin-v3.0.8-brightgreen.svg)](http://www.apiadmin.org/)
 
 ## 前端页面
 ApiAdmin3.0是一个前后端完全分离的项目，前端采用Vue构建，如需要可视化配置的请移步：[ApiAdmin-WEB](https://gitee.com/apiadmin/ApiAdmin-WEB)
@@ -31,7 +31,7 @@ ApiAdmin3.0是一个前后端完全分离的项目，前端采用Vue构建，如
 
 **项目构成**
 
-- ThinkPHP v5.0.16
+- ThinkPHP v5.0.19
 - Vue 2.0
 - semanticUI
 - ...
@@ -44,8 +44,7 @@ ApiAdmin3.0是一个前后端完全分离的项目，前端采用Vue构建，如
  4. 灵活的参数规则设定
  5. 支持三方Api无缝融合
  6. 本地二次开发友好
- 7. 使用Datatables完成数据JS加载
- 8. ...
+ 7. ...
  
  ```
  ApiAdmin（PHP部分）
