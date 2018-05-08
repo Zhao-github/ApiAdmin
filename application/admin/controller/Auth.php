@@ -20,15 +20,13 @@ class Auth extends Base {
     /**
      * 获取权限组列表
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
 
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
-        $start = $limit * ($this->request->get('page', 1) - 1);
+        $start = $this->request->get('page', 1);
         $keywords = $this->request->get('keywords', '');
         $status = $this->request->get('status', '');
 
@@ -36,14 +34,12 @@ class Auth extends Base {
         if ($status === '1' || $status === '0') {
             $where['status'] = $status;
         }
-
-        $listInfo = (new AdminAuthGroup())->where($where)->order('id', 'DESC')->limit($start, $limit)->select();
-        $count = (new AdminAuthGroup())->where($where)->count();
-        $listInfo = Tools::buildArrFromObj($listInfo);
+        $listObj = (new AdminAuthGroup())->where($where)->order('id DESC')
+            ->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
-            'list'  => $listInfo,
-            'count' => $count
+            'list'  => $listObj['data'],
+            'count' => $listObj['total']
         ]);
     }
 

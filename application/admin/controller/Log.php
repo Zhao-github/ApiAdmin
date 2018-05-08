@@ -20,15 +20,13 @@ class Log extends Base {
     /**
      * 获取操作日志列表
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
 
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
-        $start = $limit * ($this->request->get('page', 1) - 1);
+        $start = $this->request->get('page', 1);
         $type = $this->request->get('type', '');
         $keywords = $this->request->get('keywords', '');
 
@@ -46,14 +44,12 @@ class Log extends Base {
                     break;
             }
         }
-
-        $listInfo = (new AdminUserAction())->where($where)->order('addTime', 'DESC')->limit($start, $limit)->select();
-        $count = (new AdminUserAction())->where($where)->count();
-        $listInfo = Tools::buildArrFromObj($listInfo);
+        $listObj = (new AdminUserAction())->where($where)->order('addTime DESC')
+            ->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
-            'list'  => $listInfo,
-            'count' => $count
+            'list'  => $listObj['data'],
+            'count' => $listObj['total']
         ]);
     }
 

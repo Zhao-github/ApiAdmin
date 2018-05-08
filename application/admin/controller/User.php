@@ -19,15 +19,13 @@ class User extends Base {
     /**
      * 获取用户列表
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
 
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
-        $start = $limit * ($this->request->get('page', 1) - 1);
+        $start = $this->request->get('page', 1);
         $type = $this->request->get('type', '');
         $keywords = $this->request->get('keywords', '');
         $status = $this->request->get('status', '');
@@ -47,9 +45,9 @@ class User extends Base {
             }
         }
 
-        $listInfo = (new AdminUser())->where($where)->order('regTime', 'DESC')->limit($start, $limit)->select();
-        $count = (new AdminUser())->where($where)->count();
-        $listInfo = Tools::buildArrFromObj($listInfo);
+        $listObj = (new AdminUser())->where($where)->order('regTime DESC')
+            ->paginate($limit, false, ['page' => $start])->toArray();
+        $listInfo = $listObj['data'];
         $idArr = array_column($listInfo, 'id');
 
         $userData = AdminUserData::all(function($query) use ($idArr) {
@@ -80,7 +78,7 @@ class User extends Base {
 
         return $this->buildSuccess([
             'list'  => $listInfo,
-            'count' => $count
+            'count' => $listObj['total']
         ]);
     }
 
@@ -122,7 +120,7 @@ class User extends Base {
      */
     public function getUsers() {
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
-        $start = $limit * ($this->request->get('page', 1) - 1);
+        $start = $this->request->get('page', 1);
         $gid = $this->request->get('gid', 0);
         if (!$gid) {
             return $this->buildFailed(ReturnCode::PARAM_INVALID, '非法操作');
@@ -132,9 +130,9 @@ class User extends Base {
         $listInfo = Tools::buildArrFromObj($listInfo);
         $uidArr = array_column($listInfo, 'uid');
 
-        $userInfo = (new AdminUser())->whereIn('id', $uidArr)->order('regTime', 'DESC')->limit($start, $limit)->select();
-        $count = (new AdminUser())->whereIn('id', $uidArr)->count();
-        $userInfo = Tools::buildArrFromObj($userInfo);
+        $listObj = (new AdminUser())->whereIn('id', $uidArr)->order('regTime DESC')
+            ->paginate($limit, false, ['page' => $start])->toArray();
+        $userInfo = $listObj['data'];
 
         $userData = AdminUserData::all(function($query) use ($uidArr) {
             $query->whereIn('uid', $uidArr);
@@ -153,7 +151,7 @@ class User extends Base {
 
         return $this->buildSuccess([
             'list'  => $userInfo,
-            'count' => $count
+            'count' => $listObj['total']
         ]);
     }
 

@@ -33,24 +33,22 @@ class Fields extends Base {
 
     /**
      * 获取请求参数
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @return array
      * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function request() {
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
-        $start = $limit * ($this->request->get('page', 1) - 1);
+        $start = $this->request->get('page', 1);
         $hash = $this->request->get('hash', '');
 
         if (!empty($hash)) {
-            $listInfo = (new AdminFields())->where(['hash' => $hash, 'type' => 0])->limit($start, $limit)->select();
-            $count = (new AdminFields())->where(['hash' => $hash, 'type' => 0])->count();
-            $listInfo = Tools::buildArrFromObj($listInfo);
+            $listObj = (new AdminFields())->where(['hash' => $hash, 'type' => 0])
+                ->paginate($limit, false, ['page' => $start])->toArray();
 
             return $this->buildSuccess([
-                'list'     => $listInfo,
-                'count'    => $count,
+                'list'  => $listObj['data'],
+                'count' => $listObj['total'],
                 'dataType' => $this->dataType
             ]);
         } else {
@@ -61,24 +59,21 @@ class Fields extends Base {
     /**
      * 获取返回参数
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function response() {
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
-        $start = $limit * ($this->request->get('page', 1) - 1);
+        $start = $this->request->get('page', 1);
         $hash = $this->request->get('hash', '');
 
         if (!empty($hash)) {
-            $listInfo = (new AdminFields())->where(['hash' => $hash, 'type' => 1])->limit($start, $limit)->select();
-            $count = (new AdminFields())->where(['hash' => $hash, 'type' => 1])->count();
-            $listInfo = Tools::buildArrFromObj($listInfo);
+            $listObj = (new AdminFields())->where(['hash' => $hash, 'type' => 1])
+                ->paginate($limit, false, ['page' => $start])->toArray();
 
             return $this->buildSuccess([
-                'list'     => $listInfo,
-                'count'    => $count,
+                'list'  => $listObj['data'],
+                'count' => $listObj['total'],
                 'dataType' => $this->dataType
             ]);
         } else {

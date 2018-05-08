@@ -17,16 +17,14 @@ use app\util\Tools;
 class InterfaceList extends Base {
     /**
      * 获取接口列表
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
 
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
-        $start = $limit * ($this->request->get('page', 1) - 1);
+        $start = $this->request->get('page', 1);
         $keywords = $this->request->get('keywords', '');
         $type = $this->request->get('type', '');
         $status = $this->request->get('status', '');
@@ -48,14 +46,12 @@ class InterfaceList extends Base {
                     break;
             }
         }
-
-        $listInfo = (new AdminList())->where($where)->order('id', 'DESC')->limit($start, $limit)->select();
-        $count = (new AdminList())->where($where)->count();
-        $listInfo = Tools::buildArrFromObj($listInfo);
+        $listObj = (new AdminList())->where($where)->order('id', 'DESC')
+            ->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
-            'list'  => $listInfo,
-            'count' => $count
+            'list'  => $listObj['data'],
+            'count' => $listObj['total']
         ]);
     }
 

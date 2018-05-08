@@ -25,7 +25,7 @@ class App extends Base {
     public function index() {
 
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
-        $start = $limit * ($this->request->get('page', 1) - 1);
+        $start = $this->request->get('page', 1);
         $keywords = $this->request->get('keywords', '');
         $type = $this->request->get('type', '');
         $status = $this->request->get('status', '');
@@ -44,14 +44,12 @@ class App extends Base {
                     break;
             }
         }
-
-        $listInfo = (new AdminApp())->where($where)->order('app_addTime', 'DESC')->limit($start, $limit)->select();
-        $count = (new AdminApp())->where($where)->count();
-        $listInfo = Tools::buildArrFromObj($listInfo);
+        $listObj = (new AdminApp())->where($where)->order('app_addTime DESC')
+            ->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
-            'list'  => $listInfo,
-            'count' => $count
+            'list'  => $listObj['data'],
+            'count' => $listObj['total']
         ]);
     }
 
