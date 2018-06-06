@@ -144,6 +144,9 @@ CREATE TABLE `admin_group` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='接口组管理';
 
+INSERT INTO `admin_group` (`id`, `name`, `description`, `status`, `hash`, `addTime`, `updateTime`, `image`, `hot`)
+VALUES
+	(1, '默认分组', '默认分组', 1, 'default', 0, 0, NULL, 0);
 
 
 # Dump of table admin_list
