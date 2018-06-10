@@ -81,6 +81,24 @@ class App extends Base {
     }
 
     /**
+     * 刷新APPSecret
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @return array
+     */
+    public function refreshAppSecret() {
+        $id = $this->request->get('id', 0);
+        $data['app_secret'] = Strs::randString(32);
+        if ($id) {
+            $res = AdminApp::update($data, ['id' => $id]);
+            if ($res === false) {
+                return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            }
+        }
+
+        return $this->buildSuccess($data);
+    }
+
+    /**
      * 新增应用
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>

@@ -51,7 +51,7 @@ Route::group('admin',function(){
             'del' =>[
                 'admin/Menu/del',
                 ['method' => 'get']
-            ]            
+            ]
         ]);
         Route::group('User',[
             'index'=> [
@@ -120,6 +120,10 @@ Route::group('admin',function(){
         Route::group('App',[
             'index'=> [
                 'admin/App/index',
+                ['method' => 'get']
+            ],
+            'refreshAppSecret'=> [
+                'admin/App/refreshAppSecret',
                 ['method' => 'get']
             ],
             'changeStatus' =>[

@@ -6,8 +6,8 @@
 # https://github.com/sequelpro/sequelpro
 #
 # Host: 127.0.0.1 (MySQL 5.5.5-10.2.12-MariaDB)
-# Database: demo
-# Generation Time: 2018-04-11 01:21:30 +0000
+# Database: apiadmin_new
+# Generation Time: 2018-06-10 07:00:01 +0000
 # ************************************************************
 
 
@@ -144,9 +144,15 @@ CREATE TABLE `admin_group` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='接口组管理';
 
+LOCK TABLES `admin_group` WRITE;
+/*!40000 ALTER TABLE `admin_group` DISABLE KEYS */;
+
 INSERT INTO `admin_group` (`id`, `name`, `description`, `status`, `hash`, `addTime`, `updateTime`, `image`, `hot`)
 VALUES
-	(1, '默认分组', '默认分组', 1, 'default', 0, 0, NULL, 0);
+	(1,'默认分组','默认分组',1,'default',0,0,'',0);
+
+/*!40000 ALTER TABLE `admin_group` ENABLE KEYS */;
+UNLOCK TABLES;
 
 
 # Dump of table admin_list
@@ -261,7 +267,8 @@ VALUES
 	(64,'删除单条日志记录',62,'admin/Log/del',0,0,0,'',0),
 	(65,'刷新路由',31,'admin/InterfaceList/refresh',0,0,0,'',0),
 	(67,'文件上传',0,'admin/Index/upload',0,0,0,'',0),
-	(68,'更新个人信息',9,'admin/User/own',0,0,0,'',0);
+	(68,'更新个人信息',9,'admin/User/own',0,0,0,'',0),
+	(69,'刷新AppSecret',24,'admin/App/refreshAppSecret',0,0,0,'',0);
 
 /*!40000 ALTER TABLE `admin_menu` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -290,7 +297,7 @@ LOCK TABLES `admin_user` WRITE;
 
 INSERT INTO `admin_user` (`id`, `username`, `nickname`, `password`, `regTime`, `regIp`, `updateTime`, `status`, `openId`)
 VALUES
-	(1,'root','root','912601e4ad1b308c9ae41877cf6ca754',1519453594,3663623043,1520173599,1,NULL);
+	(1,'root','root','912601e4ad1b308c9ae41877cf6ca754',1519453594,3663623043,1524152828,1,NULL);
 
 /*!40000 ALTER TABLE `admin_user` ENABLE KEYS */;
 UNLOCK TABLES;
