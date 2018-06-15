@@ -20,9 +20,9 @@ class ApiLog {
 
     public static function setAppInfo($data) {
         self::$appInfo =
-            isset($data['app_id']) ? $data['app_id'] : '' . self::$separator .
-            isset($data['app_name']) ? $data['app_name'] : '' . self::$separator .
-            isset($data['device_id']) ? $data['device_id'] : '';
+            (isset($data['app_id']) ? $data['app_id'] : '') . self::$separator .
+            (isset($data['app_name']) ? $data['app_name'] : '') . self::$separator .
+            (isset($data['device_id']) ? $data['device_id'] : '');
     }
 
     public static function setHeader($data) {
