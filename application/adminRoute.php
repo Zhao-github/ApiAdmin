@@ -8,38 +8,35 @@ $afterBehavior = [
     '\app\admin\behavior\AdminLog'
 ];
 
-
-//一些带有特殊参数的路由写到这里
-Route::rule([
-    'admin/Login/index'  => [
-        'admin/Login/index',
-        ['method' => 'post']
-    ],
-    'admin/Index/upload' => [
-        'admin/Index/upload',
-        [
-            'method'         => 'post',
-            'after_behavior' => [
-                '\app\admin\behavior\ApiAuth',
-                '\app\admin\behavior\AdminLog'
-            ]
-        ]
-    ],
-    'admin/Login/logout' => [
-        'admin/Login/logout',
-        [
-            'method'         => 'get',
-            'after_behavior' => [
-                '\app\admin\behavior\ApiAuth',
-                '\app\admin\behavior\AdminLog'
-            ]
-        ]
-    ]
-]);
-
-
-//大部分控制器的路由都以分组的形式写到这里
 Route::group('admin', function () use ($afterBehavior) {
+    //一些带有特殊参数的路由写到这里
+    Route::rule([
+        'admin/Login/index'  => [
+            'admin/Login/index',
+            ['method' => 'post']
+        ],
+        'admin/Index/upload' => [
+            'admin/Index/upload',
+            [
+                'method'         => 'post',
+                'after_behavior' => [
+                    '\app\admin\behavior\ApiAuth',
+                    '\app\admin\behavior\AdminLog'
+                ]
+            ]
+        ],
+        'admin/Login/logout' => [
+            'admin/Login/logout',
+            [
+                'method'         => 'get',
+                'after_behavior' => [
+                    '\app\admin\behavior\ApiAuth',
+                    '\app\admin\behavior\AdminLog'
+                ]
+            ]
+        ]
+    ]);
+    //大部分控制器的路由都以分组的形式写到这里
     Route::group('Menu', [
         'index'        => [
             'admin/Menu/index',
