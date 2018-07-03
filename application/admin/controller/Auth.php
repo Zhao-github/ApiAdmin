@@ -80,6 +80,7 @@ class Auth extends Base {
         $rules = [];
         if ($groupId) {
             $rules = (new AdminAuthRule())->where(['groupId' => $groupId])->select();
+            $rules = Tools::buildArrFromObj($rules);
             $rules = array_column($rules, 'url');
         }
         $newList = $this->buildList($list, $rules);
