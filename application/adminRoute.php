@@ -11,11 +11,11 @@ $afterBehavior = [
 Route::group('admin', function () use ($afterBehavior) {
     //一些带有特殊参数的路由写到这里
     Route::rule([
-        'admin/Login/index'  => [
+        'Login/index'  => [
             'admin/Login/index',
             ['method' => 'post']
         ],
-        'admin/Index/upload' => [
+        'Index/upload' => [
             'admin/Index/upload',
             [
                 'method'         => 'post',
@@ -25,7 +25,7 @@ Route::group('admin', function () use ($afterBehavior) {
                 ]
             ]
         ],
-        'admin/Login/logout' => [
+        'Login/logout' => [
             'admin/Login/logout',
             [
                 'method'         => 'get',
