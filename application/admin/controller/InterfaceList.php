@@ -73,6 +73,10 @@ class InterfaceList extends Base {
      */
     public function add() {
         $postData = $this->request->post();
+        if (!preg_match("/^[A-Za-z0-9\/]+$/", $postData['apiClass'])) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '真实类名只允许填写字母，数字和/');
+        }
+
         $res = AdminList::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
@@ -98,6 +102,7 @@ class InterfaceList extends Base {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
             cache('ApiInfo:' . $hash, null);
+
             return $this->buildSuccess([]);
         }
     }
@@ -109,11 +114,16 @@ class InterfaceList extends Base {
      */
     public function edit() {
         $postData = $this->request->post();
+        if (!preg_match("/^[A-Za-z0-9\/]+$/", $postData['apiClass'])) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '真实类名只允许填写字母，数字和/');
+        }
+
         $res = AdminList::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
             cache('ApiInfo:' . $postData['hash'], null);
+
             return $this->buildSuccess([]);
         }
     }
@@ -169,15 +179,16 @@ class InterfaceList extends Base {
     public function refresh() {
         $apiRoutePath = ROOT_PATH . 'application/apiRoute.php';
         $tplPath = ROOT_PATH . 'data/apiRoute.tpl';
-        $methodArr = ['*','POST','GET'];
+        $methodArr = ['*', 'POST', 'GET'];
 
         $tplStr = file_get_contents($tplPath);
         $listInfo = AdminList::all(['status' => 1]);
         foreach ($listInfo as $value) {
-            $tplStr .= 'Route::rule(\'api/'.$value->hash.'\',\'api/'.$value->apiClass.'\', \''.$methodArr[$value->method].'\', [\'after_behavior\' => $afterBehavior]);';
+            $tplStr .= 'Route::rule(\'api/' . $value->hash . '\',\'api/' . $value->apiClass . '\', \'' . $methodArr[$value->method] . '\', [\'after_behavior\' => $afterBehavior]);';
         }
 
         file_put_contents($apiRoutePath, $tplStr);
+
         return $this->buildSuccess([]);
     }
 }
