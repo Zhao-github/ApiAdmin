@@ -8,30 +8,35 @@ $afterBehavior = [
     '\app\admin\behavior\AdminLog'
 ];
 
-
-//一些带有特殊参数的路由写到这里
-Route::rule([
-    'admin/Login/index'          => [
-        'admin/Login/index',
-        ['method' => 'post']
-    ],
-    'admin/Index/upload'         => [
-        'admin/Index/upload',
-        [
-            'method' => 'post', 'after_behavior' => ['\app\admin\behavior\ApiAuth', '\app\admin\behavior\AdminLog']
+Route::group('admin', function () use ($afterBehavior) {
+    //一些带有特殊参数的路由写到这里
+    Route::rule([
+        'Login/index'  => [
+            'admin/Login/index',
+            ['method' => 'post']
+        ],
+        'Index/upload' => [
+            'admin/Index/upload',
+            [
+                'method'         => 'post',
+                'after_behavior' => [
+                    '\app\admin\behavior\ApiAuth',
+                    '\app\admin\behavior\AdminLog'
+                ]
+            ]
+        ],
+        'Login/logout' => [
+            'admin/Login/logout',
+            [
+                'method'         => 'get',
+                'after_behavior' => [
+                    '\app\admin\behavior\ApiAuth',
+                    '\app\admin\behavior\AdminLog'
+                ]
+            ]
         ]
-    ],
-    'admin/Login/logout'         => [
-        'admin/Login/logout',
-        [
-            'method' => 'get', 'after_behavior' => ['\app\admin\behavior\ApiAuth', '\app\admin\behavior\AdminLog']
-        ]
-    ]
-]);
-
-
-//大部分控制器的路由都以分组的形式写到这里
-Route::group('admin', function() {
+    ]);
+    //大部分控制器的路由都以分组的形式写到这里
     Route::group('Menu', [
         'index'        => [
             'admin/Menu/index',
@@ -53,7 +58,7 @@ Route::group('admin', function() {
             'admin/Menu/del',
             ['method' => 'get']
         ]
-    ]);
+    ], ['after_behavior' => $afterBehavior]);
     Route::group('User', [
         'index'        => [
             'admin/User/index',
@@ -83,7 +88,7 @@ Route::group('admin', function() {
             'admin/User/del',
             ['method' => 'get']
         ],
-    ]);
+    ], ['after_behavior' => $afterBehavior]);
     Route::group('Auth', [
         'index'        => [
             'admin/Auth/index',
@@ -117,7 +122,7 @@ Route::group('admin', function() {
             'admin/Auth/getRuleList',
             ['method' => 'get']
         ]
-    ]);
+    ], ['after_behavior' => $afterBehavior]);
     Route::group('App', [
         'index'            => [
             'admin/App/index',
@@ -147,7 +152,7 @@ Route::group('admin', function() {
             'admin/App/del',
             ['method' => 'get']
         ]
-    ]);
+    ], ['after_behavior' => $afterBehavior]);
     Route::group('InterfaceList', [
         'index'        => [
             'admin/InterfaceList/index',
@@ -177,7 +182,7 @@ Route::group('admin', function() {
             'admin/InterfaceList/getHash',
             ['method' => 'get']
         ]
-    ]);
+    ], ['after_behavior' => $afterBehavior]);
     Route::group('Fields', [
         'index'    => [
             'admin/Fields/index',
@@ -207,7 +212,7 @@ Route::group('admin', function() {
             'admin/Fields/upload',
             ['method' => 'post']
         ]
-    ]);
+    ], ['after_behavior' => $afterBehavior]);
     Route::group('InterfaceGroup', [
         'index'        => [
             'admin/InterfaceGroup/index',
@@ -233,7 +238,7 @@ Route::group('admin', function() {
             'admin/InterfaceGroup/del',
             ['method' => 'get']
         ]
-    ]);
+    ], ['after_behavior' => $afterBehavior]);
     Route::group('AppGroup', [
         'index'        => [
             'admin/AppGroup/index',
@@ -259,7 +264,7 @@ Route::group('admin', function() {
             'admin/AppGroup/del',
             ['method' => 'get']
         ]
-    ]);
+    ], ['after_behavior' => $afterBehavior]);
     Route::group('Log', [
         'index' => [
             'admin/Log/index',
@@ -269,7 +274,6 @@ Route::group('admin', function() {
             'admin/Log/del',
             ['method' => 'get']
         ]
-    ]);
+    ], ['after_behavior' => $afterBehavior]);
     Route::miss('admin/Miss/index');
-}, ['after_behavior' => $afterBehavior]
-);
+});

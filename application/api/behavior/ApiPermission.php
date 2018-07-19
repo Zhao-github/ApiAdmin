@@ -33,7 +33,7 @@ class ApiPermission {
                 $appInfo = cache('AccessToken:' . $access_token);
                 $allRules = explode(',', $appInfo['app_api']);
                 if (!in_array($hash, $allRules)) {
-                    $data = ['code' => ReturnCode::INVALID, 'msg' => '非常抱歉，您没有权限怎么做！', 'data' => []];
+                    $data = ['code' => ReturnCode::INVALID, 'msg' => '非常抱歉，您没有权限这么做！', 'data' => []];
 
                     return json($data);
                 }
