@@ -73,7 +73,7 @@ class InterfaceList extends Base {
      */
     public function add() {
         $postData = $this->request->post();
-        if (!preg_match("/^[A-Za-z0-9\/]+$/", $postData['apiClass'])) {
+        if (!preg_match("/^[A-Za-z0-9_\/]+$/", $postData['apiClass'])) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '真实类名只允许填写字母，数字和/');
         }
 
@@ -114,7 +114,7 @@ class InterfaceList extends Base {
      */
     public function edit() {
         $postData = $this->request->post();
-        if (!preg_match("/^[A-Za-z0-9\/]+$/", $postData['apiClass'])) {
+        if (!preg_match("/^[A-Za-z0-9_\/]+$/", $postData['apiClass'])) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '真实类名只允许填写字母，数字和/');
         }
 
