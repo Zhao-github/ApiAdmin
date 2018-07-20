@@ -184,7 +184,7 @@ class InterfaceList extends Base {
         $tplStr = file_get_contents($tplPath);
         $listInfo = AdminList::all(['status' => 1]);
         foreach ($listInfo as $value) {
-            $tplStr .= 'Route::rule(\'api/' . $value->hash . '\',\'api/' . $value->apiClass . '\', \'' . $methodArr[$value->method] . '\', [\'after_behavior\' => $afterBehavior]);';
+            $tplStr .= 'Route::rule(\'api/' . addslashes($value->hash) . '\',\'api/' . addslashes($value->apiClass) . '\', \'' . $methodArr[$value->method] . '\', [\'after_behavior\' => $afterBehavior]);';
         }
 
         file_put_contents($apiRoutePath, $tplStr);
