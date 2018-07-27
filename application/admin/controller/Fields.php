@@ -167,12 +167,7 @@ class Fields extends Base {
             return $this->buildFailed(ReturnCode::EXCEPTION, 'JSON数据格式有误');
         }
         AdminList::update(['returnStr' => json_encode($data)], ['hash' => $hash]);
-        //如果json字符串中data不存在或者data内容为空,则不进行handle处理
-        if(!isset($data['data']) || sizeof($data['data']) == 0){
-            $dataArr = [];
-        }else{
-            $this->handle($data['data'], $dataArr);
-        }
+        $this->handle($data['data'], $dataArr);
         $old = (new AdminFields())->where([
             'hash' => $hash,
             'type' => $type
