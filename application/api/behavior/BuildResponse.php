@@ -23,6 +23,8 @@ class BuildResponse {
      * @throws \think\exception\DbException
      */
     public function run($response) {
+        $header = config('apiAdmin.CROSS_DOMAIN');
+        $response->header($header);
         $data = $response->getData();
         $request = Request::instance();
         $hash = $request->routeInfo();

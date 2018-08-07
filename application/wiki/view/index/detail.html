@@ -37,7 +37,7 @@
             <div class="ui vertical menu" style="width: 100%;overflow: auto;">
                 {volist name="apiList" id="vo"}
                 <a class="{if condition="$hash == $vo['hash']"}active{/if} teal item" href="{:url('/wiki/detail/'.$groupHash.'/'.$vo["hash"])}">
-                    {:substr($vo['hash'], 0, 11)}...（{:mb_substr($vo['info'], 0, 3)}...）
+                    {:mb_substr($vo['info'], 0, 11)}...
                     <div class="ui {if condition="$hash == $vo['hash']"}teal{/if} label"> &gt; </div>
                 </a>
                 {/volist}
