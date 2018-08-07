@@ -35,6 +35,11 @@ class StrRandom {
         return floatval($intNum . '.' . $rand . $floatEnd);
     }
 
+    /**
+     * 构建随机IP地址
+     * @return string
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
     public static function randomIp() {
         $ipLong = [
             ['607649792', '608174079'], // 36.56.0.0-36.63.255.255
