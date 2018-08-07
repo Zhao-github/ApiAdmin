@@ -5,7 +5,7 @@
 
 use think\Route;
 
-Route::miss('api/Index/index');
+Route::miss('api/Miss/index');
 $afterBehavior = [
     '\app\api\behavior\ApiAuth',
     '\app\api\behavior\ApiPermission',

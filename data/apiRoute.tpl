@@ -6,7 +6,7 @@
 use think\Route;
 
 Route::group('api', function () {
-    Route::miss('api/Index/index');
+    Route::miss('api/Miss/index');
 });
 $afterBehavior = [
     '\app\api\behavior\ApiAuth',
