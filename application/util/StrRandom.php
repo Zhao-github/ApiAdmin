@@ -16,12 +16,12 @@ class StrRandom {
      * @param int $max 整数部分的最大值，默认值为999999999
      * @param int $dmin 小数部分位数的最小值，默认值为 0
      * @param int $dmax 小数部分位数的最大值，默认值为 8
-     * @return float|void
+     * @return float
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public static function randomFloat($min = -999999999, $max = 999999999, $dmin = 0, $dmax = 8) {
         if ($max <= $min || $dmax <= $dmin) {
-            return;
+            return 0.0;
         }
 
         $rand = '';
