@@ -153,4 +153,38 @@ class StrRandom {
 
     }
 
+
+    public static function randomPhone() {
+        $prefixArr = [133, 153, 173, 177, 180, 181, 189, 199, 134, 135,
+            136, 137, 138, 139, 150, 151, 152, 157, 158, 159, 172, 178,
+            182, 183, 184, 187, 188, 198, 130, 131, 132, 155, 156, 166,
+            175, 176, 185, 186, 145, 147, 149, 170, 171];
+        shuffle($prefixArr);
+
+        return $prefixArr[0] . Strs::randString(8, 1);
+    }
+
+    /**
+     * 随机创建一个身份证号码
+     * @return string
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public static function randomId() {
+        $prefixArr = [
+            11, 12, 13, 14, 15,
+            21, 22, 23,
+            31, 32, 33, 34, 35, 36, 37,
+            41, 42, 43, 44, 45, 46,
+            50, 51, 52, 53, 54,
+            61, 62, 63, 64, 65,
+            71, 81, 82
+        ];
+        shuffle($prefixArr);
+
+        $suffixArr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'X'];
+        shuffle($suffixArr);
+
+        return $prefixArr[0] . '0000' . self::randomDate('Ymd') . Strs::randString(3, 1) . $suffixArr[0];
+    }
+
 }
