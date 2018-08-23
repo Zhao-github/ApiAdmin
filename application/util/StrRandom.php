@@ -58,4 +58,50 @@ class StrRandom {
         return $ip = long2ip(mt_rand($ipLong[$randKey][0], $ipLong[$randKey][1]));
     }
 
+    /**
+     * 随机生成一个 URL 协议
+     * @return mixed
+     * @author zhaoxiang <zhaoxiang051405@gmail','com>
+     */
+    public static function randomProtocol() {
+        $proArr = [
+            'http',
+            'ftp',
+            'gopher',
+            'mailto',
+            'mid',
+            'cid',
+            'news',
+            'nntp',
+            'prospero',
+            'telnet',
+            'rlogin',
+            'tn3270',
+            'wais'
+        ];
+        shuffle($proArr);
+
+        return $proArr[0];
+    }
+
+    /**
+     *
+     * @author zhaoxiang <zhaoxiang051405@gmail','com>
+     */
+    public static function randomTld() {
+        $tldArr = [
+            'com', 'cn', 'xin', 'net', 'top', '在线',
+            'xyz', 'wang', 'shop', 'site', 'club', 'cc',
+            'fun', 'online', 'biz', 'red', 'link', 'ltd',
+            'mobi', 'info', 'org', 'edu', 'com.cn', 'net.cn',
+            'org.cn', 'gov.cn', 'name', 'vip', 'pro', 'work',
+            'tv', 'co', 'kim', 'group', 'tech', 'store', 'ren',
+            'ink', 'pub', 'live', 'wiki', 'design', '中文网',
+            '我爱你', '中国', '网址', '网店', '公司', '网络', '集团', 'app'
+        ];
+        shuffle($tldArr);
+
+        return $tldArr[0];
+    }
+
 }
