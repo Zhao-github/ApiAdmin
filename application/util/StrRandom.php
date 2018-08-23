@@ -20,10 +20,6 @@ class StrRandom {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public static function randomFloat($min = -999999999, $max = 999999999, $dmin = 0, $dmax = 8) {
-        if ($max <= $min || $dmax <= $dmin) {
-            return 0.0;
-        }
-
         $rand = '';
         $intNum = mt_rand($min, $max);
         $floatLength = mt_rand($dmin, $dmax);
