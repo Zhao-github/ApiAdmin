@@ -36,6 +36,18 @@ class StrRandom {
     }
 
     /**
+     * 获取随机的时间
+     * @param string $format PHP的时间日期格式化字符
+     * @return false|string
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public static function randomDate($format = 'Y-m-d H:i:s') {
+        $timestamp = time() - mt_rand(0, 86400 * 3650);
+
+        return date($format, $timestamp);
+    }
+
+    /**
      * 构建随机IP地址
      * @return string
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
@@ -85,7 +97,7 @@ class StrRandom {
     }
 
     /**
-     *
+     * 随机生成一个顶级域名
      * @author zhaoxiang <zhaoxiang051405@gmail','com>
      */
     public static function randomTld() {
@@ -102,6 +114,43 @@ class StrRandom {
         shuffle($tldArr);
 
         return $tldArr[0];
+    }
+
+    /**
+     * 获取一个随机的域名
+     * @return string
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public static function randomDomain() {
+        $len = mt_rand(6, 16);
+
+        return strtolower(Strs::randString($len)) . '.' . self::randomTld();
+    }
+
+    /**
+     * 随机生成一个URL
+     * @param string $protocol 协议名称，可以不用指定
+     * @return string
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public static function randomUrl($protocol = '') {
+        $protocol = $protocol ? $protocol : self::randomProtocol();
+
+        return $protocol . '://' . self::randomDomain();
+    }
+
+    /**
+     * 随机生成一个邮箱地址
+     * @param string $domain 可以指定邮箱域名
+     * @return string
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public static function randomEmail($domain = '') {
+        $len = mt_rand(6, 16);
+        $domain = $domain ? $domain : self::randomDomain();
+
+        return Strs::randString($len) . '@' . $domain;
+
     }
 
 }

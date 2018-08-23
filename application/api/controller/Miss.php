@@ -9,7 +9,7 @@ class Miss extends Base {
     public function index() {
         $this->debug([
             'TpVersion' => THINK_VERSION,
-            'Float' => StrRandom::randomIp()
+            'Float' => StrRandom::randomDate()
         ]);
 
         return $this->buildSuccess([
