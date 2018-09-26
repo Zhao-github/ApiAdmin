@@ -57,14 +57,6 @@ class BuildToken extends Base {
         return $this->buildSuccess($return);
     }
 
-    public function e1() {
-        return $this->buildSuccess(['e1']);
-    }
-
-    public function e2() {
-        return $this->buildSuccess(['e2']);
-    }
-
     /**
      * 根据AppSecret和数据生成相对应的身份认证秘钥
      * @param $appSecret
