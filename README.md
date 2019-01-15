@@ -4,7 +4,7 @@
 # ApiAdmin
 [![ApiAdmin](https://img.shields.io/hexpm/l/plug.svg)](http://www.apiadmin.org/)
 [![ApiAdmin](https://img.shields.io/badge/release-v3.0.8-blue.svg)](http://www.apiadmin.org/)
-[![ApiAdmin](https://img.shields.io/wercker/ci/wercker/docs.svg)](http://www.apiadmin.org/)
+[![ApiAdmin](https://img.shields.io/badge/build-passing-brightgreen.svg)](http://www.apiadmin.org/)
 [![ApiAdmin](https://img.shields.io/badge/ApiAdmin-v3.0.8-brightgreen.svg)](http://www.apiadmin.org/)
 
 ## 前端页面
