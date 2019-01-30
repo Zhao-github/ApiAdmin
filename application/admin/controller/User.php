@@ -13,6 +13,7 @@ use app\model\AdminUser;
 use app\model\AdminUserData;
 use app\util\ReturnCode;
 use app\util\Tools;
+use think\Db;
 
 class User extends Base {
 
@@ -112,32 +113,28 @@ class User extends Base {
 
     /**
      * 获取当前组的全部用户
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\Exception
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function getUsers() {
         $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
-        $start = $this->request->get('page', 1);
+        $page = $this->request->get('page', 1);
         $gid = $this->request->get('gid', 0);
         if (!$gid) {
             return $this->buildFailed(ReturnCode::PARAM_INVALID, '非法操作');
         }
 
-        $listInfo = (new AdminAuthGroupAccess())->where(['groupId' => ['like', "%{$gid}%"]])->select();
-        $listInfo = Tools::buildArrFromObj($listInfo);
-        $uidArr = array_column($listInfo, 'uid');
+        $totalNum = (new AdminAuthGroupAccess())->where('find_in_set("' . $gid . '", `groupId`)')->count();
+        $start = $limit * ($page - 1);
+        $sql = "SELECT au.* FROM admin_user as au LEFT JOIN admin_auth_group_access as aaga " .
+            " ON aaga.`uid` = au.`id` WHERE find_in_set('{$gid}', aaga.`groupId`) " .
+            " ORDER BY au.regTime DESC LIMIT {$start}, {$limit}";
+        $userInfo = Db::query($sql);
 
-        $listObj = (new AdminUser())->whereIn('id', $uidArr)->order('regTime DESC')
-            ->paginate($limit, false, ['page' => $start])->toArray();
-        $userInfo = $listObj['data'];
-
-        $userData = AdminUserData::all(function($query) use ($uidArr) {
-            $query->whereIn('uid', $uidArr);
-        });
-        $userData = Tools::buildArrFromObj($userData);
+        $uidArr = array_column($userInfo, 'id');
+        $userData = (new AdminUserData())->whereIn('uid', $uidArr)->select();
         $userData = Tools::buildArrByNewKey($userData, 'uid');
 
         foreach ($userInfo as $key => $value) {
@@ -151,7 +148,7 @@ class User extends Base {
 
         return $this->buildSuccess([
             'list'  => $userInfo,
-            'count' => $listObj['total']
+            'count' => $totalNum
         ]);
     }
 
