@@ -83,7 +83,8 @@ CREATE TABLE `admin_auth_group_access` (
   `uid` mediumint(8) unsigned NOT NULL,
   `groupId` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  KEY `uid` (`uid`)
+  KEY `uid` (`uid`),
+  KEY `groupId` (`groupId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户和组的对应关系';
 
 
@@ -289,7 +290,8 @@ CREATE TABLE `admin_user` (
   `updateTime` int(10) NOT NULL DEFAULT 0 COMMENT '更新时间',
   `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '账号状态 0封号 1正常',
   `openId` varchar(100) DEFAULT NULL COMMENT '三方登录唯一ID',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `regTime` (`regTime`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员认证信息';
 
 LOCK TABLES `admin_user` WRITE;
