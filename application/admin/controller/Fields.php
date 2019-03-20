@@ -209,7 +209,7 @@ class Fields extends Base {
             );
             $dataArr[] = $addArr;
             $prefix .= '[]';
-            if (is_array($data[0])) {
+            if (isset($data[0]) && is_array($data[0])) {
                 $this->handle($data[0], $dataArr, $prefix);
             }
         } else {
