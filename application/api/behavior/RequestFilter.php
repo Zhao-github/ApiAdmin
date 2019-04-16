@@ -63,7 +63,8 @@ class RequestFilter {
             if ($newRule) {
                 $validate = new Validate($newRule);
                 if (!$validate->check($data)) {
-                    return json(['code' => ReturnCode::PARAM_INVALID, 'msg' => $validate->getError(), 'data' => []]);
+                    $header = config('apiAdmin.CROSS_DOMAIN');
+                    return json(['code' => ReturnCode::PARAM_INVALID, 'msg' => $validate->getError(), 'data' => []], 200, $header);
                 }
             }
 

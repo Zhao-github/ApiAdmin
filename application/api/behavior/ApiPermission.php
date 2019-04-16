@@ -25,6 +25,7 @@ class ApiPermission {
      */
     public function run() {
         $this->request = Request::instance();
+        $header = config('apiAdmin.CROSS_DOMAIN');
         $hash = $this->request->routeInfo();
         if (isset($hash['rule'][1])) {
             $hash = $hash['rule'][1];
@@ -33,9 +34,7 @@ class ApiPermission {
                 $appInfo = cache('AccessToken:' . $access_token);
                 $allRules = explode(',', $appInfo['app_api']);
                 if (!in_array($hash, $allRules)) {
-                    $data = ['code' => ReturnCode::INVALID, 'msg' => '非常抱歉，您没有权限这么做！', 'data' => []];
-
-                    return json($data);
+                    return json(['code' => ReturnCode::INVALID, 'msg' => '非常抱歉，您没有权限这么做！', 'data' => []], 200, $header);
                 }
             }
         }
