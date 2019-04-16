@@ -1,18 +1,19 @@
 {
-    "name": "topthink/think",
-    "description": "the new thinkphp framework",
+    "name": "apiadmin/apiadmin4",
+    "description": "the new apiadmin framework",
     "type": "project",
     "keywords": [
+        "apiadmin",
         "framework",
         "thinkphp",
         "ORM"
     ],
-    "homepage": "http://thinkphp.cn/",
+    "homepage": "https://www.apiadmin.org/",
     "license": "Apache-2.0",
     "authors": [
         {
-            "name": "liu21st",
-            "email": "liu21st@gmail.com"
+            "name": "zhaoxiang",
+            "email": "zhaoxiang051405@gmail.com"
         }
     ],
     "require": {
