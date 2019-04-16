@@ -44,7 +44,7 @@ class ApiAuth {
                     $this->apiInfo = $apiInfo->toArray();
                     Cache::set('ApiInfo:' . $hash, $this->apiInfo);
                 } else {
-                    return json(['code' => ReturnCode::DB_READ_ERROR, 'msg' => '获取接口配置数据失1败', 'data' => []]);
+                    return json(['code' => ReturnCode::DB_READ_ERROR, 'msg' => '获取接口配置数据失败', 'data' => []]);
                 }
             }
 
