@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{:config('apiAdmin.APP_NAME')} - 错误码说明</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css" rel="stylesheet">
+</head>
+<body>
+<br />
+<div class="ui text container" style="max-width: none !important;">
+    <div class="ui floating message">
+        <h1 class="ui header">{:config('apiAdmin.APP_NAME')} - 错误码说明</h1>
+        <a href="{:url('/wiki/index')}">
+            <button class="ui green button" style="margin-top: 15px">返回接口文档</button>
+        </a>
+        <table class="ui red celled striped table">
+            <thead>
+            <tr>
+                <th>#</th><th>英文标识</th><th>错误码</th><th>中文说明</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="codeArr" id="vo"}
+                <tr>
+                    <td>
+                        {$i}
+                    </td>
+                    <td>
+                        {$key}
+                    </td>
+                    <td>
+                        <b>{$vo}</b>
+                    </td>
+                    <td>
+                        {$errorInfo[$vo]}
+                    </td>
+                </tr>
+            {/volist}
+            </tbody>
+        </table>
+        <p>&copy; Powered  By <a href="http://www.apiadmin.org/" target="_blank">{:config('apiAdmin.APP_NAME')} {:config('apiAdmin.APP_VERSION')}</a> <p>
+    </div>
+</div>
+</body>
+</html>

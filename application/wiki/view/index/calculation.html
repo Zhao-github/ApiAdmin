@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{:config('apiAdmin.APP_NAME')} - 算法说明</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css" rel="stylesheet">
+</head>
+<body>
+<br />
+<div class="ui text container" style="max-width: none !important;">
+    <div class="ui floating message">
+        <h1 class="ui header">{:config('apiAdmin.APP_NAME')} - 算法说明 </h1>
+        <a href="{:url('/wiki/index')}">
+            <button class="ui green button" style="margin-top: 15px">返回接口文档</button>
+        </a>
+        <div class="ui red message">
+            <strong>特别说明：</strong> 此算法文档会根据业务发展需求发生变更，为了服务的稳定运行，请及时关注此文档！
+        </div>
+        <div class="ui piled segment">
+            <div class="ui horizontal divider">简介</div>
+            <p>当前算法主要服务于获取身份令牌（AccessToken）所进行的身份认证秘钥（signature）的计算。在请求高级接口的时候，系统会验证应用的合法性，也就是验证AccessToken。所以AccessToken是请求API的必要参数。</p>
+            <p>在请求获取AccessToken的接口时候，服务器会对用户合法性（signature）进行核验，具体的接口请求字段，请参看具体的接口文档。</p>
+            <div class="ui horizontal divider">一、获取app_id和app_secret</div>
+            <p>目前获取应用ID和应用秘钥是由系统管理员发放，如果你还没有请联系管理员。<b>请注意：app_secret非常重要请妥善保管</b></p>
+            <div class="ui horizontal divider">二、准备加密对象，并且根据字段名降序排序</div>
+<pre>//排序好后应当是如下所示的数据
+{
+    "app_id":"服务器颁发的应用ID",
+    "app_secret":"服务器颁发的应用秘钥",   //请注意，此字段只是在计算加密串的时候在被加入，API请求请勿传递此字段值
+    "device_id":"设备唯一ID",
+    "rand_str":"随机字符串",
+    "timestamp":当前系统时间戳
+}</pre>
+            <div class="ui horizontal divider">三、生成原始串</div>
+            <p>将上面的数据构建成HTTP查询字符串，如下所示:</p>
+            <p>app_id=服务器颁发的应用ID&amp;app_secret=服务器颁发的应用秘钥&amp;device_id=设备唯一ID&amp;rand_str=随机字符串&amp;timestamp=当前系统时间戳</p>
+            <div class="ui horizontal divider">四、计算秘钥</div>
+            <p>将第三步生成的字符串进行哈希计算（md5）获得最终身份认证秘钥。</p>
+        </div>
+        <p>&copy; Powered  By <a href="http://www.apiadmin.org/" target="_blank">{:config('apiAdmin.APP_NAME')} {:config('apiAdmin.APP_VERSION')}</a> <p>
+    </div>
+</div>
+</body>
+</html>

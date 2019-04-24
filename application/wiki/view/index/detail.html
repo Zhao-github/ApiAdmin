@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{:config('apiAdmin.APP_NAME')} - 在线接口列表</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/components/tab.min.js"></script>
+    <link rel="stylesheet" href="__STATIC__/jsonFormater/jsonFormater.css">
+    <script type="text/javascript" src="__STATIC__/jsonFormater/jsonFormater.js"></script>
+</head>
+<body>
+<br />
+<div class="ui container">
+    <div class="ui segment">
+        <div class="ui items">
+            <div class="item">
+                <div class="image">
+                    <img src="{$groupInfo['image'] ? $groupInfo['image'] : '/static/defaultImg.jpg'}">
+                </div>
+                <div class="content">
+                    <span class="header">{$groupInfo['name']}</span>
+                    <div class="description">
+                        <p>{$groupInfo['description']}</p>
+                    </div>
+                    <div class="extra">
+                        额外的细节
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {php}$http_type = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')) ? 'https://' : 'http://';{/php}
+    <div class="ui teal big message" id="msg">接口访问地址：{$http_type}{$_SERVER['HTTP_HOST']}/api/{$hash}</div>
+    <div class="ui grid">
+        <div class="four wide column">
+            <div class="ui vertical menu" style="width: 100%;overflow: auto;">
+                {volist name="apiList" id="vo"}
+                <a class="{if condition="$hash == $vo['hash']"}active{/if} teal item" href="{:url('/wiki/detail/'.$groupHash.'/'.$vo["hash"])}">
+                    {:mb_substr($vo['info'], 0, 11)}...
+                    <div class="ui {if condition="$hash == $vo['hash']"}teal{/if} label"> &gt; </div>
+                </a>
+                {/volist}
+            </div>
+        </div>
+        <div class="twelve wide column">
+            <div class="ui floating message" id="detail" style="overflow: auto;">
+                <h2 class='ui header'>接口唯一标识：<a target="_blank" href="{$http_type}{$_SERVER['HTTP_HOST']}/api/{$hash}">{$hash}</a>{if condition="$detail['isTest'] == 1"}（{$detail['apiClass']}）{/if}</h2><br />
+                <div class="ui raised segment">
+                    <span class="ui red ribbon large label">接口说明</span>
+                    {if condition="$detail['status'] eq 0 "}
+                        <span class='ui red label large'><i class="usb icon"></i>禁用</span>
+                        {else /}
+                        {if condition="$detail['isTest'] eq 1 "}
+                            <span class='ui teal label large'><i class="usb icon"></i>测试</span>
+                            {else /}
+                            <span class='ui green label large'><i class="usb icon"></i>启用</span>
+                        {/if}
+                    {/if}
+                    <span class="ui teal label large"><i class="certificate icon"></i>{:config('apiAdmin.APP_VERSION')}</span>
+                    <span class="ui blue large label"><i class="chrome icon"></i>
+                    {switch name="detail['method']"}
+                        {case value="1" break="1"}POST{/case}
+                        {case value="2" break="1"}GET{/case}
+                        {default /}不限
+                    {/switch}
+                    </span>
+                    <div class="ui message">
+                        <p>{$detail['info']}</p>
+                    </div>
+                </div>
+                <div class="ui pointing large blue three item menu">
+                    <a class="item active" data-tab="first">请求参数</a>
+                    <a class="item" data-tab="second">返回参数</a>
+                    <a class="item" data-tab="third">返回示例</a>
+                </div>
+                <div class="ui tab segment active" data-tab="first">
+                    <h3>公共请求参数</h3>
+                    <table class="ui orange celled striped table" >
+                        <thead>
+                        <tr><th>参数名字</th><th>类型</th><th width="70">是否必须</th><th>默认值</th><th width="30%">其他</th><th>说明</th></tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>version</td>
+                            <td>String</td>
+                            <td><span class="ui green label">必填</span></td>
+                            <td>{:config('apiAdmin.APP_VERSION')}</td>
+                            <td></td>
+                            <td>API版本号【请在Header头里面传递】</td>
+                        </tr>
+                        <tr>
+                            <td>access-token</td>
+                            <td>String</td>
+                            <td>{$detail['accessToken']==1?'<span class="ui green label">必填</span>':'<span class="ui red label">勿填</span>'}</td>
+                            <td></td>
+                            <td></td>
+                            <td>APP认证秘钥【请在Header头里面传递】</td>
+                        </tr>
+                        <tr>
+                            <td>user-token</td>
+                            <td>String</td>
+                            <td>{$detail['needLogin']==1?'<span class="ui green label">必填</span>':'<span class="ui red label">勿填</span>'}</td>
+                            <td></td>
+                            <td></td>
+                            <td>用户认证秘钥【请在Header头里面传递】</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h3>请求参数</h3>
+                    <table class="ui red celled striped table" >
+                        <thead>
+                        <tr><th>参数名字</th><th>类型</th><th width="70">是否必须</th><th>默认值</th><th>其他</th><th>说明</th></tr>
+                        </thead>
+                        <tbody>
+                        {volist name="request" id="vo"}
+                            <tr>
+                                <td>{$vo['fieldName']}</td>
+                                <td>{$dataType[$vo['dataType']]}</td>
+                                <td>{$vo['isMust']==1?'<span class="ui green label">必填</span>':'<span class="ui teal label">可选</span>'}</td>
+                                <td>{$vo['default']}</td>
+                                <td>{$vo['range']}</td>
+                                <td>{$vo['info']}</td>
+                            </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ui tab segment" data-tab="second">
+                    <h3>公共返回参数</h3>
+                    <table class="ui olive celled striped table" >
+                        <thead>
+                        <tr><th>返回字段</th><th>类型</th><th>说明</th></tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>code</td>
+                            <td>Integer</td>
+                            <td>返回码，详情请参阅<a href="{:url('/errorCode')}">错误码说明</a></td>
+                        </tr>
+                        <tr>
+                            <td>msg</td>
+                            <td>String</td>
+                            <td>错误描述，当请求成功时可能为空</td>
+                        </tr>
+                        <tr>
+                            <td>debug</td>
+                            <td>String</td>
+                            <td>调试字段，如果没有调试信息会没有此字段</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <h3>返回参数</h3>
+                    <table class="ui green celled striped table" >
+                        <thead>
+                        <tr><th>返回字段</th><th>类型</th><th>说明</th></tr>
+                        </thead>
+                        <tbody>
+                        {volist name="response" id="vo"}
+                            <tr>
+                                <td>{$vo['showName']}</td>
+                                <td>{$dataType[$vo['dataType']]}</td>
+                                <td>{$vo['info']}</td>
+                            </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="ui tab segment" data-tab="third">
+                    <pre id="json" style='font-family: Arial;'></pre>
+                </div>
+                <div class="ui blue message">
+                    <strong>温馨提示：</strong> 此接口参数列表根据后台代码自动生成，如有疑问请咨询后端开发
+                </div>
+                <p>&copy; Powered  By <a href="http://www.apiadmin.org/" target="_blank">{:config('apiAdmin.APP_NAME')} {:config('apiAdmin.APP_VERSION')}</a> <p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $('.pointing.menu .item').tab();
+    $(document).ready(function () {
+        var s = function () {
+            var options = {
+                dom: '#json',
+                isCollapsible: true,
+                quoteKeys: true,
+                tabSize: 2,
+                imgCollapsed: "__STATIC__/jsonFormater/Collapsed.gif",
+                imgExpanded: "__STATIC__/jsonFormater/Expanded.gif"
+            };
+            window.jf = new JsonFormater(options);
+            jf.doFormat({$detail["returnStr"]});
+        }();
+    });
+    $('.ui .vertical').css('max-height', $('#detail').outerHeight(true));
+</script>
+</html>
