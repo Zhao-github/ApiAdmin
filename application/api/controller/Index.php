@@ -3,10 +3,12 @@
 namespace app\api\controller;
 
 
+use think\facade\App;
+
 class Index extends Base {
     public function index() {
         $this->debug([
-            'TpVersion' => THINK_VERSION
+            'TpVersion' => App::version()
         ]);
 
         return $this->buildSuccess([
