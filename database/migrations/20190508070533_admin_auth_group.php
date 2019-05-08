@@ -1,8 +1,9 @@
 <?php
 
 use think\migration\Migrator;
+use think\migration\db\Column;
 
-class AdminAppGroup extends Migrator {
+class AdminAuthGroup extends Migrator {
     /**
      * Change Method.
      *
@@ -25,24 +26,20 @@ class AdminAppGroup extends Migrator {
      * with the Table class.
      */
     public function change() {
-        $table = $this->table('admin_app_group', [
-            'comment' => '应用组，目前只做管理使用，没有实际权限控制'
+        $table = $this->table('admin_auth_group', [
+            'comment' => '权限组'
         ])->setCollation('utf8mb4_general_ci');
         $table->addColumn('name', 'string', [
-            'limit'   => 128,
+            'limit'   => 50,
             'default' => '',
             'comment' => '组名称'
         ])->addColumn('description', 'text', [
-            'comment' => '组说明',
+            'comment' => '组描述',
             'null'    => true
         ])->addColumn('status', 'integer', [
             'limit'   => 2,
             'default' => 1,
-            'comment' => '组状态：0表示禁用，1表示启用'
-        ])->addColumn('hash', 'string', [
-            'limit'   => 128,
-            'default' => '',
-            'comment' => '组标识'
+            'comment' => '组状态：为1正常，为0禁用'
         ])->create();
 
         $table->changeColumn('id', 'integer', ['signed' => false]);

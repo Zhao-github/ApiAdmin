@@ -63,6 +63,6 @@ class AdminApp extends Migrator {
             'null'    => true
         ])->addIndex(['app_id'], ['unique' => true])->create();
 
-        $table->changeColumn('id', null, ['signed' => false]);
+        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }
