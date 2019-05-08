@@ -3,7 +3,7 @@
 use think\migration\Migrator;
 use think\migration\db\Column;
 
-class AdminAuthRule extends Migrator {
+class AdminGroup extends Migrator {
     /**
      * Change Method.
      *
@@ -26,27 +26,40 @@ class AdminAuthRule extends Migrator {
      * with the Table class.
      */
     public function change() {
-        $table = $this->table('admin_auth_rule', [
-            'comment' => '权限细节'
+        $table = $this->table('admin_group', [
+            'comment' => '接口组管理'
         ])->setCollation('utf8mb4_general_ci');
-        $table->addColumn('url', 'string', [
-            'limit'   => 80,
+        $table->addColumn('name', 'string', [
+            'limit'   => 128,
             'default' => '',
-            'comment' => '规则唯一标识'
-        ])->addColumn('group_id', 'integer', [
-            'limit'   => 11,
-            'default' => 0,
-            'signed'  => false,
-            'comment' => '权限所属组的ID'
-        ])->addColumn('auth', 'integer', [
-            'limit'   => 11,
-            'default' => 0,
-            'signed'  => false,
-            'comment' => '权限数值'
+            'comment' => '组名称'
+        ])->addColumn('description', 'text', [
+            'comment' => '组说明',
+            'null'    => true
         ])->addColumn('status', 'integer', [
             'limit'   => 1,
             'default' => 1,
             'comment' => '状态：为1正常，为0禁用'
+        ])->addColumn('hash', 'string', [
+            'limit'   => 128,
+            'default' => '',
+            'comment' => '组标识'
+        ])->addColumn('create_time', 'integer', [
+            'limit'   => 11,
+            'default' => 0,
+            'comment' => '创建时间'
+        ])->addColumn('update_time', 'integer', [
+            'limit'   => 11,
+            'default' => 0,
+            'comment' => '修改时间'
+        ])->addColumn('image', 'string', [
+            'limit'   => 256,
+            'null'    => true,
+            'comment' => '分组封面图'
+        ])->addColumn('hot', 'integer', [
+            'limit'   => 11,
+            'default' => 0,
+            'comment' => '分组热度'
         ])->create();
 
         $table->changeColumn('id', 'integer', ['signed' => false]);

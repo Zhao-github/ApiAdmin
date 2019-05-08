@@ -34,11 +34,11 @@ class AdminAuthGroupAccess extends Migrator {
             'default' => 0,
             'signed'  => false,
             'comment' => ''
-        ])->addColumn('groupId', 'string', [
+        ])->addColumn('group_id', 'string', [
             'limit'   => 255,
             'default' => '',
             'comment' => ''
-        ])->addIndex(['uid'])->addIndex(['groupId'])->create();
+        ])->addIndex(['uid'])->addIndex(['group_id'])->create();
 
         $table->changeColumn('id', 'integer', ['signed' => false]);
     }
