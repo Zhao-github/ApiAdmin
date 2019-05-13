@@ -1,7 +1,6 @@
 <?php
 
 use think\migration\Migrator;
-use think\migration\db\Column;
 
 class AdminGroup extends Migrator {
     /**
@@ -25,6 +24,22 @@ class AdminGroup extends Migrator {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
+
+    /**
+     * CREATE TABLE `admin_group` (
+     *   `id` int(11) unsigned NOT NULL,
+     *   `name` varchar(128) NOT NULL DEFAULT '' COMMENT '组名称',
+     *   `description` text COMMENT '组说明',
+     *   `status` int(1) NOT NULL DEFAULT '1' COMMENT '状态：为1正常，为0禁用',
+     *   `hash` varchar(128) NOT NULL DEFAULT '' COMMENT '组标识',
+     *   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
+     *   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '修改时间',
+     *   `image` varchar(256) DEFAULT NULL COMMENT '分组封面图',
+     *   `hot` int(11) NOT NULL DEFAULT '0' COMMENT '分组热度',
+     *   PRIMARY KEY (`id`)
+     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='接口组管理';
+     */
+
     public function change() {
         $table = $this->table('admin_group', [
             'comment' => '接口组管理'

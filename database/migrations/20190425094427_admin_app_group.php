@@ -24,6 +24,18 @@ class AdminAppGroup extends Migrator {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
+
+    /**
+     * CREATE TABLE `admin_app_group` (
+     *   `id` int(11) unsigned NOT NULL,
+     *   `name` varchar(128) NOT NULL DEFAULT '' COMMENT '组名称',
+     *   `description` text COMMENT '组说明',
+     *   `status` int(2) NOT NULL DEFAULT '1' COMMENT '组状态：0表示禁用，1表示启用',
+     *   `hash` varchar(128) NOT NULL DEFAULT '' COMMENT '组标识',
+     *   PRIMARY KEY (`id`)
+     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应用组，目前只做管理使用，没有实际权限控制';
+     */
+
     public function change() {
         $table = $this->table('admin_app_group', [
             'comment' => '应用组，目前只做管理使用，没有实际权限控制'

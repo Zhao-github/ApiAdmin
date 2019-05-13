@@ -1,7 +1,6 @@
 <?php
 
 use think\migration\Migrator;
-use think\migration\db\Column;
 
 class AdminAuthRule extends Migrator {
     /**
@@ -25,6 +24,18 @@ class AdminAuthRule extends Migrator {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
+
+    /**
+     * CREATE TABLE `admin_auth_rule` (
+     *   `id` int(11) unsigned NOT NULL,
+     *   `url` varchar(80) NOT NULL DEFAULT '' COMMENT '规则唯一标识',
+     *   `groupId` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '权限所属组的ID',
+     *   `auth` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '权限数值',
+     *   `status` int(1) NOT NULL DEFAULT '1' COMMENT '状态：为1正常，为0禁用',
+     *   PRIMARY KEY (`id`)
+     * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限细节';
+     */
+
     public function change() {
         $table = $this->table('admin_auth_rule', [
             'comment' => '权限细节'
