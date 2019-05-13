@@ -2,8 +2,7 @@
 
 use think\migration\Migrator;
 
-class AdminMenu extends Migrator
-{
+class AdminMenu extends Migrator {
     /**
      * Change Method.
      *
