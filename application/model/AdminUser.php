@@ -8,5 +8,6 @@ namespace app\model;
 
 
 class AdminUser extends Base {
+    protected $autoWriteTimestamp = true;
 
 }
