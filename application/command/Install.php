@@ -2,11 +2,14 @@
 
 namespace app\command;
 
+use app\util\Strs;
+use app\util\Tools;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Option;
 use think\console\Output;
 use think\Db;
+use think\exception\PDOException;
 
 class Install extends Command {
 
@@ -24,18 +27,30 @@ class Install extends Command {
      * @param Output $output
      * @return int|void|null
      * @throws \think\Exception
+     * php think apiadmin:install --db mysql://root:123456@127.0.0.1:3306/apiadmin2#utf8
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     protected function execute(Input $input, Output $output) {
         if ($input->hasOption('db')) {
+            $now = time();
             $conn = Db::connect($input->getOption('db'))->table('admin_user');
+            $user = $input->getOption('username');
+            $pass = $input->getOption('password');
+            $auth_key = Strs::uuid();
 
             try {
-                $conn->insert([
+                $conn = Db::connect($input->getOption('db'))->table('admin_user');
+//                $root_id = $conn->insertGetId([
+//                    'username'    => $user,
+//                    'nickname'    => $user,
+//                    'create_time' => $now,
+//                    'update_time' => $now,
+//                    'password'    => Tools::userMd5($pass, $auth_key),
+//                    'create_ip'   => ip2long('127.0.0.1')
+//                ]);
 
-                ]);
-            } catch (\Exception $e) {
-                echo 123123;
+            } catch (\PDOException $e) {
+                $output->highlight($e->getMessage());
             }
         } else {
             $output->highlight("请输入数据库配置");
