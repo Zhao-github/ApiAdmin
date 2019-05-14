@@ -88,7 +88,5 @@ class AdminList extends Migrator {
             'comment' => '当前接口所属的接口分组'
         ])->addIndex(['hash'])->create();
 
-        $table->changeColumn('id', 'integer', ['signed' => false]);
-
     }
 }

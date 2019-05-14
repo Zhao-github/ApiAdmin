@@ -59,7 +59,5 @@ class AdminAuthRule extends Migrator {
             'default' => 1,
             'comment' => '状态：为1正常，为0禁用'
         ])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }

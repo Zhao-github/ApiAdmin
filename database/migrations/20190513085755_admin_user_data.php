@@ -64,7 +64,5 @@ class AdminUserData extends Migrator
             'null'    => true,
             'comment' => '用户头像'
         ])->addIndex(['uid'])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }

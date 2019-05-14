@@ -56,7 +56,5 @@ class AdminAppGroup extends Migrator {
             'default' => '',
             'comment' => '组标识'
         ])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }

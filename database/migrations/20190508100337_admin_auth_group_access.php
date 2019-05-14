@@ -50,7 +50,5 @@ class AdminAuthGroupAccess extends Migrator {
             'default' => '',
             'comment' => ''
         ])->addIndex(['uid'])->addIndex(['group_id'])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }

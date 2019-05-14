@@ -67,7 +67,5 @@ class AdminUserAction extends Migrator {
             'default' => 0,
             'comment' => '操作URL'
         ])->addIndex(['uid'])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }

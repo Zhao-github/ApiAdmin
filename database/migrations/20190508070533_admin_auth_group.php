@@ -51,7 +51,5 @@ class AdminAuthGroup extends Migrator {
             'default' => 1,
             'comment' => '组状态：为1正常，为0禁用'
         ])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }

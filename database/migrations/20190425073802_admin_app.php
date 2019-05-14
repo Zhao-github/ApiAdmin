@@ -79,7 +79,5 @@ class AdminApp extends Migrator {
             'comment' => '前台样式显示所需数据格式',
             'null'    => true
         ])->addIndex(['app_id'], ['unique' => true])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }

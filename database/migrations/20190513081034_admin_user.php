@@ -79,7 +79,5 @@ class AdminUser extends Migrator
             'default' => '',
             'comment' => '三方登录唯一ID'
         ])->addIndex(['create_time'])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }

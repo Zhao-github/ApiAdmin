@@ -76,7 +76,5 @@ class AdminGroup extends Migrator {
             'default' => 0,
             'comment' => '分组热度'
         ])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }

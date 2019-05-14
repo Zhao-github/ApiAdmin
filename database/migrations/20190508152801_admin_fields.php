@@ -83,7 +83,5 @@ class AdminFields extends Migrator {
             'default' => '',
             'comment' => 'wiki显示用字段'
         ])->addIndex(['hash'])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }

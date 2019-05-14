@@ -77,7 +77,5 @@ class AdminMenu extends Migrator {
             'default' => 0,
             'comment' => '菜单认证等级'
         ])->create();
-
-        $table->changeColumn('id', 'integer', ['signed' => false]);
     }
 }
