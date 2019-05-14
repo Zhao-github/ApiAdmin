@@ -14,7 +14,7 @@ return [
     'APP_NAME'              => 'ApiAdmin',
 
     //鉴权相关
-    'USER_ADMINISTRATOR'    => [{$ROOT_ID}],
+    'USER_ADMINISTRATOR'    => ['{$ROOT_ID}'],
 
     //安全秘钥
     'AUTH_KEY'              => '{$AUTH_KEY}',
