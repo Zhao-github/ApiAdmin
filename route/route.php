@@ -256,5 +256,5 @@ Route::group('admin', function () {
         ]
     ]);
     Route::miss('admin/Miss/index');
-});
+})->middleware('Auth');
 

@@ -2,7 +2,7 @@
 
 namespace app\admin\controller;
 use app\util\ReturnCode;
-use think\Request;
+use think\facade\Request;
 
 class Miss extends Base {
     public function index() {
