@@ -2,8 +2,7 @@
 
 use think\migration\Migrator;
 
-class AdminUser extends Migrator
-{
+class AdminUser extends Migrator {
     /**
      * Change Method.
      *
@@ -76,6 +75,7 @@ class AdminUser extends Migrator
             'comment' => '账号状态 0封号 1正常'
         ])->addColumn('openid', 'string', [
             'limit'   => 100,
+            'null'    => true,
             'default' => '',
             'comment' => '三方登录唯一ID'
         ])->addIndex(['create_time'])->create();
