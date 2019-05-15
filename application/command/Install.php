@@ -16,8 +16,6 @@ class Install extends Command {
         // 指令配置
         $this->setName('apiadmin:install')
             ->addOption('db', null, Option::VALUE_REQUIRED, '数据库连接参数，格式为：数据库类型://用户名:密码@数据库地址:数据库端口/数据库名#字符集')
-            ->addOption('username', null, Option::VALUE_REQUIRED, '超管账号名', 'root')
-            ->addOption('password', null, Option::VALUE_REQUIRED, '超管账号密码', '123456')
             ->setDescription('ApiAdmin安装脚本');
     }
 
@@ -40,9 +38,6 @@ class Install extends Command {
         }
 
         if ($input->hasOption('db')) {
-            $user = $input->getOption('username');
-            $pass = $input->getOption('password');
-
             try {
                 $options = $options = $this->parseDsnConfig($input->getOption('db'));
                 Connection::instance($options)->getTables($options['database']);
@@ -68,7 +63,7 @@ class Install extends Command {
                 $output->info('ApiAdmin配置更新成功');
 
                 //生成lock文件，并且写入用户名密码
-                file_put_contents($lockFile, "<?php return ['username' => '{$user}', 'password' => '{$pass}'];");
+                file_put_contents($lockFile, "lock");
                 $output->info('lock文件初始化成功');
             } catch (\PDOException $e) {
                 $output->highlight($e->getMessage());
