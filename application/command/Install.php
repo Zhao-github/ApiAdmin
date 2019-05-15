@@ -29,11 +29,11 @@ class Install extends Command {
      */
     protected function execute(Input $input, Output $output) {
         $tplPath = Env::get('app_path') . 'install' . DIRECTORY_SEPARATOR;
-        $lockFile = $tplPath . 'lock.php';
+        $lockFile = $tplPath . 'lock.ini';
 
         if (file_exists($lockFile)) {
             $output->highlight("您已经安装过了，请勿重新安装！");
-            $output->highlight("如有需要请删除application/install/lock.php文件再次尝试");
+            $output->highlight("如有需要请删除application/install/lock.ini文件再次尝试");
             exit;
         }
 
