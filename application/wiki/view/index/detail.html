@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{:config('apiAdmin.APP_NAME')} - 在线接口列表</title>
+    <title>{:config('apiadmin.APP_NAME')} - 在线接口列表</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/components/tab.min.js"></script>
@@ -57,7 +57,7 @@
                             <span class='ui green label large'><i class="usb icon"></i>启用</span>
                         {/if}
                     {/if}
-                    <span class="ui teal label large"><i class="certificate icon"></i>{:config('apiAdmin.APP_VERSION')}</span>
+                    <span class="ui teal label large"><i class="certificate icon"></i>{:config('apiadmin.APP_VERSION')}</span>
                     <span class="ui blue large label"><i class="chrome icon"></i>
                     {switch name="detail['method']"}
                         {case value="1" break="1"}POST{/case}
@@ -85,7 +85,7 @@
                             <td>version</td>
                             <td>String</td>
                             <td><span class="ui green label">必填</span></td>
-                            <td>{:config('apiAdmin.APP_VERSION')}</td>
+                            <td>{:config('apiadmin.APP_VERSION')}</td>
                             <td></td>
                             <td>API版本号【请在Header头里面传递】</td>
                         </tr>
@@ -172,7 +172,7 @@
                 <div class="ui blue message">
                     <strong>温馨提示：</strong> 此接口参数列表根据后台代码自动生成，如有疑问请咨询后端开发
                 </div>
-                <p>&copy; Powered  By <a href="http://www.apiadmin.org/" target="_blank">{:config('apiAdmin.APP_NAME')} {:config('apiAdmin.APP_VERSION')}</a> <p>
+                <p>&copy; Powered  By <a href="http://www.apiadmin.org/" target="_blank">{:config('apiadmin.APP_NAME')} {:config('apiadmin.APP_VERSION')}</a> <p>
             </div>
         </div>
     </div>

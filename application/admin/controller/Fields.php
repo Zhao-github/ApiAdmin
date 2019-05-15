@@ -38,7 +38,7 @@ class Fields extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function request() {
-        $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
+        $limit = $this->request->get('size', config('apiadmin.ADMIN_LIST_DEFAULT'));
         $start = $this->request->get('page', 1);
         $hash = $this->request->get('hash', '');
 
@@ -63,7 +63,7 @@ class Fields extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function response() {
-        $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
+        $limit = $this->request->get('size', config('apiadmin.ADMIN_LIST_DEFAULT'));
         $start = $this->request->get('page', 1);
         $hash = $this->request->get('hash', '');
 

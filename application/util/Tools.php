@@ -35,7 +35,7 @@ class Tools {
      */
     public static function userMd5($str, $auth_key = '') {
         if (!$auth_key) {
-            $auth_key = config('apiAdmin.AUTH_KEY');
+            $auth_key = config('apiadmin.AUTH_KEY');
         }
 
         return '' === $str ? '' : md5(sha1($str) . $auth_key);
@@ -49,7 +49,7 @@ class Tools {
      */
     public static function isAdministrator($uid = '') {
         if (!empty($uid)) {
-            $adminConf = config('apiAdmin.USER_ADMINISTRATOR');
+            $adminConf = config('apiadmin.USER_ADMINISTRATOR');
             if (is_array($adminConf)) {
                 if (is_array($uid)) {
                     $m = array_intersect($adminConf, $uid);

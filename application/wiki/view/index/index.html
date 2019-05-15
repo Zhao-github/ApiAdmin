@@ -2,14 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>{:config('apiAdmin.APP_NAME')} - 在线接口文档</title>
+    <title>{:config('apiadmin.APP_NAME')} - 在线接口文档</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css" rel="stylesheet">
 </head>
 <body>
 <br />
 <div class="ui text container" style="max-width: none !important;">
     <div class="ui floating message">
-        <h1 class="ui header">{:config('apiAdmin.APP_NAME')} - 接口文档</h1>
+        <h1 class="ui header">{:config('apiadmin.APP_NAME')} - 接口文档</h1>
         <a href="{:url('/wiki/errorCode')}">
             <button class="ui red button" style="margin-top: 15px">错误码说明</button>
         </a>
@@ -71,7 +71,7 @@
                 {/if}
             {/volist}
         </div>
-        <p>&copy; Powered  By <a href="http://www.apiadmin.org/" target="_blank">{:config('apiAdmin.APP_NAME')} {:config('apiAdmin.APP_VERSION')}</a> <p>
+        <p>&copy; Powered  By <a href="http://www.apiadmin.org/" target="_blank">{:config('apiadmin.APP_NAME')} {:config('apiadmin.APP_VERSION')}</a> <p>
     </div>
 </div>
 </body>

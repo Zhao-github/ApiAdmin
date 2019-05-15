@@ -64,8 +64,8 @@ class Login extends Base {
             return $this->buildFailed(ReturnCode::LOGIN_ERROR, '用户名密码不正确');
         }
         $apiAuth = md5(uniqid() . time());
-        cache('Login:' . $apiAuth, json_encode($userInfo), config('apiAdmin.ONLINE_TIME'));
-        cache('Login:' . $userInfo['id'], $apiAuth, config('apiAdmin.ONLINE_TIME'));
+        cache('Login:' . $apiAuth, json_encode($userInfo), config('apiadmin.ONLINE_TIME'));
+        cache('Login:' . $userInfo['id'], $apiAuth, config('apiadmin.ONLINE_TIME'));
 
         $return['access'] = [];
         $isSupper = Tools::isAdministrator($userInfo['id']);

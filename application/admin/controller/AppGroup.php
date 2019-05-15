@@ -21,7 +21,7 @@ class AppGroup extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-        $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
+        $limit = $this->request->get('size', config('apiadmin.ADMIN_LIST_DEFAULT'));
         $start = $this->request->get('page', 1);
         $keywords = $this->request->get('keywords', '');
         $type = $this->request->get('type', '');

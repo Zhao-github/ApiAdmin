@@ -25,7 +25,7 @@ class Log extends Base {
      */
     public function index() {
 
-        $limit = $this->request->get('size', config('apiAdmin.ADMIN_LIST_DEFAULT'));
+        $limit = $this->request->get('size', config('apiadmin.ADMIN_LIST_DEFAULT'));
         $start = $this->request->get('page', 1);
         $type = $this->request->get('type', '');
         $keywords = $this->request->get('keywords', '');
