@@ -43,18 +43,18 @@ class Login extends Base {
                 $userData = AdminUserData::get(['uid' => $userInfo['id']]);
                 $data = [];
                 if ($userData) {
-                    $userData->loginTimes ++;
-                    $userData->lastLoginIp = $this->request->ip(1);
-                    $userData->lastLoginTime = time();
-                    $return['headImg'] = $userData['headImg'];
+                    $userData->login_times ++;
+                    $userData->last_login_ip = $this->request->ip(1);
+                    $userData->last_login_time = time();
+                    $return['head_img'] = $userData['head_img'];
                     $userData->save();
                 } else {
-                    $data['loginTimes'] = 1;
+                    $data['login_times'] = 1;
                     $data['uid'] = $userInfo['id'];
-                    $data['lastLoginIp'] = $this->request->ip(1);
-                    $data['lastLoginTime'] = time();
-                    $data['headImg'] = '';
-                    $return['headImg'] = '';
+                    $data['last_login_ip'] = $this->request->ip(1);
+                    $data['last_login_time'] = time();
+                    $data['head_img'] = '';
+                    $return['head_img'] = '';
                     AdminUserData::create($data);
                 }
             } else {
@@ -75,8 +75,8 @@ class Login extends Base {
             $return['access'] = array_values(array_filter(array_column($access, 'url')));
         } else {
             $groups = AdminAuthGroupAccess::get(['uid' => $userInfo['id']]);
-            if (isset($groups) || $groups->groupId) {
-                $access = (new AdminAuthRule())->whereIn('groupId', $groups->groupId)->select();
+            if (isset($groups) && $groups->group_id) {
+                $access = (new AdminAuthRule())->whereIn('group_id', $groups->group_id)->select();
                 $access = Tools::buildArrFromObj($access);
                 $return['access'] = array_values(array_unique(array_column($access, 'url')));
             }
