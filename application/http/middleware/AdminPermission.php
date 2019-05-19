@@ -77,14 +77,14 @@ class AdminPermission {
      */
     private function getAuth($uid) {
         $groups = AdminAuthGroupAccess::get(['uid' => $uid]);
-        if (isset($groups) && $groups->groupId) {
-            $openGroup = (new AdminAuthGroup())->whereIn('id', $groups->groupId)->where(['status' => 1])->select();
+        if (isset($groups) && $groups->group_id) {
+            $openGroup = (new AdminAuthGroup())->whereIn('id', $groups->group_id)->where(['status' => 1])->select();
             if (isset($openGroup)) {
                 $openGroupArr = [];
                 foreach ($openGroup as $group) {
                     $openGroupArr[] = $group->id;
                 }
-                $allRules = (new AdminAuthRule())->whereIn('groupId', $openGroupArr)->select();
+                $allRules = (new AdminAuthRule())->whereIn('group_id', $openGroupArr)->select();
                 if (isset($allRules)) {
                     $rules = [];
                     foreach ($allRules as $rule) {
