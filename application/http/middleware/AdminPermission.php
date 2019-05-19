@@ -23,16 +23,8 @@ class AdminPermission {
     public function handle($request, \Closure $next) {
         $ApiAuth = $request->header('ApiAuth');
         $userInfo = cache('Login:' . $ApiAuth);
-
-        if (!$userInfo) {
-            return json([
-                'code' => ReturnCode::INVALID,
-                'msg'  => '非常抱歉，您的登录状态已丢失或已过期！',
-                'data' => []
-            ])->header(config('apiadmin.CROSS_DOMAIN'));
-        }
-
         $userInfo = json_decode($userInfo, true);
+
         if (!$this->checkAuth($userInfo['id'], $request->path())) {
             return json([
                 'code' => ReturnCode::INVALID,

@@ -39,7 +39,7 @@ Route::group('admin', function () {
             'admin/Menu/del',
             ['method' => 'get']
         ]
-    ])->middleware('AdminPermission');;
+    ])->middleware(['AdminAuth', 'AdminPermission', 'AdminLog']);
     Route::group('User', [
         'index'        => [
             'admin/User/index',
