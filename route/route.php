@@ -11,11 +11,12 @@
 
 use think\facade\Route;
 
-Route::rule('admin/Login/index','admin/Login/index','post');
-Route::rule('admin/Index/upload','admin/Index/upload','post');
-Route::rule('admin/Login/logout','admin/Login/logout','get');
 
 Route::group('admin', function () {
+    Route::rule('Login/index','admin/Login/index','post');
+    Route::rule('Index/upload','admin/Index/upload','post');
+    Route::rule('Login/logout','admin/Login/logout','get');
+
     //大部分控制器的路由都以分组的形式写到这里
     Route::group('Menu', [
         'index'        => [
@@ -38,7 +39,7 @@ Route::group('admin', function () {
             'admin/Menu/del',
             ['method' => 'get']
         ]
-    ]);
+    ])->middleware('AdminPermission');;
     Route::group('User', [
         'index'        => [
             'admin/User/index',
@@ -68,7 +69,7 @@ Route::group('admin', function () {
             'admin/User/del',
             ['method' => 'get']
         ],
-    ]);
+    ])->middleware('Auth');
     Route::group('Auth', [
         'index'        => [
             'admin/Auth/index',
@@ -102,7 +103,7 @@ Route::group('admin', function () {
             'admin/Auth/getRuleList',
             ['method' => 'get']
         ]
-    ]);
+    ])->middleware('Auth');
     Route::group('App', [
         'index'            => [
             'admin/App/index',
@@ -132,7 +133,7 @@ Route::group('admin', function () {
             'admin/App/del',
             ['method' => 'get']
         ]
-    ]);
+    ])->middleware('Auth');
     Route::group('InterfaceList', [
         'index'        => [
             'admin/InterfaceList/index',
@@ -162,7 +163,7 @@ Route::group('admin', function () {
             'admin/InterfaceList/getHash',
             ['method' => 'get']
         ]
-    ]);
+    ])->middleware('Auth');
     Route::group('Fields', [
         'index'    => [
             'admin/Fields/index',
@@ -192,7 +193,7 @@ Route::group('admin', function () {
             'admin/Fields/upload',
             ['method' => 'post']
         ]
-    ]);
+    ])->middleware('Auth');
     Route::group('InterfaceGroup', [
         'index'        => [
             'admin/InterfaceGroup/index',
@@ -218,7 +219,7 @@ Route::group('admin', function () {
             'admin/InterfaceGroup/del',
             ['method' => 'get']
         ]
-    ]);
+    ])->middleware('Auth');
     Route::group('AppGroup', [
         'index'        => [
             'admin/AppGroup/index',
@@ -244,7 +245,7 @@ Route::group('admin', function () {
             'admin/AppGroup/del',
             ['method' => 'get']
         ]
-    ]);
+    ])->middleware('Auth');
     Route::group('Log', [
         'index' => [
             'admin/Log/index',
@@ -254,7 +255,9 @@ Route::group('admin', function () {
             'admin/Log/del',
             ['method' => 'get']
         ]
-    ]);
+    ])->middleware('Auth');
+
+    //MISS路由定义
     Route::miss('admin/Miss/index');
-})->middleware('Auth');
+})->middleware('AdminResponse');
 

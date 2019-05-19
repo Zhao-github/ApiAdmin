@@ -23,7 +23,7 @@ class Menu extends Base {
     public function index() {
         $list = (new AdminMenu)->where([])->order('sort', 'ASC')->select();
         $list = Tools::buildArrFromObj($list);
-        $list = formatTree(listToTree($list));
+        $list = Tools::formatTree(Tools::listToTree($list));
 
         return $this->buildSuccess([
             'list' => $list

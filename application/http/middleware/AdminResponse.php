@@ -2,9 +2,10 @@
 
 namespace app\http\middleware;
 
-class AdminResponse
-{
-    public function handle($request, \Closure $next)
-    {
+use think\facade\Config;
+
+class AdminResponse {
+    public function handle($request, \Closure $next) {
+        return $next($request)->header(Config::get('apiadmin.CROSS_DOMAIN'));
     }
 }
