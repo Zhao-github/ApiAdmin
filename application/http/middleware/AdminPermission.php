@@ -29,7 +29,7 @@ class AdminPermission {
                 'code' => ReturnCode::INVALID,
                 'msg'  => '非常抱歉，您的登录状态已丢失或已过期！',
                 'data' => []
-            ])->header(config('apiAdmin.CROSS_DOMAIN'));
+            ])->header(config('apiadmin.CROSS_DOMAIN'));
         }
 
         $userInfo = json_decode($userInfo, true);
@@ -38,7 +38,7 @@ class AdminPermission {
                 'code' => ReturnCode::INVALID,
                 'msg'  => '非常抱歉，您没有权限这么做！',
                 'data' => []
-            ])->header(config('apiAdmin.CROSS_DOMAIN'));
+            ])->header(config('apiadmin.CROSS_DOMAIN'));
         }
 
         return $next($request);
