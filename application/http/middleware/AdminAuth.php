@@ -25,6 +25,8 @@ class AdminAuth {
                     'msg'  => 'ApiAuth不匹配',
                     'data' => []
                 ])->header($header);
+            } else {
+                $request->API_ADMIN_USER_INFO = $userInfo;
             }
 
             return $next($request);
