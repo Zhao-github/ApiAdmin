@@ -7,6 +7,8 @@
 
 namespace app\admin\controller;
 
+use app\model\AdminUser;
+use app\model\AdminUserData;
 use app\util\ReturnCode;
 use think\Controller;
 
@@ -31,6 +33,27 @@ class Base extends Controller {
         }
 
         return $return;
+    }
+
+    /**
+     * 更新用户信息
+     * @param $data
+     * @param bool $isDetail
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public function updateUserInfo($data, $isDetail = false) {
+        $apiAuth = $this->request->header('apiAuth');
+        if ($isDetail) {
+            AdminUserData::update($data, ['uid' => $this->userInfo['id']]);
+            $this->userInfo['userData'] = AdminUserData::get(['uid' => $this->userInfo['id']]);
+        } else {
+            AdminUser::update($data, ['id' => $this->userInfo['id']]);
+            $detail = $this->userInfo['userData'];
+            $this->userInfo = AdminUser::get(['id' => $this->userInfo['id']]);
+            $this->userInfo['userData'] = $detail;
+        }
+
+        cache('Login:' . $apiAuth, json_encode($this->userInfo), config('apiadmin.ONLINE_TIME'));
     }
 
     public function buildFailed($code, $msg, $data = []) {
