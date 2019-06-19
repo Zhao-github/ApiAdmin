@@ -21,9 +21,7 @@ class AdminPermission {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function handle($request, \Closure $next) {
-        $ApiAuth = $request->header('ApiAuth');
-        $userInfo = cache('Login:' . $ApiAuth);
-        $userInfo = json_decode($userInfo, true);
+        $userInfo = $request->API_ADMIN_USER_INFO;
 
         if (!$this->checkAuth($userInfo['id'], $request->path())) {
             return json([

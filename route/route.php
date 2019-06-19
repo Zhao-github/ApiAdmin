@@ -70,7 +70,7 @@ Route::group('admin', function () {
             'admin/User/del',
             ['method' => 'get']
         ],
-    ])->middleware('Auth');
+    ])->middleware(['AdminAuth', 'AdminPermission', 'AdminLog']);
     Route::group('Auth', [
         'index'        => [
             'admin/Auth/index',
@@ -104,7 +104,7 @@ Route::group('admin', function () {
             'admin/Auth/getRuleList',
             ['method' => 'get']
         ]
-    ])->middleware('Auth');
+    ])->middleware(['AdminAuth', 'AdminPermission', 'AdminLog']);
     Route::group('App', [
         'index'            => [
             'admin/App/index',
@@ -134,7 +134,7 @@ Route::group('admin', function () {
             'admin/App/del',
             ['method' => 'get']
         ]
-    ])->middleware('Auth');
+    ])->middleware(['AdminAuth', 'AdminPermission', 'AdminLog']);
     Route::group('InterfaceList', [
         'index'        => [
             'admin/InterfaceList/index',
@@ -164,7 +164,7 @@ Route::group('admin', function () {
             'admin/InterfaceList/getHash',
             ['method' => 'get']
         ]
-    ])->middleware('Auth');
+    ])->middleware(['AdminAuth', 'AdminPermission', 'AdminLog']);
     Route::group('Fields', [
         'index'    => [
             'admin/Fields/index',
@@ -194,7 +194,7 @@ Route::group('admin', function () {
             'admin/Fields/upload',
             ['method' => 'post']
         ]
-    ])->middleware('Auth');
+    ])->middleware(['AdminAuth', 'AdminPermission', 'AdminLog']);
     Route::group('InterfaceGroup', [
         'index'        => [
             'admin/InterfaceGroup/index',
@@ -220,7 +220,7 @@ Route::group('admin', function () {
             'admin/InterfaceGroup/del',
             ['method' => 'get']
         ]
-    ])->middleware('Auth');
+    ])->middleware(['AdminAuth', 'AdminPermission', 'AdminLog']);
     Route::group('AppGroup', [
         'index'        => [
             'admin/AppGroup/index',
@@ -246,7 +246,7 @@ Route::group('admin', function () {
             'admin/AppGroup/del',
             ['method' => 'get']
         ]
-    ])->middleware('Auth');
+    ])->middleware(['AdminAuth', 'AdminPermission', 'AdminLog']);
     Route::group('Log', [
         'index' => [
             'admin/Log/index',
@@ -256,7 +256,7 @@ Route::group('admin', function () {
             'admin/Log/del',
             ['method' => 'get']
         ]
-    ])->middleware('Auth');
+    ])->middleware(['AdminAuth', 'AdminPermission', 'AdminLog']);
 
     //MISS路由定义
     Route::miss('admin/Miss/index');

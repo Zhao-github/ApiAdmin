@@ -46,16 +46,12 @@ class User extends Base {
             }
         }
 
-        $listObj = (new AdminUser())->where($where)->order('regTime DESC')
-            ->paginate($limit, false, ['page' => $start])->toArray();
+        $listObj = (new AdminUser())->where($where)->order('create_time DESC')
+            ->paginate($limit, false, ['page' => $start])->each(function($item, $key){
+                $item->userData;
+            })->toArray();
         $listInfo = $listObj['data'];
         $idArr = array_column($listInfo, 'id');
-
-        $userData = AdminUserData::all(function($query) use ($idArr) {
-            $query->whereIn('uid', $idArr);
-        });
-        $userData = Tools::buildArrFromObj($userData);
-        $userData = Tools::buildArrByNewKey($userData, 'uid');
 
         $userGroup = AdminAuthGroupAccess::all(function($query) use ($idArr) {
             $query->whereIn('uid', $idArr);
@@ -63,17 +59,15 @@ class User extends Base {
         $userGroup = Tools::buildArrFromObj($userGroup);
         $userGroup = Tools::buildArrByNewKey($userGroup, 'uid');
 
-        foreach ($listInfo as $key => $value) {
-            if (isset($userData[$value['id']])) {
-                $listInfo[$key]['lastLoginIp'] = long2ip($userData[$value['id']]['lastLoginIp']);
-                $listInfo[$key]['loginTimes'] = $userData[$value['id']]['loginTimes'];
-                $listInfo[$key]['lastLoginTime'] = date('Y-m-d H:i:s', $userData[$value['id']]['lastLoginTime']);
-            }
-            $listInfo[$key]['regIp'] = long2ip($listInfo[$key]['regIp']);
+
+        foreach ($listInfo as $key => &$value) {
+            $value['userData']['last_login_ip'] = long2ip($value['userData']['last_login_ip']);
+            $value['userData']['last_login_time'] = date('Y-m-d H:i:s', $value['userData']['last_login_time']);
+            $value['create_ip'] = long2ip($value['create_ip']);
             if (isset($userGroup[$value['id']])) {
-                $listInfo[$key]['groupId'] = explode(',', $userGroup[$value['id']]['groupId']);
+                $listInfo[$key]['group_id'] = explode(',', $userGroup[$value['id']]['group_id']);
             } else {
-                $listInfo[$key]['groupId'] = [];
+                $listInfo[$key]['group_id'] = [];
             }
         }
 
@@ -221,7 +215,8 @@ class User extends Base {
      */
     public function own() {
         $postData = $this->request->post();
-        $headImg = $postData['headImg'];
+        $headImg = $postData['head_img'];
+
         if ($postData['password'] && $postData['oldPassword']) {
             $oldPass = Tools::userMd5($postData['oldPassword']);
             unset($postData['oldPassword']);
@@ -235,14 +230,13 @@ class User extends Base {
             unset($postData['oldPassword']);
         }
         $postData['id'] = $this->userInfo['id'];
-        $postData['updateTime'] = time();
-        unset($postData['headImg']);
+        unset($postData['head_img']);
         $res = AdminUser::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
             $userData = AdminUserData::get(['uid' => $postData['id']]);
-            $userData->headImg = $headImg;
+            $userData->head_img = $headImg;
             $userData->save();
 
             return $this->buildSuccess([]);

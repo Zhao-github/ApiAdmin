@@ -15,7 +15,7 @@ class AdminAuth {
      */
     public function handle($request, \Closure $next) {
         $header = config('apiadmin.CROSS_DOMAIN');
-        $ApiAuth = $request->header('ApiAuth', '');
+        $ApiAuth = $request->header('apiAuth', '');
         if ($ApiAuth) {
             $userInfo = cache('Login:' . $ApiAuth);
             $userInfo = json_decode($userInfo, true);
@@ -25,6 +25,8 @@ class AdminAuth {
                     'msg'  => 'ApiAuth不匹配',
                     'data' => []
                 ])->header($header);
+            } else {
+                $request->API_ADMIN_USER_INFO = $userInfo;
             }
 
             return $next($request);

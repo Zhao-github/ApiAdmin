@@ -6,6 +6,7 @@
  */
 
 namespace app\admin\controller;
+
 use app\util\ReturnCode;
 use think\Controller;
 
@@ -14,12 +15,9 @@ class Base extends Controller {
     private $debug = [];
     protected $userInfo;
 
-    public function _initialize() {
-        $ApiAuth = $this->request->header('ApiAuth');
-        if ($ApiAuth) {
-            $userInfo = cache('Login:' . $ApiAuth);
-            $this->userInfo = json_decode($userInfo, true);
-        }
+    public function __construct() {
+        parent::__construct();
+        $this->userInfo = $this->request->API_ADMIN_USER_INFO;
     }
 
     public function buildSuccess($data, $msg = '操作成功', $code = ReturnCode::SUCCESS) {
