@@ -19,7 +19,7 @@ use app\util\Tools;
 class Login extends Base {
 
     /**
-     * 用户登录
+     * 用户登录【账号密码登录】
      * @return array
      * @throws \think\Exception
      * @throws \think\exception\DbException
@@ -40,13 +40,12 @@ class Login extends Base {
         if (!empty($userInfo)) {
             if ($userInfo['status']) {
                 //更新用户数据
-                $userData = AdminUserData::get(['uid' => $userInfo['id']]);
+                $userData = $userInfo->userData;
                 $data = [];
                 if ($userData) {
-                    $userData->login_times ++;
+                    $userData->login_times++;
                     $userData->last_login_ip = $this->request->ip(1);
                     $userData->last_login_time = time();
-                    $return['head_img'] = $userData['head_img'];
                     $userData->save();
                 } else {
                     $data['login_times'] = 1;
@@ -54,8 +53,9 @@ class Login extends Base {
                     $data['last_login_ip'] = $this->request->ip(1);
                     $data['last_login_time'] = time();
                     $data['head_img'] = '';
-                    $return['head_img'] = '';
                     AdminUserData::create($data);
+
+                    $userInfo['userData'] = $data;
                 }
             } else {
                 return $this->buildFailed(ReturnCode::LOGIN_ERROR, '用户已被封禁，请联系管理员');
@@ -67,27 +67,32 @@ class Login extends Base {
         cache('Login:' . $apiAuth, json_encode($userInfo), config('apiadmin.ONLINE_TIME'));
         cache('Login:' . $userInfo['id'], $apiAuth, config('apiadmin.ONLINE_TIME'));
 
-        $return['access'] = [];
+        $userInfo['access'] = [];
         $isSupper = Tools::isAdministrator($userInfo['id']);
         if ($isSupper) {
             $access = AdminMenu::all(['hide' => 0]);
             $access = Tools::buildArrFromObj($access);
-            $return['access'] = array_values(array_filter(array_column($access, 'url')));
+            $userInfo['access'] = array_values(array_filter(array_column($access, 'url')));
         } else {
             $groups = AdminAuthGroupAccess::get(['uid' => $userInfo['id']]);
             if (isset($groups) && $groups->group_id) {
                 $access = (new AdminAuthRule())->whereIn('group_id', $groups->group_id)->select();
                 $access = Tools::buildArrFromObj($access);
-                $return['access'] = array_values(array_unique(array_column($access, 'url')));
+                $userInfo['access'] = array_values(array_unique(array_column($access, 'url')));
             }
         }
+        $userInfo['apiAuth'] = $apiAuth;
 
-        $return['id'] = $userInfo['id'];
-        $return['username'] = $userInfo['username'];
-        $return['nickname'] = $userInfo['nickname'];
-        $return['apiAuth'] = $apiAuth;
+        return $this->buildSuccess($userInfo, '登录成功');
+    }
 
-        return $this->buildSuccess($return, '登录成功');
+    /**
+     * 获取用户信息
+     * @return mixed
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public function getUserInfo() {
+        return $this->userInfo;
     }
 
     public function logout() {

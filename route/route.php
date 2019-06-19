@@ -16,6 +16,7 @@ Route::group('admin', function () {
     Route::rule('Login/index','admin/Login/index','post');
     Route::rule('Index/upload','admin/Index/upload','post');
     Route::rule('Login/logout','admin/Login/logout','get');
+    Route::rule('Login/getUserInfo','admin/Login/getUserInfo','get')->middleware(['AdminAuth', 'AdminPermission', 'AdminLog']);
 
     //大部分控制器的路由都以分组的形式写到这里
     Route::group('Menu', [
