@@ -689,6 +689,16 @@ class IniAdminMenu extends Migrator {
                 'hide'  => 0,
                 'icon'  => '',
                 'level' => 0
+            ], [
+                'id'    => 70,
+                'name'  => '获取用户信息',
+                'fid'   => 9,
+                'url'   => 'admin/Login/getUserInfo',
+                'auth'  => 0,
+                'sort'  => 0,
+                'hide'  => 0,
+                'icon'  => '',
+                'level' => 0
             ]
         ];
 
