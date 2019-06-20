@@ -37,6 +37,22 @@ class Install extends Command {
             exit;
         }
 
+        if (!is_writable($tplPath)) {
+            $output->highlight($tplPath . '缺少写权限！');
+            exit;
+        }
+
+        $tempPath = Env::get('runtime_path');
+        if (!is_writable($tempPath)) {
+            $output->highlight($tempPath . '缺少写权限！');
+            exit;
+        }
+
+        if (extension_loaded('redis')) {
+            $output->highlight('缺少Redis扩展！');
+            exit;
+        }
+
         if ($input->hasOption('db')) {
             try {
                 $options = $options = $this->parseDsnConfig($input->getOption('db'));
