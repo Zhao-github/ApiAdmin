@@ -63,24 +63,12 @@ class Login extends Base {
         } else {
             return $this->buildFailed(ReturnCode::LOGIN_ERROR, '用户名密码不正确');
         }
+        $userInfo['access'] = $this->getAccess($userInfo['id']);
+
         $apiAuth = md5(uniqid() . time());
         cache('Login:' . $apiAuth, json_encode($userInfo), config('apiadmin.ONLINE_TIME'));
         cache('Login:' . $userInfo['id'], $apiAuth, config('apiadmin.ONLINE_TIME'));
 
-        $userInfo['access'] = [];
-        $isSupper = Tools::isAdministrator($userInfo['id']);
-        if ($isSupper) {
-            $access = AdminMenu::all(['hide' => 0]);
-            $access = Tools::buildArrFromObj($access);
-            $userInfo['access'] = array_values(array_filter(array_column($access, 'url')));
-        } else {
-            $groups = AdminAuthGroupAccess::get(['uid' => $userInfo['id']]);
-            if (isset($groups) && $groups->group_id) {
-                $access = (new AdminAuthRule())->whereIn('group_id', $groups->group_id)->select();
-                $access = Tools::buildArrFromObj($access);
-                $userInfo['access'] = array_values(array_unique(array_column($access, 'url')));
-            }
-        }
         $userInfo['apiAuth'] = $apiAuth;
 
         return $this->buildSuccess($userInfo, '登录成功');
@@ -92,7 +80,7 @@ class Login extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function getUserInfo() {
-        return $this->userInfo;
+        return $this->buildSuccess($this->userInfo);
     }
 
     public function logout() {
@@ -101,6 +89,32 @@ class Login extends Base {
         cache('Login:' . $this->userInfo['id'], null);
 
         return $this->buildSuccess([], '登出成功');
+    }
+
+    /**
+     * 获取用户权限数据
+     * @param $uid
+     * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    private function getAccess($uid) {
+        $isSupper = Tools::isAdministrator($uid);
+        if ($isSupper) {
+            $access = AdminMenu::all(['hide' => 0]);
+            $access = Tools::buildArrFromObj($access);
+
+            return array_values(array_filter(array_column($access, 'url')));
+        } else {
+            $groups = AdminAuthGroupAccess::get(['uid' => $uid]);
+            if (isset($groups) && $groups->group_id) {
+                $access = (new AdminAuthRule())->whereIn('group_id', $groups->group_id)->select();
+                $access = Tools::buildArrFromObj($access);
+
+                return array_values(array_unique(array_column($access, 'url')));
+            } else {
+                return [];
+            }
+        }
     }
 
 }
