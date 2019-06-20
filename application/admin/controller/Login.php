@@ -83,6 +83,11 @@ class Login extends Base {
         return $this->buildSuccess($this->userInfo);
     }
 
+    /**
+     * 用户登出
+     * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
     public function logout() {
         $ApiAuth = $this->request->header('ApiAuth');
         cache('Login:' . $ApiAuth, null);
