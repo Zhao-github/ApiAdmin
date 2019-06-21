@@ -31,22 +31,22 @@ class User extends Base {
         $keywords = $this->request->get('keywords', '');
         $status = $this->request->get('status', '');
 
-        $where = [];
-        if ($status === '1' || $status === '0') {
-            $where['status'] = $status;
+        $obj = new AdminUser();
+        if (strlen($status)) {
+            $obj->where('status', $status);
         }
         if ($type) {
             switch ($type) {
                 case 1:
-                    $where['username'] = ['like', "%{$keywords}%"];
+                    $obj->whereLike('username', "%{$keywords}%");
                     break;
                 case 2:
-                    $where['nickname'] = ['like', "%{$keywords}%"];
+                    $obj->whereLike('nickname', "%{$keywords}%");
                     break;
             }
         }
 
-        $listObj = (new AdminUser())->where($where)->order('create_time DESC')
+        $listObj = $obj->order('create_time DESC')
             ->paginate($limit, false, ['page' => $start])->each(function($item, $key){
                 $item->userData;
             })->toArray();
