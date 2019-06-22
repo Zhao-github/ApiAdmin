@@ -30,12 +30,15 @@ class Auth extends Base {
         $keywords = $this->request->get('keywords', '');
         $status = $this->request->get('status', '');
 
-        $where['name'] = ['like', "%{$keywords}%"];
-        if ($status === '1' || $status === '0') {
-            $where['status'] = $status;
+        $obj = new AdminAuthGroup();
+        if (strlen($status)) {
+            $obj = $obj->where('status', $status);
         }
-        $listObj = (new AdminAuthGroup())->where($where)->order('id DESC')
-            ->paginate($limit, false, ['page' => $start])->toArray();
+        if ($keywords) {
+            $obj = $obj->where('name', 'like', $keywords);
+        }
+
+        $listObj = $obj->order('id DESC')->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
             'list'  => $listObj['data'],
@@ -45,11 +48,11 @@ class Auth extends Base {
 
     /**
      * 获取全部已开放的可选组
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function getGroups() {
         $listInfo = (new AdminAuthGroup())->where(['status' => 1])->order('id', 'DESC')->select();
@@ -71,15 +74,15 @@ class Auth extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function getRuleList() {
-        $groupId = $this->request->get('groupId', 0);
+        $groupId = $this->request->get('group_id', 0);
 
         $list = (new AdminMenu)->where([])->order('sort', 'ASC')->select();
         $list = Tools::buildArrFromObj($list);
-        $list = listToTree($list);
+        $list = Tools::listToTree($list);
 
         $rules = [];
         if ($groupId) {
-            $rules = (new AdminAuthRule())->where(['groupId' => $groupId])->select();
+            $rules = (new AdminAuthRule())->where(['group_id' => $groupId])->select();
             $rules = Tools::buildArrFromObj($rules);
             $rules = array_column($rules, 'url');
         }
@@ -113,8 +116,8 @@ class Auth extends Base {
                 foreach ($rules as $value) {
                     if ($value) {
                         $insertData[] = [
-                            'groupId' => $res->id,
-                            'url'     => $value
+                            'group_id' => $res->id,
+                            'url'      => $value
                         ];
                     }
                 }
@@ -181,21 +184,20 @@ class Auth extends Base {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
 
-        $listInfo = (new AdminAuthGroupAccess())->where(['groupId' => ['like', "%{$id}%"]])->select();
+        $listInfo = (new AdminAuthGroupAccess())->where('find_in_set("' . $id . '", `group_id`)')->select();
         if ($listInfo) {
             foreach ($listInfo as $value) {
-                $valueArr = $value->toArray();
-                $oldGroupArr = explode(',', $valueArr['groupId']);
+                $oldGroupArr = explode(',', $value->group_id);
                 $key = array_search($id, $oldGroupArr);
                 unset($oldGroupArr[$key]);
                 $newData = implode(',', $oldGroupArr);
-                $value->groupId = $newData;
+                $value->group_id = $newData;
                 $value->save();
             }
         }
 
         AdminAuthGroup::destroy($id);
-        AdminAuthRule::destroy(['groupId' => $id]);
+        AdminAuthRule::destroy(['group_id' => $id]);
 
         return $this->buildSuccess([]);
     }
@@ -214,12 +216,12 @@ class Auth extends Base {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
         $oldInfo = AdminAuthGroupAccess::get(['uid' => $uid])->toArray();
-        $oldGroupArr = explode(',', $oldInfo['groupId']);
+        $oldGroupArr = explode(',', $oldInfo['group_id']);
         $key = array_search($gid, $oldGroupArr);
         unset($oldGroupArr[$key]);
         $newData = implode(',', $oldGroupArr);
         $res = AdminAuthGroupAccess::update([
-            'groupId' => $newData
+            'group_id' => $newData
         ], [
             'uid' => $uid
         ]);
@@ -266,7 +268,7 @@ class Auth extends Base {
     private function editRule() {
         $postData = $this->request->post();
         $needAdd = [];
-        $has = (new AdminAuthRule())->where(['groupId' => $postData['id']])->select();
+        $has = (new AdminAuthRule())->where(['group_id' => $postData['id']])->select();
         $has = Tools::buildArrFromObj($has);
         $hasRule = array_column($has, 'url');
         $needDel = array_flip($hasRule);
@@ -274,7 +276,7 @@ class Auth extends Base {
             if (!empty($value)) {
                 if (!in_array($value, $hasRule)) {
                     $data['url'] = $value;
-                    $data['groupId'] = $postData['id'];
+                    $data['group_id'] = $postData['id'];
                     $needAdd[] = $data;
                 } else {
                     unset($needDel[$value]);
@@ -287,8 +289,8 @@ class Auth extends Base {
         if (count($needDel)) {
             $urlArr = array_keys($needDel);
             AdminAuthRule::destroy([
-                'groupId' => $postData['id'],
-                'url'     => ['in', $urlArr]
+                'group_id' => $postData['id'],
+                'url'      => ['in', $urlArr]
             ]);
         }
     }

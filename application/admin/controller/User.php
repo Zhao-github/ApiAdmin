@@ -121,11 +121,11 @@ class User extends Base {
             return $this->buildFailed(ReturnCode::PARAM_INVALID, '非法操作');
         }
 
-        $totalNum = (new AdminAuthGroupAccess())->where('find_in_set("' . $gid . '", `groupId`)')->count();
+        $totalNum = (new AdminAuthGroupAccess())->where('find_in_set("' . $gid . '", `group_id`)')->count();
         $start = $limit * ($page - 1);
         $sql = "SELECT au.* FROM admin_user as au LEFT JOIN admin_auth_group_access as aaga " .
-            " ON aaga.`uid` = au.`id` WHERE find_in_set('{$gid}', aaga.`groupId`) " .
-            " ORDER BY au.regTime DESC LIMIT {$start}, {$limit}";
+            " ON aaga.`uid` = au.`id` WHERE find_in_set('{$gid}', aaga.`group_id`) " .
+            " ORDER BY au.create_time DESC LIMIT {$start}, {$limit}";
         $userInfo = Db::query($sql);
 
         $uidArr = array_column($userInfo, 'id');
@@ -134,11 +134,11 @@ class User extends Base {
 
         foreach ($userInfo as $key => $value) {
             if (isset($userData[$value['id']])) {
-                $userInfo[$key]['lastLoginIp'] = long2ip($userData[$value['id']]['lastLoginIp']);
-                $userInfo[$key]['loginTimes'] = $userData[$value['id']]['loginTimes'];
-                $userInfo[$key]['lastLoginTime'] = date('Y-m-d H:i:s', $userData[$value['id']]['lastLoginTime']);
+                $userInfo[$key]['last_login_ip'] = long2ip($userData[$value['id']]['last_login_ip']);
+                $userInfo[$key]['login_times'] = $userData[$value['id']]['login_times'];
+                $userInfo[$key]['last_login_time'] = date('Y-m-d H:i:s', $userData[$value['id']]['last_login_time']);
             }
-            $userInfo[$key]['regIp'] = long2ip($userInfo[$key]['regIp']);
+            $userInfo[$key]['create_ip'] = long2ip($userInfo[$key]['create_ip']);
         }
 
         return $this->buildSuccess([
