@@ -33,15 +33,15 @@ class User extends Base {
 
         $obj = new AdminUser();
         if (strlen($status)) {
-            $obj->where('status', $status);
+            $obj = $obj->where('status', $status);
         }
         if ($type) {
             switch ($type) {
                 case 1:
-                    $obj->whereLike('username', "%{$keywords}%");
+                    $obj = $obj->whereLike('username', "%{$keywords}%");
                     break;
                 case 2:
-                    $obj->whereLike('nickname', "%{$keywords}%");
+                    $obj = $obj->whereLike('nickname', "%{$keywords}%");
                     break;
             }
         }
