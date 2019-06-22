@@ -35,7 +35,7 @@ class Auth extends Base {
             $obj = $obj->where('status', $status);
         }
         if ($keywords) {
-            $obj = $obj->where('name', 'like', $keywords);
+            $obj = $obj->whereLike('name', "%{$keywords}%");
         }
 
         $listObj = $obj->order('id DESC')->paginate($limit, false, ['page' => $start])->toArray();
