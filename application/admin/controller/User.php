@@ -27,7 +27,7 @@ class User extends Base {
 
         $limit = $this->request->get('size', config('apiadmin.ADMIN_LIST_DEFAULT'));
         $start = $this->request->get('page', 1);
-        $type = $this->request->get('type', '');
+        $type = $this->request->get('type', '', 'intval');
         $keywords = $this->request->get('keywords', '');
         $status = $this->request->get('status', '');
 
@@ -87,20 +87,19 @@ class User extends Base {
     public function add() {
         $groups = '';
         $postData = $this->request->post();
-        $postData['regIp'] = request()->ip(1);
-        $postData['regTime'] = time();
+        $postData['create_ip'] = request()->ip(1);
         $postData['password'] = Tools::userMd5($postData['password']);
-        if ($postData['groupId']) {
-            $groups = trim(implode(',', $postData['groupId']), ',');
+        if (isset($postData['group_id']) && $postData['group_id']) {
+            $groups = trim(implode(',', $postData['group_id']), ',');
+            unset($postData['group_id']);
         }
-        unset($postData['groupId']);
         $res = AdminUser::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
             AdminAuthGroupAccess::create([
-                'uid'     => $res->id,
-                'groupId' => $groups
+                'uid'      => $res->id,
+                'group_id' => $groups
             ]);
 
             return $this->buildSuccess([]);
@@ -157,9 +156,8 @@ class User extends Base {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
         $res = AdminUser::update([
-            'id'         => $id,
-            'status'     => $status,
-            'updateTime' => time()
+            'id'     => $id,
+            'status' => $status
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
@@ -170,9 +168,9 @@ class User extends Base {
 
     /**
      * 编辑用户
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function edit() {
         $groups = '';
@@ -182,11 +180,10 @@ class User extends Base {
         } else {
             $postData['password'] = Tools::userMd5($postData['password']);
         }
-        if ($postData['groupId']) {
-            $groups = trim(implode(',', $postData['groupId']), ',');
+        if (isset($postData['group_id']) && $postData['group_id']) {
+            $groups = trim(implode(',', $postData['group_id']), ',');
+            unset($postData['group_id']);
         }
-        $postData['updateTime'] = time();
-        unset($postData['groupId']);
         $res = AdminUser::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
@@ -194,14 +191,14 @@ class User extends Base {
             $has = AdminAuthGroupAccess::get(['uid' => $postData['id']]);
             if ($has) {
                 AdminAuthGroupAccess::update([
-                    'groupId' => $groups
+                    'group_id' => $groups
                 ], [
                     'uid' => $postData['id'],
                 ]);
             } else {
                 AdminAuthGroupAccess::create([
-                    'uid'     => $postData['id'],
-                    'groupId' => $groups
+                    'uid'      => $postData['id'],
+                    'group_id' => $groups
                 ]);
             }
 
@@ -211,9 +208,9 @@ class User extends Base {
 
     /**
      * 修改自己的信息
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function own() {
         $postData = $this->request->post();
@@ -254,6 +251,11 @@ class User extends Base {
         $id = $this->request->get('id');
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
+        }
+
+        $isAdmin = Tools::isAdministrator($id);
+        if ($isAdmin) {
+            return $this->buildFailed(ReturnCode::INVALID, '超级管理员不能被删除');
         }
         AdminUser::destroy($id);
         AdminAuthGroupAccess::destroy(['uid' => $id]);
