@@ -30,22 +30,21 @@ class Log extends Base {
         $type = $this->request->get('type', '');
         $keywords = $this->request->get('keywords', '');
 
-        $where = [];
+        $obj = new AdminUserAction();
         if ($type) {
             switch ($type) {
                 case 1:
-                    $where['url'] = ['like', "%{$keywords}%"];
+                    $obj = $obj->whereLike('url', "%{$keywords}%");
                     break;
                 case 2:
-                    $where['nickname'] = ['like', "%{$keywords}%"];
+                    $obj = $obj->whereLike('nickname', "%{$keywords}%");
                     break;
                 case 3:
-                    $where['uid'] = $keywords;
+                    $obj = $obj->where('uid', $keywords);
                     break;
             }
         }
-        $listObj = (new AdminUserAction())->where($where)->order('addTime DESC')
-            ->paginate($limit, false, ['page' => $start])->toArray();
+        $listObj = $obj->order('add_time DESC')->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
             'list'  => $listObj['data'],
