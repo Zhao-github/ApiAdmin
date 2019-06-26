@@ -27,21 +27,21 @@ class AppGroup extends Base {
         $type = $this->request->get('type', '');
         $status = $this->request->get('status', '');
 
-        $where = [];
-        if ($status === '1' || $status === '0') {
-            $where['status'] = $status;
+        $obj = new AdminAppGroup();
+        if (strlen($status)) {
+            $obj = $obj->where('status', $status);
         }
         if ($type) {
             switch ($type) {
                 case 1:
-                    $where['hash'] = $keywords;
+                    $obj = $obj->where('hash', $keywords);
                     break;
                 case 2:
-                    $where['name'] = ['like', "%{$keywords}%"];
+                    $obj = $obj->whereLike('name', "%{$keywords}%");
                     break;
             }
         }
-        $listObj = (new AdminAppGroup())->where($where)->paginate($limit, false, ['page' => $start])->toArray();
+        $listObj = $obj->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
             'list'  => $listObj['data'],
