@@ -30,22 +30,21 @@ class App extends Base {
         $type = $this->request->get('type', '');
         $status = $this->request->get('status', '');
 
-        $where = [];
-        if ($status === '1' || $status === '0') {
-            $where['app_status'] = $status;
+        $obj = new AdminApp();
+        if (strlen($status)) {
+            $obj = $obj->where('app_status', $status);
         }
         if ($type) {
             switch ($type) {
                 case 1:
-                    $where['app_id'] = $keywords;
+                    $obj = $obj->where('app_id', $keywords);
                     break;
                 case 2:
-                    $where['app_name'] = ['like', "%{$keywords}%"];
+                    $obj = $obj->whereLike('app_name', "%{$keywords}%");
                     break;
             }
         }
-        $listObj = (new AdminApp())->where($where)->order('app_addTime DESC')
-            ->paginate($limit, false, ['page' => $start])->toArray();
+        $listObj = $obj->order('app_add_time DESC')->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
             'list'  => $listObj['data'],
@@ -111,7 +110,7 @@ class App extends Base {
             'app_name'     => $postData['app_name'],
             'app_info'     => $postData['app_info'],
             'app_group'    => $postData['app_group'],
-            'app_addTime'  => time(),
+            'app_add_time'  => time(),
             'app_api'      => '',
             'app_api_show' => '',
         ];
