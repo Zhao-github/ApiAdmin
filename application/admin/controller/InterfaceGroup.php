@@ -28,21 +28,21 @@ class InterfaceGroup extends Base {
         $type = $this->request->get('type', '');
         $status = $this->request->get('status', '');
 
-        $where = [];
-        if ($status === '1' || $status === '0') {
-            $where['status'] = $status;
+        $obj = new AdminGroup();
+        if (strlen($status)) {
+            $obj = $obj->where('status', $status);
         }
         if ($type) {
             switch ($type) {
                 case 1:
-                    $where['hash'] = $keywords;
+                    $obj = $obj->where('hash', $keywords);
                     break;
                 case 2:
-                    $where['name'] = ['like', "%{$keywords}%"];
+                    $obj = $obj->whereLike('name', "%{$keywords}%");
                     break;
             }
         }
-        $listObj = (new AdminGroup())->where($where)->paginate($limit, false, ['page' => $start])->toArray();
+        $listObj = $obj->order('create_time desc')->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
             'list'  => $listObj['data'],
@@ -92,7 +92,6 @@ class InterfaceGroup extends Base {
      */
     public function add() {
         $postData = $this->request->post();
-        $postData['addTime'] = $postData['updateTime'] = time();
         $res = AdminGroup::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
@@ -108,7 +107,6 @@ class InterfaceGroup extends Base {
      */
     public function edit() {
         $postData = $this->request->post();
-        $postData['updateTime'] = time();
         $res = AdminGroup::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
@@ -132,7 +130,7 @@ class InterfaceGroup extends Base {
             return $this->buildFailed(ReturnCode::INVALID, '系统预留关键数据，禁止删除！');
         }
 
-        AdminList::update(['groupHash' => 'default'], ['groupHash' => $hash]);
+        AdminList::update(['group_hash' => 'default'], ['group_hash' => $hash]);
 
         $hashRule = AdminApp::all([
             'app_api_show' => ['like', "%$hash%"]
