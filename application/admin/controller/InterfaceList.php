@@ -29,25 +29,24 @@ class InterfaceList extends Base {
         $type = $this->request->get('type', '');
         $status = $this->request->get('status', '');
 
-        $where = [];
-        if ($status === '1' || $status === '0') {
-            $where['status'] = $status;
+        $obj = new AdminList();
+        if (strlen($status)) {
+            $obj = $obj->where('status', $status);
         }
         if ($type) {
             switch ($type) {
                 case 1:
-                    $where['hash'] = $keywords;
+                    $obj = $obj->where('hash', $keywords);
                     break;
                 case 2:
-                    $where['info'] = ['like', "%{$keywords}%"];
+                    $obj = $obj->whereLike('info', "%{$keywords}%");
                     break;
                 case 3:
-                    $where['apiClass'] = ['like', "%{$keywords}%"];
+                    $obj = $obj->whereLike('api_class', "%{$keywords}%");
                     break;
             }
         }
-        $listObj = (new AdminList())->where($where)->order('id', 'DESC')
-            ->paginate($limit, false, ['page' => $start])->toArray();
+        $listObj = $obj->order('id', 'DESC')->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
             'list'  => $listObj['data'],
@@ -57,8 +56,8 @@ class InterfaceList extends Base {
 
     /**
      * 获取接口唯一标识
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function getHash() {
         $res['hash'] = uniqid();
@@ -73,7 +72,7 @@ class InterfaceList extends Base {
      */
     public function add() {
         $postData = $this->request->post();
-        if (!preg_match("/^[A-Za-z0-9_\/]+$/", $postData['apiClass'])) {
+        if (!preg_match("/^[A-Za-z0-9_\/]+$/", $postData['api_class'])) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '真实类名只允许填写字母，数字和/');
         }
 
@@ -114,7 +113,7 @@ class InterfaceList extends Base {
      */
     public function edit() {
         $postData = $this->request->post();
-        if (!preg_match("/^[A-Za-z0-9_\/]+$/", $postData['apiClass'])) {
+        if (!preg_match("/^[A-Za-z0-9_\/]+$/", $postData['api_class'])) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '真实类名只允许填写字母，数字和/');
         }
 
@@ -172,9 +171,9 @@ class InterfaceList extends Base {
 
     /**
      * 刷新接口路由
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function refresh() {
         $apiRoutePath = ROOT_PATH . 'application/apiRoute.php';
