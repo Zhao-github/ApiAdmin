@@ -46,10 +46,13 @@ class Fields extends Base {
             $listObj = (new AdminFields())->where(['hash' => $hash, 'type' => 0])
                 ->paginate($limit, false, ['page' => $start])->toArray();
 
+            $apiInfo = (new AdminList())->where('hash', $hash)->find();
+
             return $this->buildSuccess([
-                'list'  => $listObj['data'],
-                'count' => $listObj['total'],
-                'dataType' => $this->dataType
+                'list'     => $listObj['data'],
+                'count'    => $listObj['total'],
+                'dataType' => $this->dataType,
+                'apiInfo'  => $apiInfo
             ]);
         } else {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
@@ -71,10 +74,13 @@ class Fields extends Base {
             $listObj = (new AdminFields())->where(['hash' => $hash, 'type' => 1])
                 ->paginate($limit, false, ['page' => $start])->toArray();
 
+            $apiInfo = (new AdminList())->where('hash', $hash)->find();
+
             return $this->buildSuccess([
-                'list'  => $listObj['data'],
-                'count' => $listObj['total'],
-                'dataType' => $this->dataType
+                'list'     => $listObj['data'],
+                'count'    => $listObj['total'],
+                'dataType' => $this->dataType,
+                'apiInfo'  => $apiInfo
             ]);
         } else {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
@@ -83,12 +89,12 @@ class Fields extends Base {
 
     /**
      * 新增字段
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function add() {
         $postData = $this->request->post();
-        $postData['showName'] = $postData['fieldName'];
+        $postData['show_name'] = $postData['field_name'];
         $postData['default'] = $postData['defaults'];
         unset($postData['defaults']);
         $res = AdminFields::create($postData);
@@ -106,12 +112,12 @@ class Fields extends Base {
 
     /**
      * 字段编辑
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function edit() {
         $postData = $this->request->post();
-        $postData['showName'] = $postData['fieldName'];
+        $postData['show_name'] = $postData['field_name'];
         $postData['default'] = $postData['defaults'];
         unset($postData['defaults']);
         $res = AdminFields::update($postData);
@@ -129,9 +135,9 @@ class Fields extends Base {
 
     /**
      * 字段删除
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function del() {
         $id = $this->request->get('id');
@@ -151,11 +157,11 @@ class Fields extends Base {
 
     /**
      * 批量上传返回字段
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function upload() {
         $hash = $this->request->post('hash');
@@ -166,24 +172,24 @@ class Fields extends Base {
         if ($data === null) {
             return $this->buildFailed(ReturnCode::EXCEPTION, 'JSON数据格式有误');
         }
-        AdminList::update(['returnStr' => json_encode($data)], ['hash' => $hash]);
+        AdminList::update(['return_str' => json_encode($data)], ['hash' => $hash]);
         $this->handle($data['data'], $dataArr);
         $old = (new AdminFields())->where([
             'hash' => $hash,
             'type' => $type
         ])->select();
         $old = Tools::buildArrFromObj($old);
-        $oldArr = array_column($old, 'showName');
-        $newArr = array_column($dataArr, 'showName');
+        $oldArr = array_column($old, 'show_name');
+        $newArr = array_column($dataArr, 'show_name');
         $addArr = array_diff($newArr, $oldArr);
         $delArr = array_diff($oldArr, $newArr);
         if ($delArr) {
-            AdminFields::destroy(['showName' => ['in', $delArr]]);
+            AdminFields::destroy(['show_name' => ['in', $delArr]]);
         }
         if ($addArr) {
             $addData = [];
             foreach ($dataArr as $item) {
-                if (in_array($item['showName'], $addArr)) {
+                if (in_array($item['show_name'], $addArr)) {
                     $addData[] = $item;
                 }
             }
@@ -200,11 +206,11 @@ class Fields extends Base {
     private function handle($data, &$dataArr, $prefix = 'data', $index = 'data') {
         if (!$this->isAssoc($data)) {
             $addArr = array(
-                'fieldName' => $index,
-                'showName'  => $prefix,
+                'field_name' => $index,
+                'show_name'  => $prefix,
                 'hash'      => $this->request->post('hash'),
-                'isMust'    => 1,
-                'dataType'  => DataType::TYPE_ARRAY,
+                'is_must'    => 1,
+                'data_type'  => DataType::TYPE_ARRAY,
                 'type'      => $this->request->post('type')
             );
             $dataArr[] = $addArr;
@@ -214,11 +220,11 @@ class Fields extends Base {
             }
         } else {
             $addArr = array(
-                'fieldName' => $index,
-                'showName'  => $prefix,
+                'field_name' => $index,
+                'show_name'  => $prefix,
                 'hash'      => $this->request->post('hash'),
-                'isMust'    => 1,
-                'dataType'  => DataType::TYPE_OBJECT,
+                'is_must'    => 1,
+                'data_type'  => DataType::TYPE_OBJECT,
                 'type'      => $this->request->post('type')
             );
             $dataArr[] = $addArr;
@@ -226,24 +232,24 @@ class Fields extends Base {
             foreach ($data as $index => $datum) {
                 $myPre = $prefix . $index;
                 $addArr = array(
-                    'fieldName' => $index,
-                    'showName'  => $myPre,
+                    'field_name' => $index,
+                    'show_name'  => $myPre,
                     'hash'      => $this->request->post('hash'),
-                    'isMust'    => 1,
-                    'dataType'  => DataType::TYPE_STRING,
+                    'is_must'    => 1,
+                    'data_type'  => DataType::TYPE_STRING,
                     'type'      => $this->request->post('type')
                 );
                 if (is_numeric($datum)) {
                     if (preg_match('/^\d*$/', $datum)) {
-                        $addArr['dataType'] = DataType::TYPE_INTEGER;
+                        $addArr['data_type'] = DataType::TYPE_INTEGER;
                     } else {
-                        $addArr['dataType'] = DataType::TYPE_FLOAT;
+                        $addArr['data_type'] = DataType::TYPE_FLOAT;
                     }
                     $dataArr[] = $addArr;
                 } elseif (is_array($datum)) {
                     $this->handle($datum, $dataArr, $myPre, $index);
                 } else {
-                    $addArr['dataType'] = DataType::TYPE_STRING;
+                    $addArr['data_type'] = DataType::TYPE_STRING;
                     $dataArr[] = $addArr;
                 }
             }
@@ -253,8 +259,8 @@ class Fields extends Base {
     /**
      * 判断是否是关联数组（true表示是关联数组）
      * @param array $arr
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return bool
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     private function isAssoc(array $arr) {
         if (array() === $arr) return false;
