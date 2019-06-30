@@ -146,6 +146,8 @@ class App extends Base {
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
+            $appInfo = AdminApp::get($id);
+            cache('AccessToken:' . $appInfo['app_secret'], null);
             return $this->buildSuccess([]);
         }
     }
@@ -176,6 +178,8 @@ class App extends Base {
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
+            $appInfo = AdminApp::get($postData['id']);
+            cache('AccessToken:' . $appInfo['app_secret'], null);
             return $this->buildSuccess([]);
         }
     }
@@ -190,6 +194,9 @@ class App extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
+        $appInfo = AdminApp::get($id);
+        cache('AccessToken:' . $appInfo['app_secret'], null);
+
         AdminApp::destroy($id);
 
         return $this->buildSuccess([]);
