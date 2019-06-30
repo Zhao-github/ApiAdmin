@@ -185,7 +185,7 @@ class InterfaceList extends Base {
         $listInfo = AdminList::all(['status' => 1]);
         $tplStr = '';
         foreach ($listInfo as $value) {
-            $tplStr .= 'Route::rule(\'' . addslashes($value->hash) . '\',\'api/' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([\'ApiAuth\', \'ApiPermission\', \'ApiLog\']);';
+            $tplStr .= 'Route::rule(\'' . addslashes($value->hash) . '\',\'api/' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([\'ApiAuth\', \'ApiPermission\', \'RequestFilter\', \'ApiLog\']);';
         }
         $tplOriginStr = str_replace(['{$API_RULE}'], [$tplStr], $tplOriginStr);
 
