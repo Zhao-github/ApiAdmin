@@ -48,7 +48,7 @@ class Install extends Command {
             exit;
         }
 
-        if (extension_loaded('redis')) {
+        if (!extension_loaded('redis')) {
             $output->highlight('缺少Redis扩展！');
             exit;
         }
