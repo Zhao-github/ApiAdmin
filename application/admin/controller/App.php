@@ -62,7 +62,7 @@ class App extends Base {
     public function getAppInfo() {
         $apiArr = AdminList::all();
         foreach ($apiArr as $api) {
-            $res['apiList'][$api['groupHash']][] = $api;
+            $res['apiList'][$api['group_hash']][] = $api;
         }
         $groupArr = AdminGroup::all();
         $groupArr = Tools::buildArrFromObj($groupArr);
