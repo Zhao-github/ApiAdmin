@@ -12,7 +12,7 @@ use app\model\AdminApp;
 use app\model\AdminFields;
 use app\model\AdminList;
 use app\util\ReturnCode;
-use app\util\Tools;
+use think\facade\Env;
 
 class InterfaceList extends Base {
     /**
@@ -176,14 +176,15 @@ class InterfaceList extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function refresh() {
-        $apiRoutePath = ROOT_PATH . 'application/apiRoute.php';
-        $tplPath = ROOT_PATH . 'data/apiRoute.tpl';
+        $rootPath = Env::get('root_path');
+        $apiRoutePath = $rootPath . 'route/apiRoute.php';
+        $tplPath = $rootPath . 'application/install/apiRoute.tpl';
         $methodArr = ['*', 'POST', 'GET'];
 
         $tplStr = file_get_contents($tplPath);
         $listInfo = AdminList::all(['status' => 1]);
         foreach ($listInfo as $value) {
-            $tplStr .= 'Route::rule(\'api/' . addslashes($value->hash) . '\',\'api/' . addslashes($value->apiClass) . '\', \'' . $methodArr[$value->method] . '\', [\'after_behavior\' => $afterBehavior]);';
+            $tplStr .= 'Route::rule(\'api/' . addslashes($value->hash) . '\',\'api/' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\', [\'after_behavior\' => $afterBehavior]);';
         }
 
         file_put_contents($apiRoutePath, $tplStr);
