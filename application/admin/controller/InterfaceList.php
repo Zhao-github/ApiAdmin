@@ -181,13 +181,15 @@ class InterfaceList extends Base {
         $tplPath = $rootPath . 'application/install/apiRoute.tpl';
         $methodArr = ['*', 'POST', 'GET'];
 
-        $tplStr = file_get_contents($tplPath);
+        $tplOriginStr = file_get_contents($tplPath);
         $listInfo = AdminList::all(['status' => 1]);
+        $tplStr = '';
         foreach ($listInfo as $value) {
-            $tplStr .= 'Route::rule(\'api/' . addslashes($value->hash) . '\',\'api/' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\', [\'after_behavior\' => $afterBehavior]);';
+            $tplStr .= 'Route::rule(\'' . addslashes($value->hash) . '\',\'api/' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([\'ApiAuth\', \'ApiPermission\', \'ApiLog\']);';
         }
+        $tplOriginStr = str_replace(['{$API_RULE}'], [$tplStr], $tplOriginStr);
 
-        file_put_contents($apiRoutePath, $tplStr);
+        file_put_contents($apiRoutePath, $tplOriginStr);
 
         return $this->buildSuccess([]);
     }
