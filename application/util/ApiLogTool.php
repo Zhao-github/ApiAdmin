@@ -81,7 +81,6 @@ class ApiLogTool {
         @file_put_contents($logPath . date('YmdH') . '.log', $logStr . "\n", FILE_APPEND);
     }
 
-
     /**
      * @param string $log 被记录的内容
      * @param string $type 日志文件名称

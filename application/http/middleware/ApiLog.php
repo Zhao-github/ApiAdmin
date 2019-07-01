@@ -14,11 +14,13 @@ class ApiLog {
      */
     public function handle($request, \Closure $next) {
         $response = $next($request);
-
+        $requestInfo = $request->param();
+        unset($requestInfo['API_CONF_DETAIL']);
+        unset($requestInfo['APP_CONF_DETAIL']);
         ApiLogTool::setApiInfo($request->API_CONF_DETAIL);
         ApiLogTool::setAppInfo($request->APP_CONF_DETAIL);
-        ApiLogTool::setRequest($request->param());
-        ApiLogTool::setResponse($response->getData());
+        ApiLogTool::setRequest($requestInfo);
+        ApiLogTool::setResponse($response->getData(), $response->getData()['code']);
         ApiLogTool::setHeader($request->header());
         ApiLogTool::save();
 
