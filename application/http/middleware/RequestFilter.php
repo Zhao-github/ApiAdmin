@@ -7,13 +7,12 @@ use app\util\DataType;
 use app\util\ReturnCode;
 use think\facade\Cache;
 use think\facade\Validate;
-use think\Request as re;
 
 
 class RequestFilter {
 
     /**
-     * 接口请求字段过滤
+     * 接口请求字段过滤【只验证数据的合法性，不再过滤数据】
      * @param \think\facade\Request $request
      * @param \Closure $next
      * @return mixed|\think\response\Json
@@ -22,17 +21,14 @@ class RequestFilter {
     public function handle($request, \Closure $next) {
         $apiInfo = $request->API_CONF_DETAIL;
         $data = $request->param();
-        $method = $request->method();
 
         $has = Cache::has('RequestFields:NewRule:' . $apiInfo['hash']);
         if ($has) {
             $newRule = cache('RequestFields:NewRule:' . $apiInfo['hash']);
-            $rule = cache('RequestFields:Rule:' . $apiInfo['hash']);
         } else {
             $rule = AdminFields::all(['hash' => $apiInfo['hash'], 'type' => 0]);
             $newRule = $this->buildValidateRule($rule);
             cache('RequestFields:NewRule:' . $apiInfo['hash'], $newRule);
-            cache('RequestFields:Rule:' . $apiInfo['hash'], $rule);
         }
 
         if ($newRule) {
@@ -40,30 +36,6 @@ class RequestFilter {
             if (!$validate->check($data)) {
                 return json(['code' => ReturnCode::PARAM_INVALID, 'msg' => $validate->getError(), 'data' => []]);
             }
-        }
-
-        $newData = [];
-        foreach ($rule as $item) {
-            $newData[$item['field_name']] = isset($data[$item['field_name']]) ? $data[$item['field_name']] : '';
-            if (!$item['is_must'] && $item['default'] !== '' && !isset($data[$item['field_name']])) {
-                $newData[$item['field_name']] = $item['default'];
-            }
-        }
-
-        /**
-         * TODO::等待研究没有测试通过
-         */
-        switch ($method) {
-            case 'GET':
-                (new re())->withGet($newData);
-                break;
-            case 'POST':
-                (new re())->withPost($newData);
-                break;
-            case 'DELETE':
-            case 'PUT':
-                (new re())->withInput($newData);
-                break;
         }
 
         return $next($request);
