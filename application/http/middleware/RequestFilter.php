@@ -114,7 +114,7 @@ class RequestFilter {
                         }
                         break;
                     case DataType::TYPE_MOBILE:
-                        $newRule[$value['field_name'] . '|' . $value['info']]['regex'] = '/^1[345789]\d{9}$/';
+                        $newRule[$value['field_name'] . '|' . $value['info']]['regex'] = '/^1[3456789]\d{9}$/';
                         break;
                 }
             }
