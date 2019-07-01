@@ -17,10 +17,11 @@ class ApiLog {
         $requestInfo = $request->param();
         unset($requestInfo['API_CONF_DETAIL']);
         unset($requestInfo['APP_CONF_DETAIL']);
+
         ApiLogTool::setApiInfo($request->API_CONF_DETAIL);
         ApiLogTool::setAppInfo($request->APP_CONF_DETAIL);
         ApiLogTool::setRequest($requestInfo);
-        ApiLogTool::setResponse($response->getData(), $response->getData()['code']);
+        ApiLogTool::setResponse($response->getData(), isset($response->getData()['code']) ? $response->getData()['code'] : 'null');
         ApiLogTool::setHeader($request->header());
         ApiLogTool::save();
 
