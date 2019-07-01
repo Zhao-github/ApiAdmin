@@ -67,7 +67,7 @@ class ApiLogTool {
     public static function save() {
         $logPath = Env::get('runtime_path') . 'ApiLog' . DIRECTORY_SEPARATOR;
         $logStr = implode(self::$separator, array(
-            '[' . date('Y-m-d H:i:s') . '] ',
+            '[' . date('Y-m-d H:i:s') . ']',
             self::$apiInfo,
             self::$request,
             self::$header,
