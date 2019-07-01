@@ -7,44 +7,47 @@
 namespace app\util;
 
 
-class ApiLog {
+use think\facade\Env;
+
+class ApiLogTool {
 
     private static $appInfo = 'null';
     private static $apiInfo = 'null';
     private static $request = 'null';
-    private static $requestAfterFilter = 'null';
     private static $response = 'null';
     private static $header = 'null';
     private static $userInfo = 'null';
-    private static $separator = '###';
+    private static $separator = ' | ';
 
     public static function setAppInfo($data) {
         self::$appInfo =
-            (isset($data['app_id']) ? $data['app_id'] : '') . self::$separator .
-            (isset($data['app_name']) ? $data['app_name'] : '') . self::$separator .
-            (isset($data['device_id']) ? $data['device_id'] : '');
+            (isset($data['app_id']) ? $data['app_id'] : 'null') . self::$separator .
+            (isset($data['app_name']) ? $data['app_name'] : 'null') . self::$separator .
+            (isset($data['device_id']) ? $data['device_id'] : 'null');
     }
 
     public static function setHeader($data) {
-        $userToken = (isset($data['user-token']) && !empty($data['user-token'])) ? $data['user-token'] : 'null';
         $accessToken = (isset($data['access-token']) && !empty($data['access-token'])) ? $data['access-token'] : 'null';
         $version = (isset($data['version']) && !empty($data['version'])) ? $data['version'] : 'null';
-        self::$header = $accessToken . self::$separator . $userToken . self::$separator . $version;
+        self::$header = $accessToken . self::$separator . $version;
     }
 
     public static function setApiInfo($data) {
-        self::$apiInfo = isset($data['apiClass']) ? $data['apiClass'] : '' . self::$separator . isset($data['hash']) ? $data['hash'] : '';
+        self::$apiInfo =
+            (isset($data['hash']) ? $data['hash'] : 'null') . self::$separator .
+            (isset($data['api_class']) ? $data['api_class'] : 'null');
     }
 
+    /**
+     * 这部分的日志其实很关键，但是由于不再强制检测UserToken，所以这部分日志暂时不生效，请大家各自适配
+     * @param $data
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
     public static function setUserInfo($data) {
         if (is_array($data) || is_object($data)) {
             $data = json_encode($data);
+            self::$userInfo = $data;
         }
-        self::$userInfo = $data;
-    }
-
-    public static function getUserInfo() {
-        return json_decode(self::$userInfo, true);
     }
 
     public static function setRequest($data) {
@@ -52,13 +55,6 @@ class ApiLog {
             $data = json_encode($data);
         }
         self::$request = $data;
-    }
-
-    public static function setRequestAfterFilter($data) {
-        if (is_array($data) || is_object($data)) {
-            $data = json_encode($data);
-        }
-        self::$requestAfterFilter = $data;
     }
 
     public static function setResponse($data, $code = '') {
@@ -69,17 +65,13 @@ class ApiLog {
     }
 
     public static function save() {
-        $logPath = RUNTIME_PATH . 'ApiLog' . DS;
-        if (self::$appInfo == 'null') {
-            self::$appInfo = 'null' . self::$separator . 'null' . self::$separator . 'null';
-        }
+        $logPath = Env::get('runtime_path') . 'ApiLog' . DIRECTORY_SEPARATOR;
         $logStr = implode(self::$separator, array(
+            '[' . date('Y-m-d H:i:s') . '] ',
             self::$apiInfo,
-            date('Y-m-d H:i:s'),
             self::$request,
             self::$header,
             self::$response,
-            self::$requestAfterFilter,
             self::$appInfo,
             self::$userInfo
         ));
@@ -97,7 +89,7 @@ class ApiLog {
      */
     public static function writeLog($log, $type = 'sql', $filePath = '') {
         if(!$filePath) {
-            $filePath = '.' . DS . 'runtime' . DS;
+            $filePath = '.' . DIRECTORY_SEPARATOR . 'runtime' . DIRECTORY_SEPARATOR;
         }
         $filename = $filePath . date("Ymd") . '_' . $type . ".log";
         @$handle = fopen($filename, "a+");

@@ -9,7 +9,6 @@ namespace app\api\controller;
 
 
 use app\model\AdminApp;
-use app\util\ApiLog;
 use app\util\ReturnCode;
 use app\util\Strs;
 
@@ -48,7 +47,6 @@ class BuildToken extends Base {
         }
         $accessToken = $this->buildAccessToken($appInfo['app_id'], $appInfo['app_secret']);
         $appInfo['device_id'] = $param['device_id'];
-        ApiLog::setAppInfo($appInfo);
         cache('AccessToken:' . $accessToken, $appInfo, $expires);
         cache('AccessToken:' . $param['device_id'], $accessToken, $expires);
         $return['access_token'] = $accessToken;

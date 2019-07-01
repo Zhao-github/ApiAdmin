@@ -8,7 +8,6 @@
 namespace app\api\controller;
 
 
-use app\util\ApiLog;
 use app\util\ReturnCode;
 use think\Controller;
 
@@ -18,7 +17,7 @@ class Base extends Controller {
     protected $userInfo = [];
 
     public function _initialize() {
-        $this->userInfo = ApiLog::getUserInfo();
+//        $this->userInfo = ''; 这部分初始化用户信息可以参考admin模块下的Base去自行处理
     }
 
     public function buildSuccess($data, $msg = '操作成功', $code = ReturnCode::SUCCESS) {
