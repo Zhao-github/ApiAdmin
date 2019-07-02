@@ -288,10 +288,7 @@ class Auth extends Base {
         }
         if (count($needDel)) {
             $urlArr = array_keys($needDel);
-            AdminAuthRule::destroy([
-                'group_id' => $postData['id'],
-                'url'      => ['in', $urlArr]
-            ]);
+            (new AdminAuthRule())->whereIn('url', $urlArr)->where('group_id', $postData['id'])->delete();
         }
     }
 
