@@ -39,7 +39,7 @@
                             {$groupInfo[$key]['name']}
                         </a>
                         <a class="meta" href="{:url('/wiki/detail/' . $key)}">
-                            <span class="group" style="font-size: 0.8em;">{:date('Y-m-d', $groupInfo[$key]['updateTime'])}</span>
+                            <span class="group" style="font-size: 0.8em;">{$groupInfo[$key]['update_time']}</span>
                         </a>
                         <a class="description" style="display: block;font-size: 0.8em;" href="{:url('/wiki/detail/' . $key)}">
                             {php}

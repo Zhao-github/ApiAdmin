@@ -8,13 +8,13 @@
 namespace app\wiki\controller;
 
 
-use think\Config;
+use think\facade\Config;
 use think\Controller;
 use think\exception\HttpResponseException;
-use think\Request;
-use think\Response;
-use think\View as ViewTemplate;
-use think\Url;
+use think\facade\Request;
+use think\facade\Response;
+use think\facade\View as ViewTemplate;
+use think\facade\Url;
 
 class Base extends Controller {
 

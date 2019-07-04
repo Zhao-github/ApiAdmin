@@ -58,7 +58,7 @@ class Index extends Base {
             }
         }
 
-        $apiList = (new AdminList())->whereIn('hash', $this->appInfo['app_api_show'][$groupHash])->where(['groupHash' => $groupHash])->select();
+        $apiList = (new AdminList())->whereIn('hash', $this->appInfo['app_api_show'][$groupHash])->where(['group_hash' => $groupHash])->select();
         $apiList = Tools::buildArrFromObj($apiList);
         $apiList = Tools::buildArrByNewKey($apiList, 'hash');
 

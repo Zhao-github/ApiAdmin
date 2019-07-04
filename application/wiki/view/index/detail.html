@@ -6,8 +6,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/semantic.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.11/components/tab.min.js"></script>
-    <link rel="stylesheet" href="__STATIC__/jsonFormater/jsonFormater.css">
-    <script type="text/javascript" src="__STATIC__/jsonFormater/jsonFormater.js"></script>
+    <link rel="stylesheet" href="/static/jsonFormater/jsonFormater.css">
+    <script type="text/javascript" src="/static/jsonFormater/jsonFormater.js"></script>
 </head>
 <body>
 <br />
@@ -45,13 +45,13 @@
         </div>
         <div class="twelve wide column">
             <div class="ui floating message" id="detail" style="overflow: auto;">
-                <h2 class='ui header'>接口唯一标识：<a target="_blank" href="{$http_type}{$_SERVER['HTTP_HOST']}/api/{$hash}">{$hash}</a>{if condition="$detail['isTest'] == 1"}（{$detail['apiClass']}）{/if}</h2><br />
+                <h2 class='ui header'>接口唯一标识：<a target="_blank" href="{$http_type}{$_SERVER['HTTP_HOST']}/api/{$hash}">{$hash}</a>{if condition="$detail['is_test'] == 1"}（{$detail['api_class']}）{/if}</h2><br />
                 <div class="ui raised segment">
                     <span class="ui red ribbon large label">接口说明</span>
                     {if condition="$detail['status'] eq 0 "}
                         <span class='ui red label large'><i class="usb icon"></i>禁用</span>
                         {else /}
-                        {if condition="$detail['isTest'] eq 1 "}
+                        {if condition="$detail['is_test'] eq 1 "}
                             <span class='ui teal label large'><i class="usb icon"></i>测试</span>
                             {else /}
                             <span class='ui green label large'><i class="usb icon"></i>启用</span>
@@ -78,7 +78,7 @@
                     <h3>公共请求参数</h3>
                     <table class="ui orange celled striped table" >
                         <thead>
-                        <tr><th>参数名字</th><th>类型</th><th width="70">是否必须</th><th>默认值</th><th width="30%">其他</th><th>说明</th></tr>
+                        <tr><th>参数名字</th><th>类型</th><th width="96">字段状态</th><th width="70">默认值</th><th width="30%">其他</th><th>说明</th></tr>
                         </thead>
                         <tbody>
                         <tr>
@@ -92,32 +92,24 @@
                         <tr>
                             <td>access-token</td>
                             <td>String</td>
-                            <td>{$detail['accessToken']==1?'<span class="ui green label">必填</span>':'<span class="ui red label">勿填</span>'}</td>
+                            <td>{$detail['access_token']==1?'<span class="ui green label">复杂认证</span>':'<span class="ui red label">简易认证</span>'}</td>
                             <td></td>
                             <td></td>
                             <td>APP认证秘钥【请在Header头里面传递】</td>
-                        </tr>
-                        <tr>
-                            <td>user-token</td>
-                            <td>String</td>
-                            <td>{$detail['needLogin']==1?'<span class="ui green label">必填</span>':'<span class="ui red label">勿填</span>'}</td>
-                            <td></td>
-                            <td></td>
-                            <td>用户认证秘钥【请在Header头里面传递】</td>
                         </tr>
                         </tbody>
                     </table>
                     <h3>请求参数</h3>
                     <table class="ui red celled striped table" >
                         <thead>
-                        <tr><th>参数名字</th><th>类型</th><th width="70">是否必须</th><th>默认值</th><th>其他</th><th>说明</th></tr>
+                        <tr><th>参数名字</th><th>类型</th><th width="80">是否必须</th><th>默认值</th><th>其他</th><th>说明</th></tr>
                         </thead>
                         <tbody>
                         {volist name="request" id="vo"}
                             <tr>
-                                <td>{$vo['fieldName']}</td>
-                                <td>{$dataType[$vo['dataType']]}</td>
-                                <td>{$vo['isMust']==1?'<span class="ui green label">必填</span>':'<span class="ui teal label">可选</span>'}</td>
+                                <td>{$vo['field_name']}</td>
+                                <td>{$dataType[$vo['data_type']]}</td>
+                                <td>{$vo['is_must']==1?'<span class="ui green label">必填</span>':'<span class="ui teal label">可选</span>'}</td>
                                 <td>{$vo['default']}</td>
                                 <td>{$vo['range']}</td>
                                 <td>{$vo['info']}</td>
@@ -158,8 +150,8 @@
                         <tbody>
                         {volist name="response" id="vo"}
                             <tr>
-                                <td>{$vo['showName']}</td>
-                                <td>{$dataType[$vo['dataType']]}</td>
+                                <td>{$vo['show_name']}</td>
+                                <td>{$dataType[$vo['data_type']]}</td>
                                 <td>{$vo['info']}</td>
                             </tr>
                         {/volist}
@@ -187,11 +179,11 @@
                 isCollapsible: true,
                 quoteKeys: true,
                 tabSize: 2,
-                imgCollapsed: "__STATIC__/jsonFormater/Collapsed.gif",
-                imgExpanded: "__STATIC__/jsonFormater/Expanded.gif"
+                imgCollapsed: "/static/jsonFormater/Collapsed.gif",
+                imgExpanded: "/static/jsonFormater/Expanded.gif"
             };
             window.jf = new JsonFormater(options);
-            jf.doFormat({$detail["returnStr"]});
+            jf.doFormat({$detail["return_str"]});
         }();
     });
     $('.ui .vertical').css('max-height', $('#detail').outerHeight(true));
