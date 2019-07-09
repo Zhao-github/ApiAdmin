@@ -153,50 +153,33 @@ class ThirdLogin extends Base {
         $url = 'https://api.weixin.qq.com/sns/oauth2/access_token?' . http_build_query($query);
         $accessToken = json_decode(file_get_contents($url), true);
 
-        $userInfo = AdminUser::get(['openid' => $accessToken['openid']]);
-        if (!$userInfo) {
-            $getUserInfoQuery = [
-                'access_token' => $accessToken['access_token'],
-                'openid'       => $accessToken['openid'],
-                'lang'         => 'zh_CN'
-            ];
-            $getUserInfoUrl = 'https://api.weixin.qq.com/sns/userinfo?' . http_build_query($getUserInfoQuery);
+        $getUserInfoQuery = [
+            'access_token' => $accessToken['access_token'],
+            'openid'       => $accessToken['openid'],
+            'lang'         => 'zh_CN'
+        ];
+        $getUserInfoUrl = 'https://api.weixin.qq.com/sns/userinfo?' . http_build_query($getUserInfoQuery);
 
-            $userInfoArr = file_get_contents($getUserInfoUrl);
-            $userInfoArr = json_decode($userInfoArr, true);
+        $userInfoArr = file_get_contents($getUserInfoUrl);
+        $userInfoArr = json_decode($userInfoArr, true);
 
-            $userInfo['nickname'] = $userInfoArr['nickname'];
-            $userInfo['username'] = 'ApiAdmin_wx_' . Strs::randString(8);
-            $userInfo['openid'] = $accessToken['openid'];
-            $userInfo['create_ip'] = request()->ip(1);
-            $userInfo['status'] = 1;
-            $userInfo['create_time'] = time();
-            $userInfo['password'] = Tools::userMd5('ApiAdmin');
-            $res = AdminUser::create($userInfo);
-            $userInfo['head_img'] = $userInfoArr['headimgurl'];
-            $userInfo['id'] = $res->id;
-            if ($res === false) {
-                return view('wiki@index/login_res', [
-                    'info' => '操作失败',
-                    'code' => ReturnCode::DB_SAVE_ERROR
-                ]);
-            } else {
-                AdminAuthGroupAccess::create([
-                    'uid'      => $res->id,
-                    'group_id' => 1
-                ]);
-            }
+        if ($userInfoArr) {
+            cache($state, [
+                'nickname' => $userInfoArr['nickname'],
+                'head_img' => $userInfoArr['headimgurl'],
+                'openid'   => $accessToken['openid']
+            ], 300);
+
+            return view('wiki@index/login_res', [
+                'info' => '登录成功',
+                'code' => ReturnCode::SUCCESS
+            ]);
         } else {
-            $userInfo = $userInfo->toArray();
+            return view('wiki@index/login_res', [
+                'info' => '操作失败',
+                'code' => ReturnCode::DB_SAVE_ERROR
+            ]);
         }
-
-        cache($state, $userInfo, 300);
-
-        return view('wiki@index/login_res', [
-            'info' => '登录成功',
-            'code' => ReturnCode::SUCCESS
-        ]);
-
     }
 
     /**
@@ -218,7 +201,10 @@ class ThirdLogin extends Base {
             if (is_array($userInfo)) {
                 cache($state, null);
 
-                return $this->doLogin($userInfo);
+                return $this->doLogin($userInfo['openid'], [
+                    'nickname' => $userInfo['nickname'],
+                    'head_img' => $userInfo['headimgurl']
+                ]);
             } else {
                 return $this->buildFailed(ReturnCode::INVALID, '登录状态已失效，请重新登录');
             }
