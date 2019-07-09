@@ -102,7 +102,7 @@ class Login extends Base {
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    private function getAccess($uid) {
+    public function getAccess($uid) {
         $isSupper = Tools::isAdministrator($uid);
         if ($isSupper) {
             $access = AdminMenu::all(['hide' => 0]);

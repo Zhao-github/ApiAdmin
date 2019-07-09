@@ -17,6 +17,27 @@ Route::group('admin', function() {
         'Login/index', 'admin/Login/index', 'post'
     );
     Route::rule(
+        'ThirdLogin/getQQCode', 'admin/ThirdLogin/getQQCode', 'get'
+    );
+    Route::rule(
+        'ThirdLogin/getWxCode', 'admin/ThirdLogin/getWxCode', 'get'
+    );
+    Route::rule(
+        'ThirdLogin/wx', 'admin/ThirdLogin/wx', 'get'
+    );
+    Route::rule(
+        'ThirdLogin/loginByQQ', 'admin/ThirdLogin/loginByQQ', 'get'
+    );
+    Route::rule(
+        'ThirdLogin/loginByWx', 'admin/ThirdLogin/loginByWx', 'get'
+    );
+    Route::rule(
+        'ThirdLogin/checkWxLogin', 'admin/ThirdLogin/checkWxLogin', 'get'
+    );
+    Route::rule(
+        'ThirdLogin/getQr', 'admin/ThirdLogin/getQr', 'get'
+    );
+    Route::rule(
         'Index/upload', 'admin/Index/upload', 'post'
     )->middleware(['AdminAuth', 'AdminLog']);
     Route::rule(

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+    <title>ApiAdmin-微信登录</title>
+    <link rel="stylesheet" href="//res.wx.qq.com/open/libs/weui/1.1.3/weui.min.css"/>
+</head>
+<body>
+    <div class="page">
+        <div class="weui-msg">
+            <div class="weui-msg__icon-area">
+                {if condition="$code eq 1 "}
+                    <i class="weui-icon-success weui-icon_msg"></i>
+                {else /}
+                    <i class="weui-icon-warn weui-icon_msg"></i>
+                {/if}
+            </div>
+            <div class="weui-msg__text-area">
+                <h2 class="weui-msg__title">{$info}</h2>
+            </div>
+            <div class="weui-msg__extra-area">
+                <div class="weui-footer">
+                    <p class="weui-footer__links">
+                        <a href="https://apiadmin.gitee.io/apiadmin-wiki/" class="weui-footer__link">ApiAdmin文档</a>
+                    </p>
+                    <p class="weui-footer__text">Copyright &copy; 2016-2018 apiadmin.org</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

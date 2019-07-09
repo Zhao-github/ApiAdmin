@@ -21,7 +21,8 @@
         "topthink/framework": "5.1.*",
         "overtrue/pinyin": "~4.0",
         "php-curl-class/php-curl-class": "^8.5",
-        "topthink/think-migration": "^2.0"
+        "topthink/think-migration": "^2.0",
+        "endroid/qr-code": "^3.5"
     },
     "autoload": {
         "psr-4": {
