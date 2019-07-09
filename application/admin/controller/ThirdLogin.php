@@ -109,12 +109,12 @@ class ThirdLogin extends Base {
         $qrCode->setWriterByName('png');
         $qrCode->setMargin(10);
         $qrCode->setEncoding('UTF-8');
-        $qrCode->setErrorCorrectionLevel(ErrorCorrectionLevel::HIGH);
+        $qrCode->setErrorCorrectionLevel(new ErrorCorrectionLevel(ErrorCorrectionLevel::HIGH));
         $qrCode->setForegroundColor(['r' => 0, 'g' => 0, 'b' => 0, 'a' => 0]);
         $qrCode->setBackgroundColor(['r' => 255, 'g' => 255, 'b' => 255, 'a' => 0]);
         $qrCode->setRoundBlockSize(true);
         $qrCode->setValidateResult(false);
-        $qrCode->writeFile(Env::get('root_path') . '/public/qr/' . $state . '.png');
+        $qrCode->writeFile(Env::get('root_path') . 'public/qr/' . $state . '.png');
 
         cache($state, 1, 300);
 
@@ -197,13 +197,13 @@ class ThirdLogin extends Base {
         if (is_numeric($userInfo)) {
             return $this->buildFailed(666, '等待扫码');
         } else {
-            unlink(Env::get('root_path') . '/public/qr/' . $state . '.png');
+            @unlink(Env::get('root_path') . 'public/qr/' . $state . '.png');
             if (is_array($userInfo)) {
                 cache($state, null);
 
                 return $this->doLogin($userInfo['openid'], [
                     'nickname' => $userInfo['nickname'],
-                    'head_img' => $userInfo['headimgurl']
+                    'head_img' => $userInfo['head_img']
                 ]);
             } else {
                 return $this->buildFailed(ReturnCode::INVALID, '登录状态已失效，请重新登录');
