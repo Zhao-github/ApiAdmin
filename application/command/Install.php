@@ -55,7 +55,7 @@ class Install extends Command {
 
         if ($input->hasOption('db')) {
             try {
-                $options = $options = $this->parseDsnConfig($input->getOption('db'));
+                $options = $this->parseDsnConfig($input->getOption('db'));
                 Connection::instance($options)->getTables($options['database']);
                 $confPath = Env::get('config_path');
 
