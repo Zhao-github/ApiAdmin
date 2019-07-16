@@ -52,10 +52,10 @@ class InterfaceGroup extends Base {
 
     /**
      * 获取全部有效的接口组
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function getAll() {
         $listInfo = (new AdminGroup())->where(['status' => 1])->select();
@@ -76,7 +76,8 @@ class InterfaceGroup extends Base {
         $res = AdminGroup::update([
             'status' => $status
         ], [
-            'id' => $id
+            'id'          => $id,
+            'is_official' => 0
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
@@ -87,8 +88,8 @@ class InterfaceGroup extends Base {
 
     /**
      * 添加接口组
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function add() {
         $postData = $this->request->post();
@@ -102,12 +103,17 @@ class InterfaceGroup extends Base {
 
     /**
      * 接口组编辑
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function edit() {
         $postData = $this->request->post();
-        $res = AdminGroup::update($postData);
+        $res = AdminGroup::get($postData['id']);
+        if ($res['is_official'] == 1) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '官方数据，禁止操作');
+        } else {
+            $res = AdminGroup::update($postData);
+        }
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -128,6 +134,11 @@ class InterfaceGroup extends Base {
         }
         if ($hash === 'default') {
             return $this->buildFailed(ReturnCode::INVALID, '系统预留关键数据，禁止删除！');
+        }
+
+        $res = AdminGroup::get(['hash' => $hash]);
+        if ($res['is_official'] == 1) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '官方数据，禁止操作');
         }
 
         AdminList::update(['group_hash' => 'default'], ['group_hash' => $hash]);

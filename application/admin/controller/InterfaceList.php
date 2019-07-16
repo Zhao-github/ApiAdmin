@@ -95,7 +95,8 @@ class InterfaceList extends Base {
         $res = AdminList::update([
             'status' => $status
         ], [
-            'hash' => $hash
+            'hash'        => $hash,
+            'is_official' => 0
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
@@ -117,7 +118,12 @@ class InterfaceList extends Base {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '真实类名只允许填写字母，数字和/');
         }
 
-        $res = AdminList::update($postData);
+        $res = AdminList::get($postData['id']);
+        if ($res['is_official'] == 1) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '官方数据，禁止操作');
+        } else {
+            AdminList::update($postData);
+        }
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -137,6 +143,11 @@ class InterfaceList extends Base {
         $hash = $this->request->get('hash');
         if (!$hash) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
+        }
+
+        $api = AdminList::get(['hash' => $hash]);
+        if ($api['is_official'] == 1) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '官方数据，禁止操作');
         }
 
         $hashRule = AdminApp::all([

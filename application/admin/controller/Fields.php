@@ -94,6 +94,10 @@ class Fields extends Base {
      */
     public function add() {
         $postData = $this->request->post();
+        $res = AdminList::get(['hash' => $postData['hash']]);
+        if ($res['is_official'] == 1) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '官方数据，禁止操作');
+        }
         $postData['show_name'] = $postData['field_name'];
         $postData['default'] = $postData['defaults'];
         unset($postData['defaults']);
@@ -120,7 +124,13 @@ class Fields extends Base {
         $postData['show_name'] = $postData['field_name'];
         $postData['default'] = $postData['defaults'];
         unset($postData['defaults']);
-        $res = AdminFields::update($postData);
+
+        $res = AdminFields::get($postData['id']);
+        if ($res['is_official'] == 1) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '官方数据，禁止操作');
+        } else {
+            $res = AdminFields::update($postData);
+        }
 
         cache('RequestFields:NewRule:' . $postData['hash'], null);
         cache('RequestFields:Rule:' . $postData['hash'], null);
@@ -146,6 +156,9 @@ class Fields extends Base {
         }
 
         $fieldsInfo = AdminFields::get($id);
+        if ($fieldsInfo['is_official'] == 1) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '官方数据，禁止操作');
+        }
         cache('RequestFields:NewRule:' . $fieldsInfo->hash, null);
         cache('RequestFields:Rule:' . $fieldsInfo->hash, null);
         cache('ResponseFieldsRule:' . $fieldsInfo->hash, null);
@@ -172,6 +185,12 @@ class Fields extends Base {
         if ($data === null) {
             return $this->buildFailed(ReturnCode::EXCEPTION, 'JSON数据格式有误');
         }
+
+        $fieldsInfo = AdminList::get(['hash' => $hash]);
+        if ($fieldsInfo['is_official'] == 1) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '官方数据，禁止操作');
+        }
+
         AdminList::update(['return_str' => json_encode($data)], ['hash' => $hash]);
         $this->handle($data['data'], $dataArr);
         $old = (new AdminFields())->where([

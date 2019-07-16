@@ -72,11 +72,17 @@ class AppGroup extends Base {
     public function changeStatus() {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
-        $res = AdminAppGroup::update([
-            'status' => $status
-        ], [
-            'id' => $id
-        ]);
+        $res = AdminAppGroup::get($id);
+        if ($res['is_official'] == 1) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '官方数据，禁止操作');
+        } else {
+            $res = AdminAppGroup::update([
+                'status' => $status
+            ], [
+                'id' => $id
+            ]);
+        }
+
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -106,7 +112,12 @@ class AppGroup extends Base {
      */
     public function edit() {
         $postData = $this->request->post();
-        $res = AdminAppGroup::update($postData);
+        $res = AdminAppGroup::get($postData['id']);
+        if ($res['is_official'] == 1) {
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '官方数据，禁止操作');
+        } else {
+            AdminAppGroup::update($postData);
+        }
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
@@ -130,7 +141,7 @@ class AppGroup extends Base {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '当前分组存在' . $has . '个应用，禁止删除');
         }
 
-        AdminAppGroup::destroy(['hash' => $hash]);
+        AdminAppGroup::destroy(['hash' => $hash, 'is_official' => 0]);
 
         return $this->buildSuccess([]);
     }

@@ -54,10 +54,10 @@ class App extends Base {
 
     /**
      * 获取AppId,AppSecret,接口列表,应用接口权限细节
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
      * @throws \think\Exception
      * @throws \think\exception\DbException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function getAppInfo() {
         $apiArr = AdminList::all();
@@ -81,8 +81,8 @@ class App extends Base {
 
     /**
      * 刷新APPSecret
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function refreshAppSecret() {
         $id = $this->request->get('id', 0);
@@ -110,7 +110,7 @@ class App extends Base {
             'app_name'     => $postData['app_name'],
             'app_info'     => $postData['app_info'],
             'app_group'    => $postData['app_group'],
-            'app_add_time'  => time(),
+            'app_add_time' => time(),
             'app_api'      => '',
             'app_api_show' => '',
         ];
@@ -141,13 +141,15 @@ class App extends Base {
         $res = AdminApp::update([
             'app_status' => $status
         ], [
-            'id' => $id
+            'id'          => $id,
+            'is_official' => 0
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
             $appInfo = AdminApp::get($id);
             cache('AccessToken:' . $appInfo['app_secret'], null);
+
             return $this->buildSuccess([]);
         }
     }
@@ -174,12 +176,13 @@ class App extends Base {
             }
             $data['app_api'] = implode(',', $appApi);
         }
-        $res = AdminApp::update($data, ['id' => $postData['id']]);
+        $res = AdminApp::update($data, ['id' => $postData['id'], 'is_official' => 0]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
         } else {
             $appInfo = AdminApp::get($postData['id']);
             cache('AccessToken:' . $appInfo['app_secret'], null);
+
             return $this->buildSuccess([]);
         }
     }
@@ -197,7 +200,7 @@ class App extends Base {
         $appInfo = AdminApp::get($id);
         cache('AccessToken:' . $appInfo['app_secret'], null);
 
-        AdminApp::destroy($id);
+        AdminApp::destroy(['id' => $id, 'is_official' => 0]);
 
         return $this->buildSuccess([]);
     }
