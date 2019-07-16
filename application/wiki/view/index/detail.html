@@ -82,14 +82,6 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>version</td>
-                            <td>String</td>
-                            <td><span class="ui green label">必填</span></td>
-                            <td>{:config('apiadmin.APP_VERSION')}</td>
-                            <td></td>
-                            <td>API版本号【请在Header头里面传递】</td>
-                        </tr>
-                        <tr>
                             <td>access-token</td>
                             <td>String</td>
                             <td>{$detail['access_token']==1?'<span class="ui green label">复杂认证</span>':'<span class="ui red label">简易认证</span>'}</td>
@@ -183,7 +175,7 @@
                 imgExpanded: "/static/jsonFormater/Expanded.gif"
             };
             window.jf = new JsonFormater(options);
-            jf.doFormat({$detail["return_str"]});
+            jf.doFormat({:htmlspecialchars_decode($detail["return_str"])});
         }();
     });
     $('.ui .vertical').css('max-height', $('#detail').outerHeight(true));
