@@ -34,7 +34,9 @@ class AppGroup extends Base {
         if ($type) {
             switch ($type) {
                 case 1:
-                    $obj = $obj->where('hash', $keywords);
+                    if (strlen($keywords)) {
+                        $obj = $obj->where('hash', $keywords);
+                    }
                     break;
                 case 2:
                     $obj = $obj->whereLike('name', "%{$keywords}%");
