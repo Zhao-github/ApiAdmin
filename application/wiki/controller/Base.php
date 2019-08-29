@@ -8,6 +8,7 @@
 namespace app\wiki\controller;
 
 
+use app\util\ReturnCode;
 use think\facade\Config;
 use think\Controller;
 use think\exception\HttpResponseException;
@@ -27,6 +28,26 @@ class Base extends Controller {
         } else {
             $this->redirect(url('/wiki/login'));
         }
+    }
+
+    public function buildSuccess($data, $msg = '操作成功', $code = ReturnCode::SUCCESS) {
+        $return = [
+            'code' => $code,
+            'msg'  => $msg,
+            'data' => $data
+        ];
+
+        return json($return);
+    }
+
+    public function buildFailed($code, $msg, $data = []) {
+        $return = [
+            'code' => $code,
+            'msg'  => $msg,
+            'data' => $data
+        ];
+
+        return json($return);
     }
 
     public function error($msg = '', $url = null, $data = '', $wait = 3, array $header = []) {

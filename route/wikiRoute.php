@@ -1,38 +1,17 @@
 <?php
 /**
- * wiki路由
+ * Wiki路由
+ * @since   2019-08-12
+ * @author  zhaoxiang <zhaoxiang051405@gmail.com>
  */
 
-return [
-    '[wiki]' => [
-        'login' => [
-            'wiki/index/login',
-            ['method' => 'get']
-        ],
-        'doLogin' => [
-            'wiki/index/doLogin',
-            ['method' => 'post']
-        ],
-        'index' => [
-            'wiki/index/index',
-            ['method' => 'get']
-        ],
-        'calculation' => [
-            'wiki/index/calculation',
-            ['method' => 'get']
-        ],
-        'errorCode' => [
-            'wiki/index/errorCode',
-            ['method' => 'get']
-        ],
-        'detail/:groupHash/[:hash]' => [
-            'wiki/index/detail',
-            ['method' => 'get']
-        ],
-        'logout' => [
-            'wiki/index/logout',
-            ['method' => 'get']
-        ],
-        '__miss__'      => ['wiki/index/index'],
-    ],
-];
+use think\facade\Route;
+
+Route::group('wiki', function() {
+    Route::rule(
+        'Api/errorCode', 'wiki/Api/errorCode', 'get'
+    );
+
+    //MISS路由定义
+    Route::miss('admin/Miss/index');
+})->middleware('AdminResponse');
