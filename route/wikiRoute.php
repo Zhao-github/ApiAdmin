@@ -8,6 +8,9 @@
 use think\facade\Route;
 
 Route::group('wiki', function() {
+    Route::rule(
+        'Api/login', 'wiki/Api/login', 'post'
+    );
     Route::group('Api', [
         'errorCode' => [
             'wiki/Api/errorCode',
@@ -16,10 +19,6 @@ Route::group('wiki', function() {
         'groupList' => [
             'wiki/Api/groupList',
             ['method' => 'get']
-        ],
-        'login' => [
-            'wiki/Api/login',
-            ['method' => 'post']
         ],
         'detail' => [
             'wiki/Api/detail',

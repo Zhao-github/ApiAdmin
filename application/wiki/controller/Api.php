@@ -108,29 +108,15 @@ class Api extends Base {
     }
 
     public function detail() {
-        $groupHash = $this->request->route('groupHash');
-        $hash = $this->request->route('hash', '');
-        $this->appInfo['app_api_show'] = json_decode($this->appInfo['app_api_show'], true);
-        if (!isset($this->appInfo['app_api_show'][$groupHash]) || empty($this->appInfo['app_api_show'][$groupHash])) {
-            $this->error('请求非法', url('/wiki/index'));
-        }
-
+        $hash = $this->request->get('hash');
         if (!$hash) {
-            $hash = $this->appInfo['app_api_show'][$groupHash][0];
-        } else {
-            if (!in_array($hash, $this->appInfo['app_api_show'][$groupHash])) {
-                $this->error('请求非法', url('/wiki/index'));
-            }
+            return $this->buildFailed(ReturnCode::NOT_EXISTS, '缺少必要参数');
         }
 
-        $apiList = (new AdminList())->whereIn('hash', $this->appInfo['app_api_show'][$groupHash])->where(['group_hash' => $groupHash])->select();
-        $apiList = Tools::buildArrFromObj($apiList);
-        $apiList = Tools::buildArrByNewKey($apiList, 'hash');
-
-        if (!$hash) {
-            $hash = $this->appInfo['app_api_show'][$groupHash][0];
+        $apiList = (new AdminList())->whereIn('hash', $hash)->find();
+        if (!$apiList) {
+            return $this->buildFailed(ReturnCode::NOT_EXISTS, '接口hash非法');
         }
-        $detail = $apiList[$hash];
 
         $request = AdminFields::all(['hash' => $hash, 'type' => 0]);
         $response = AdminFields::all(['hash' => $hash, 'type' => 1]);
@@ -146,19 +132,16 @@ class Api extends Base {
             DataType::TYPE_MOBILE  => 'Mobile'
         );
 
-        $groupInfo = AdminGroup::get(['hash' => $groupHash]);
+        $groupInfo = AdminGroup::get(['hash' => $apiList['group_hash']]);
         $groupInfo->hot = $groupInfo->hot + 1;
         $groupInfo->save();
 
-        return view('', [
-            'groupInfo' => $groupInfo->toArray(),
-            'request'   => $request,
-            'response'  => $response,
-            'dataType'  => $dataType,
-            'apiList'   => $apiList,
-            'detail'    => $detail,
-            'hash'      => $hash,
-            'groupHash' => $groupHash
+        return $this->buildSuccess([
+            'request'  => $request,
+            'response' => $response,
+            'dataType' => $dataType,
+            'apiList'  => $apiList,
+            'url'      => $this->request->domain() . '/api/' . $hash
         ]);
     }
 
