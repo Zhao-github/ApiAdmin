@@ -8,9 +8,24 @@
 use think\facade\Route;
 
 Route::group('wiki', function() {
-    Route::rule(
-        'Api/errorCode', 'wiki/Api/errorCode', 'get'
-    );
+    Route::group('Api', [
+        'errorCode' => [
+            'wiki/Api/errorCode',
+            ['method' => 'get']
+        ],
+        'groupList' => [
+            'wiki/Api/groupList',
+            ['method' => 'get']
+        ],
+        'login' => [
+            'wiki/Api/login',
+            ['method' => 'post']
+        ],
+        'detail' => [
+            'wiki/Api/detail',
+            ['method' => 'get']
+        ]
+    ])->middleware(['WikiAuth']);
 
     //MISS路由定义
     Route::miss('admin/Miss/index');
