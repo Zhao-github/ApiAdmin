@@ -59,7 +59,10 @@ class Api extends Base {
             ];
         }
 
-        return $this->buildSuccess($result);
+        return $this->buildSuccess([
+            'data' => $result,
+            'co'   => config('apiadmin.APP_NAME') . ' ' . config('apiadmin.APP_VERSION')
+        ]);
     }
 
     public function login() {
@@ -104,7 +107,11 @@ class Api extends Base {
             $listInfo[] = $_listInfo;
         }
 
-        return $this->buildSuccess($listInfo);
+
+        return $this->buildSuccess([
+            'data' => $listInfo,
+            'co'   => config('apiadmin.APP_NAME') . ' ' . config('apiadmin.APP_VERSION')
+        ]);
     }
 
     public function detail() {
@@ -141,7 +148,8 @@ class Api extends Base {
             'response' => $response,
             'dataType' => $dataType,
             'apiList'  => $apiList,
-            'url'      => $this->request->domain() . '/api/' . $hash
+            'url'      => $this->request->domain() . '/api/' . $hash,
+            'co'       => config('apiadmin.APP_NAME') . ' ' . config('apiadmin.APP_VERSION')
         ]);
     }
 
