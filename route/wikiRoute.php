@@ -20,8 +20,12 @@ Route::group('wiki', function() {
             'wiki/Api/groupList',
             ['method' => 'get']
         ],
-        'detail' => [
+        'detail'    => [
             'wiki/Api/detail',
+            ['method' => 'get']
+        ],
+        'logout'    => [
+            'wiki/Api/logout',
             ['method' => 'get']
         ]
     ])->middleware(['WikiAuth']);

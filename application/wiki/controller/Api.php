@@ -153,4 +153,12 @@ class Api extends Base {
         ]);
     }
 
+    public function logout() {
+        $ApiAuth = $this->request->header('ApiAuth');
+        cache('WikiLogin:' . $ApiAuth, null);
+        cache('WikiLogin:' . $this->appInfo['id'], null);
+
+        return $this->buildSuccess([], '登出成功');
+    }
+
 }
