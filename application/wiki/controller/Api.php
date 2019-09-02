@@ -102,8 +102,6 @@ class Api extends Base {
             foreach ($groupInfo as $gVal ) {
                 if (isset($_apiInfo[$gVal['hash']])) {
                     $gVal['api_info'] = $_apiInfo[$gVal['hash']];
-                } else {
-                    $gVal['api_info'] = [];
                 }
                 $listInfo[] = $gVal;
             }
