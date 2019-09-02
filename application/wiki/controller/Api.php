@@ -91,22 +91,34 @@ class Api extends Base {
 
     public function groupList() {
         $groupInfo = AdminGroup::all();
-        $groupInfo = Tools::buildArrFromObj($groupInfo, 'hash');
         $apiInfo = AdminList::all();
-        $apiInfo = Tools::buildArrFromObj($apiInfo, 'hash');
-
-        $app_api_show = json_decode($this->appInfo['app_api_show'], true);
 
         $listInfo = [];
-        foreach ($app_api_show as $key => $item) {
-            $_listInfo = $groupInfo[$key];
-            foreach ($item as $apiItem) {
-                $_listInfo['api_info'][] = $apiInfo[$apiItem];
+        if ($this->appInfo['app_id'] === -1) {
+            $_apiInfo = [];
+            foreach ($apiInfo as $aVal) {
+                $_apiInfo[$aVal['group_hash']][] = $aVal;
             }
-
-            $listInfo[] = $_listInfo;
+            foreach ($groupInfo as $gVal ) {
+                if (isset($_apiInfo[$gVal['hash']])) {
+                    $gVal['api_info'] = $_apiInfo[$gVal['hash']];
+                } else {
+                    $gVal['api_info'] = [];
+                }
+                $listInfo[] = $gVal;
+            }
+        } else {
+            $apiInfo = Tools::buildArrFromObj($apiInfo, 'hash');
+            $groupInfo = Tools::buildArrFromObj($groupInfo, 'hash');
+            $app_api_show = json_decode($this->appInfo['app_api_show'], true);
+            foreach ($app_api_show as $key => $item) {
+                $_listInfo = $groupInfo[$key];
+                foreach ($item as $apiItem) {
+                    $_listInfo['api_info'][] = $apiInfo[$apiItem];
+                }
+                $listInfo[] = $_listInfo;
+            }
         }
-
 
         return $this->buildSuccess([
             'data' => $listInfo,
