@@ -168,6 +168,13 @@ class Api extends Base {
         cache('WikiLogin:' . $ApiAuth, null);
         cache('WikiLogin:' . $this->appInfo['id'], null);
 
+        $oldAdmin = cache('Login:' . $ApiAuth);
+        if ($oldAdmin) {
+            $oldAdmin = json_decode($oldAdmin, true);
+            cache('Login:' . $ApiAuth, null);
+            cache('Login:' . $oldAdmin['id'], null);
+        }
+
         return $this->buildSuccess([], '登出成功');
     }
 
