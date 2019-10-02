@@ -27,7 +27,7 @@ class Base extends Controller {
             'data' => $data
         ];
 
-        return json($return);
+        return $return;
     }
 
     public function buildFailed($code, $msg, $data = []) {
@@ -37,7 +37,7 @@ class Base extends Controller {
             'data' => $data
         ];
 
-        return json($return);
+        return $return;
     }
 
 }
