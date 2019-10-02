@@ -28,7 +28,7 @@ class Base extends Controller {
             'msg'  => $msg,
             'data' => $data
         ];
-        if ($this->debug) {
+        if (config('app.app_debug') && $this->debug) {
             $return['debug'] = $this->debug;
         }
 
@@ -62,7 +62,7 @@ class Base extends Controller {
             'msg'  => $msg,
             'data' => $data
         ];
-        if ($this->debug) {
+        if (config('app.app_debug') && $this->debug) {
             $return['debug'] = $this->debug;
         }
 
