@@ -20,7 +20,7 @@ class Base extends Controller {
 //        $this->userInfo = ''; 这部分初始化用户信息可以参考admin模块下的Base去自行处理
     }
 
-    public function buildSuccess($data, $msg = '操作成功', $code = ReturnCode::SUCCESS) {
+    public function buildSuccess($data = [], $msg = '操作成功', $code = ReturnCode::SUCCESS) {
         $return = [
             'code' => $code,
             'msg'  => $msg,
@@ -33,7 +33,7 @@ class Base extends Controller {
         return $return;
     }
 
-    public function buildFailed($code, $msg, $data = []) {
+    public function buildFailed($code, $msg = '操作失败', $data = []) {
         $return = [
             'code' => $code,
             'msg'  => $msg,

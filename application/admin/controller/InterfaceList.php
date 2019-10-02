@@ -78,9 +78,9 @@ class InterfaceList extends Base {
 
         $res = AdminList::create($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -98,11 +98,11 @@ class InterfaceList extends Base {
             'hash' => $hash
         ]);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
             cache('ApiInfo:' . $hash, null);
 
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -119,11 +119,11 @@ class InterfaceList extends Base {
 
         $res = AdminList::update($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
             cache('ApiInfo:' . $postData['hash'], null);
 
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -166,7 +166,7 @@ class InterfaceList extends Base {
 
         cache('ApiInfo:' . $hash, null);
 
-        return $this->buildSuccess([]);
+        return $this->buildSuccess();
     }
 
     /**
@@ -191,6 +191,6 @@ class InterfaceList extends Base {
 
         file_put_contents($apiRoutePath, $tplOriginStr);
 
-        return $this->buildSuccess([]);
+        return $this->buildSuccess();
     }
 }

@@ -27,7 +27,7 @@ class Menu extends Base {
 
         return $this->buildSuccess([
             'list' => $list
-        ], '登录成功');
+        ]);
     }
 
     /**
@@ -42,9 +42,9 @@ class Menu extends Base {
         }
         $res = AdminMenu::create($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -61,9 +61,9 @@ class Menu extends Base {
             'hide' => $status
         ]);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -79,9 +79,9 @@ class Menu extends Base {
         }
         $res = AdminMenu::update($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -101,7 +101,7 @@ class Menu extends Base {
         } else {
             AdminMenu::destroy($id);
 
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 

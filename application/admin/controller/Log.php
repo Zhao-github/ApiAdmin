@@ -64,7 +64,7 @@ class Log extends Base {
         }
         AdminUserAction::destroy($id);
 
-        return $this->buildSuccess([]);
+        return $this->buildSuccess();
 
     }
 
