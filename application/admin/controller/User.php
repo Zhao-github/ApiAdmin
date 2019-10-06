@@ -162,6 +162,10 @@ class User extends Base {
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
+            if($oldAdmin = cache('Login:' . $id)) {
+                cache('Login:' . $oldAdmin, null);
+            }
+
             return $this->buildSuccess();
         }
     }
@@ -201,6 +205,9 @@ class User extends Base {
                     'group_id' => $groups
                 ]);
             }
+            if($oldAdmin = cache('Login:' . $postData['id'])) {
+                cache('Login:' . $oldAdmin, null);
+            }
 
             return $this->buildSuccess();
         }
@@ -237,6 +244,9 @@ class User extends Base {
             $userData = AdminUserData::get(['uid' => $postData['id']]);
             $userData->head_img = $headImg;
             $userData->save();
+            if($oldWiki = cache('WikiLogin:' . $postData['id'])) {
+                cache('WikiLogin:' . $oldWiki, null);
+            }
 
             return $this->buildSuccess();
         }
@@ -259,6 +269,9 @@ class User extends Base {
         }
         AdminUser::destroy($id);
         AdminAuthGroupAccess::destroy(['uid' => $id]);
+        if($oldAdmin = cache('Login:' . $id)) {
+            cache('Login:' . $oldAdmin, null);
+        }
 
         return $this->buildSuccess();
 

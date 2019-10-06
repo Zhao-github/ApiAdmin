@@ -148,6 +148,10 @@ class App extends Base {
         } else {
             $appInfo = AdminApp::get($id);
             cache('AccessToken:' . $appInfo['app_secret'], null);
+            if($oldWiki = cache('WikiLogin:' . $id)) {
+                cache('WikiLogin:' . $oldWiki, null);
+            }
+
             return $this->buildSuccess();
         }
     }
@@ -180,6 +184,10 @@ class App extends Base {
         } else {
             $appInfo = AdminApp::get($postData['id']);
             cache('AccessToken:' . $appInfo['app_secret'], null);
+            if($oldWiki = cache('WikiLogin:' . $postData['id'])) {
+                cache('WikiLogin:' . $oldWiki, null);
+            }
+
             return $this->buildSuccess();
         }
     }
@@ -198,6 +206,9 @@ class App extends Base {
         cache('AccessToken:' . $appInfo['app_secret'], null);
 
         AdminApp::destroy($id);
+        if($oldWiki = cache('WikiLogin:' . $id)) {
+            cache('WikiLogin:' . $oldWiki, null);
+        }
 
         return $this->buildSuccess();
     }
