@@ -183,11 +183,11 @@ class InterfaceList extends Base {
 
         $tplOriginStr = file_get_contents($tplPath);
         $listInfo = AdminList::all(['status' => 1]);
-        $tplStr = '';
+        $tplStr = [];
         foreach ($listInfo as $value) {
-            $tplStr .= 'Route::rule(\'' . addslashes($value->hash) . '\',\'api/' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([\'ApiAuth\', \'ApiPermission\', \'RequestFilter\', \'ApiLog\']);';
+            array_push($tplStr, 'Route::rule(\'' . addslashes($value->hash) . '\',\'api/' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([\'ApiAuth\', \'ApiPermission\', \'RequestFilter\', \'ApiLog\']);');
         }
-        $tplOriginStr = str_replace(['{$API_RULE}'], [$tplStr], $tplOriginStr);
+        $tplOriginStr = str_replace(['{$API_RULE}'], [implode($tplStr, "\n    ")], $tplOriginStr);
 
         file_put_contents($apiRoutePath, $tplOriginStr);
 
