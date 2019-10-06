@@ -109,7 +109,7 @@ class Auth extends Base {
         unset($postData['rules']);
         $res = AdminAuthGroup::create($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
             if ($rules) {
                 $insertData = [];
@@ -124,7 +124,7 @@ class Auth extends Base {
                 (new AdminAuthRule())->saveAll($insertData);
             }
 
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -141,9 +141,9 @@ class Auth extends Base {
             'status' => $status
         ]);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -164,9 +164,9 @@ class Auth extends Base {
         unset($postData['rules']);
         $res = AdminAuthGroup::update($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -199,7 +199,7 @@ class Auth extends Base {
         AdminAuthGroup::destroy($id);
         AdminAuthRule::destroy(['group_id' => $id]);
 
-        return $this->buildSuccess([]);
+        return $this->buildSuccess();
     }
 
     /**
@@ -226,9 +226,9 @@ class Auth extends Base {
             'uid' => $uid
         ]);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 

@@ -95,14 +95,14 @@ class User extends Base {
         }
         $res = AdminUser::create($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
             AdminAuthGroupAccess::create([
                 'uid'      => $res->id,
                 'group_id' => $groups
             ]);
 
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -160,9 +160,13 @@ class User extends Base {
             'status' => $status
         ]);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            if($oldAdmin = cache('Login:' . $id)) {
+                cache('Login:' . $oldAdmin, null);
+            }
+
+            return $this->buildSuccess();
         }
     }
 
@@ -186,7 +190,7 @@ class User extends Base {
         }
         $res = AdminUser::update($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
             $has = AdminAuthGroupAccess::get(['uid' => $postData['id']]);
             if ($has) {
@@ -201,8 +205,11 @@ class User extends Base {
                     'group_id' => $groups
                 ]);
             }
+            if($oldAdmin = cache('Login:' . $postData['id'])) {
+                cache('Login:' . $oldAdmin, null);
+            }
 
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -232,13 +239,16 @@ class User extends Base {
         unset($postData['head_img']);
         $res = AdminUser::update($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
             $userData = AdminUserData::get(['uid' => $postData['id']]);
             $userData->head_img = $headImg;
             $userData->save();
+            if($oldWiki = cache('WikiLogin:' . $postData['id'])) {
+                cache('WikiLogin:' . $oldWiki, null);
+            }
 
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -259,8 +269,11 @@ class User extends Base {
         }
         AdminUser::destroy($id);
         AdminAuthGroupAccess::destroy(['uid' => $id]);
+        if($oldAdmin = cache('Login:' . $id)) {
+            cache('Login:' . $oldAdmin, null);
+        }
 
-        return $this->buildSuccess([]);
+        return $this->buildSuccess();
 
     }
 

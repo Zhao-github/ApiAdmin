@@ -104,9 +104,9 @@ class Fields extends Base {
         cache('ResponseFieldsRule:' . $postData['hash'], null);
 
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess('操作成功');
+            return $this->buildSuccess();
         }
     }
 
@@ -127,9 +127,9 @@ class Fields extends Base {
         cache('ResponseFieldsRule:' . $postData['hash'], null);
 
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -152,7 +152,7 @@ class Fields extends Base {
 
         AdminFields::destroy($id);
 
-        return $this->buildSuccess([]);
+        return $this->buildSuccess();
     }
 
     /**
@@ -200,7 +200,7 @@ class Fields extends Base {
         cache('RequestFields:Rule:' . $hash, null);
         cache('ResponseFieldsRule:' . $hash, null);
 
-        return $this->buildSuccess([]);
+        return $this->buildSuccess();
     }
 
     private function handle($data, &$dataArr, $prefix = 'data', $index = 'data') {

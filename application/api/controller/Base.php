@@ -20,30 +20,30 @@ class Base extends Controller {
 //        $this->userInfo = ''; 这部分初始化用户信息可以参考admin模块下的Base去自行处理
     }
 
-    public function buildSuccess($data, $msg = '操作成功', $code = ReturnCode::SUCCESS) {
+    public function buildSuccess($data = [], $msg = '操作成功', $code = ReturnCode::SUCCESS) {
         $return = [
             'code' => $code,
             'msg'  => $msg,
             'data' => $data
         ];
-        if ($this->debug) {
+        if (config('app.app_debug') && $this->debug) {
             $return['debug'] = $this->debug;
         }
 
-        return json($return);
+        return $return;
     }
 
-    public function buildFailed($code, $msg, $data = []) {
+    public function buildFailed($code, $msg = '操作失败', $data = []) {
         $return = [
             'code' => $code,
             'msg'  => $msg,
             'data' => $data
         ];
-        if ($this->debug) {
+        if (config('app.app_debug') && $this->debug) {
             $return['debug'] = $this->debug;
         }
 
-        return json($return);
+        return $return;
     }
 
     protected function debug($data) {

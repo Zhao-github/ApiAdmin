@@ -20,24 +20,24 @@ class Base extends Controller {
         $this->appInfo = $this->request->API_WIKI_USER_INFO;
     }
 
-    public function buildSuccess($data, $msg = '操作成功', $code = ReturnCode::SUCCESS) {
+    public function buildSuccess($data = [], $msg = '操作成功', $code = ReturnCode::SUCCESS) {
         $return = [
             'code' => $code,
             'msg'  => $msg,
             'data' => $data
         ];
 
-        return json($return);
+        return $return;
     }
 
-    public function buildFailed($code, $msg, $data = []) {
+    public function buildFailed($code, $msg = '操作失败', $data = []) {
         $return = [
             'code' => $code,
             'msg'  => $msg,
             'data' => $data
         ];
 
-        return json($return);
+        return $return;
     }
 
 }

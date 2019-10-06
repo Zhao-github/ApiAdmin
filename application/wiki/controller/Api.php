@@ -114,7 +114,9 @@ class Api extends Base {
                 foreach ($item as $apiItem) {
                     $_listInfo['api_info'][] = $apiInfo[$apiItem];
                 }
-                $listInfo[] = $_listInfo;
+                if (isset($_listInfo['api_info'])) {
+                    $listInfo[] = $_listInfo;
+                }
             }
         }
 

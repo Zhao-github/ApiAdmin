@@ -80,9 +80,9 @@ class AppGroup extends Base {
             'id' => $id
         ]);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -95,9 +95,9 @@ class AppGroup extends Base {
         $postData = $this->request->post();
         $res = AdminAppGroup::create($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -110,9 +110,9 @@ class AppGroup extends Base {
         $postData = $this->request->post();
         $res = AdminAppGroup::update($postData);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -134,6 +134,6 @@ class AppGroup extends Base {
 
         AdminAppGroup::destroy(['hash' => $hash]);
 
-        return $this->buildSuccess([]);
+        return $this->buildSuccess();
     }
 }

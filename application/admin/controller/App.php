@@ -90,7 +90,7 @@ class App extends Base {
         if ($id) {
             $res = AdminApp::update($data, ['id' => $id]);
             if ($res === false) {
-                return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+                return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
             }
         }
 
@@ -124,9 +124,9 @@ class App extends Base {
         }
         $res = AdminApp::create($data);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
-            return $this->buildSuccess([]);
+            return $this->buildSuccess();
         }
     }
 
@@ -144,11 +144,15 @@ class App extends Base {
             'id' => $id
         ]);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
             $appInfo = AdminApp::get($id);
             cache('AccessToken:' . $appInfo['app_secret'], null);
-            return $this->buildSuccess([]);
+            if($oldWiki = cache('WikiLogin:' . $id)) {
+                cache('WikiLogin:' . $oldWiki, null);
+            }
+
+            return $this->buildSuccess();
         }
     }
 
@@ -176,11 +180,15 @@ class App extends Base {
         }
         $res = AdminApp::update($data, ['id' => $postData['id']]);
         if ($res === false) {
-            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR, '操作失败');
+            return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         } else {
             $appInfo = AdminApp::get($postData['id']);
             cache('AccessToken:' . $appInfo['app_secret'], null);
-            return $this->buildSuccess([]);
+            if($oldWiki = cache('WikiLogin:' . $postData['id'])) {
+                cache('WikiLogin:' . $oldWiki, null);
+            }
+
+            return $this->buildSuccess();
         }
     }
 
@@ -198,7 +206,10 @@ class App extends Base {
         cache('AccessToken:' . $appInfo['app_secret'], null);
 
         AdminApp::destroy($id);
+        if($oldWiki = cache('WikiLogin:' . $id)) {
+            cache('WikiLogin:' . $oldWiki, null);
+        }
 
-        return $this->buildSuccess([]);
+        return $this->buildSuccess();
     }
 }

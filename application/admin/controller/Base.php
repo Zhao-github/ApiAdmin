@@ -22,13 +22,13 @@ class Base extends Controller {
         $this->userInfo = $this->request->API_ADMIN_USER_INFO;
     }
 
-    public function buildSuccess($data, $msg = '操作成功', $code = ReturnCode::SUCCESS) {
+    public function buildSuccess($data = [], $msg = '操作成功', $code = ReturnCode::SUCCESS) {
         $return = [
             'code' => $code,
             'msg'  => $msg,
             'data' => $data
         ];
-        if ($this->debug) {
+        if (config('app.app_debug') && $this->debug) {
             $return['debug'] = $this->debug;
         }
 
@@ -56,13 +56,13 @@ class Base extends Controller {
         cache('Login:' . $apiAuth, json_encode($this->userInfo), config('apiadmin.ONLINE_TIME'));
     }
 
-    public function buildFailed($code, $msg, $data = []) {
+    public function buildFailed($code, $msg = '操作失败', $data = []) {
         $return = [
             'code' => $code,
             'msg'  => $msg,
             'data' => $data
         ];
-        if ($this->debug) {
+        if (config('app.app_debug') && $this->debug) {
             $return['debug'] = $this->debug;
         }
 
