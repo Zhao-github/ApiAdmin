@@ -65,6 +65,7 @@ class BuildToken extends Base {
         if (empty($data)) {
             return '';
         } else {
+            unset($data['APP_CONF_DETAIL'], $data['API_CONF_DETAIL']);
             $preArr = array_merge($data, ['app_secret' => $appSecret]);
             ksort($preArr);
             $preStr = http_build_query($preArr);
