@@ -85,14 +85,7 @@ class App extends Base {
      * @return array
      */
     public function refreshAppSecret() {
-        $id = $this->request->get('id', 0);
         $data['app_secret'] = Strs::randString(32);
-        if ($id) {
-            $res = AdminApp::update($data, ['id' => $id]);
-            if ($res === false) {
-                return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-            }
-        }
 
         return $this->buildSuccess($data);
     }
