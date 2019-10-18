@@ -160,6 +160,7 @@ class App extends Base {
             'app_name'     => $postData['app_name'],
             'app_info'     => $postData['app_info'],
             'app_group'    => $postData['app_group'],
+            'app_secret'   => $postData['app_secret'],
             'app_api'      => '',
             'app_api_show' => '',
         ];
