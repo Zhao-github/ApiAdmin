@@ -7,7 +7,6 @@
 
 namespace app\admin\controller;
 
-
 use app\model\AdminAuthGroupAccess;
 use app\model\AdminAuthRule;
 use app\model\AdminMenu;
@@ -121,5 +120,4 @@ class Login extends Base {
             }
         }
     }
-
 }

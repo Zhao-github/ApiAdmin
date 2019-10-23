@@ -40,5 +40,4 @@ class AdminLog {
 
         return $next($request);
     }
-
 }

@@ -6,7 +6,6 @@
 
 namespace app\util;
 
-
 use think\facade\Env;
 
 class ApiLogTool {
@@ -95,6 +94,4 @@ class ApiLogTool {
         @fwrite($handle, date('Y-m-d H:i:s') . "\t" . $log . "\r\n");
         @fclose($handle);
     }
-
-
 }

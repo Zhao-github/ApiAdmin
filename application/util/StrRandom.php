@@ -7,7 +7,6 @@
 
 namespace app\util;
 
-
 class StrRandom {
 
     /**
@@ -182,5 +181,4 @@ class StrRandom {
 
         return $prefixArr[0] . '0000' . self::randomDate('Ymd') . Strs::randString(3, 1) . $suffixArr[0];
     }
-
 }

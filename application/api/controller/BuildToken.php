@@ -7,7 +7,6 @@
 
 namespace app\api\controller;
 
-
 use app\model\AdminApp;
 use app\util\ReturnCode;
 use app\util\Strs;
@@ -85,5 +84,4 @@ class BuildToken extends Base {
 
         return md5($preStr);
     }
-
 }

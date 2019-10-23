@@ -7,14 +7,13 @@
 
 namespace app\admin\controller;
 
-
 use app\model\AdminApp;
 use app\model\AdminGroup;
 use app\model\AdminList;
 use app\util\ReturnCode;
-use app\util\Tools;
 
 class InterfaceGroup extends Base {
+
     /**
      * 获取接口组列表
      * @return array
@@ -42,7 +41,7 @@ class InterfaceGroup extends Base {
                     break;
             }
         }
-        $listObj = $obj->order('create_time desc')->paginate($limit, false, ['page' => $start])->toArray();
+        $listObj = $obj->order('create_time', 'desc')->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
             'list'  => $listObj['data'],
@@ -74,15 +73,14 @@ class InterfaceGroup extends Base {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
         $res = AdminGroup::update([
-            'status' => $status
-        ], [
-            'id' => $id
+            'id'     => $id,
+            'status' => $status,
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -95,9 +93,9 @@ class InterfaceGroup extends Base {
         $res = AdminGroup::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -110,9 +108,9 @@ class InterfaceGroup extends Base {
         $res = AdminGroup::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**

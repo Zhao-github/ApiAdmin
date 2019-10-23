@@ -7,7 +7,6 @@
 
 namespace app\admin\controller;
 
-
 use app\model\AdminAuthGroup;
 use app\model\AdminAuthGroupAccess;
 use app\model\AdminAuthRule;
@@ -24,7 +23,6 @@ class Auth extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-
         $limit = $this->request->get('size', config('apiadmin.ADMIN_LIST_DEFAULT'));
         $start = $this->request->get('page', 1);
         $keywords = $this->request->get('keywords', '');
@@ -38,7 +36,7 @@ class Auth extends Base {
             $obj = $obj->whereLike('name', "%{$keywords}%");
         }
 
-        $listObj = $obj->order('id DESC')->paginate($limit, false, ['page' => $start])->toArray();
+        $listObj = $obj->order('id', 'DESC')->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
             'list'  => $listObj['data'],
@@ -76,7 +74,7 @@ class Auth extends Base {
     public function getRuleList() {
         $groupId = $this->request->get('group_id', 0);
 
-        $list = (new AdminMenu)->where([])->order('sort', 'ASC')->select();
+        $list = (new AdminMenu)->order('sort', 'ASC')->select();
         $list = Tools::buildArrFromObj($list);
         $list = Tools::listToTree($list);
 
@@ -110,22 +108,21 @@ class Auth extends Base {
         $res = AdminAuthGroup::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            if ($rules) {
-                $insertData = [];
-                foreach ($rules as $value) {
-                    if ($value) {
-                        $insertData[] = [
-                            'group_id' => $res->id,
-                            'url'      => $value
-                        ];
-                    }
-                }
-                (new AdminAuthRule())->saveAll($insertData);
-            }
-
-            return $this->buildSuccess();
         }
+        if ($rules) {
+            $insertData = [];
+            foreach ($rules as $value) {
+                if ($value) {
+                    $insertData[] = [
+                        'group_id' => $res->id,
+                        'url'      => $value
+                    ];
+                }
+            }
+            (new AdminAuthRule())->saveAll($insertData);
+        }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -142,9 +139,9 @@ class Auth extends Base {
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -165,9 +162,9 @@ class Auth extends Base {
         $res = AdminAuthGroup::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -227,9 +224,9 @@ class Auth extends Base {
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -291,5 +288,4 @@ class Auth extends Base {
             (new AdminAuthRule())->whereIn('url', $urlArr)->where('group_id', $postData['id'])->delete();
         }
     }
-
 }

@@ -7,7 +7,6 @@
 
 namespace app\api\controller;
 
-
 use app\util\ReturnCode;
 use think\Controller;
 
@@ -51,5 +50,4 @@ class Base extends Controller {
             $this->debug[] = $data;
         }
     }
-
 }

@@ -7,7 +7,6 @@
 
 namespace app\admin\controller;
 
-
 use app\model\AdminMenu;
 use app\util\ReturnCode;
 use app\util\Tools;
@@ -21,7 +20,7 @@ class Menu extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-        $list = (new AdminMenu)->where([])->order('sort', 'ASC')->select();
+        $list = (new AdminMenu)->order('sort', 'ASC')->select();
         $list = Tools::buildArrFromObj($list);
         $list = Tools::formatTree(Tools::listToTree($list));
 
@@ -62,9 +61,9 @@ class Menu extends Base {
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -80,9 +79,9 @@ class Menu extends Base {
         $res = AdminMenu::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -98,11 +97,9 @@ class Menu extends Base {
         $childNum = AdminMenu::where(['fid' => $id])->count();
         if ($childNum) {
             return $this->buildFailed(ReturnCode::INVALID, '当前菜单存在子菜单,不可以被删除!');
-        } else {
-            AdminMenu::destroy($id);
-
-            return $this->buildSuccess();
         }
-    }
+        AdminMenu::destroy($id);
 
+        return $this->buildSuccess();
+    }
 }

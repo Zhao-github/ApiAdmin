@@ -11,7 +11,6 @@
 
 use think\facade\Route;
 
-
 Route::group('admin', function() {
     Route::rule(
         'Login/index', 'admin/Login/index', 'post'
@@ -290,4 +289,3 @@ Route::group('admin', function() {
     //MISS路由定义
     Route::miss('admin/Miss/index');
 })->middleware('AdminResponse');
-

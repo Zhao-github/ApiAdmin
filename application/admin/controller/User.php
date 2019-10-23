@@ -7,7 +7,6 @@
 
 namespace app\admin\controller;
 
-
 use app\model\AdminAuthGroupAccess;
 use app\model\AdminUser;
 use app\model\AdminUserData;
@@ -24,7 +23,6 @@ class User extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-
         $limit = $this->request->get('size', config('apiadmin.ADMIN_LIST_DEFAULT'));
         $start = $this->request->get('page', 1);
         $type = $this->request->get('type', '', 'intval');
@@ -46,7 +44,7 @@ class User extends Base {
             }
         }
 
-        $listObj = $obj->order('create_time DESC')
+        $listObj = $obj->order('create_time', 'DESC')
             ->paginate($limit, false, ['page' => $start])->each(function($item, $key){
                 $item->userData;
             })->toArray();
@@ -96,14 +94,13 @@ class User extends Base {
         $res = AdminUser::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            AdminAuthGroupAccess::create([
-                'uid'      => $res->id,
-                'group_id' => $groups
-            ]);
-
-            return $this->buildSuccess();
         }
+        AdminAuthGroupAccess::create([
+            'uid'      => $res->id,
+            'group_id' => $groups
+        ]);
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -161,13 +158,12 @@ class User extends Base {
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            if($oldAdmin = cache('Login:' . $id)) {
-                cache('Login:' . $oldAdmin, null);
-            }
-
-            return $this->buildSuccess();
         }
+        if($oldAdmin = cache('Login:' . $id)) {
+            cache('Login:' . $oldAdmin, null);
+        }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -191,26 +187,25 @@ class User extends Base {
         $res = AdminUser::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            $has = AdminAuthGroupAccess::get(['uid' => $postData['id']]);
-            if ($has) {
-                AdminAuthGroupAccess::update([
-                    'group_id' => $groups
-                ], [
-                    'uid' => $postData['id'],
-                ]);
-            } else {
-                AdminAuthGroupAccess::create([
-                    'uid'      => $postData['id'],
-                    'group_id' => $groups
-                ]);
-            }
-            if($oldAdmin = cache('Login:' . $postData['id'])) {
-                cache('Login:' . $oldAdmin, null);
-            }
-
-            return $this->buildSuccess();
         }
+        $has = AdminAuthGroupAccess::get(['uid' => $postData['id']]);
+        if ($has) {
+            AdminAuthGroupAccess::update([
+                'group_id' => $groups
+            ], [
+                'uid' => $postData['id'],
+            ]);
+        } else {
+            AdminAuthGroupAccess::create([
+                'uid'      => $postData['id'],
+                'group_id' => $groups
+            ]);
+        }
+        if($oldAdmin = cache('Login:' . $postData['id'])) {
+            cache('Login:' . $oldAdmin, null);
+        }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -240,16 +235,15 @@ class User extends Base {
         $res = AdminUser::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            $userData = AdminUserData::get(['uid' => $postData['id']]);
-            $userData->head_img = $headImg;
-            $userData->save();
-            if($oldWiki = cache('WikiLogin:' . $postData['id'])) {
-                cache('WikiLogin:' . $oldWiki, null);
-            }
-
-            return $this->buildSuccess();
         }
+        $userData = AdminUserData::get(['uid' => $postData['id']]);
+        $userData->head_img = $headImg;
+        $userData->save();
+        if($oldWiki = cache('WikiLogin:' . $postData['id'])) {
+            cache('WikiLogin:' . $oldWiki, null);
+        }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -274,7 +268,5 @@ class User extends Base {
         }
 
         return $this->buildSuccess();
-
     }
-
 }

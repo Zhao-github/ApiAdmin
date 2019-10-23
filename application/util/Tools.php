@@ -7,7 +7,6 @@
 
 namespace app\util;
 
-
 class Tools {
 
     public static function getDate($timestamp) {

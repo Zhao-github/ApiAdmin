@@ -7,7 +7,6 @@
 
 namespace app\admin\controller;
 
-
 use app\model\AdminAuthGroupAccess;
 use app\model\AdminUser;
 use app\util\ReturnCode;
@@ -297,7 +296,6 @@ class ThirdLogin extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     private function doLogin($openid, $userDetail) {
-
         $userInfo = AdminUser::get(['openid' => $openid]);
         if (empty($userInfo)) {
             $userInfo = AdminUser::create([
@@ -345,5 +343,4 @@ class ThirdLogin extends Base {
 
         return $this->buildSuccess($userInfo, '登录成功');
     }
-
 }

@@ -7,7 +7,6 @@
 
 namespace app\admin\controller;
 
-
 use app\model\AdminApp;
 use app\model\AdminList;
 use app\model\AdminGroup;
@@ -16,6 +15,7 @@ use app\util\Strs;
 use app\util\Tools;
 
 class App extends Base {
+
     /**
      * 获取应用列表
      * @return array
@@ -23,7 +23,6 @@ class App extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-
         $limit = $this->request->get('size', config('apiadmin.ADMIN_LIST_DEFAULT'));
         $start = $this->request->get('page', 1);
         $keywords = $this->request->get('keywords', '');
@@ -44,7 +43,7 @@ class App extends Base {
                     break;
             }
         }
-        $listObj = $obj->order('app_add_time DESC')->paginate($limit, false, ['page' => $start])->toArray();
+        $listObj = $obj->order('app_add_time', 'DESC')->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
             'list'  => $listObj['data'],
@@ -103,9 +102,9 @@ class App extends Base {
             'app_name'     => $postData['app_name'],
             'app_info'     => $postData['app_info'],
             'app_group'    => $postData['app_group'],
-            'app_add_time'  => time(),
+            'app_add_time' => time(),
             'app_api'      => '',
-            'app_api_show' => '',
+            'app_api_show' => ''
         ];
         if (isset($postData['app_api']) && $postData['app_api']) {
             $appApi = [];
@@ -118,9 +117,9 @@ class App extends Base {
         $res = AdminApp::create($data);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -132,21 +131,19 @@ class App extends Base {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
         $res = AdminApp::update([
+            'id'         => $id,
             'app_status' => $status
-        ], [
-            'id' => $id
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            $appInfo = AdminApp::get($id);
-            cache('AccessToken:' . $appInfo['app_secret'], null);
-            if($oldWiki = cache('WikiLogin:' . $id)) {
-                cache('WikiLogin:' . $oldWiki, null);
-            }
-
-            return $this->buildSuccess();
         }
+        $appInfo = AdminApp::get($id);
+        cache('AccessToken:' . $appInfo['app_secret'], null);
+        if($oldWiki = cache('WikiLogin:' . $id)) {
+            cache('WikiLogin:' . $oldWiki, null);
+        }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -157,12 +154,12 @@ class App extends Base {
     public function edit() {
         $postData = $this->request->post();
         $data = [
+            'app_secret'   => $postData['app_secret'],
             'app_name'     => $postData['app_name'],
             'app_info'     => $postData['app_info'],
             'app_group'    => $postData['app_group'],
-            'app_secret'   => $postData['app_secret'],
             'app_api'      => '',
-            'app_api_show' => '',
+            'app_api_show' => ''
         ];
         if (isset($postData['app_api']) && $postData['app_api']) {
             $appApi = [];
@@ -175,15 +172,15 @@ class App extends Base {
         $res = AdminApp::update($data, ['id' => $postData['id']]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            $appInfo = AdminApp::get($postData['id']);
-            cache('AccessToken:' . $appInfo['app_secret'], null);
-            if($oldWiki = cache('WikiLogin:' . $postData['id'])) {
-                cache('WikiLogin:' . $oldWiki, null);
-            }
-
-            return $this->buildSuccess();
         }
+        $appInfo = AdminApp::get($postData['id']);
+        cache('AccessToken:' . $appInfo['app_secret'], null);
+        if($oldWiki = cache('WikiLogin:' . $postData['id'])) {
+            cache('WikiLogin:' . $oldWiki, null);
+        }
+
+        return $this->buildSuccess();
+
     }
 
     /**

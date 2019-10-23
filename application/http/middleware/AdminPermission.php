@@ -53,7 +53,6 @@ class AdminPermission {
         } else {
             return true;
         }
-
     }
 
     /**
@@ -93,5 +92,4 @@ class AdminPermission {
             return [];
         }
     }
-
 }

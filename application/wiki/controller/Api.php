@@ -6,7 +6,6 @@
 
 namespace app\wiki\controller;
 
-
 use app\model\AdminApp;
 use app\model\AdminFields;
 use app\model\AdminGroup;
@@ -179,5 +178,4 @@ class Api extends Base {
 
         return $this->buildSuccess([], '登出成功');
     }
-
 }
