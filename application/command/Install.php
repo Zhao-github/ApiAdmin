@@ -20,7 +20,7 @@ class Install extends Command {
     }
 
     /**
-     * php think apiadmin:install --db mysql://root:123456@127.0.0.1:3306/apiadmin#utf8
+     * php think apiadmin:install --db mysql://root:123456@127.0.0.1:3306/apiadmin#utf8mb4
      * @param Input $input
      * @param Output $output
      * @return int|void|null
