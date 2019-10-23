@@ -7,13 +7,8 @@
 
 namespace app\admin\controller;
 
-
-use app\model\AdminAuthGroupAccess;
-use app\model\AdminUser;
 use app\model\AdminUserAction;
-use app\model\AdminUserData;
 use app\util\ReturnCode;
-use app\util\Tools;
 
 class Log extends Base {
 
@@ -24,7 +19,6 @@ class Log extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-
         $limit = $this->request->get('size', config('apiadmin.ADMIN_LIST_DEFAULT'));
         $start = $this->request->get('page', 1);
         $type = $this->request->get('type', '');
@@ -44,7 +38,7 @@ class Log extends Base {
                     break;
             }
         }
-        $listObj = $obj->order('add_time DESC')->paginate($limit, false, ['page' => $start])->toArray();
+        $listObj = $obj->order('add_time', 'DESC')->paginate($limit, false, ['page' => $start])->toArray();
 
         return $this->buildSuccess([
             'list'  => $listObj['data'],
@@ -65,7 +59,5 @@ class Log extends Base {
         AdminUserAction::destroy($id);
 
         return $this->buildSuccess();
-
     }
-
 }

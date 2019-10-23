@@ -7,8 +7,8 @@
 
 namespace app\util;
 
-
 class BuildName {
+
     private $arrXing, $numbXing;
     private $arrMing, $numbMing;
 
@@ -66,7 +66,6 @@ class BuildName {
         $this->numbMing = count($this->arrMing);
     }
 
-
     // 获取姓
     private function getXing() {
         // mt_rand() 比rand()方法快四倍，而且生成的随机数比rand()生成的伪随机数无规律。
@@ -78,7 +77,6 @@ class BuildName {
     private function getMing() {
         return $this->arrMing[mt_rand(0, $this->numbMing - 1)];
     }
-
 
     // 获取名字
     public function getName($type = 2) {

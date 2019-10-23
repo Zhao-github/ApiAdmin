@@ -8,7 +8,6 @@ use app\util\ReturnCode;
 use think\facade\Cache;
 use think\facade\Validate;
 
-
 class RequestFilter {
 
     /**

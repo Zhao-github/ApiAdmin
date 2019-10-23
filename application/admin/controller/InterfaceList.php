@@ -7,7 +7,6 @@
 
 namespace app\admin\controller;
 
-
 use app\model\AdminApp;
 use app\model\AdminFields;
 use app\model\AdminList;
@@ -15,6 +14,7 @@ use app\util\ReturnCode;
 use think\facade\Env;
 
 class InterfaceList extends Base {
+
     /**
      * 获取接口列表
      * @return array
@@ -22,7 +22,6 @@ class InterfaceList extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-
         $limit = $this->request->get('size', config('apiadmin.ADMIN_LIST_DEFAULT'));
         $start = $this->request->get('page', 1);
         $keywords = $this->request->get('keywords', '');
@@ -79,9 +78,9 @@ class InterfaceList extends Base {
         $res = AdminList::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -99,11 +98,10 @@ class InterfaceList extends Base {
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            cache('ApiInfo:' . $hash, null);
-
-            return $this->buildSuccess();
         }
+        cache('ApiInfo:' . $hash, null);
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -120,11 +118,10 @@ class InterfaceList extends Base {
         $res = AdminList::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            cache('ApiInfo:' . $postData['hash'], null);
-
-            return $this->buildSuccess();
         }
+        cache('ApiInfo:' . $postData['hash'], null);
+
+        return $this->buildSuccess();
     }
 
     /**

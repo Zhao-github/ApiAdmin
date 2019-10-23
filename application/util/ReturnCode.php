@@ -41,9 +41,8 @@ class ReturnCode {
     const UNKNOWN = -998;
     const EXCEPTION = -999;
 
-    static public function getConstants() {
+    public static function getConstants() {
         $oClass = new \ReflectionClass(__CLASS__);
         return $oClass->getConstants();
     }
-
 }

@@ -7,7 +7,6 @@
 
 namespace app\admin\controller;
 
-
 use app\model\AdminFields;
 use app\model\AdminList;
 use app\util\DataType;
@@ -15,6 +14,7 @@ use app\util\ReturnCode;
 use app\util\Tools;
 
 class Fields extends Base {
+
     private $dataType = array(
         DataType::TYPE_INTEGER => 'Integer',
         DataType::TYPE_STRING  => 'String',
@@ -42,21 +42,20 @@ class Fields extends Base {
         $start = $this->request->get('page', 1);
         $hash = $this->request->get('hash', '');
 
-        if (!empty($hash)) {
-            $listObj = (new AdminFields())->where(['hash' => $hash, 'type' => 0])
-                ->paginate($limit, false, ['page' => $start])->toArray();
-
-            $apiInfo = (new AdminList())->where('hash', $hash)->find();
-
-            return $this->buildSuccess([
-                'list'     => $listObj['data'],
-                'count'    => $listObj['total'],
-                'dataType' => $this->dataType,
-                'apiInfo'  => $apiInfo
-            ]);
-        } else {
+        if (empty($hash)) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
+        $listObj = (new AdminFields())->where(['hash' => $hash, 'type' => 0])
+            ->paginate($limit, false, ['page' => $start])->toArray();
+
+        $apiInfo = (new AdminList())->where('hash', $hash)->find();
+
+        return $this->buildSuccess([
+            'list'     => $listObj['data'],
+            'count'    => $listObj['total'],
+            'dataType' => $this->dataType,
+            'apiInfo'  => $apiInfo
+        ]);
     }
 
     /**
@@ -70,21 +69,20 @@ class Fields extends Base {
         $start = $this->request->get('page', 1);
         $hash = $this->request->get('hash', '');
 
-        if (!empty($hash)) {
-            $listObj = (new AdminFields())->where(['hash' => $hash, 'type' => 1])
-                ->paginate($limit, false, ['page' => $start])->toArray();
-
-            $apiInfo = (new AdminList())->where('hash', $hash)->find();
-
-            return $this->buildSuccess([
-                'list'     => $listObj['data'],
-                'count'    => $listObj['total'],
-                'dataType' => $this->dataType,
-                'apiInfo'  => $apiInfo
-            ]);
-        } else {
+        if (empty($hash)) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
+        $listObj = (new AdminFields())->where(['hash' => $hash, 'type' => 1])
+            ->paginate($limit, false, ['page' => $start])->toArray();
+
+        $apiInfo = (new AdminList())->where('hash', $hash)->find();
+
+        return $this->buildSuccess([
+            'list'     => $listObj['data'],
+            'count'    => $listObj['total'],
+            'dataType' => $this->dataType,
+            'apiInfo'  => $apiInfo
+        ]);
     }
 
     /**
@@ -105,9 +103,9 @@ class Fields extends Base {
 
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -128,9 +126,9 @@ class Fields extends Base {
 
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -208,10 +206,10 @@ class Fields extends Base {
             $addArr = array(
                 'field_name' => $index,
                 'show_name'  => $prefix,
-                'hash'      => $this->request->post('hash'),
+                'hash'       => $this->request->post('hash'),
                 'is_must'    => 1,
                 'data_type'  => DataType::TYPE_ARRAY,
-                'type'      => $this->request->post('type')
+                'type'       => $this->request->post('type')
             );
             $dataArr[] = $addArr;
             $prefix .= '[]';
@@ -222,10 +220,10 @@ class Fields extends Base {
             $addArr = array(
                 'field_name' => $index,
                 'show_name'  => $prefix,
-                'hash'      => $this->request->post('hash'),
+                'hash'       => $this->request->post('hash'),
                 'is_must'    => 1,
                 'data_type'  => DataType::TYPE_OBJECT,
-                'type'      => $this->request->post('type')
+                'type'       => $this->request->post('type')
             );
             $dataArr[] = $addArr;
             $prefix .= '{}';
@@ -234,10 +232,10 @@ class Fields extends Base {
                 $addArr = array(
                     'field_name' => $index,
                     'show_name'  => $myPre,
-                    'hash'      => $this->request->post('hash'),
+                    'hash'       => $this->request->post('hash'),
                     'is_must'    => 1,
                     'data_type'  => DataType::TYPE_STRING,
-                    'type'      => $this->request->post('type')
+                    'type'       => $this->request->post('type')
                 );
                 if (is_numeric($datum)) {
                     if (preg_match('/^\d*$/', $datum)) {

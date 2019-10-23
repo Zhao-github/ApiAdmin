@@ -7,7 +7,6 @@
 
 namespace app\wiki\controller;
 
-
 use app\util\ReturnCode;
 use think\Controller;
 
@@ -39,5 +38,4 @@ class Base extends Controller {
 
         return $return;
     }
-
 }

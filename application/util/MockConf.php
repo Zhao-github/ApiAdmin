@@ -7,7 +7,6 @@
 
 namespace app\util;
 
-
 class MockConf {
 
     public function mockToApiAdmin() {
@@ -17,5 +16,4 @@ class MockConf {
     public function apiAdminToMock() {
 
     }
-
 }

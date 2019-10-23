@@ -8,7 +8,6 @@
 
 namespace app\util;
 
-
 class DataType {
 
     const TYPE_INTEGER = 1;
@@ -20,5 +19,4 @@ class DataType {
     const TYPE_ENUM = 7;
     const TYPE_MOBILE = 8;
     const TYPE_OBJECT = 9;
-
 }

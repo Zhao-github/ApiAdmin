@@ -7,13 +7,12 @@
 
 namespace app\admin\controller;
 
-
 use app\model\AdminApp;
 use app\model\AdminAppGroup;
 use app\util\ReturnCode;
-use app\util\Tools;
 
 class AppGroup extends Base {
+
     /**
      * 获取应用组列表
      * @return array
@@ -75,15 +74,14 @@ class AppGroup extends Base {
         $id = $this->request->get('id');
         $status = $this->request->get('status');
         $res = AdminAppGroup::update([
+            'id'     => $id,
             'status' => $status
-        ], [
-            'id' => $id
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -96,9 +94,9 @@ class AppGroup extends Base {
         $res = AdminAppGroup::create($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**
@@ -111,9 +109,9 @@ class AppGroup extends Base {
         $res = AdminAppGroup::update($postData);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        } else {
-            return $this->buildSuccess();
         }
+
+        return $this->buildSuccess();
     }
 
     /**

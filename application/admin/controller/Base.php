@@ -74,5 +74,4 @@ class Base extends Controller {
             $this->debug[] = $data;
         }
     }
-
 }
