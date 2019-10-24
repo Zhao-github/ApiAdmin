@@ -5,9 +5,6 @@ namespace app\admin\controller;
 use app\util\ReturnCode;
 
 class Index extends Base {
-    public function index() {
-        return json(['welcome']);
-    }
 
     public function upload() {
         $path = '/upload/' . date('Ymd', time()) . '/';
