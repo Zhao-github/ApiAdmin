@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class AdminAppGroup extends Migrator {
+
     /**
      * Change Method.
      *
@@ -35,7 +36,6 @@ class AdminAppGroup extends Migrator {
      *   PRIMARY KEY (`id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='应用组，目前只做管理使用，没有实际权限控制';
      */
-
     public function change() {
         $table = $this->table('admin_app_group', [
             'comment' => '应用组，目前只做管理使用，没有实际权限控制'

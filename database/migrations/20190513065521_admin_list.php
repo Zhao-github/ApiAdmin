@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class AdminList extends Migrator {
+
     /**
      * Change Method.
      *
@@ -42,7 +43,6 @@ class AdminList extends Migrator {
      *   KEY `hash` (`hash`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用于维护接口信息';
      */
-
     public function change() {
         $table = $this->table('admin_list', [
             'comment' => '用于维护接口信息'
@@ -87,6 +87,5 @@ class AdminList extends Migrator {
             'default' => 'default',
             'comment' => '当前接口所属的接口分组'
         ])->addIndex(['hash'])->create();
-
     }
 }

@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class AdminUserAction extends Migrator {
+
     /**
      * Change Method.
      *
@@ -38,7 +39,6 @@ class AdminUserAction extends Migrator {
      *   KEY `uid` (`uid`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户操作日志';
      */
-
     public function change() {
         $table = $this->table('admin_user_action', [
             'comment' => '用户操作日志'

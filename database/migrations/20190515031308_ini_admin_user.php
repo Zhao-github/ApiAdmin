@@ -6,6 +6,7 @@ use \app\util\Strs;
 use \app\util\Tools;
 
 class IniAdminUser extends Migrator {
+
     /**
      * Change Method.
      *
@@ -27,7 +28,6 @@ class IniAdminUser extends Migrator {
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-
     public function up() {
         $pass = Strs::randString(8);
         $data = [

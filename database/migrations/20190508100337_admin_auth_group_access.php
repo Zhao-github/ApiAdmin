@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class AdminAuthGroupAccess extends Migrator {
+
     /**
      * Change Method.
      *
@@ -35,7 +36,6 @@ class AdminAuthGroupAccess extends Migrator {
      *   KEY `groupId` (`groupId`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户和组的对应关系';
      */
-
     public function change() {
         $table = $this->table('admin_auth_group_access', [
             'comment' => '用户和组的对应关系'

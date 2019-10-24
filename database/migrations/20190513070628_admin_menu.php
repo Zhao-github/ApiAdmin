@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class AdminMenu extends Migrator {
+
     /**
      * Change Method.
      *
@@ -39,7 +40,6 @@ class AdminMenu extends Migrator {
      *   PRIMARY KEY (`id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='目录信息';
      */
-
     public function change() {
         $table = $this->table('admin_menu', [
             'comment' => '目录信息'

@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class AdminFields extends Migrator {
+
     /**
      * Change Method.
      *
@@ -41,7 +42,6 @@ class AdminFields extends Migrator {
      *   KEY `hash` (`hash`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用于保存各个API的字段规则';
      */
-
     public function change() {
         $table = $this->table('admin_fields', [
             'comment' => '用于保存各个API的字段规则'

@@ -2,7 +2,6 @@
 
 namespace app\admin\controller;
 
-
 use app\util\ReturnCode;
 
 class Index extends Base {
@@ -18,19 +17,19 @@ class Index extends Base {
         //过滤错误
         if ($error) {
             switch ($error) {
-                case 1 :
+                case 1:
                     $error_message = '您上传的文件超过了PHP.INI配置文件中UPLOAD_MAX-FILESIZE的大小';
                     break;
-                case 2 :
+                case 2:
                     $error_message = '您上传的文件超过了PHP.INI配置文件中的post_max_size的大小';
                     break;
-                case 3 :
+                case 3:
                     $error_message = '文件只被部分上传';
                     break;
-                case 4 :
+                case 4:
                     $error_message = '文件不能为空';
                     break;
-                default :
+                default:
                     $error_message = '未知错误';
             }
             die($error_message);

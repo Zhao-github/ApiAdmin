@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class AdminGroup extends Migrator {
+
     /**
      * Change Method.
      *
@@ -39,7 +40,6 @@ class AdminGroup extends Migrator {
      *   PRIMARY KEY (`id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='接口组管理';
      */
-
     public function change() {
         $table = $this->table('admin_group', [
             'comment' => '接口组管理'

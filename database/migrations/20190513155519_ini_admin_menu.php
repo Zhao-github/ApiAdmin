@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class IniAdminMenu extends Migrator {
+
     /**
      * 初始化数据
      * @author zhaoxiang <zhaoxiang051405@gmail.com>

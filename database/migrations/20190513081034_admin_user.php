@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class AdminUser extends Migrator {
+
     /**
      * Change Method.
      *
@@ -40,7 +41,6 @@ class AdminUser extends Migrator {
      *   KEY `create_time` (`create_time`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员认证信息';
      */
-
     public function change() {
         $table = $this->table('admin_user', [
             'comment' => '管理员认证信息'
