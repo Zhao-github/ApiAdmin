@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class AdminAuthRule extends Migrator {
+
     /**
      * Change Method.
      *
@@ -35,7 +36,6 @@ class AdminAuthRule extends Migrator {
      *   PRIMARY KEY (`id`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='权限细节';
      */
-
     public function change() {
         $table = $this->table('admin_auth_rule', [
             'comment' => '权限细节'

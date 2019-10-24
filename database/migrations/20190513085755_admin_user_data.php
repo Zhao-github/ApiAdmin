@@ -1,10 +1,9 @@
 <?php
 
 use think\migration\Migrator;
-use think\migration\db\Column;
 
-class AdminUserData extends Migrator
-{
+class AdminUserData extends Migrator {
+
     /**
      * Change Method.
      *
@@ -39,7 +38,6 @@ class AdminUserData extends Migrator
      *   KEY `uid` (`uid`)
      * ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='管理员数据表';
      */
-
     public function change() {
         $table = $this->table('admin_user_data', [
             'comment' => '管理员数据表'

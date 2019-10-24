@@ -24,7 +24,7 @@ composer create-project apiadmin/apiadmin4
 > 第二步：检测环境以及配置数据库
 
 ```
-php think apiadmin:install --db mysql://root:123456@127.0.0.1:3306/apiadmin#utf8
+php think apiadmin:install --db mysql://root:123456@127.0.0.1:3306/apiadmin#utf8mb4
 ```
 
 > 第三步：数据库迁移

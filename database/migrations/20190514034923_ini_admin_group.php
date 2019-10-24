@@ -1,9 +1,9 @@
 <?php
 
 use think\migration\Migrator;
-use think\migration\db\Column;
 
 class IniAdminGroup extends Migrator {
+
     /**
      * Change Method.
      *
@@ -30,7 +30,6 @@ class IniAdminGroup extends Migrator {
      * VALUES
      * (1, '默认分组', '默认分组', 1, 'default', 0, 0, '', 0);
      */
-
     public function up() {
         $data = [
             'name'        => '默认分组',
@@ -40,7 +39,7 @@ class IniAdminGroup extends Migrator {
             'create_time' => time(),
             'update_time' => time(),
             'image'       => '',
-            'hot'         => 0,
+            'hot'         => 0
         ];
 
         $this->table('admin_group')->insert($data)->saveData();

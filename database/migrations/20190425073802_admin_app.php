@@ -3,6 +3,7 @@
 use think\migration\Migrator;
 
 class AdminApp extends Migrator {
+
     /**
      * Change Method.
      *
@@ -43,7 +44,7 @@ class AdminApp extends Migrator {
      */
     public function change() {
         $table = $this->table('admin_app', [
-            'comment'     => 'appId和appSecret表'
+            'comment' => 'appId和appSecret表',
         ])->setCollation('utf8mb4_general_ci');
         $table->addColumn('app_id', 'string', [
             'limit'   => 50,
