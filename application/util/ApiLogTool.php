@@ -87,7 +87,7 @@ class ApiLogTool {
      */
     public static function writeLog($log, $type = 'sql', $filePath = '') {
         if(!$filePath) {
-            $filePath = '.' . DIRECTORY_SEPARATOR . 'runtime' . DIRECTORY_SEPARATOR;
+            $filePath = Env::get('runtime_path') . DIRECTORY_SEPARATOR;
         }
         $filename = $filePath . date("Ymd") . '_' . $type . ".log";
         @$handle = fopen($filename, "a+");
