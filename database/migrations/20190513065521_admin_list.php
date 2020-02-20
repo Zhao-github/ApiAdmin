@@ -1,6 +1,7 @@
 <?php
 
 use think\migration\Migrator;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 class AdminList extends Migrator {
 
@@ -56,19 +57,15 @@ class AdminList extends Migrator {
             'default' => '',
             'comment' => 'api唯一标识'
         ])->addColumn('access_token', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 1,
-            'comment' => '是否需要认证AccessToken 1：需要，0：不需要'
-        ])->addColumn('need_login', 'integer', [
-            'limit'   => 2,
-            'default' => 1,
-            'comment' => '是否需要认证用户token  1：需要 0：不需要'
+            'comment' => '认证方式 1：复杂认证，0：简易认证'
         ])->addColumn('status', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 1,
             'comment' => 'API状态：0表示禁用，1表示启用'
         ])->addColumn('method', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 2,
             'comment' => '请求方式0：不限1：Post，2：Get'
         ])->addColumn('info', 'string', [
@@ -76,7 +73,7 @@ class AdminList extends Migrator {
             'default' => '',
             'comment' => 'api中文说明'
         ])->addColumn('is_test', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 0,
             'comment' => '是否是测试模式：0:生产模式，1：测试模式'
         ])->addColumn('return_str', 'text', [

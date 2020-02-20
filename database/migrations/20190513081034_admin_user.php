@@ -1,6 +1,7 @@
 <?php
 
 use think\migration\Migrator;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 class AdminUser extends Migrator {
 
@@ -61,8 +62,8 @@ class AdminUser extends Migrator {
             'limit'   => 11,
             'default' => 0,
             'comment' => '注册时间'
-        ])->addColumn('create_ip', 'biginteger', [
-            'limit'   => 11,
+        ])->addColumn('create_ip', 'integer', [
+            'limit'   => MysqlAdapter::INT_BIG,
             'default' => 0,
             'comment' => '注册IP'
         ])->addColumn('update_time', 'integer', [
@@ -70,7 +71,7 @@ class AdminUser extends Migrator {
             'default' => 0,
             'comment' => '更新时间'
         ])->addColumn('status', 'integer', [
-            'limit'   => 1,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 0,
             'comment' => '账号状态 0封号 1正常'
         ])->addColumn('openid', 'string', [

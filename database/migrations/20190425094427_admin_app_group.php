@@ -1,6 +1,7 @@
 <?php
 
 use think\migration\Migrator;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 class AdminAppGroup extends Migrator {
 
@@ -48,7 +49,7 @@ class AdminAppGroup extends Migrator {
             'comment' => '组说明',
             'null'    => true
         ])->addColumn('status', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 1,
             'comment' => '组状态：0表示禁用，1表示启用'
         ])->addColumn('hash', 'string', [

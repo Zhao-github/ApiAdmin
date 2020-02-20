@@ -1,6 +1,7 @@
 <?php
 
 use think\migration\Migrator;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 class AdminAuthGroup extends Migrator {
 
@@ -47,7 +48,7 @@ class AdminAuthGroup extends Migrator {
             'comment' => '组描述',
             'null'    => true
         ])->addColumn('status', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 1,
             'comment' => '组状态：为1正常，为0禁用'
         ])->create();

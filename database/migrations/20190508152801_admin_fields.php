@@ -1,6 +1,7 @@
 <?php
 
 use think\migration\Migrator;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 class AdminFields extends Migrator {
 
@@ -55,7 +56,7 @@ class AdminFields extends Migrator {
             'default' => '',
             'comment' => '权限所属组的ID'
         ])->addColumn('data_type', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 0,
             'comment' => '数据类型，来源于DataType类库'
         ])->addColumn('default', 'string', [
@@ -63,7 +64,7 @@ class AdminFields extends Migrator {
             'default' => '',
             'comment' => '默认值'
         ])->addColumn('is_must', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 0,
             'comment' => '是否必须 0为不必须，1为必须'
         ])->addColumn('range', 'string', [
@@ -75,7 +76,7 @@ class AdminFields extends Migrator {
             'default' => '',
             'comment' => '字段说明'
         ])->addColumn('type', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 0,
             'comment' => '字段用处：0为request，1为response'
         ])->addColumn('show_name', 'string', [

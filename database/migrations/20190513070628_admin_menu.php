@@ -1,6 +1,7 @@
 <?php
 
 use think\migration\Migrator;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 class AdminMenu extends Migrator {
 
@@ -57,7 +58,7 @@ class AdminMenu extends Migrator {
             'default' => '',
             'comment' => '链接'
         ])->addColumn('auth', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 0,
             'comment' => '访客权限'
         ])->addColumn('sort', 'integer', [
@@ -65,7 +66,7 @@ class AdminMenu extends Migrator {
             'default' => 0,
             'comment' => '排序'
         ])->addColumn('hide', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 0,
             'comment' => '是否显示'
         ])->addColumn('icon', 'string', [
@@ -73,7 +74,7 @@ class AdminMenu extends Migrator {
             'default' => '',
             'comment' => '菜单图标'
         ])->addColumn('level', 'integer', [
-            'limit'   => 2,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 0,
             'comment' => '菜单认证等级'
         ])->create();

@@ -1,6 +1,7 @@
 <?php
 
 use think\migration\Migrator;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 class AdminAuthRule extends Migrator {
 
@@ -55,7 +56,7 @@ class AdminAuthRule extends Migrator {
             'signed'  => false,
             'comment' => '权限数值'
         ])->addColumn('status', 'integer', [
-            'limit'   => 1,
+            'limit'   => MysqlAdapter::INT_TINY,
             'default' => 1,
             'comment' => '状态：为1正常，为0禁用'
         ])->create();
