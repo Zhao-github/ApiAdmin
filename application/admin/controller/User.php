@@ -63,11 +63,11 @@ class User extends Base {
                 $value['userData']['last_login_ip'] = long2ip($value['userData']['last_login_ip']);
                 $value['userData']['last_login_time'] = date('Y-m-d H:i:s', $value['userData']['last_login_time']);
                 $value['create_ip'] = long2ip($value['create_ip']);
-                if (isset($userGroup[$value['id']])) {
-                    $listInfo[$key]['group_id'] = explode(',', $userGroup[$value['id']]['group_id']);
-                } else {
-                    $listInfo[$key]['group_id'] = [];
-                }
+            }
+            if (isset($userGroup[$value['id']])) {
+                $value['group_id'] = explode(',', $userGroup[$value['id']]['group_id']);
+            } else {
+                $value['group_id'] = [];
             }
         }
 
