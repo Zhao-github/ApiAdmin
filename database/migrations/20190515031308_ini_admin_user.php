@@ -45,6 +45,6 @@ class IniAdminUser extends Migrator {
         $this->table('admin_user')->insert($data)->saveData();
 
         $lockFile = Env::get('app_path') . 'install' . DIRECTORY_SEPARATOR . 'lock.ini';
-        file_put_contents($lockFile, "username:root, password:{$pass}");
+        file_put_contents($lockFile, "username:root, password:{$pass}" . PHP_EOL);
     }
 }
