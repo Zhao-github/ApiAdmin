@@ -121,7 +121,7 @@ class Tools {
      * @param string $root
      * @return array
      */
-    public static function listToTree($list, $pk='id', $pid = 'fid', $child = '_child', $root = '0') {
+    public static function listToTree($list, $pk='id', $pid = 'fid', $child = 'children', $root = '0') {
         $tree = array();
         if(is_array($list)) {
             $refer = array();
@@ -153,11 +153,11 @@ class Tools {
             $val['lv'] = $lv;
             $val['namePrefix'] = $lv == 0 ? '' : $title_prefix;
             $val['showName'] = $lv == 0 ? $val[$title] : $title_prefix.$val[$title];
-            if(!array_key_exists('_child', $val)){
+            if(!array_key_exists('children', $val)){
                 array_push($formatTree, $val);
             }else{
-                $child = $val['_child'];
-                unset($val['_child']);
+                $child = $val['children'];
+                unset($val['children']);
                 array_push($formatTree, $val);
                 $middle = self::formatTree($child, $lv+1, $title); //进行下一层递归
                 $formatTree = array_merge($formatTree, $middle);

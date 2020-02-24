@@ -20,12 +20,13 @@ class Menu extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-        $list = (new AdminMenu)->order('sort', 'ASC')->select();
-        $list = Tools::buildArrFromObj($list);
-        $list = Tools::formatTree(Tools::listToTree($list));
-
+        $origin = (new AdminMenu)->order('sort', 'ASC')->select();
+        $origin = Tools::buildArrFromObj($origin);
+        $list = Tools::listToTree($origin);
+        $choose = Tools::formatTree($list);
         return $this->buildSuccess([
-            'list' => $list
+            'list'   => $list,
+            'choose' => $choose
         ]);
     }
 

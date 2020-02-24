@@ -241,9 +241,9 @@ class Auth extends Base {
         foreach ($list as $key => $value) {
             $newList[$key]['title'] = $value['name'];
             $newList[$key]['key'] = $value['url'];
-            if (isset($value['_child'])) {
+            if (isset($value['children'])) {
                 $newList[$key]['expand'] = true;
-                $newList[$key]['children'] = $this->buildList($value['_child'], $rules);
+                $newList[$key]['children'] = $this->buildList($value['children'], $rules);
             } else {
                 if (in_array($value['url'], $rules)) {
                     $newList[$key]['checked'] = true;
