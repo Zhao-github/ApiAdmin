@@ -23,10 +23,9 @@ class Menu extends Base {
         $origin = (new AdminMenu)->order('sort', 'ASC')->select();
         $origin = Tools::buildArrFromObj($origin);
         $list = Tools::listToTree($origin);
-        $choose = Tools::formatTree($list);
+
         return $this->buildSuccess([
-            'list'   => $list,
-            'choose' => $choose
+            'list' => $list
         ]);
     }
 
