@@ -1,6 +1,7 @@
 <?php
 
 use think\migration\Migrator;
+use Phinx\Db\Adapter\MysqlAdapter;
 
 class ChangeAdminMenuField extends Migrator {
     /**
@@ -25,7 +26,13 @@ class ChangeAdminMenuField extends Migrator {
      * with the Table class.
      */
     public function up() {
-        $this->table('admin_menu')->renameColumn('name', 'title')->update();
+        $this->table('admin_menu')
+            ->renameColumn('name', 'title')
+            ->changeColumn('level', 'integer', [
+                'limit'   => MysqlAdapter::INT_TINY,
+                'default' => 0,
+                'comment' => '菜单层级，1-一级菜单，2-二级菜单，3-按钮'
+            ])->update();
     }
 
     public function down() {

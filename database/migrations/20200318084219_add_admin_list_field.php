@@ -26,7 +26,7 @@ class AddAdminListField extends Migrator {
      * with the Table class.
      */
     public function up() {
-        $this->table('admin_list')->addColumn('hash_type', 'string', [
+        $this->table('admin_list')->addColumn('hash_type', 'integer', [
             'limit'   => MysqlAdapter::INT_TINY,
             'default' => 2,
             'comment' => '是否采用hash映射， 1：普通模式 2：加密模式'
