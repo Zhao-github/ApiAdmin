@@ -703,6 +703,6 @@ class IniAdminMenu extends Migrator {
             ]
         ];
 
-        $this->table('admin_menu')->insert($data)->save();
+        $this->table('admin_menu')->insert($data)->saveData();
     }
 }

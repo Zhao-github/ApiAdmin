@@ -30,10 +30,10 @@ class AddAdminListField extends Migrator {
             'limit'   => MysqlAdapter::INT_TINY,
             'default' => 2,
             'comment' => '是否采用hash映射， 1：普通模式 2：加密模式'
-        ])->save();
+        ])->update();
     }
 
     public function down() {
-        $this->table('admin_list')->removeColumn('hash_type')->save();
+        $this->table('admin_list')->removeColumn('hash_type')->update();
     }
 }

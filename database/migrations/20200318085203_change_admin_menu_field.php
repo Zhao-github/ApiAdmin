@@ -25,11 +25,11 @@ class ChangeAdminMenuField extends Migrator {
      * with the Table class.
      */
     public function up() {
-        $this->table('admin_menu')->renameColumn('name', 'title')->save();
+        $this->table('admin_menu')->renameColumn('name', 'title')->update();
     }
 
     public function down() {
-        $this->table('admin_menu')->renameColumn('title', 'name')->save();
+        $this->table('admin_menu')->renameColumn('title', 'name')->update();
     }
 
 }
