@@ -27,16 +27,17 @@ class ChangeAdminMenuField extends Migrator {
      */
     public function up() {
         $this->table('admin_menu')
+            ->removeColumn('hide')
             ->renameColumn('name', 'title')
             ->changeColumn('level', 'integer', [
                 'limit'   => MysqlAdapter::INT_TINY,
-                'default' => 0,
+                'default' => 1,
                 'comment' => '菜单层级，1-一级菜单，2-二级菜单，3-按钮'
+            ])->addColumn('show', 'integer', [
+                'limit'   => MysqlAdapter::INT_TINY,
+                'default' => 1,
+                'comment' => '是否显示，1-显示，0-隐藏'
             ])->update();
-    }
-
-    public function down() {
-        $this->table('admin_menu')->renameColumn('title', 'name')->update();
     }
 
 }
