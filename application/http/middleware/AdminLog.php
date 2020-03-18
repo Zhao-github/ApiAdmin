@@ -30,7 +30,7 @@ class AdminLog {
         }
 
         AdminUserAction::create([
-            'action_name' => $menuInfo['name'],
+            'action_name' => $menuInfo['title'],
             'uid'         => $userInfo['id'],
             'nickname'    => $userInfo['nickname'],
             'add_time'    => time(),

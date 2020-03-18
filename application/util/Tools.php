@@ -143,7 +143,7 @@ class Tools {
         return $tree;
     }
 
-    public static function formatTree($list, $lv = 0, $title = 'name'){
+    public static function formatTree($list, $lv = 0, $title = 'title'){
         $formatTree = array();
         foreach($list as $key => $val){
             $title_prefix = '';
