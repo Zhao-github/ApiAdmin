@@ -57,7 +57,7 @@ class Menu extends Base {
         $status = $this->request->get('status');
         $res = AdminMenu::update([
             'id'   => $id,
-            'hide' => $status
+            'show' => $status
         ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);

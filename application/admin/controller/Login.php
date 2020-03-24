@@ -104,7 +104,7 @@ class Login extends Base {
     public function getAccess($uid) {
         $isSupper = Tools::isAdministrator($uid);
         if ($isSupper) {
-            $access = AdminMenu::all(['hide' => 0]);
+            $access = AdminMenu::all(['show' => 1]);
             $access = Tools::buildArrFromObj($access);
 
             return array_values(array_filter(array_column($access, 'url')));
