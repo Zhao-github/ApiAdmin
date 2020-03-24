@@ -41,10 +41,6 @@ class ChangeAdminMenuField extends Migrator {
                 'limit'   => 255,
                 'default' => '',
                 'comment' => '前端组件'
-            ])->addColumn('class_name', 'string', [
-                'limit'   => 255,
-                'default' => '',
-                'comment' => '后端类库'
             ])->addColumn('router', 'string', [
                 'limit'   => 255,
                 'default' => '',
