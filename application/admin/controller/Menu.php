@@ -20,9 +20,16 @@ class Menu extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index() {
-        $origin = (new AdminMenu)->order('sort', 'ASC')->select();
-        $origin = Tools::buildArrFromObj($origin);
-        $list = Tools::listToTree($origin);
+        $keywords = $this->request->get('keywords', '');
+        $obj = new AdminMenu();
+        if ($keywords) {
+            $obj = $obj->whereLike('title', "%{$keywords}%");
+        }
+        $obj = $obj->order('sort', 'ASC')->select();
+        $list = Tools::buildArrFromObj($obj);
+        if (!$keywords) {
+            $list = Tools::listToTree($list);
+        }
 
         return $this->buildSuccess([
             'list' => $list
@@ -87,6 +94,7 @@ class Menu extends Base {
     /**
      * 删除菜单
      * @return array
+     * @throws \Exception
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function del() {
@@ -94,11 +102,7 @@ class Menu extends Base {
         if (!$id) {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
-        $childNum = AdminMenu::where(['fid' => $id])->count();
-        if ($childNum) {
-            return $this->buildFailed(ReturnCode::INVALID, '当前菜单存在子菜单,不可以被删除!');
-        }
-        AdminMenu::destroy($id);
+        (new AdminMenu())->whereIn('id', $id)->delete();
 
         return $this->buildSuccess();
     }
