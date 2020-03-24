@@ -1,9 +1,8 @@
 <?php
 
 use think\migration\Migrator;
-use Phinx\Db\Adapter\MysqlAdapter;
 
-class ChangeAdminMenuField extends Migrator {
+class UpdateAdminMenuData extends Migrator {
     /**
      * Change Method.
      *
@@ -26,18 +25,8 @@ class ChangeAdminMenuField extends Migrator {
      * with the Table class.
      */
     public function up() {
-        $this->table('admin_menu')
-            ->renameColumn('hide', 'show')
-            ->renameColumn('name', 'title')
-            ->changeColumn('level', 'integer', [
-                'limit'   => MysqlAdapter::INT_TINY,
-                'default' => 1,
-                'comment' => '菜单层级，1-一级菜单，2-二级菜单，3-按钮'
-            ])->changeColumn('show', 'integer', [
-                'limit'   => MysqlAdapter::INT_TINY,
-                'default' => 1,
-                'comment' => '是否显示，1-显示，0-隐藏'
-            ])->update();
+        $this->execute('UPDATE admin_menu SET show = 2 WHERE show = 0;');
+        $this->execute('UPDATE admin_menu SET show = 0 WHERE show = 1;');
+        $this->execute('UPDATE admin_menu SET show = 1 WHERE show = 2;');
     }
-
 }
