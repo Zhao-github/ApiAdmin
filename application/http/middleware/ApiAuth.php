@@ -79,14 +79,14 @@ class ApiAuth {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     private function doEasyCheck($accessToken) {
-        $appInfo = cache('AccessToken:' . $accessToken);
+        $appInfo = cache('AccessToken:Easy:' . $accessToken);
         if (!$appInfo) {
             $appInfo = AdminApp::get(['app_secret' => $accessToken]);
             if (!$appInfo) {
                 return false;
             } else {
                 $appInfo = $appInfo->toArray();
-                cache('AccessToken:' . $accessToken, $appInfo);
+                cache('AccessToken:Easy:' . $accessToken, $appInfo);
             }
         }
 
