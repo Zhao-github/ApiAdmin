@@ -37,6 +37,18 @@ class ChangeAdminMenuField extends Migrator {
                 'limit'   => MysqlAdapter::INT_TINY,
                 'default' => 1,
                 'comment' => '是否显示，1-显示，0-隐藏'
+            ])->addColumn('component', 'string', [
+                'limit'   => 255,
+                'default' => '',
+                'comment' => '前端组件'
+            ])->addColumn('class_name', 'string', [
+                'limit'   => 255,
+                'default' => '',
+                'comment' => '后端类库'
+            ])->addColumn('router', 'string', [
+                'limit'   => 255,
+                'default' => '',
+                'comment' => '前端路由'
             ])->update();
     }
 
