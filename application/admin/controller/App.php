@@ -138,7 +138,7 @@ class App extends Base {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         }
         $appInfo = AdminApp::get($id);
-        cache('AccessToken:' . $appInfo['app_secret'], null);
+        cache('AccessToken:Easy:' . $appInfo['app_secret'], null);
         if($oldWiki = cache('WikiLogin:' . $id)) {
             cache('WikiLogin:' . $oldWiki, null);
         }
@@ -174,7 +174,7 @@ class App extends Base {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         }
         $appInfo = AdminApp::get($postData['id']);
-        cache('AccessToken:' . $appInfo['app_secret'], null);
+        cache('AccessToken:Easy:' . $appInfo['app_secret'], null);
         if($oldWiki = cache('WikiLogin:' . $postData['id'])) {
             cache('WikiLogin:' . $oldWiki, null);
         }
@@ -194,7 +194,7 @@ class App extends Base {
             return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少必要参数');
         }
         $appInfo = AdminApp::get($id);
-        cache('AccessToken:' . $appInfo['app_secret'], null);
+        cache('AccessToken:Easy:' . $appInfo['app_secret'], null);
 
         AdminApp::destroy($id);
         if($oldWiki = cache('WikiLogin:' . $id)) {
