@@ -25,16 +25,24 @@ class ApiAuth {
             if ($cached) {
                 $apiInfo = Cache::get('ApiInfo:' . $apiHash);
             } else {
-                $apiInfo = AdminList::get(['hash' => $apiHash]);
+                $apiInfo = AdminList::get(['hash' => $apiHash, 'hash_type' => 2]);
                 if ($apiInfo) {
                     $apiInfo = $apiInfo->toArray();
+                    Cache::rm('ApiInfo:' . $apiInfo['api_class']);
                     Cache::set('ApiInfo:' . $apiHash, $apiInfo);
                 } else {
-                    return json([
-                        'code' => ReturnCode::DB_READ_ERROR,
-                        'msg'  => '获取接口配置数据失败',
-                        'data' => []
-                    ])->header($header);
+                    $apiInfo = AdminList::get(['api_class' => $apiHash, 'hash_type' => 1]);
+                    if ($apiInfo) {
+                        $apiInfo = $apiInfo->toArray();
+                        Cache::rm('ApiInfo:' . $apiInfo['hash']);
+                        Cache::set('ApiInfo:' . $apiHash, $apiInfo);
+                    } else {
+                        return json([
+                            'code' => ReturnCode::DB_READ_ERROR,
+                            'msg'  => '获取接口配置数据失败',
+                            'data' => []
+                        ])->header($header);
+                    }
                 }
             }
 
@@ -73,7 +81,7 @@ class ApiAuth {
     }
 
     /**
-     * 简易鉴权，更具APP_SECRET获取应用信=/.
+     * 简易鉴权，更具APP_SECRET获取应用信息
      * @param $accessToken
      * @return bool|mixed
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
