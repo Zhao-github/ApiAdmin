@@ -25,8 +25,11 @@ class UpdateAdminMenuData extends Migrator {
      * with the Table class.
      */
     public function up() {
-        $this->execute('UPDATE admin_menu SET show = 2 WHERE show = 0;');
-        $this->execute('UPDATE admin_menu SET show = 0 WHERE show = 1;');
-        $this->execute('UPDATE admin_menu SET show = 1 WHERE show = 2;');
+        $this->execute('UPDATE `admin_menu` SET `show` = 2 WHERE `show` = 0;');
+        $this->execute('UPDATE `admin_menu` SET `show` = 0 WHERE `show` = 1;');
+        $this->execute('UPDATE `admin_menu` SET `show` = 1 WHERE `show` = 2;');
+        $this->execute('UPDATE `admin_menu` SET `level` = 1 WHERE `fid` = 0;');
+        $this->execute('UPDATE `admin_menu` SET `level` = 3 WHERE `url` != "";');
+        $this->execute('UPDATE `admin_menu` SET `level` = 2 WHERE `level` = 0;');
     }
 }
