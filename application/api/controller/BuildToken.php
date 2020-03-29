@@ -15,7 +15,7 @@ class BuildToken extends Base {
 
     /**
      * 构建AccessToken
-     * @return \think\response\Json
+     * @return array
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -23,9 +23,6 @@ class BuildToken extends Base {
      */
     public function getAccessToken() {
         $param = $this->request->param();
-        if (empty($param['app_id'])) {
-            return $this->buildFailed(ReturnCode::EMPTY_PARAMS, '缺少app_id');
-        }
         $appInfo = (new AdminApp())->where(['app_id' => $param['app_id'], 'app_status' => 1])->find();
         if (empty($appInfo)) {
             return $this->buildFailed(ReturnCode::INVALID, '应用ID非法');

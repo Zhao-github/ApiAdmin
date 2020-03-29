@@ -154,12 +154,18 @@ class Api extends Base {
         $groupInfo->hot = $groupInfo->hot + 1;
         $groupInfo->save();
 
+        if ($apiList['hash_type'] === 1) {
+            $url = $this->request->domain() . '/api/' . $apiList['api_class'];
+        } else {
+            $url = $this->request->domain() . '/api/' . $hash;
+        }
+
         return $this->buildSuccess([
             'request'  => $request,
             'response' => $response,
             'dataType' => $dataType,
             'apiList'  => $apiList,
-            'url'      => $this->request->domain() . '/api/' . $hash,
+            'url'      => $url,
             'co'       => config('apiadmin.APP_NAME') . ' ' . config('apiadmin.APP_VERSION')
         ]);
     }
