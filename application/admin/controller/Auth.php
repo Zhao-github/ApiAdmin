@@ -139,6 +139,7 @@ class Auth extends Base {
      */
     public function edit() {
         $res = AdminAuthGroup::update([
+            'id'          => $this->request->post('id', 0),
             'name'        => $this->request->post('name', ''),
             'description' => $this->request->post('description', '')
         ]);
@@ -272,5 +273,7 @@ class Auth extends Base {
                 (new AdminAuthRule())->whereIn('url', $urlArr)->where('group_id', $id)->delete();
             }
         }
+
+        return $this->buildSuccess();
     }
 }
