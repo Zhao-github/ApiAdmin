@@ -118,6 +118,10 @@ Route::group('admin', function() {
             'admin/Auth/delMember',
             ['method' => 'get']
         ],
+        'editRule'     => [
+            'admin/Auth/editRule',
+            ['method' => 'post']
+        ],
         'edit'         => [
             'admin/Auth/edit',
             ['method' => 'post']

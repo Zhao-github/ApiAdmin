@@ -17,7 +17,7 @@
         }
     ],
     "require": {
-        "php": ">=5.6.0",
+        "php": ">=7.0",
         "topthink/framework": "5.1.*",
         "topthink/think-migration": "^2.0",
         "guzzlehttp/guzzle": "^6.5"

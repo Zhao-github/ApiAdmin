@@ -98,28 +98,12 @@ class Auth extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function add() {
-        $rules = [];
-        $postData = $this->request->post();
-        if ($postData['rules']) {
-            $rules = $postData['rules'];
-            $rules = array_filter($rules);
-        }
-        unset($postData['rules']);
-        $res = AdminAuthGroup::create($postData);
+        $res = AdminAuthGroup::create([
+            'name'        => $this->request->post('name', ''),
+            'description' => $this->request->post('description', '')
+        ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
-        }
-        if ($rules) {
-            $insertData = [];
-            foreach ($rules as $value) {
-                if ($value) {
-                    $insertData[] = [
-                        'group_id' => $res->id,
-                        'url'      => $value
-                    ];
-                }
-            }
-            (new AdminAuthRule())->saveAll($insertData);
         }
 
         return $this->buildSuccess();
@@ -154,12 +138,10 @@ class Auth extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function edit() {
-        $postData = $this->request->post();
-        if ($postData['rules']) {
-            $this->editRule();
-        }
-        unset($postData['rules']);
-        $res = AdminAuthGroup::update($postData);
+        $res = AdminAuthGroup::update([
+            'name'        => $this->request->post('name', ''),
+            'description' => $this->request->post('description', '')
+        ]);
         if ($res === false) {
             return $this->buildFailed(ReturnCode::DB_SAVE_ERROR);
         }
@@ -262,30 +244,33 @@ class Auth extends Base {
      * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    private function editRule() {
-        $postData = $this->request->post();
-        $needAdd = [];
-        $has = (new AdminAuthRule())->where(['group_id' => $postData['id']])->select();
-        $has = Tools::buildArrFromObj($has);
-        $hasRule = array_column($has, 'url');
-        $needDel = array_flip($hasRule);
-        foreach ($postData['rules'] as $key => $value) {
-            if (!empty($value)) {
-                if (!in_array($value, $hasRule)) {
-                    $data['url'] = $value;
-                    $data['group_id'] = $postData['id'];
-                    $needAdd[] = $data;
-                } else {
-                    unset($needDel[$value]);
+    public function editRule() {
+        $id = $this->request->post('id', 0);
+        $rules = $this->request->post('rules', []);
+        if ($rules) {
+            $needAdd = [];
+            $has = (new AdminAuthRule())->where(['group_id' => $id])->select();
+            $has = Tools::buildArrFromObj($has);
+            $hasRule = array_column($has, 'url');
+            $needDel = array_flip($hasRule);
+            foreach ($rules as $key => $value) {
+                if (!empty($value)) {
+                    if (!in_array($value, $hasRule)) {
+                        $data['url'] = $value;
+                        $data['group_id'] = $id;
+                        $needAdd[] = $data;
+                    } else {
+                        unset($needDel[$value]);
+                    }
                 }
             }
-        }
-        if (count($needAdd)) {
-            (new AdminAuthRule())->saveAll($needAdd);
-        }
-        if (count($needDel)) {
-            $urlArr = array_keys($needDel);
-            (new AdminAuthRule())->whereIn('url', $urlArr)->where('group_id', $postData['id'])->delete();
+            if (count($needAdd)) {
+                (new AdminAuthRule())->saveAll($needAdd);
+            }
+            if (count($needDel)) {
+                $urlArr = array_keys($needDel);
+                (new AdminAuthRule())->whereIn('url', $urlArr)->where('group_id', $id)->delete();
+            }
         }
     }
 }

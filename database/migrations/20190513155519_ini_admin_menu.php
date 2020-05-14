@@ -700,6 +700,16 @@ class IniAdminMenu extends Migrator {
                 'hide'  => 0,
                 'icon'  => '',
                 'level' => 0
+            ], [
+                'id'    => 71,
+                'name'  => '编辑权限细节',
+                'fid'   => 15,
+                'url'   => 'admin/Auth/editRule',
+                'auth'  => 0,
+                'sort'  => 0,
+                'hide'  => 0,
+                'icon'  => '',
+                'level' => 0
             ]
         ];
 
