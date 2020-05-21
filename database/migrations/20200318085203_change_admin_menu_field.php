@@ -33,6 +33,10 @@ class ChangeAdminMenuField extends Migrator {
                 'limit'   => MysqlAdapter::INT_TINY,
                 'default' => 1,
                 'comment' => '菜单层级，1-一级菜单，2-二级菜单，3-按钮'
+            ])->changeColumn('auth', 'integer', [
+                'limit'   => MysqlAdapter::INT_TINY,
+                'default' => 1,
+                'comment' => '是否需要登录才可以访问，1-需要，0-不需要'
             ])->changeColumn('show', 'integer', [
                 'limit'   => MysqlAdapter::INT_TINY,
                 'default' => 1,
@@ -45,6 +49,14 @@ class ChangeAdminMenuField extends Migrator {
                 'limit'   => 255,
                 'default' => '',
                 'comment' => '前端路由'
+            ])->addColumn('log', 'integer', [
+                'limit'   => MysqlAdapter::INT_TINY,
+                'default' => 1,
+                'comment' => '是否记录日志，1-记录，0-不记录'
+            ])->addColumn('permission', 'integer', [
+                'limit'   => MysqlAdapter::INT_TINY,
+                'default' => 1,
+                'comment' => '是否验证权限，1-鉴权，0-放行'
             ])->update();
     }
 
