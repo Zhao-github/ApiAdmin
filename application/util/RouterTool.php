@@ -9,12 +9,12 @@ namespace app\util;
 
 
 class RouterTool {
-    
+
     public static function buildAdminRouter() {
-        
+
     }
 
     public static function buildVueRouter() {
-        
+
     }
 }
