@@ -57,6 +57,10 @@ class ChangeAdminMenuField extends Migrator {
                 'limit'   => MysqlAdapter::INT_TINY,
                 'default' => 1,
                 'comment' => '是否验证权限，1-鉴权，0-放行'
+            ])->addColumn('method', 'integer', [
+                'limit'   => MysqlAdapter::INT_TINY,
+                'default' => 1,
+                'comment' => '请求方式，1-GET, 2-POST, 3-PUT, 4-DELETE'
             ])->update();
     }
 
