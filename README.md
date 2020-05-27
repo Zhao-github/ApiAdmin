@@ -21,19 +21,17 @@ composer create-project apiadmin/apiadmin4
 你也可以：先获取基础代码 git clone https://gitee.com/apiadmin/ApiAdmin.git   再使用composer安装 composer install
 ```
 
-> 第二步：检测环境以及配置数据库
+> 第二步：检测环境以及配置数据库，同时完成数据库迁移
 
 ```
 php think apiadmin:install --db mysql://root:123456@127.0.0.1:3306/apiadmin#utf8mb4
 ```
 
-> 第三步：数据库迁移
+> 第三步：获取管理后台账号密码
 
 ```
-php think migrate:run
+cat application/install/lock.ini
 ```
-
-**注：安装完成后，后台管理员的账号密码请查看：application/install/lock.ini**
 
 ## 灵 感
 

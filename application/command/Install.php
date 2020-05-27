@@ -3,6 +3,7 @@
 namespace app\command;
 
 use app\util\Strs;
+use think\Console;
 use think\console\Command;
 use think\console\Input;
 use think\console\input\Option;
@@ -81,6 +82,8 @@ class Install extends Command {
                 //生成lock文件，并且写入用户名密码
                 file_put_contents($lockFile, "lock");
                 $output->info('lock文件初始化成功');
+
+                Console::call('migrate:run');
             } catch (\PDOException $e) {
                 $output->highlight($e->getMessage());
             }
