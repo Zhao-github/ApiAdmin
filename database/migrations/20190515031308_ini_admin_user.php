@@ -30,11 +30,14 @@ class IniAdminUser extends Migrator {
      */
     public function up() {
         $pass = Strs::randString(8);
+        $lockFile = Env::get('app_path') . 'install' . DIRECTORY_SEPARATOR . 'lock.ini';
+        $authKey = file_get_contents($lockFile);
+
         $data = [
             'id'          => 1,
             'username'    => 'root',
             'nickname'    => 'root',
-            'password'    => Tools::userMd5($pass),
+            'password'    => Tools::userMd5($pass, $authKey),
             'create_time' => time(),
             'create_ip'   => ip2long('127.0.0.1'),
             'update_time' => time(),

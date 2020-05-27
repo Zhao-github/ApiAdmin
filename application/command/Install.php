@@ -80,7 +80,7 @@ class Install extends Command {
                 $output->info('ApiAdmin配置更新成功');
 
                 //生成lock文件，并且写入用户名密码
-                file_put_contents($lockFile, "lock");
+                file_put_contents($lockFile, $authKey);
                 $output->info('lock文件初始化成功');
 
                 Console::call('migrate:run');
