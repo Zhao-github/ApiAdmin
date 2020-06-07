@@ -33,5 +33,6 @@ class UpdateAdminMenuData extends Migrator {
         $this->execute('UPDATE `admin_menu` SET `level` = 2 WHERE `level` = 0;');
         $this->execute('UPDATE `admin_menu` SET `auth` = 1 WHERE `url` != "admin/Login/index";');
         $this->execute('UPDATE `admin_menu` SET `permission` = 0 WHERE `url` = "admin/Login/index" OR `url` = "admin/Login/logout";');
+        $this->execute('UPDATE `admin_menu` SET `method` = 2 WHERE `url` = "admin/Login/index" OR `url` LIKE "%/upload" OR `url` LIKE "%/add" OR `url` LIKE "%/edit%";');
     }
 }
