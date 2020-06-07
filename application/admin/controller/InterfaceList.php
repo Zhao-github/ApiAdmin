@@ -188,7 +188,7 @@ class InterfaceList extends Base {
                 array_push($tplStr, 'Route::rule(\'' . addslashes($value->hash) . '\',\'api/' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([\'ApiAuth\', \'ApiPermission\', \'RequestFilter\', \'ApiLog\']);');
             }
         }
-        $tplOriginStr = str_replace(['{$API_RULE}'], [implode($tplStr, "\n    ")], $tplOriginStr);
+        $tplOriginStr = str_replace(['{$API_RULE}'], [implode($tplStr, PHP_EOL . '    ')], $tplOriginStr);
 
         file_put_contents($apiRoutePath, $tplOriginStr);
 
