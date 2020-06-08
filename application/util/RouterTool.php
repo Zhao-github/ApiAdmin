@@ -46,10 +46,6 @@ class RouterTool {
         file_put_contents($routePath, $context);
     }
 
-    public static function buildVueRouter() {
-
-    }
-
     /**
      * 构建菜单权限细节
      * @param $menu
