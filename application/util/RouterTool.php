@@ -32,7 +32,7 @@ class RouterTool {
         $context .= 'use think\facade\Route;' . PHP_EOL;
         $context .= "Route::miss('api/Miss/index');" . PHP_EOL;
 
-        $menus = AdminMenu::all(['show' => 1]);
+        $menus = AdminMenu::all();
         if ($menus) {
             foreach ($menus as $menu) {
                 if ($menu['url']) {
