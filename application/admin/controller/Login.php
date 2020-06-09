@@ -107,12 +107,12 @@ class Login extends Base {
 
             return $this->buildSuccess($access);
         } else {
-            $groups = AdminAuthGroupAccess::get(['uid' => $uid]);
+            $groups = AdminAuthGroupAccess::get(['uid' => $this->userInfo['id']]);
             if (isset($groups) && $groups->group_id) {
                 $access = (new AdminAuthRule())->whereIn('group_id', $groups->group_id)->select();
                 $access = Tools::buildArrFromObj($access);
 
-                return array_values(array_unique(array_column($access, 'url')));
+                return array_unique(array_column($access, 'url'));
             } else {
                 return [];
             }
