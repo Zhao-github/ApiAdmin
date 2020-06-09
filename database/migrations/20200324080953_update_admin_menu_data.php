@@ -35,5 +35,18 @@ class UpdateAdminMenuData extends Migrator {
         $this->execute('UPDATE `admin_menu` SET `permission` = 0 WHERE `url` = "admin/Login/index" OR `url` = "admin/Login/logout";');
         $this->execute('UPDATE `admin_menu` SET `method` = 2 WHERE `url` = "admin/Login/index" OR `url` LIKE "%/upload" OR `url` LIKE "%/add" OR `url` LIKE "%/edit%";');
         $this->execute('UPDATE `admin_menu` SET `log` = 0 WHERE `url` = "admin/Login/index";');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "ios-build", `component` = "", `router` = "/system" WHERE `id` = 3;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "md-menu", `component` = "system/menu", `router` = "menu" WHERE `id` = 4;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "ios-people", `component` = "system/user", `router` = "user" WHERE `id` = 9;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "md-lock", `component` = "system/auth", `router` = "auth" WHERE `id` = 15;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "ios-appstore", `component` = "", `router` = "/apps" WHERE `id` = 23;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "md-list-box", `component` = "app/list", `router` = "appsList" WHERE `id` = 24;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "ios-link", `component` = "", `router` = "/interface" WHERE `id` = 30;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "md-infinite", `component` = "interface/list", `router` = "interfaceList" WHERE `id` = 31;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "", `component` = "interface/request", `router` = "request/:hash" WHERE `id` = 37;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "", `component` = "interface/response", `router` = "response/:hash" WHERE `id` = 38;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "md-archive", `component` = "interface/group", `router` = "interfaceGroup" WHERE `id` = 43;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "ios-archive", `component` = "app/group", `router` = "appsGroup" WHERE `id` = 49;');
+        $this->execute('UPDATE `admin_menu` SET `icon` = "md-clipboard", `component` = "system/log", `router` = "log" WHERE `id` = 62;');
     }
 }
