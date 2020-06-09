@@ -96,6 +96,30 @@ class Login extends Base {
     }
 
     /**
+     * 获取当前用户的允许菜单
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public function getAccessMenu() {
+        $isSupper = Tools::isAdministrator($this->userInfo['id']);
+        if ($isSupper) {
+            $access = AdminMenu::all(['router' != '']);
+            $access = Tools::buildArrFromObj($access);
+
+            return $this->buildSuccess($access);
+        } else {
+            $groups = AdminAuthGroupAccess::get(['uid' => $uid]);
+            if (isset($groups) && $groups->group_id) {
+                $access = (new AdminAuthRule())->whereIn('group_id', $groups->group_id)->select();
+                $access = Tools::buildArrFromObj($access);
+
+                return array_values(array_unique(array_column($access, 'url')));
+            } else {
+                return [];
+            }
+        }
+    }
+
+    /**
      * 获取用户权限数据
      * @param $uid
      * @return array
