@@ -48,5 +48,6 @@ class UpdateAdminMenuData extends Migrator {
         $this->execute('UPDATE `admin_menu` SET `icon` = "md-archive", `component` = "interface/group", `router` = "interfaceGroup" WHERE `id` = 43;');
         $this->execute('UPDATE `admin_menu` SET `icon` = "ios-archive", `component` = "app/group", `router` = "appsGroup" WHERE `id` = 49;');
         $this->execute('UPDATE `admin_menu` SET `icon` = "md-clipboard", `component` = "system/log", `router` = "log" WHERE `id` = 62;');
+        $this->execute('INSERT INTO `admin_menu` (`id`, `title`, `fid`, `url`, `auth`, `sort`, `show`, `icon`, `level`, `component`, `router`, `log`, `permission`, `method`) VALUES (72, "获取用户有权限的菜单", 15, "admin/Login/getAccessMenu", 1, 0, 1, "", 3, "", "", 1, 1, 1);');
     }
 }
