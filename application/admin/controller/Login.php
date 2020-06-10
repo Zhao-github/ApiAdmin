@@ -13,6 +13,7 @@ use app\model\AdminMenu;
 use app\model\AdminUser;
 use app\model\AdminUserData;
 use app\util\ReturnCode;
+use app\util\RouterTool;
 use app\util\Tools;
 
 class Login extends Base {
@@ -114,29 +115,13 @@ class Login extends Base {
                 array_push($access, "");
                 $menus = (new AdminMenu())->whereIn('url', $access)->where('show', 1)->select();
                 $menus = Tools::listToTree(Tools::buildArrFromObj($menus));
-                $menus = $this->rebuildMenu($menus);
+                RouterTool::buildVueRouter($menus);
 
                 return $this->buildSuccess($menus);
             } else {
                 return $this->buildSuccess();
             }
         }
-    }
-
-    private function rebuildMenu($menus) {
-        foreach ($menus as $key => $menu) {
-            if (isset($menu['children'])) {
-                foreach ($menu['children'] as $cKey => $child) {
-                    if (!isset($child['children'])) {
-
-                    }
-                }
-            } else {
-                unset($menus[$key]);
-            }
-        }
-
-        return $menus;
     }
 
     /**

@@ -48,6 +48,37 @@ class RouterTool {
     }
 
     /**
+     * 构建前端路由
+     * TODO::待算法优化
+     * @param $menus
+     * @return mixed
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public static function buildVueRouter(&$menus) {
+        foreach ($menus as $key => $menu) {
+            if (isset($menu['children'])) {
+                foreach ($menu['children'] as $cKey => $child) {
+                    if (!isset($child['children'])) {
+                        unset($menus[$key]['children'][$cKey]);
+                    } else {
+                        $menus[$key]['children'][$cKey]['children'] = [];
+                    }
+                }
+            } else {
+                unset($menus[$key]);
+            }
+        }
+
+        foreach ($menus as $k => $m) {
+            if (isset($m['children']) && !empty($m['children'])) {
+                $menus[$k]['children'] = array_values($m['children']);
+            } else {
+                unset($menus[$k]);
+            }
+        }
+    }
+
+    /**
      * 构建菜单权限细节
      * @param $menu
      * @return string
