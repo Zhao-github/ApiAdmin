@@ -32,9 +32,7 @@ class UpdateAdminMenuData extends Migrator {
         $this->execute('UPDATE `admin_menu` SET `level` = 3 WHERE `url` != "";');
         $this->execute('UPDATE `admin_menu` SET `level` = 2 WHERE `level` = 0;');
         $this->execute('UPDATE `admin_menu` SET `auth` = 1 WHERE `url` != "admin/Login/index";');
-        $this->execute('UPDATE `admin_menu` SET `permission` = 0 WHERE `url` = "admin/Login/index" OR `url` = "admin/Login/logout";');
-        $this->execute('UPDATE `admin_menu` SET `method` = 2 WHERE `url` = "admin/Login/index" OR `url` LIKE "%/upload" OR `url` LIKE "%/add" OR `url` LIKE "%/edit%";');
-        $this->execute('UPDATE `admin_menu` SET `log` = 0 WHERE `url` = "admin/Login/index";');
+        $this->execute('UPDATE `admin_menu` SET `method` = 2 WHERE `url` LIKE "%/upload" OR `url` LIKE "%/add" OR `url` LIKE "%/edit%";');
         $this->execute('UPDATE `admin_menu` SET `icon` = "ios-build", `component` = "", `router` = "/system" WHERE `id` = 3;');
         $this->execute('UPDATE `admin_menu` SET `icon` = "md-menu", `component` = "system/menu", `router` = "menu" WHERE `id` = 4;');
         $this->execute('UPDATE `admin_menu` SET `icon` = "ios-people", `component` = "system/user", `router` = "user" WHERE `id` = 9;');
@@ -48,6 +46,12 @@ class UpdateAdminMenuData extends Migrator {
         $this->execute('UPDATE `admin_menu` SET `icon` = "md-archive", `component` = "interface/group", `router` = "interfaceGroup" WHERE `id` = 43;');
         $this->execute('UPDATE `admin_menu` SET `icon` = "ios-archive", `component` = "app/group", `router` = "appsGroup" WHERE `id` = 49;');
         $this->execute('UPDATE `admin_menu` SET `icon` = "md-clipboard", `component` = "system/log", `router` = "log" WHERE `id` = 62;');
-        $this->execute('INSERT INTO `admin_menu` (`id`, `title`, `fid`, `url`, `auth`, `sort`, `show`, `icon`, `level`, `component`, `router`, `log`, `permission`, `method`) VALUES (72, "获取用户有权限的菜单", 15, "admin/Login/getAccessMenu", 1, 0, 1, "", 3, "", "", 1, 1, 1);');
+        $this->execute("INSERT INTO `admin_menu` (`id`, `title`, `fid`, `url`, `auth`, `sort`, `show`, `icon`, `level`, `component`, `router`, `log`, `permission`, `method`) VALUES (72, '获取用户有权限的菜单', 73, 'admin/Login/getAccessMenu', 1, 0, 0, '', 2, '', '', 0, 0, 1);");
+        $this->execute("INSERT INTO `admin_menu` (`id`, `title`, `fid`, `url`, `auth`, `sort`, `show`, `icon`, `level`, `component`, `router`, `log`, `permission`, `method`) VALUES (73, '系统支撑', 0, '', 0, 0, 0, 'logo-tux', 1, '', '', 0, 0, 1);");
+        $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 0, `permission` = 0, `method` = 2 WHERE `id` = 1;');
+        $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 1, `permission` = 0, `method` = 1 WHERE `id` = 2;');
+        $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 1, `permission` = 1, `method` = 2 WHERE `id` = 67;');
+        $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 1, `permission` = 1, `method` = 1 WHERE `id` = 68;');
+        $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 0, `permission` = 1, `method` = 1 WHERE `id` = 70;');
     }
 }
