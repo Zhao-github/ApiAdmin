@@ -101,14 +101,15 @@ class Tools {
      * 将二维数组变成指定key
      * @param $array
      * @param $keyName
-     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public static function buildArrByNewKey($array, $keyName = 'id') {
         $list = array();
         foreach ($array as $item) {
             $list[$item[$keyName]] = $item;
         }
+
         return $list;
     }
 
@@ -121,18 +122,18 @@ class Tools {
      * @param string $root
      * @return array
      */
-    public static function listToTree($list, $pk='id', $pid = 'fid', $child = 'children', $root = '0') {
+    public static function listToTree($list, $pk = 'id', $pid = 'fid', $child = 'children', $root = '0') {
         $tree = array();
-        if(is_array($list)) {
+        if (is_array($list)) {
             $refer = array();
             foreach ($list as $key => $data) {
                 $refer[$data[$pk]] = &$list[$key];
             }
             foreach ($list as $key => $data) {
-                $parentId =  $data[$pid];
+                $parentId = $data[$pid];
                 if ($root == $parentId) {
                     $tree[] = &$list[$key];
-                }else{
+                } else {
                     if (isset($refer[$parentId])) {
                         $parent = &$refer[$parentId];
                         $parent[$child][] = &$list[$key];
@@ -140,29 +141,31 @@ class Tools {
                 }
             }
         }
+
         return $tree;
     }
 
-    public static function formatTree($list, $lv = 0, $title = 'title'){
+    public static function formatTree($list, $lv = 0, $title = 'title') {
         $formatTree = array();
-        foreach($list as $key => $val){
+        foreach ($list as $key => $val) {
             $title_prefix = '';
-            for( $i=0;$i<$lv;$i++ ){
+            for ($i = 0; $i < $lv; $i++) {
                 $title_prefix .= "|---";
             }
             $val['lv'] = $lv;
             $val['namePrefix'] = $lv == 0 ? '' : $title_prefix;
-            $val['showName'] = $lv == 0 ? $val[$title] : $title_prefix.$val[$title];
-            if(!array_key_exists('children', $val)){
+            $val['showName'] = $lv == 0 ? $val[$title] : $title_prefix . $val[$title];
+            if (!array_key_exists('children', $val)) {
                 array_push($formatTree, $val);
-            }else{
+            } else {
                 $child = $val['children'];
                 unset($val['children']);
                 array_push($formatTree, $val);
-                $middle = self::formatTree($child, $lv+1, $title); //进行下一层递归
+                $middle = self::formatTree($child, $lv + 1, $title); //进行下一层递归
                 $formatTree = array_merge($formatTree, $middle);
             }
         }
+
         return $formatTree;
     }
 }
