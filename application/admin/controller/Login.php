@@ -102,21 +102,41 @@ class Login extends Base {
     public function getAccessMenu() {
         $isSupper = Tools::isAdministrator($this->userInfo['id']);
         if ($isSupper) {
-            $access = AdminMenu::all(['router' != '']);
-            $access = Tools::buildArrFromObj($access);
+            $access = (new AdminMenu())->where('router', '<>', '')->select();
+            $access = Tools::listToTree(Tools::buildArrFromObj($access));
 
             return $this->buildSuccess($access);
         } else {
             $groups = AdminAuthGroupAccess::get(['uid' => $this->userInfo['id']]);
             if (isset($groups) && $groups->group_id) {
                 $access = (new AdminAuthRule())->whereIn('group_id', $groups->group_id)->select();
-                $access = Tools::buildArrFromObj($access);
+                $access = array_unique(array_column(Tools::buildArrFromObj($access), 'url'));
+                array_push($access, "");
+                $menus = (new AdminMenu())->whereIn('url', $access)->where('show', 1)->select();
+                $menus = Tools::listToTree(Tools::buildArrFromObj($menus));
+                $menus = $this->rebuildMenu($menus);
 
-                return array_unique(array_column($access, 'url'));
+                return $this->buildSuccess($menus);
             } else {
-                return [];
+                return $this->buildSuccess();
             }
         }
+    }
+
+    private function rebuildMenu($menus) {
+        foreach ($menus as $key => $menu) {
+            if (isset($menu['children'])) {
+                foreach ($menu['children'] as $cKey => $child) {
+                    if (!isset($child['children'])) {
+
+                    }
+                }
+            } else {
+                unset($menus[$key]);
+            }
+        }
+
+        return $menus;
     }
 
     /**
