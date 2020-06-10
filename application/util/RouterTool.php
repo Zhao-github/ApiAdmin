@@ -20,7 +20,7 @@ class RouterTool {
     public static function buildAdminRouter() {
         $methodArr = ['*', 'get', 'post', 'put', 'delete'];
         $routePath = Env::get('route_path') . 'route.php';
-        $bakPath = Env::get('route_path') . 'route.php.bak';
+        $bakPath = Env::get('route_path') . 'route.bak';
         if (file_exists($bakPath)) {
             unlink($bakPath);
         }
@@ -42,6 +42,7 @@ class RouterTool {
                 }
             }
         }
+        $context .= "Route::group('admin', function() {Route::miss('admin/Miss/index');})->middleware('AdminResponse');" . PHP_EOL;
 
         file_put_contents($routePath, $context);
     }
