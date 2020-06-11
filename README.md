@@ -33,7 +33,13 @@ php think apiadmin:install --db mysql://root:123456@127.0.0.1:3306/apiadmin#utf8
 php think apiadmin:adminRouter
 ```
 
-> 第四步：获取管理后台账号密码
+> 第四步：构建后端路由
+
+```
+php think migrate:run
+```
+
+> 第五步：获取管理后台账号密码
 
 ```
 cat application/install/lock.ini
