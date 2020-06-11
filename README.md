@@ -3,12 +3,12 @@
 
 # ApiAdmin
 [![ApiAdmin](https://img.shields.io/hexpm/l/plug.svg)](http://www.apiadmin.org/)
-[![ApiAdmin](https://img.shields.io/badge/release-v4.0.0-blue.svg)](http://www.apiadmin.org/)
+[![ApiAdmin](https://img.shields.io/badge/release-v4.1.2-blue.svg)](http://www.apiadmin.org/)
 [![ApiAdmin](https://img.shields.io/badge/build-passing-brightgreen.svg)](http://www.apiadmin.org/)
-[![ApiAdmin](https://img.shields.io/badge/ApiAdmin-v4.0.0-brightgreen.svg)](http://www.apiadmin.org/)
+[![ApiAdmin](https://img.shields.io/badge/ApiAdmin-v4.1.2-brightgreen.svg)](http://www.apiadmin.org/)
 
 ## 前端页面
-ApiAdmin4.0是一个前后端完全分离的项目，前端采用Vue构建，如需要可视化配置的请移步：[ApiAdmin-WEB](https://gitee.com/apiadmin/ApiAdmin-WEB)
+ApiAdmin4.1是一个前后端完全分离的项目，前端采用Vue构建，如需要可视化配置的请移步：[ApiAdmin-WEB](https://gitee.com/apiadmin/ApiAdmin-WEB)
 
 ## 快速安装
 
@@ -27,7 +27,13 @@ composer create-project apiadmin/apiadmin4
 php think apiadmin:install --db mysql://root:123456@127.0.0.1:3306/apiadmin#utf8mb4
 ```
 
-> 第三步：获取管理后台账号密码
+> 第三步：构建后端路由
+
+```
+php think apiadmin:adminRouter
+```
+
+> 第四步：获取管理后台账号密码
 
 ```
 cat application/install/lock.ini
@@ -48,7 +54,7 @@ cat application/install/lock.ini
 
 **系统需求**
 
-- PHP >= 5.6
+- PHP >= 7.1
 - MySQL >= 5.5.3
 - Redis
 
@@ -56,7 +62,6 @@ cat application/install/lock.ini
 
 - ThinkPHP v5.1.*
 - Vue 2.0
-- semanticUI
 - ...
 
 **功能简介**
@@ -104,8 +109,8 @@ cat application/install/lock.ini
 
 ## 鸣谢
 
-ApiAdmin走到今天，也正式迈入4.0时代了，同时，ApiAdmin也迎来了它的一岁生日，我们怀着激动的心情迎来这次发布。在新版本发布之际，我们真诚的感谢从1.0到3.0陪我们一路走来的朋友们。感谢你们的支持和信任！当然也感谢#开源中国#给大陆本土开源提供这样一个优秀的平台。
+ApiAdmin走到今天，也正式迈入4.1时代了，我们怀着激动的心情迎来这次发布。在新版本发布之际，我们真诚的感谢从1.0到4.0陪我们一路走来的朋友们。感谢你们的支持和信任！当然也感谢#开源中国#给大陆本土开源提供这样一个优秀的平台。
 
 ## 附：升级指南
 
-很抱歉的告诉大家，虽然我们尽可能的和往期版本进行了兼容，但是，由于整体架构变化很大，所以想要零成本升级有点困难。我们建议大家可以使用4.0做新接口，慢慢的将3.0版本的接口移植到4.0。
+很抱歉的告诉大家，虽然我们尽可能的和往期版本进行了兼容，但是，由于整体架构变化很大，所以想要零成本升级有点困难。我们建议大家可以使用4.1做新接口，慢慢的将4.0版本的接口移植到4.1。
