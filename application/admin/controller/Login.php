@@ -64,6 +64,7 @@ class Login extends Base {
             return $this->buildFailed(ReturnCode::LOGIN_ERROR, '用户名密码不正确');
         }
         $userInfo['access'] = $this->getAccess($userInfo['id']);
+        $userInfo['menu'] = $this->getAccessMenu($userInfo['id']);
 
         $apiAuth = md5(uniqid() . time());
         cache('Login:' . $apiAuth, json_encode($userInfo), config('apiadmin.ONLINE_TIME'));
@@ -98,29 +99,37 @@ class Login extends Base {
 
     /**
      * 获取当前用户的允许菜单
+     * @param int $uid
+     * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public function getAccessMenu() {
-        $isSupper = Tools::isAdministrator($this->userInfo['id']);
+    public function getAccessMenu($uid = 0) {
+        if ($uid == 0) {
+             $uid = $this->userInfo['id'];
+        }
+        $returnData = [];
+        $isSupper = Tools::isAdministrator($uid);
         if ($isSupper) {
             $access = (new AdminMenu())->where('router', '<>', '')->select();
-            $access = Tools::listToTree(Tools::buildArrFromObj($access));
-
-            return $this->buildSuccess($access);
+            $returnData = Tools::listToTree(Tools::buildArrFromObj($access));
         } else {
-            $groups = AdminAuthGroupAccess::get(['uid' => $this->userInfo['id']]);
+            $groups = AdminAuthGroupAccess::get(['uid' => $uid]);
             if (isset($groups) && $groups->group_id) {
                 $access = (new AdminAuthRule())->whereIn('group_id', $groups->group_id)->select();
                 $access = array_unique(array_column(Tools::buildArrFromObj($access), 'url'));
                 array_push($access, "");
                 $menus = (new AdminMenu())->whereIn('url', $access)->where('show', 1)->select();
-                $menus = Tools::listToTree(Tools::buildArrFromObj($menus));
-                RouterTool::buildVueRouter($menus);
-
-                return $this->buildSuccess($menus);
-            } else {
-                return $this->buildSuccess();
+                $returnData = Tools::listToTree(Tools::buildArrFromObj($menus));
+                RouterTool::buildVueRouter($returnData);
             }
+        }
+        if ($uid == 0) {
+            return $this->buildSuccess($returnData);
+        } else {
+            return $returnData;
         }
     }
 
