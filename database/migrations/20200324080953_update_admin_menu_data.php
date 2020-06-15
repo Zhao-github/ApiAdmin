@@ -51,7 +51,7 @@ class UpdateAdminMenuData extends Migrator {
         $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 0, `permission` = 0, `method` = 2 WHERE `id` = 1;');
         $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 1, `permission` = 0, `method` = 1 WHERE `id` = 2;');
         $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 1, `permission` = 1, `method` = 2 WHERE `id` = 67;');
-        $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 1, `permission` = 1, `method` = 1 WHERE `id` = 68;');
+        $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 1, `permission` = 1, `method` = 2 WHERE `id` = 68;');
         $this->execute('UPDATE `admin_menu` SET `fid` = 73, `show` = 0, `level` = 2, `log` = 0, `permission` = 1, `method` = 1 WHERE `id` = 70;');
     }
 }

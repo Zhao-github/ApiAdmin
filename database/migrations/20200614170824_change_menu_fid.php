@@ -26,6 +26,5 @@ class ChangeMenuFid extends Migrator {
      */
     public function up() {
         $this->execute('UPDATE `admin_menu` SET `fid` = 30 WHERE `id` = 37 OR `id` = 38;');
-        $this->execute('UPDATE `admin_menu` SET `method` = 2 WHERE `id` = 68;');
     }
 }
