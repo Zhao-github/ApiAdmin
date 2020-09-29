@@ -1,4 +1,5 @@
 <?php
+declare (strict_types=1);
 /**
  * 构建各类有意义的随机数
  * @since   2018-08-07
@@ -18,7 +19,7 @@ class StrRandom {
      * @return float
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function randomFloat($min = -999999999, $max = 999999999, $dmin = 0, $dmax = 8) {
+    public static function randomFloat(int $min = -999999999, int $max = 999999999, int $dmin = 0, int $dmax = 8): float {
         $rand = '';
         $intNum = mt_rand($min, $max);
         $floatLength = mt_rand($dmin, $dmax);
@@ -36,7 +37,7 @@ class StrRandom {
      * @return false|string
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function randomDate($format = 'Y-m-d H:i:s') {
+    public static function randomDate(string $format = 'Y-m-d H:i:s'): string {
         $timestamp = time() - mt_rand(0, 86400 * 3650);
 
         return date($format, $timestamp);
@@ -47,7 +48,7 @@ class StrRandom {
      * @return string
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function randomIp() {
+    public static function randomIp(): string {
         $ipLong = [
             ['607649792', '608174079'], // 36.56.0.0-36.63.255.255
             ['1038614528', '1039007743'], // 61.232.0.0-61.237.255.255
@@ -70,7 +71,7 @@ class StrRandom {
      * @return mixed
      * @author zhaoxiang <zhaoxiang051405@gmail','com>
      */
-    public static function randomProtocol() {
+    public static function randomProtocol(): string {
         $proArr = [
             'http',
             'ftp',
@@ -95,7 +96,7 @@ class StrRandom {
      * 随机生成一个顶级域名
      * @author zhaoxiang <zhaoxiang051405@gmail','com>
      */
-    public static function randomTld() {
+    public static function randomTld(): string {
         $tldArr = [
             'com', 'cn', 'xin', 'net', 'top', '在线',
             'xyz', 'wang', 'shop', 'site', 'club', 'cc',
@@ -116,7 +117,7 @@ class StrRandom {
      * @return string
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function randomDomain() {
+    public static function randomDomain(): string {
         $len = mt_rand(6, 16);
 
         return strtolower(Strs::randString($len)) . '.' . self::randomTld();
@@ -128,7 +129,7 @@ class StrRandom {
      * @return string
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function randomUrl($protocol = '') {
+    public static function randomUrl($protocol = ''): string {
         $protocol = $protocol ? $protocol : self::randomProtocol();
 
         return $protocol . '://' . self::randomDomain();
@@ -140,7 +141,7 @@ class StrRandom {
      * @return string
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function randomEmail($domain = '') {
+    public static function randomEmail($domain = ''): string {
         $len = mt_rand(6, 16);
         $domain = $domain ? $domain : self::randomDomain();
 
@@ -149,7 +150,7 @@ class StrRandom {
     }
 
 
-    public static function randomPhone() {
+    public static function randomPhone(): string {
         $prefixArr = [133, 153, 173, 177, 180, 181, 189, 199, 134, 135,
             136, 137, 138, 139, 150, 151, 152, 157, 158, 159, 172, 178,
             182, 183, 184, 187, 188, 198, 130, 131, 132, 155, 156, 166,
@@ -164,7 +165,7 @@ class StrRandom {
      * @return string
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function randomId() {
+    public static function randomId(): string {
         $prefixArr = [
             11, 12, 13, 14, 15,
             21, 22, 23,

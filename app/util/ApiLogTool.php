@@ -1,4 +1,5 @@
 <?php
+declare (strict_types=1);
 /**
  * @since   2017-04-14
  * @author  zhaoxiang <zhaoxiang051405@gmail.com>
@@ -18,23 +19,41 @@ class ApiLogTool {
     private static $userInfo = 'null';
     private static $separator = ' | ';
 
-    public static function setAppInfo($data) {
+    /**
+     * 设置应用信息
+     * @param array $data
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @desc appId|appName|deviceId
+     */
+    public static function setAppInfo(array $data): void {
         self::$appInfo =
-            (isset($data['app_id']) ? $data['app_id'] : 'null') . self::$separator .
-            (isset($data['app_name']) ? $data['app_name'] : 'null') . self::$separator .
-            (isset($data['device_id']) ? $data['device_id'] : 'null');
+            ($data['app_id'] ?? 'null') . self::$separator .
+            ($data['app_name'] ?? 'null') . self::$separator .
+            ($data['device_id'] ?? 'null');
     }
 
-    public static function setHeader($data) {
+    /**
+     * 设置请求头日志数据
+     * @param array $data
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @desc accessToken|version
+     */
+    public static function setHeader(array $data): void {
         $accessToken = (isset($data['access-token']) && !empty($data['access-token'])) ? $data['access-token'] : 'null';
         $version = (isset($data['version']) && !empty($data['version'])) ? $data['version'] : 'null';
         self::$header = $accessToken . self::$separator . $version;
     }
 
-    public static function setApiInfo($data) {
+    /**
+     * 设置Api日志数据
+     * @param array $data
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @desc hash|apiClass
+     */
+    public static function setApiInfo(array $data): void {
         self::$apiInfo =
-            (isset($data['hash']) ? $data['hash'] : 'null') . self::$separator .
-            (isset($data['api_class']) ? $data['api_class'] : 'null');
+            ($data['hash'] ?? 'null') . self::$separator .
+            ($data['api_class'] ?? 'null');
     }
 
     /**
@@ -42,28 +61,44 @@ class ApiLogTool {
      * @param $data
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function setUserInfo($data) {
+    public static function setUserInfo($data): void {
         if (is_array($data) || is_object($data)) {
             $data = json_encode($data);
             self::$userInfo = $data;
         }
     }
 
-    public static function setRequest($data) {
+    /**
+     * 设置请求信息
+     * @param $data
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public static function setRequest($data): void {
         if (is_array($data) || is_object($data)) {
             $data = json_encode($data);
         }
         self::$request = $data;
     }
 
-    public static function setResponse($data, $code = '') {
+    /**
+     * 设置返回的信息
+     * @param $data
+     * @param string $code
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     * @desc 返回码|数据
+     */
+    public static function setResponse($data, string $code = ''): void {
         if (is_array($data) || is_object($data)) {
             $data = json_encode($data);
         }
         self::$response = $code . self::$separator . $data;
     }
 
-    public static function save() {
+    /**
+     * 保存接口日志数据
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public static function save(): void {
         $logPath = Env::get('runtime_path') . 'ApiLog' . DIRECTORY_SEPARATOR;
         $logStr = implode(self::$separator, array(
             '[' . date('Y-m-d H:i:s') . ']',
@@ -81,15 +116,16 @@ class ApiLogTool {
     }
 
     /**
+     * 保存日志文件
      * @param string $log 被记录的内容
      * @param string $type 日志文件名称
      * @param string $filePath
      */
-    public static function writeLog($log, $type = 'sql', $filePath = '') {
-        if(!$filePath) {
+    public static function writeLog(string $log, string $type = 'sql', string $filePath = ''): void {
+        if (!$filePath) {
             $filePath = Env::get('runtime_path') . DIRECTORY_SEPARATOR;
         }
-        $filename = $filePath . date("Ymd") . '_' . $type . ".log";
+        $filename = $filePath . $type . DIRECTORY_SEPARATOR . date("YmdH") . ".log";
         @$handle = fopen($filename, "a+");
         @fwrite($handle, date('Y-m-d H:i:s') . "\t" . $log . "\r\n");
         @fclose($handle);

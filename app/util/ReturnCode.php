@@ -1,4 +1,5 @@
 <?php
+declare (strict_types=1);
 /**
  * 错误码统一维护
  * @since   2017/02/28 创建
@@ -41,8 +42,9 @@ class ReturnCode {
     const UNKNOWN = -998;
     const EXCEPTION = -999;
 
-    public static function getConstants() {
+    public static function getConstants(): array {
         $oClass = new \ReflectionClass(__CLASS__);
+
         return $oClass->getConstants();
     }
 }

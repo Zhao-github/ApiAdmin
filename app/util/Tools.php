@@ -1,4 +1,5 @@
 <?php
+declare (strict_types=1);
 /**
  *
  * @since   2017-11-01
@@ -9,7 +10,13 @@ namespace app\util;
 
 class Tools {
 
-    public static function getDate($timestamp) {
+    /**
+     * 获取相对时间
+     * @param int $timestamp
+     * @return string
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public static function getDate(int $timestamp): string {
         $now = time();
         $diff = $now - $timestamp;
         if ($diff <= 60) {
@@ -32,7 +39,7 @@ class Tools {
      * @return string
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function userMd5($str, $auth_key = '') {
+    public static function userMd5(string $str, string $auth_key = ''): string {
         if (!$auth_key) {
             $auth_key = config('apiadmin.AUTH_KEY');
         }
@@ -42,11 +49,11 @@ class Tools {
 
     /**
      * 判断当前用户是否是超级管理员
-     * @param string $uid
+     * @param int $uid
      * @return bool
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function isAdministrator($uid = '') {
+    public static function isAdministrator(int $uid = 0): bool {
         if (!empty($uid)) {
             $adminConf = config('apiadmin.USER_ADMINISTRATOR');
             if (is_array($adminConf)) {
@@ -83,7 +90,7 @@ class Tools {
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function buildArrFromObj($res, $key = '') {
+    public static function buildArrFromObj(array $res, string $key = ''): array {
         $arr = [];
         foreach ($res as $value) {
             $value = $value->toArray();
@@ -104,7 +111,7 @@ class Tools {
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function buildArrByNewKey($array, $keyName = 'id') {
+    public static function buildArrByNewKey(array $array, string $keyName = 'id'): array {
         $list = array();
         foreach ($array as $item) {
             $list[$item[$keyName]] = $item;
@@ -122,7 +129,7 @@ class Tools {
      * @param string $root
      * @return array
      */
-    public static function listToTree($list, $pk = 'id', $pid = 'fid', $child = 'children', $root = '0') {
+    public static function listToTree(array $list, string $pk = 'id', string $pid = 'fid', string $child = 'children', string $root = '0'): array {
         $tree = array();
         if (is_array($list)) {
             $refer = array();
@@ -145,7 +152,7 @@ class Tools {
         return $tree;
     }
 
-    public static function formatTree($list, $lv = 0, $title = 'title') {
+    public static function formatTree(array $list, int $lv = 0, string $title = 'title'): array {
         $formatTree = array();
         foreach ($list as $key => $val) {
             $title_prefix = '';

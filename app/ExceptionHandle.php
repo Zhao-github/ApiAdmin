@@ -53,6 +53,6 @@ class ExceptionHandle extends Handle
         // 添加自定义异常处理机制
 
         // 其他错误交给系统处理
-        return parent::render($request, $e);
+        return parent::render($request, $e)->header(config('apiadmin.CROSS_DOMAIN'));
     }
 }
