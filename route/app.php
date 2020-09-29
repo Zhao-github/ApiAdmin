@@ -10,8 +10,8 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-Route::get('think', function () {
-    return 'hello,ThinkPHP6!';
+Route::group('admin', function() {
+    //Route::rule('Index/index', 'admin.Index/index', 'get');
+    //MISS路由定义
+    Route::miss('admin.Miss/index');
 });
-
-Route::get('hello/:name', 'index/hello');
