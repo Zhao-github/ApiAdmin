@@ -5,6 +5,8 @@
 return [
     // 指令定义
     'commands' => [
-        'hello' => 'app\command\Hello',
+        'apiadmin:adminRouter' => 'app\command\FreshAdminRouter',
+        'apiadmin:install'     => 'app\command\Install',
+        'apiadmin:test'        => 'app\command\ApiAdmin'
     ],
 ];

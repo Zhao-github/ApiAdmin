@@ -1,0 +1,17 @@
+APP_DEBUG = true
+
+[APP]
+DEFAULT_TIMEZONE = Asia/Shanghai
+
+[DATABASE]
+TYPE = {$DB_TYPE}
+HOSTNAME = {$DB_HOST}
+DATABASE = {$DB_NAME}
+USERNAME = {$DB_USER}
+PASSWORD = {$DB_PASSWORD}
+HOSTPORT = {$DB_PORT}
+CHARSET = {$DB_CHAR}
+DEBUG = false
+
+[LANG]
+default_lang = zh-cn

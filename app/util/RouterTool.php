@@ -10,7 +10,7 @@ namespace app\util;
 
 
 use app\model\AdminMenu;
-use think\facade\Env;
+use think\App;
 
 class RouterTool {
 
@@ -21,10 +21,11 @@ class RouterTool {
      * @throws \think\db\exception\ModelNotFoundException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function buildAdminRouter():void {
+    public static function buildAdminRouter(): void {
         $methodArr = ['*', 'get', 'post', 'put', 'delete'];
-        $routePath = Env::get('route_path') . 'route.php';
-        $bakPath = Env::get('route_path') . 'route.bak';
+        $routePath = (new App())->getRootPath() . 'route' . DIRECTORY_SEPARATOR . 'app.php';
+        $bakPath = (new App())->getRootPath() . 'route' . DIRECTORY_SEPARATOR . 'app.bak';
+
         if (file_exists($bakPath)) {
             unlink($bakPath);
         }
@@ -34,19 +35,20 @@ class RouterTool {
 
         $context = '<?php' . PHP_EOL;
         $context .= 'use think\facade\Route;' . PHP_EOL;
-        $context .= "Route::miss('api/Miss/index');" . PHP_EOL;
+        $context .= "Route::group('admin', function() {" . PHP_EOL;
 
         $menus = (new AdminMenu())->select();
         if ($menus) {
             foreach ($menus as $menu) {
+                $menu = $menu->toArray();
+                $menuUrl = str_replace('admin/', '', $menu['url']);
                 if ($menu['url']) {
-                    $context .= "Route::rule('{$menu['url']}', '{$menu['url']}', '" .
-                        $methodArr[$menu['method']] . "')" .
-                        self::getAdminMiddleware($menu) . PHP_EOL;
+                    $context .= "    Route::rule('{$menuUrl}', 'admin.{$menuUrl}', '"
+                        . $methodArr[$menu['method']] . "')" . self::getAdminMiddleware($menu) . PHP_EOL;
                 }
             }
         }
-        $context .= "Route::group('admin', function() {Route::miss('admin/Miss/index');})->middleware('AdminResponse');" . PHP_EOL;
+        $context .= "    Route::miss('admin.Miss/index');" . PHP_EOL . "});" . PHP_EOL;
 
         file_put_contents($routePath, $context);
     }
