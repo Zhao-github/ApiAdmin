@@ -91,17 +91,17 @@ class RouterTool {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     private static function getAdminMiddleware(array $menu): string {
-        $middle = ['AdminResponse'];
+        $middle = ['app\middleware\AdminResponse::class'];
         if ($menu['log']) {
-            array_unshift($middle, 'AdminLog');
+            array_unshift($middle, 'app\middleware\AdminLog::class');
         }
         if ($menu['permission']) {
-            array_unshift($middle, 'AdminPermission');
+            array_unshift($middle, 'app\middleware\AdminPermission::class');
         }
         if ($menu['auth']) {
-            array_unshift($middle, 'AdminAuth');
+            array_unshift($middle, 'app\middleware\AdminAuth::class');
         }
 
-        return '->middleware(["' . implode('", "', $middle) . '"]);';
+        return '->middleware([' . implode(', ', $middle) . ']);';
     }
 }
