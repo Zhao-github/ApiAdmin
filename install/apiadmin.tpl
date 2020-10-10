@@ -1,12 +1,12 @@
 <?php
 // +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK ]
+// | ApiAdmin [ JUST FOR API ]
 // +----------------------------------------------------------------------
-// | Copyright (c) 2006~2016 http://thinkphp.cn All rights reserved.
+// | Copyright (c) 2017~2020 https://www.apiadmin.org/ All rights reserved.
 // +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
+// | Licensed ( https://gitee.com/apiadmin/ApiAdmin/blob/master/LICENSE.txt )
 // +----------------------------------------------------------------------
-// | Author: liu21st <liu21st@gmail.com>
+// | Author: zhaoxiang <zhaoxiang051405@gmail.com>
 // +----------------------------------------------------------------------
 
 return [

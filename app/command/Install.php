@@ -7,14 +7,11 @@ use app\util\Strs;
 use think\console\Command;
 use think\console\Input;
 use think\console\Output;
-use think\db\Connection;
 
 class Install extends Command {
 
     protected function configure(): void {
-        // 指令配置
-        $this->setName('apiadmin:install')
-            ->setDescription('ApiAdmin安装脚本');
+        $this->setName('apiadmin:install')->setDescription('ApiAdmin安装脚本');
     }
 
     /**
@@ -53,8 +50,8 @@ class Install extends Command {
 
         try {
             $options = $this->parseDsnConfig($output);
-
-            Connection::instance($options)->getTables($options['database']);
+            $dsn = "{$options['type']}:dbname={$options['database']};host={$options['hostname']};port={$options['hostport']};charset={$options['charset']}";
+            new \PDO($dsn, $options['username'], $options['password']);
 
             //处理数据库配置文件
             $dbConf = str_replace([
