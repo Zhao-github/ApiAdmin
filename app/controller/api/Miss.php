@@ -16,8 +16,7 @@ class Miss extends Base {
             throw new Exception('请先执行安装脚本，完成项目初始化！');
         } else {
             $this->debug([
-                'TpVersion' => App::version(),
-                'Float'     => StrRandom::randomPhone()
+                'TpVersion' => App::version()
             ]);
 
             return $this->buildSuccess([
