@@ -28,7 +28,7 @@ class Install extends Command {
 
         if (file_exists($lockFile)) {
             $output->highlight("You have already installed it, please do not reinstall！");
-            $output->highlight("If necessary, delete the app/install/lock.ini and try again");
+            $output->highlight("If necessary, delete the install/lock.ini and try again");
             exit;
         }
 
