@@ -9,16 +9,16 @@ use think\facade\Route;
 
 Route::group('wiki', function() {
     Route::rule(
-        'Api/login', 'wiki/Api/login', 'post'
+        'Api/login', 'wiki.Api/login', 'post'
     );
     Route::group('Api', function() {
-        Route::rule('login', 'wiki/Api/login', 'post');
-        Route::rule('errorCode', 'wiki/Api/errorCode', 'get');
-        Route::rule('groupList', 'wiki/Api/groupList', 'get');
-        Route::rule('detail', 'wiki/Api/detail', 'get');
-        Route::rule('logout', 'wiki/Api/logout', 'get');
-    })->middleware(['WikiAuth']);
+        Route::rule('login', 'wiki.Api/login', 'post');
+        Route::rule('errorCode', 'wiki.Api/errorCode', 'get');
+        Route::rule('groupList', 'wiki.Api/groupList', 'get');
+        Route::rule('detail', 'wiki.Api/detail', 'get');
+        Route::rule('logout', 'wiki.Api/logout', 'get');
+    })->middleware([app\middleware\WikiAuth::class]);
 
     //MISS路由定义
-    Route::miss('admin/Miss/index');
-})->middleware('AdminResponse');
+    Route::miss('admin.Miss/index');
+})->middleware(app\middleware\AdminResponse::class);
