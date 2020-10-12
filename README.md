@@ -8,7 +8,7 @@
 [![ApiAdmin](https://img.shields.io/badge/ApiAdmin-5.0.0-brightgreen.svg)](http://www.apiadmin.org/)
 
 ## 前端页面
-ApiAdmin4.1是一个前后端完全分离的项目，前端采用Vue构建，如需要可视化配置的请移步：[ApiAdmin-WEB](https://gitee.com/apiadmin/ApiAdmin-WEB)
+ApiAdmin5.0是一个前后端完全分离的项目，前端采用Vue构建，如需要可视化配置的请移步：[ApiAdmin-WEB](https://gitee.com/apiadmin/ApiAdmin-WEB)
 
 ## 快速安装
 

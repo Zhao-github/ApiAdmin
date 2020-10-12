@@ -298,8 +298,8 @@ class ThirdLogin extends Base {
      * @throws \think\db\exception\ModelNotFoundException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    private function doLogin($openid, $userDetail): Response {
-        $userInfo = AdminUser::get(['openid' => $openid]);
+    private function doLogin(string $openid, array $userDetail): Response {
+        $userInfo = (new AdminUser())->where('openid', $openid)->find();
         if (empty($userInfo)) {
             $userInfo = AdminUser::create([
                 'nickname'    => $userDetail['nickname'],
@@ -313,7 +313,7 @@ class ThirdLogin extends Base {
             $userDataArr = [
                 'login_times'     => 1,
                 'uid'             => $userInfo->id,
-                'last_login_ip'   => $this->request->ip(1),
+                'last_login_ip'   => sprintf("%u", ip2long($this->request->ip())),
                 'last_login_time' => time(),
                 'head_img'        => $userDetail['head_img']
             ];
@@ -328,7 +328,7 @@ class ThirdLogin extends Base {
             if ($userInfo['status']) {
                 //更新用户数据
                 $userInfo->userData->login_times++;
-                $userInfo->userData->last_login_ip = $this->request->ip(1);
+                $userInfo->userData->last_login_ip = sprintf("%u", ip2long($this->request->ip()));
                 $userInfo->userData->last_login_time = time();
                 $userInfo->userData->save();
             } else {
@@ -336,8 +336,8 @@ class ThirdLogin extends Base {
             }
         }
 
-        $userInfo['access'] = (new Login())->getAccess($userInfo['id']);
-        $userInfo['menu'] = (new Login())->getAccessMenu($userInfo['id']);
+        $userInfo['access'] = (new Login(App()))->getAccess($userInfo['id']);
+        $userInfo['menu'] = (new Login(App()))->getAccessMenuData($userInfo['id']);
 
         $apiAuth = md5(uniqid() . time());
         cache('Login:' . $apiAuth, json_encode($userInfo), config('apiadmin.ONLINE_TIME'));
