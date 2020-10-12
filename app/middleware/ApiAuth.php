@@ -50,11 +50,11 @@ class ApiAuth {
                 }
             }
 
-            $accessToken = $request->header('access-token', '');
+            $accessToken = $request->header('Access-Token', '');
             if (!$accessToken) {
                 return json([
                     'code' => ReturnCode::AUTH_ERROR,
-                    'msg'  => '缺少必要参数access-token',
+                    'msg'  => '缺少必要参数Access-Token',
                     'data' => []
                 ])->header($header);
             }
@@ -66,7 +66,7 @@ class ApiAuth {
             if ($appInfo === false) {
                 return json([
                     'code' => ReturnCode::ACCESS_TOKEN_TIMEOUT,
-                    'msg'  => 'access-token已过期',
+                    'msg'  => 'Access-Token已过期',
                     'data' => []
                 ])->header($header);
             }
