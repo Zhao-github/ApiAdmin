@@ -177,9 +177,9 @@ class InterfaceList extends Base {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function refresh(): Response {
-        $rootPath = Env::get('root_path');
+        $rootPath = root_path();
         $apiRoutePath = $rootPath . 'route/apiRoute.php';
-        $tplPath = $rootPath . 'application/install/apiRoute.tpl';
+        $tplPath = $rootPath . 'install/apiRoute.tpl';
         $methodArr = ['*', 'POST', 'GET'];
 
         $tplOriginStr = file_get_contents($tplPath);
@@ -187,9 +187,9 @@ class InterfaceList extends Base {
         $tplStr = [];
         foreach ($listInfo as $value) {
             if ($value['hash_type'] === 1) {
-                array_push($tplStr, 'Route::rule(\'' . addslashes($value->api_class) . '\',\'api/' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([\'ApiAuth\', \'ApiPermission\', \'RequestFilter\', \'ApiLog\']);');
+                array_push($tplStr, 'Route::rule(\'' . addslashes($value->api_class) . '\',\'api.' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([app\middleware\ApiAuth::class, app\middleware\ApiPermission::class, app\middleware\RequestFilter::class, app\middleware\ApiLog::class]);');
             } else {
-                array_push($tplStr, 'Route::rule(\'' . addslashes($value->hash) . '\',\'api/' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([\'ApiAuth\', \'ApiPermission\', \'RequestFilter\', \'ApiLog\']);');
+                array_push($tplStr, 'Route::rule(\'' . addslashes($value->hash) . '\',\'api.' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([app\middleware\ApiAuth::class, app\middleware\ApiPermission::class, app\middleware\RequestFilter::class, app\middleware\ApiLog::class]);');
             }
         }
         $tplOriginStr = str_replace(['{$API_RULE}'], [implode($tplStr, PHP_EOL . '    ')], $tplOriginStr);

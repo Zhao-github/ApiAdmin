@@ -1,6 +1,7 @@
 <?php
+declare (strict_types=1);
 
-namespace app\http\middleware;
+namespace app\middleware;
 
 use app\model\AdminFields;
 use app\util\DataType;

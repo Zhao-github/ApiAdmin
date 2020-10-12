@@ -7,5 +7,5 @@ use think\facade\Route;
 
 Route::group('api', function() {
     //MISS路由定义
-    Route::miss('api/Miss/index');
-})->middleware('ApiResponse');
+    Route::miss('api.Miss/index');
+})->middleware(app\middleware\ApiResponse::class);
