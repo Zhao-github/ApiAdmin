@@ -22,8 +22,10 @@ class Login extends Base {
 
     /**
      * 用户登录【账号密码登录】
-     * @return \think\Response
-     * @throws \think\Exception
+     * @return Response
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function index(): Response {
@@ -37,7 +39,7 @@ class Login extends Base {
         } else {
             $password = Tools::userMd5($password);
         }
-        $userInfo = AdminUser::find(['username' => $username, 'password' => $password]);
+        $userInfo = (new AdminUser())->where('username', $username)->where('password', $password)->find();
         if (!empty($userInfo)) {
             if ($userInfo['status']) {
                 //更新用户数据
@@ -45,13 +47,13 @@ class Login extends Base {
                 $data = [];
                 if ($userData) {
                     $userData->login_times++;
-                    $userData->last_login_ip = $this->request->ip(1);
+                    $userData->last_login_ip = sprintf("%u", ip2long($this->request->ip()));
                     $userData->last_login_time = time();
                     $userData->save();
                 } else {
                     $data['login_times'] = 1;
                     $data['uid'] = $userInfo['id'];
-                    $data['last_login_ip'] = $this->request->ip(1);
+                    $data['last_login_ip'] = sprintf("%u", ip2long($this->request->ip()));
                     $data['last_login_time'] = time();
                     $data['head_img'] = '';
                     AdminUserData::create($data);
@@ -65,7 +67,7 @@ class Login extends Base {
             return $this->buildFailed(ReturnCode::LOGIN_ERROR, '用户名密码不正确');
         }
         $userInfo['access'] = $this->getAccess($userInfo['id']);
-        $userInfo['menu'] = $this->getAccessMenu($userInfo['id']);
+        $userInfo['menu'] = $this->getAccessMenuData($userInfo['id']);
 
         $apiAuth = md5(uniqid() . time());
         cache('Login:' . $apiAuth, json_encode($userInfo), config('apiadmin.ONLINE_TIME'));
@@ -73,25 +75,25 @@ class Login extends Base {
 
         $userInfo['apiAuth'] = $apiAuth;
 
-        return $this->buildSuccess($userInfo, '登录成功');
+        return $this->buildSuccess($userInfo->toArray(), '登录成功');
     }
 
     /**
      * 获取用户信息
-     * @return mixed
+     * @return Response
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public function getUserInfo() {
+    public function getUserInfo(): Response {
         return $this->buildSuccess($this->userInfo);
     }
 
     /**
      * 用户登出
-     * @return array
+     * @return Response
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public function logout() {
-        $ApiAuth = $this->request->header('ApiAuth');
+    public function logout(): Response {
+        $ApiAuth = $this->request->header('Api-Auth');
         cache('Login:' . $ApiAuth, null);
         cache('Login:' . $this->userInfo['id'], null);
 
@@ -100,24 +102,33 @@ class Login extends Base {
 
     /**
      * 获取当前用户的允许菜单
+     * @return Response
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
+    public function getAccessMenu(): Response {
+        return $this->buildSuccess($this->getAccessMenuData($this->userInfo['id']));
+    }
+
+    /**
+     * 获取当前用户的允许菜单
      * @param int $uid
      * @return array
      * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public function getAccessMenu($uid = 0) {
-        if ($uid == 0) {
-            $uid = $this->userInfo['id'];
-        }
+    public function getAccessMenuData(int $uid): array {
         $returnData = [];
         $isSupper = Tools::isAdministrator($uid);
         if ($isSupper) {
             $access = (new AdminMenu())->where('router', '<>', '')->select();
             $returnData = Tools::listToTree(Tools::buildArrFromObj($access));
         } else {
-            $groups = AdminAuthGroupAccess::get(['uid' => $uid]);
+            $groups = (new AdminAuthGroupAccess())->where('uid', $uid)->find();
             if (isset($groups) && $groups->group_id) {
                 $access = (new AdminAuthRule())->whereIn('group_id', $groups->group_id)->select();
                 $access = array_unique(array_column(Tools::buildArrFromObj($access), 'url'));
@@ -127,28 +138,28 @@ class Login extends Base {
                 RouterTool::buildVueRouter($returnData);
             }
         }
-        if ($uid == 0) {
-            return $this->buildSuccess($returnData);
-        } else {
-            return $returnData;
-        }
+
+        return $returnData;
     }
 
     /**
      * 获取用户权限数据
      * @param $uid
      * @return array
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public function getAccess($uid) {
+    public function getAccess(int $uid): array {
         $isSupper = Tools::isAdministrator($uid);
         if ($isSupper) {
-            $access = AdminMenu::all();
+            $access = (new AdminMenu())->select();
             $access = Tools::buildArrFromObj($access);
 
             return array_values(array_filter(array_column($access, 'url')));
         } else {
-            $groups = AdminAuthGroupAccess::get(['uid' => $uid]);
+            $groups = (new AdminAuthGroupAccess())->where('uid', $uid)->find();
             if (isset($groups) && $groups->group_id) {
                 $access = (new AdminAuthRule())->whereIn('group_id', $groups->group_id)->select();
                 $access = Tools::buildArrFromObj($access);

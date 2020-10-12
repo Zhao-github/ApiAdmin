@@ -15,7 +15,7 @@ class WikiAuth {
      */
     public function handle($request, \Closure $next) {
         $header = config('apiadmin.CROSS_DOMAIN');
-        $ApiAuth = $request->header('apiAuth', '');
+        $ApiAuth = $request->header('Api-Auth', '');
         if ($ApiAuth) {
             $userInfo = cache('Login:' . $ApiAuth);
             if (!$userInfo) {

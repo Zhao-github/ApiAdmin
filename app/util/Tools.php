@@ -85,12 +85,12 @@ class Tools {
 
     /**
      * 将查询的二维对象转换成二维数组
-     * @param array $res
+     * @param $res
      * @param string $key 允许指定索引值
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function buildArrFromObj(array $res, string $key = ''): array {
+    public static function buildArrFromObj($res, string $key = ''): array {
         $arr = [];
         foreach ($res as $value) {
             $value = $value->toArray();
@@ -106,8 +106,8 @@ class Tools {
 
     /**
      * 将二维数组变成指定key
-     * @param $array
-     * @param $keyName
+     * @param array $array
+     * @param string $keyName
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
@@ -129,7 +129,13 @@ class Tools {
      * @param string $root
      * @return array
      */
-    public static function listToTree(array $list, string $pk = 'id', string $pid = 'fid', string $child = 'children', string $root = '0'): array {
+    public static function listToTree(
+        array $list,
+        string $pk = 'id',
+        string $pid = 'fid',
+        string $child = 'children',
+        string $root = '0'
+    ): array {
         $tree = array();
         if (is_array($list)) {
             $refer = array();
@@ -152,8 +158,16 @@ class Tools {
         return $tree;
     }
 
+    /**
+     * 将层级数组遍历成一维数组
+     * @param array $list
+     * @param int $lv
+     * @param string $title
+     * @return array
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
     public static function formatTree(array $list, int $lv = 0, string $title = 'title'): array {
-        $formatTree = array();
+        $formatTree = [];
         foreach ($list as $key => $val) {
             $title_prefix = '';
             for ($i = 0; $i < $lv; $i++) {

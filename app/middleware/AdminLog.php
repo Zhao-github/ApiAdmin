@@ -18,7 +18,7 @@ class AdminLog {
      */
     public function handle($request, \Closure $next): Response {
         $userInfo = $request->API_ADMIN_USER_INFO;
-        $menuInfo = AdminMenu::get(['url' => $request->path()]);
+        $menuInfo = (new AdminMenu())->where('url', $request->pathinfo())->find();
 
         if ($menuInfo) {
             $menuInfo = $menuInfo->toArray();
@@ -26,7 +26,7 @@ class AdminLog {
 
             return json([
                 'code' => ReturnCode::INVALID,
-                'msg'  => '当前路由非法：' . $request->path(),
+                'msg'  => '当前路由非法：' . $request->pathinfo(),
                 'data' => []
             ])->header(config('apiadmin.CROSS_DOMAIN'));
         }
@@ -36,7 +36,7 @@ class AdminLog {
             'uid'         => $userInfo['id'],
             'nickname'    => $userInfo['nickname'],
             'add_time'    => time(),
-            'url'         => $request->path(),
+            'url'         => $request->pathinfo(),
             'data'        => json_encode($request->param())
         ]);
 
