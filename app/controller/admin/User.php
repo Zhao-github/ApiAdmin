@@ -47,7 +47,7 @@ class User extends Base {
         }
 
         $listObj = $obj->order('create_time', 'DESC')
-            ->paginate(['page' => $start, 'list_rows' => $limit], false)->each(function($item, $key) {
+            ->paginate(['page' => $start, 'list_rows' => $limit])->each(function($item, $key) {
                 $item->userData;
             })->toArray();
         $listInfo = $listObj['data'];

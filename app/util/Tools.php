@@ -106,13 +106,13 @@ class Tools {
 
     /**
      * 将二维数组变成指定key
-     * @param array $array
+     * @param $array
      * @param string $keyName
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public static function buildArrByNewKey(array $array, string $keyName = 'id'): array {
-        $list = array();
+    public static function buildArrByNewKey($array, string $keyName = 'id'): array {
+        $list = [];
         foreach ($array as $item) {
             $list[$item[$keyName]] = $item;
         }
@@ -136,9 +136,9 @@ class Tools {
         string $child = 'children',
         string $root = '0'
     ): array {
-        $tree = array();
+        $tree = [];
         if (is_array($list)) {
-            $refer = array();
+            $refer = [];
             foreach ($list as $key => $data) {
                 $refer[$data[$pk]] = &$list[$key];
             }
