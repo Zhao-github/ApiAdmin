@@ -24,7 +24,7 @@ class AdminPermission {
     public function handle($request, \Closure $next): Response {
         $userInfo = $request->API_ADMIN_USER_INFO;
 
-        if (!$this->checkAuth($userInfo['id'], $request->path())) {
+        if (!$this->checkAuth($userInfo['id'], $request->pathinfo())) {
             return json([
                 'code' => ReturnCode::INVALID,
                 'msg'  => '非常抱歉，您没有权限这么做！',
@@ -66,7 +66,7 @@ class AdminPermission {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     private function getAuth($uid) {
-        $groups = AdminAuthGroupAccess::get(['uid' => $uid]);
+        $groups = (new AdminAuthGroupAccess())->where('uid', $uid)->find();
         if (isset($groups) && $groups->group_id) {
             $openGroup = (new AdminAuthGroup())->whereIn('id', $groups->group_id)->where(['status' => 1])->select();
             if (isset($openGroup)) {
