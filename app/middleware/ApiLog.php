@@ -8,9 +8,9 @@ use app\util\ApiLogTool;
 class ApiLog {
 
     /**
-     * @param \think\facade\Request $request
+     * @param $request
      * @param \Closure $next
-     * @return mixed|\think\response\Json
+     * @return mixed
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function handle($request, \Closure $next) {

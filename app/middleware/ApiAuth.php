@@ -12,30 +12,33 @@ class ApiAuth {
 
     /**
      * 获取接口基本配置参数，校验接口Hash是否合法，校验APP_ID是否合法等
-     * @param \think\facade\Request $request
+     * @param $request
      * @param \Closure $next
      * @return mixed|\think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function handle($request, \Closure $next) {
         $header = config('apiadmin.CROSS_DOMAIN');
-        $apiHash = substr($request->path(), 4);
+        $apiHash = substr($request->pathinfo(), 4);
 
         if ($apiHash) {
             $cached = Cache::has('ApiInfo:' . $apiHash);
             if ($cached) {
                 $apiInfo = Cache::get('ApiInfo:' . $apiHash);
             } else {
-                $apiInfo = AdminList::get(['hash' => $apiHash, 'hash_type' => 2]);
+                $apiInfo = (new AdminList())->where('hash', $apiHash)->where('hash_type', 2)->find();
                 if ($apiInfo) {
                     $apiInfo = $apiInfo->toArray();
-                    Cache::rm('ApiInfo:' . $apiInfo['api_class']);
+                    Cache::delete('ApiInfo:' . $apiInfo['api_class']);
                     Cache::set('ApiInfo:' . $apiHash, $apiInfo);
                 } else {
-                    $apiInfo = AdminList::get(['api_class' => $apiHash, 'hash_type' => 1]);
+                    $apiInfo = (new AdminList())->where('api_class', $apiHash)->where('hash_type', 1)->find();
                     if ($apiInfo) {
                         $apiInfo = $apiInfo->toArray();
-                        Cache::rm('ApiInfo:' . $apiInfo['hash']);
+                        Cache::delete('ApiInfo:' . $apiInfo['hash']);
                         Cache::set('ApiInfo:' . $apiHash, $apiInfo);
                     } else {
                         return json([
@@ -84,13 +87,16 @@ class ApiAuth {
     /**
      * 简易鉴权，更具APP_SECRET获取应用信息
      * @param $accessToken
-     * @return bool|mixed
+     * @return array|false|mixed|object|\think\App
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     private function doEasyCheck($accessToken) {
         $appInfo = cache('AccessToken:Easy:' . $accessToken);
         if (!$appInfo) {
-            $appInfo = AdminApp::get(['app_secret' => $accessToken]);
+            $appInfo = (new AdminApp())->where('app_secret', $accessToken)->find();
             if (!$appInfo) {
                 return false;
             } else {

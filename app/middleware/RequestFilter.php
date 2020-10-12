@@ -13,9 +13,12 @@ class RequestFilter {
 
     /**
      * 接口请求字段过滤【只验证数据的合法性，不再过滤数据】
-     * @param \think\facade\Request $request
+     * @param $request
      * @param \Closure $next
      * @return mixed|\think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function handle($request, \Closure $next) {
@@ -26,7 +29,7 @@ class RequestFilter {
         if ($has) {
             $newRule = cache('RequestFields:NewRule:' . $apiInfo['hash']);
         } else {
-            $rule = AdminFields::all(['hash' => $apiInfo['hash'], 'type' => 0]);
+            $rule = (new AdminFields())->where('hash', $apiInfo['hash'])->where('type', 0)->select();
             $newRule = $this->buildValidateRule($rule);
             cache('RequestFields:NewRule:' . $apiInfo['hash'], $newRule);
         }
