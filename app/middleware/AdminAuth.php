@@ -20,7 +20,9 @@ class AdminAuth {
         $ApiAuth = $request->header('Api-Auth', '');
         if ($ApiAuth) {
             $userInfo = cache('Login:' . $ApiAuth);
-            $userInfo = json_decode($userInfo, true);
+            if ($userInfo) {
+                $userInfo = json_decode($userInfo, true);
+            }
             if (!$userInfo || !isset($userInfo['id'])) {
                 return json([
                     'code' => ReturnCode::AUTH_ERROR,
