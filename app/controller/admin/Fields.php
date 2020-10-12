@@ -191,7 +191,8 @@ class Fields extends Base {
         $addArr = array_diff($newArr, $oldArr);
         $delArr = array_diff($oldArr, $newArr);
         if ($delArr) {
-            AdminFields::destroy(['show_name' => ['in', $delArr]]);
+            $delArr = array_values($delArr);
+            (new AdminFields())->whereIn('show_name', $delArr)->delete();
         }
         if ($addArr) {
             $addData = [];
