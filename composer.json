@@ -20,9 +20,10 @@
         }
     ],
     "require": {
-        "php": ">=7.1.0",
-        "topthink/framework": "^6.0.0",
-        "topthink/think-orm": "^2.0"
+        "php": ">=7.2.5",
+        "topthink/framework": "^6.0",
+        "topthink/think-orm": "^2.0",
+        "endroid/qrcode": "^3.9"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
