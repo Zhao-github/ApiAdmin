@@ -42,7 +42,7 @@ php think apiadmin:adminRouter
 > 第五步：获取管理后台账号密码
 
 ```
-cat application/install/lock.ini
+cat install/lock.ini
 ```
 
 ## 灵 感

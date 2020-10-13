@@ -50,7 +50,16 @@ class ApiAuth {
                 }
             }
 
+
             $accessToken = $request->header('Access-Token', '');
+            if (!$accessToken) {
+                if ($apiInfo['method'] == 2) {
+                    $accessToken = $request->get('Access-Token', '');
+                }
+                if ($apiInfo['method'] == 1) {
+                    $accessToken = $request->post('Access-Token', '');
+                }
+            }
             if (!$accessToken) {
                 return json([
                     'code' => ReturnCode::AUTH_ERROR,
