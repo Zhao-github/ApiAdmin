@@ -26,8 +26,8 @@ class ThirdLogin extends Base {
      * @var array
      */
     private $qqConfig = [
-        'appId'       => '',
-        'appSecret'   => '',
+        'appId'       => '101461699',
+        'appSecret'   => '52076b6d50c1fbdf59ac7b8a7404066b',
         'redirectUri' => 'https://admin.apiadmin.org/#/login/qq'
     ];
 
@@ -45,8 +45,8 @@ class ThirdLogin extends Base {
      * @var array
      */
     private $wxOpenConfig = [
-        'appId'       => '',
-        'appSecret'   => '',
+        'appId'       => 'wxa886c4bafd5316f6',
+        'appSecret'   => 'e7ea7c9ed3d7544fc6d791d7cdaff5d4',
         'redirectUri' => 'https://admin.apiadmin.org/#/login/wx'
     ];
 
@@ -305,7 +305,7 @@ class ThirdLogin extends Base {
                 'nickname'    => $userDetail['nickname'],
                 'username'    => 'ApiAdmin_qq_' . Strs::randString(8),
                 'openid'      => $openid,
-                'create_ip'   => request()->ip(1),
+                'create_ip'   => sprintf("%u", ip2long($this->request->ip())),
                 'status'      => 1,
                 'create_time' => time(),
                 'password'    => Tools::userMd5('ApiAdmin')
