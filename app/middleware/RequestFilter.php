@@ -35,7 +35,7 @@ class RequestFilter {
         }
 
         if ($newRule) {
-            $validate = Validate::make($newRule);
+            $validate = Validate::rule($newRule);
             if (!$validate->check($data)) {
                 return json(['code' => ReturnCode::PARAM_INVALID, 'msg' => $validate->getError(), 'data' => []]);
             }
@@ -50,7 +50,7 @@ class RequestFilter {
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
-    public function buildValidateRule($rule = array()) {
+    public function buildValidateRule($rule = []) {
         $newRule = [];
         if ($rule) {
             foreach ($rule as $value) {
