@@ -26,8 +26,8 @@ class ThirdLogin extends Base {
      * @var array
      */
     private $qqConfig = [
-        'appId'       => '101461699',
-        'appSecret'   => '52076b6d50c1fbdf59ac7b8a7404066b',
+        'appId'       => '',
+        'appSecret'   => '',
         'redirectUri' => 'https://admin.apiadmin.org/#/login/qq'
     ];
 
@@ -45,8 +45,8 @@ class ThirdLogin extends Base {
      * @var array
      */
     private $wxOpenConfig = [
-        'appId'       => 'wxa886c4bafd5316f6',
-        'appSecret'   => 'e7ea7c9ed3d7544fc6d791d7cdaff5d4',
+        'appId'       => '',
+        'appSecret'   => '',
         'redirectUri' => 'https://admin.apiadmin.org/#/login/wx'
     ];
 
