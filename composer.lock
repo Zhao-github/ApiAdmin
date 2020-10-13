@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d0bae3786336b8fb3f12db9ee5514cfc",
+    "content-hash": "58a42c05e879b20be89bd2a57fd4b31e",
     "packages": [
         {
             "name": "league/flysystem",
@@ -590,6 +590,62 @@
             ],
             "description": "The ThinkPHP6 Helper Package",
             "time": "2019-11-08T08:01:10+00:00"
+        },
+        {
+            "name": "topthink/think-migration",
+            "version": "v3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/top-think/think-migration.git",
+                "reference": "e8b3396505617732a57309d2818d70ffe187385c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/top-think/think-migration/zipball/e8b3396505617732a57309d2818d70ffe187385c",
+                "reference": "e8b3396505617732a57309d2818d70ffe187385c",
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
+            },
+            "require": {
+                "topthink/framework": "^6.0.0",
+                "topthink/think-helper": "^3.0.3"
+            },
+            "require-dev": {
+                "fzaninotto/faker": "^1.8"
+            },
+            "suggest": {
+                "fzaninotto/faker": "Required to use the factory builder (^1.8)."
+            },
+            "type": "library",
+            "extra": {
+                "think": {
+                    "services": [
+                        "think\\migration\\Service"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Phinx\\": "phinx/src/Phinx",
+                    "think\\migration\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "yunwuxin",
+                    "email": "448901948@qq.com"
+                }
+            ],
+            "time": "2019-06-17T10:13:39+00:00"
         },
         {
             "name": "topthink/think-orm",
