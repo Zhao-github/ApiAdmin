@@ -336,8 +336,8 @@ class ThirdLogin extends Base {
             }
         }
 
-        $userInfo['access'] = (new Login(App()))->getAccess($userInfo['id']);
-        $userInfo['menu'] = (new Login(App()))->getAccessMenuData($userInfo['id']);
+        $userInfo['access'] = (new Login(App()))->getAccess(intval($userInfo['id']));
+        $userInfo['menu'] = (new Login(App()))->getAccessMenuData(intval($userInfo['id']));
 
         $apiAuth = md5(uniqid() . time());
         cache('Login:' . $apiAuth, json_encode($userInfo), config('apiadmin.ONLINE_TIME'));
