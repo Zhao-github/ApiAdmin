@@ -20,7 +20,7 @@ class Strs {
      * @return string
      */
     public static function uuid(): string {
-        $charId = md5(uniqid(mt_rand(), true));
+        $charId = md5(uniqid(strval(mt_rand()), true));
         $hyphen = chr(45);
         $uuid = chr(123)
             . substr($charId, 0, 8) . $hyphen
