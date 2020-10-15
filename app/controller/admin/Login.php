@@ -139,7 +139,7 @@ class Login extends Base {
             }
         }
 
-        return $returnData;
+        return array_values($returnData);
     }
 
     /**
