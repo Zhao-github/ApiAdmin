@@ -192,7 +192,7 @@ class InterfaceList extends Base {
                 array_push($tplStr, 'Route::rule(\'' . addslashes($value->hash) . '\',\'api.' . addslashes($value->api_class) . '\', \'' . $methodArr[$value->method] . '\')->middleware([app\middleware\ApiAuth::class, app\middleware\ApiPermission::class, app\middleware\RequestFilter::class, app\middleware\ApiLog::class]);');
             }
         }
-        $tplOriginStr = str_replace(['{$API_RULE}'], [implode($tplStr, PHP_EOL . '    ')], $tplOriginStr);
+        $tplOriginStr = str_replace(['{$API_RULE}'], [implode(PHP_EOL . '    ', $tplStr)], $tplOriginStr);
 
         file_put_contents($apiRoutePath, $tplOriginStr);
 
