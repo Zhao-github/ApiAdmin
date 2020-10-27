@@ -30,6 +30,7 @@ class BuildToken extends Base {
 
         $signature = $param['signature'];
         unset($param['signature']);
+        unset($param['Access-Token']);
         $sign = $this->getAuthToken($appInfo['app_secret'], $param);
         $this->debug($sign);
         if ($sign !== $signature) {

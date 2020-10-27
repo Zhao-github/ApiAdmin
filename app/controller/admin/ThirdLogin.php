@@ -305,7 +305,7 @@ class ThirdLogin extends Base {
                 'nickname'    => $userDetail['nickname'],
                 'username'    => 'ApiAdmin_qq_' . Strs::randString(8),
                 'openid'      => $openid,
-                'create_ip'   => request()->ip(1),
+                'create_ip'   => sprintf("%u", ip2long($this->request->ip())),
                 'status'      => 1,
                 'create_time' => time(),
                 'password'    => Tools::userMd5('ApiAdmin')
@@ -336,8 +336,8 @@ class ThirdLogin extends Base {
             }
         }
 
-        $userInfo['access'] = (new Login(App()))->getAccess($userInfo['id']);
-        $userInfo['menu'] = (new Login(App()))->getAccessMenuData($userInfo['id']);
+        $userInfo['access'] = (new Login(App()))->getAccess(intval($userInfo['id']));
+        $userInfo['menu'] = (new Login(App()))->getAccessMenuData(intval($userInfo['id']));
 
         $apiAuth = md5(uniqid() . time());
         cache('Login:' . $apiAuth, json_encode($userInfo), config('apiadmin.ONLINE_TIME'));

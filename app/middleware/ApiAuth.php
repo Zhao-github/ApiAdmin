@@ -7,12 +7,13 @@ use app\model\AdminApp;
 use app\model\AdminList;
 use app\util\ReturnCode;
 use think\facade\Cache;
+use think\Request;
 
 class ApiAuth {
 
     /**
      * 获取接口基本配置参数，校验接口Hash是否合法，校验APP_ID是否合法等
-     * @param $request
+     * @param Request $request
      * @param \Closure $next
      * @return mixed|\think\response\Json
      * @throws \think\db\exception\DataNotFoundException
@@ -51,6 +52,14 @@ class ApiAuth {
             }
 
             $accessToken = $request->header('Access-Token', '');
+            if (!$accessToken) {
+                if ($apiInfo['method'] == 2) {
+                    $accessToken = $request->get('Access-Token', '');
+                }
+                if ($apiInfo['method'] == 1) {
+                    $accessToken = $request->post('Access-Token', '');
+                }
+            }
             if (!$accessToken) {
                 return json([
                     'code' => ReturnCode::AUTH_ERROR,
