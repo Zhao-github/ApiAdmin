@@ -15,7 +15,7 @@ ApiAdmin5.0是一个前后端完全分离的项目，前端采用Vue构建，如
 > 第一步：安装代码
 
 ```
-composer create-project apiadmin/apiadmin5
+composer create-project apiadmin/apiadmin
 ```
 ```
 你也可以：先获取基础代码 git clone https://gitee.com/apiadmin/ApiAdmin.git   再使用composer安装 composer install
