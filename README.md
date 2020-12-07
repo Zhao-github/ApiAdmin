@@ -31,6 +31,11 @@ php think apiadmin:install
 
 ```
 php think migrate:run
+
+* 如出现报错：There are no commands defined in the "migrate" namespace.
+* 请先更新下think版本：composer update topthink/framework
+* 再执行：php think migrate:run
+* 特别鸣谢：@孙晔华
 ```
 
 > 第四步：构建后端路由
