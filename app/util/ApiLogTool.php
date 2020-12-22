@@ -99,7 +99,7 @@ class ApiLogTool {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public static function save(): void {
-        $logPath = Env::get('runtime_path') . 'ApiLog' . DIRECTORY_SEPARATOR;
+        $logPath = runtime_path() . 'ApiLog' . DIRECTORY_SEPARATOR;
         $logStr = implode(self::$separator, array(
             '[' . date('Y-m-d H:i:s') . ']',
             self::$apiInfo,
@@ -123,9 +123,14 @@ class ApiLogTool {
      */
     public static function writeLog(string $log, string $type = 'sql', string $filePath = ''): void {
         if (!$filePath) {
-            $filePath = Env::get('runtime_path') . DIRECTORY_SEPARATOR;
+            $filePath = runtime_path() . $type . DIRECTORY_SEPARATOR;
+        } else {
+            $filePath = $filePath . $type . DIRECTORY_SEPARATOR;
         }
-        $filename = $filePath . $type . DIRECTORY_SEPARATOR . date("YmdH") . ".log";
+        $filename = $filePath . date("YmdH") . ".log";
+        if (!file_exists($filePath)) {
+            mkdir($filePath, 0755, true);
+        }
         @$handle = fopen($filename, "a+");
         @fwrite($handle, date('Y-m-d H:i:s') . "\t" . $log . "\r\n");
         @fclose($handle);
