@@ -19,11 +19,11 @@ class ApiLog {
         unset($requestInfo['API_CONF_DETAIL']);
         unset($requestInfo['APP_CONF_DETAIL']);
 
-        ApiLogTool::setApiInfo($request->API_CONF_DETAIL);
-        ApiLogTool::setAppInfo($request->APP_CONF_DETAIL);
+        ApiLogTool::setApiInfo((array)$request->API_CONF_DETAIL);
+        ApiLogTool::setAppInfo((array)$request->APP_CONF_DETAIL);
         ApiLogTool::setRequest($requestInfo);
         ApiLogTool::setResponse($response->getData(), isset($response->getData()['code']) ? strval($response->getData()['code']) : 'null');
-        ApiLogTool::setHeader($request->header());
+        ApiLogTool::setHeader((array)$request->header());
         ApiLogTool::save();
 
         return $response;
