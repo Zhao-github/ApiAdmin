@@ -7,6 +7,7 @@ return [
     'commands' => [
         'apiadmin:adminRouter' => 'app\command\FreshAdminRouter',
         'apiadmin:install'     => 'app\command\Install',
-        'apiadmin:test'        => 'app\command\ApiAdmin'
+        'apiadmin:test'        => 'app\command\ApiAdmin',
+        'apiadmin:autoBuild'   => 'app\command\AutoBuildFile'
     ],
 ];

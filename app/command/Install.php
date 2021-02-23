@@ -85,9 +85,8 @@ class Install extends Command {
      * @param $output
      * @return array
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
-     * @desc mysql://root:123456@127.0.0.1:3306/apiadmin#utf8mb4
      */
-    private function parseDsnConfig($output) {
+    private function parseDsnConfig($output): array {
         $output->comment('please input database type(default mysql):');
         $input = trim(fgets(fopen('php://stdin', 'r')));
         $dsn['type'] = $input ? $input : 'mysql';
