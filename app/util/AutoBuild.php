@@ -18,12 +18,21 @@ class AutoBuild {
         'name'      => '', // 唯一标识
         'module'    => 1,  // 构建类型 1：admin；2：api
         'table'     => 0,  // 是否创建表
-        'modelName' => ''  // 表名称
+        'modelName' => '', // 表名称
+        'fid'       => 0   // 父级ID
     ];
 
+    private $basePath = '';
+
     public function run($config = []) {
-        $config = array_merge($this->config, $config);
-        dump($config);
+        $this->config = array_merge($this->config, $config);
+
+        if ($this->config['module'] == 1) {
+
+        }
+        if ($this->config['control'] && $this->config['name']) {
+            $this->buildControl();
+        }
     }
 
     /**
