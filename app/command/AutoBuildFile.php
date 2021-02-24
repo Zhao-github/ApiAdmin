@@ -36,20 +36,20 @@ class AutoBuildFile extends Command {
             $output->comment('Please choose module (1:admin;2:api, default 1):');
             $input = trim(fgets(fopen('php://stdin', 'r')));
             $dsn['module'] = strlen($input) ? $input : 1;
-        }
 
-        $output->comment('Do you need to build a menu? 1 or 0 (default 1):');
-        $input = trim(fgets(fopen('php://stdin', 'r')));
-        $dsn['menu'] = strlen($input) ? $input : 1;
-
-        if ($dsn['menu']) {
-            $output->comment('Please input menu fid (default 0):');
+            $output->comment('Do you need to build a menu? 1 or 0 (default 1):');
             $input = trim(fgets(fopen('php://stdin', 'r')));
-            $dsn['fid'] = strlen($input) ? $input : 0;
+            $dsn['menu'] = strlen($input) ? $input : 1;
 
-            $output->comment('Do you need to create a route? 1 or 0 (default 0):');
-            $input = trim(fgets(fopen('php://stdin', 'r')));
-            $dsn['route'] = strlen($input) ? $input : 0;
+            if ($dsn['menu']) {
+                $output->comment('Please input menu fid (default 0):');
+                $input = trim(fgets(fopen('php://stdin', 'r')));
+                $dsn['fid'] = strlen($input) ? $input : 0;
+
+                $output->comment('Do you need to create a route? 1 or 0 (default 0):');
+                $input = trim(fgets(fopen('php://stdin', 'r')));
+                $dsn['route'] = strlen($input) ? $input : 0;
+            }
         }
 
         $output->comment('Do you need to build a model? 1 or 0 (default 0):');
