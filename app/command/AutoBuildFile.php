@@ -32,6 +32,10 @@ class AutoBuildFile extends Command {
 
         if ($dsn['control']) {
             $dsn['name'] = $this->getControlName($output);
+
+            $output->comment('Please choose module (1:admin;2:api, default 1):');
+            $input = trim(fgets(fopen('php://stdin', 'r')));
+            $dsn['module'] = strlen($input) ? $input : 1;
         }
 
         $output->comment('Do you need to build a menu? 1 or 0 (default 1):');
@@ -59,10 +63,6 @@ class AutoBuildFile extends Command {
             $input = trim(fgets(fopen('php://stdin', 'r')));
             $dsn['table'] = strlen($input) ? $input : 0;
         }
-
-        $output->comment('Please choose module (1:admin;2:api, default 1):');
-        $input = trim(fgets(fopen('php://stdin', 'r')));
-        $dsn['module'] = strlen($input) ? $input : 1;
 
         return $dsn;
     }
