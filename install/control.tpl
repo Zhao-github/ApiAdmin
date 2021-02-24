@@ -1,7 +1,7 @@
 <?php
 declare (strict_types=1);
 /**
- * ÓÉApiAdmin×Ô¶¯¹¹½¨£¬Çë´¦Àí{$MODEL_NAME}£¡
+ * ç”±ApiAdminè‡ªåŠ¨æ„å»ºï¼Œè¯·å¤„ç†{$MODEL_NAME}ï¼
  * @author apiadmin <apiadmin.org>
  */
 
@@ -13,7 +13,7 @@ use think\Response;
 
 class {$NAME} extends Base {
     /**
-     * »ñÈ¡
+     * è·å–
      * @return \think\Response
      * @throws \think\db\exception\DbException
      * @author apiadmin <apiadmin.org>
@@ -32,7 +32,7 @@ class {$NAME} extends Base {
     }
 
     /**
-     * Ìí¼Ó
+     * æ·»åŠ 
      * @return Response
      * @author apiadmin <apiadmin.org>
      */
@@ -47,7 +47,7 @@ class {$NAME} extends Base {
     }
 
     /**
-     * ±à¼­
+     * ç¼–è¾‘
      * @return Response
      * @author apiadmin <apiadmin.org>
      */
@@ -62,17 +62,17 @@ class {$NAME} extends Base {
     }
 
     /**
-     * É¾³ı
+     * åˆ é™¤
      * @return Response
      * @author apiadmin <apiadmin.org>
      */
     public function del(): Response {
         $id = $this->request->get('id');
         if (!$id) {
-            return $this->buildFailed(ReturnCode::EMPTY_PARAMS, 'È±ÉÙ±ØÒª²ÎÊı');
+            return $this->buildFailed(ReturnCode::EMPTY_PARAMS, 'ç¼ºå°‘å¿…è¦å‚æ•°');
         }
 
-        // Çë´¦Àí²¿·ÖÉ¾³ıÊı¾İ
+        // è¯·å¤„ç†éƒ¨åˆ†åˆ é™¤æ•°æ®
         {$MODEL_NAME}::destroy(['id' => $id]);
 
         return $this->buildSuccess();
