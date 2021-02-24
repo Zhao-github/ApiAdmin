@@ -26,6 +26,8 @@ class BuildToken extends Base {
         $appInfo = (new AdminApp())->where(['app_id' => $param['app_id'], 'app_status' => 1])->find();
         if (empty($appInfo)) {
             return $this->buildFailed(ReturnCode::INVALID, '应用ID非法');
+        } else {
+            $appInfo = $appInfo->toArray();
         }
 
         $signature = $param['signature'];
