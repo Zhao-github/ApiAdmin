@@ -14,9 +14,20 @@ class AutoBuildFile extends Command {
         $this->setName('apiadmin:autoBuild')->setDescription('ApiAdmin自动构建文件');
     }
 
+    /**
+     * 自动构建
+     * @param Input $input
+     * @param Output $output
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @author zhaoxiang <zhaoxiang051405@gmail.com>
+     */
     protected function execute(Input $input, Output $output): void {
         $config = $this->parseConfig($output);
         (new AutoBuild())->run($config);
+
+        $output->info('Build files successful');
     }
 
     /**
