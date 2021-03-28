@@ -246,7 +246,7 @@ class Auth extends Base {
     public function editRule(): Response {
         $id = $this->request->post('id', 0);
         $rules = $this->request->post('rules', []);
-        if ($rules) {
+        if (is_array($rules)) {
             $needAdd = [];
             $has = (new AdminAuthRule())->where(['group_id' => $id])->select();
             $has = Tools::buildArrFromObj($has);
