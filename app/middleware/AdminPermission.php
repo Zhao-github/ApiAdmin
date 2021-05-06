@@ -23,8 +23,8 @@ class AdminPermission {
      */
     public function handle($request, \Closure $next): Response {
         $userInfo = $request->API_ADMIN_USER_INFO;
-
-        if (!$this->checkAuth($userInfo['id'], $request->pathinfo())) {
+        // rule里包含了rule(路由规则), ruoter(完整路由)
+        if (!$this->checkAuth($userInfo['id'], $request->rule()->getRule())) {
             return json([
                 'code' => ReturnCode::INVALID,
                 'msg'  => '非常抱歉，您没有权限这么做！',
