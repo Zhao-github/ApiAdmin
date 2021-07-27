@@ -23,7 +23,15 @@ class ApiAuth {
      */
     public function handle($request, \Closure $next) {
         $header = config('apiadmin.CROSS_DOMAIN');
-        $apiHash = substr($request->pathinfo(), 4);
+
+        $pathParam = [];
+        $pathArr = explode('/', $request->pathinfo());
+        for ($index = 0; $index < count($pathArr); $index += 2) {
+            if (isset($pathArr[$index + 1])) {
+                $pathParam[$pathArr[$index]] = $pathArr[$index + 1];
+            }
+        }
+        $apiHash = $pathParam['api'];
 
         if ($apiHash) {
             $cached = Cache::has('ApiInfo:' . $apiHash);
@@ -53,12 +61,13 @@ class ApiAuth {
 
             $accessToken = $request->header('Access-Token', '');
             if (!$accessToken) {
-                if ($apiInfo['method'] == 2) {
-                    $accessToken = $request->get('Access-Token', '');
-                }
-                if ($apiInfo['method'] == 1) {
-                    $accessToken = $request->post('Access-Token', '');
-                }
+                $accessToken = $request->post('Access-Token', '');
+            }
+            if (!$accessToken) {
+                $accessToken = $request->get('Access-Token', '');
+            }
+            if (!$accessToken && !empty($pathParam['Access-Token'])) {
+                $accessToken = $pathParam['Access-Token'];
             }
             if (!$accessToken) {
                 return json([
