@@ -26,8 +26,9 @@ class ApiAuth {
 
         $pathParam = [];
         $pathArr = explode('/', $request->pathinfo());
-        for ($index = 0; $index < count($pathArr); $index += 2) {
-            if (isset($pathArr[$index + 1])) {
+        $pathArrLen = count($pathArr);
+        for ($index = 0; $index < $pathArrLen; $index += 2) {
+            if ($index + 1 < $pathArrLen) {
                 $pathParam[$pathArr[$index]] = $pathArr[$index + 1];
             }
         }
