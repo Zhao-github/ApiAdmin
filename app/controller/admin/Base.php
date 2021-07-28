@@ -57,7 +57,7 @@ class Base extends BaseController {
      * @author zhaoxiang <zhaoxiang051405@gmail.com>
      */
     public function updateUserInfo(array $data, bool $isDetail = false): void {
-        $apiAuth = $this->request->header('apiAuth');
+        $apiAuth = $this->request->header('Api-Auth');
         if ($isDetail) {
             AdminUserData::update($data, ['uid' => $this->userInfo['id']]);
             $this->userInfo['userData'] = (new AdminUserData())->where('uid', $this->userInfo['id'])->find();
