@@ -150,10 +150,10 @@ class InterfaceList extends Base {
                 $rule->app_api = implode(',', $appApiArr);
 
                 $appApiShowArrOld = json_decode($rule->app_api_show, true);
-                $appApiShowArr = $appApiShowArrOld[$oldInfo->groupHash];
+                $appApiShowArr = $appApiShowArrOld[$oldInfo->group_hash];
                 $appApiShowIndex = array_search($hash, $appApiShowArr);
                 array_splice($appApiShowArr, $appApiShowIndex, 1);
-                $appApiShowArrOld[$oldInfo->groupHash] = $appApiShowArr;
+                $appApiShowArrOld[$oldInfo->group_hash] = $appApiShowArr;
                 $rule->app_api_show = json_encode($appApiShowArrOld);
 
                 $rule->save();
