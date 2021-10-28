@@ -25,14 +25,15 @@ class ApiAuth {
         $header = config('apiadmin.CROSS_DOMAIN');
 
         $pathParam = [];
-        $pathArr = explode('/', $request->pathinfo());
+        $pathParamStr = str_replace($request->rule()->getRule() . '/', '', $request->pathinfo());
+        $pathArr = explode('/', $pathParamStr);
         $pathArrLen = count($pathArr);
         for ($index = 0; $index < $pathArrLen; $index += 2) {
             if ($index + 1 < $pathArrLen) {
                 $pathParam[$pathArr[$index]] = $pathArr[$index + 1];
             }
         }
-        $apiHash = $pathParam['api'];
+        $apiHash = str_replace('api/', '', $request->rule()->getRule());
 
         if ($apiHash) {
             $cached = Cache::has('ApiInfo:' . $apiHash);
